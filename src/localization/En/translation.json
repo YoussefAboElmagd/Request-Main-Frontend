@@ -1,3 +1,27 @@
 {
-    
+  "signIn": "Sign In",
+  "Register": "Register",
+  "PhoneNumber": "Phone Number",
+  "sendOtp": "Send OTP",
+  "verify": "Verify",
+  "An OTP Message containing your code has been sent to": "An OTP message containing your code has been sent to",
+  "Code Sent. Resend Code in": "Code Sent. Resend Code in",
+  "sign in To activate your business easily": "Sign in to activate your business easily",
+  "if you don’t have an account you can": "If you don’t have an account you can",
+  "Register here!": "Register here!",
+  "or": "or",
+  "Login with Google": "Login with Google",
+  "Login with Facebook": "Login with Facebook",
+  "Login with Apple": "Login with Apple",
+  "sign in here!": "Sign in here!",
+  "yourName": "Your Name",
+  "enter email": "Enter Email",
+  "Enter password": "Enter Password",
+  "confirm password": "Confirm Password",
+  "What kind of customer are you?": "What kind of customer are you?",
+  "Select from the following options to be directed to the appropriate page": "Select from the following options to be directed to the appropriate page",
+  "Next": "Next",
+  "owner": "Owner",
+  "consultant": "Consultant",
+  "contractor": "Contractor"
 }

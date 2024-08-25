@@ -1,3 +1,27 @@
 {
-    
+  "signIn": "تسجيل الدخول",
+  "Register": "إنشاء حساب",
+  "PhoneNumber": "رقم الهاتف",
+  "sendOtp": "إرسال رمز التحقق",
+  "verify": "تحقق",
+  "An OTP Message containing your code has been sent to": "تم إرسال رسالة تحتوي على رمز التحقق إلى",
+  "Code Sent. Resend Code in": "تم إرسال الرمز. إعادة إرسال الرمز بعد",
+  "sign in To activate your business easily": "سجّل الدخول لتفعيل عملك بسهولة",
+  "if you don’t have an account you can": "إذا لم يكن لديك حساب يمكنك",
+  "Register here!": "التسجيل هنا!",
+  "or": "أو",
+  "Login with Google": "تسجيل الدخول باستخدام Google",
+  "Login with Facebook": "تسجيل الدخول باستخدام Facebook",
+  "Login with Apple": "تسجيل الدخول باستخدام Apple",
+  "sign in here!": "تسجيل الدخول هنا!",
+  "yourName": "اسمك",
+  "enter email": "أدخل البريد الإلكتروني",
+  "Enter password": "أدخل كلمة المرور",
+  "confirm password": "تأكيد كلمة المرور",
+  "What kind of customer are you?": "ما نوع العميل الذي أنت عليه؟",
+  "Select from the following options to be directed to the appropriate page": "اختر من الخيارات التالية لتوجيهك إلى الصفحة المناسبة",
+  "Next": "التالي",
+  "owner": "مالك",
+  "consultant": "استشاري",
+  "contractor": "مقاول"
 }

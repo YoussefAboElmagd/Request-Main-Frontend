@@ -6,6 +6,7 @@ import OTPInput from "react-otp-input";
 import { useState } from "react";
 import "./style.scss";
 import Loader from "../../../Components/Loader/Loader";
+import { t } from "i18next";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
@@ -25,7 +26,7 @@ const Otp = () => {
   };
 
   return (
-    <div className="Otp h-screen  relative">
+    <div className="Otp h-screen  relative effect overflow-hidden ">
       {loading ? (
         <div className="loader">
           <Loader />
@@ -36,11 +37,11 @@ const Otp = () => {
           <div className="Wrapper flex items-center justify-between ">
             <div className="w-96 my-40 ">
               <h3 className="font-workSans  font-bold text-5xl">
-                sign in To activate your business easily
+                {t("sign in To activate your business easily")}
               </h3>
               <p className="font-jost  font-medium text-2xl">
-                if you don’t have an account you can{" "}
-                <Link className="text-blue">Register here!</Link>
+                {t("if you don’t have an account you can")}
+                <Link className="text-blue block">{t("Register here!")}</Link>
               </p>
             </div>
             <div className=" LogIn_Image  flex justify-center -z-10">
@@ -54,7 +55,9 @@ const Otp = () => {
             </div>
             <div className="form flex flex-col items-center">
               <div className="Otp_text font-workSans font-normal text-xl text-center ">
-                <p>An OTP message containing your code has been sent to</p>
+                <p>
+                  {t("An OTP Message containing your code has been sent to")}
+                </p>
                 <span className="text-red font-workSans font-normal text-xl my-2">
                   {phone}
                 </span>
@@ -80,10 +83,12 @@ const Otp = () => {
                 }}
               />
               <p>
-                Code Sent. Resend Code in{" "}
-                <span className="text-red">00:50</span>
+                {t("Code Sent. Resend Code in")}
+                <span className="text-red"> 00:50</span>
               </p>
-              <Button className={"mt-5"} onClick={handleSubmit}>verify</Button>
+              <Button className={"mt-5"} onClick={handleSubmit}>
+                {t("verify")}
+              </Button>
             </div>
           </div>
         </>

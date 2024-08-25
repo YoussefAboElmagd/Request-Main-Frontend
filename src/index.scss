@@ -33,16 +33,18 @@
 }
 
 :root {
-  --blue: #86e3ce;
-  --green: #d0e6a5;
-  --yellow: #ffdd94;
-  --yellow2: #ca8a04;
-  --red: #fa897b;
-  --purple: #ccabd8;
-  --light: #f7f7f7;
-  --gray: rgba(169, 177, 191, 1);
-  --gray-md:#4F555A;
-  --gray-dark: rgba(20, 21, 21, 1);
+    --blue: #86e3ce;
+    --green: #d0e6a5;
+    --yellow: #ffdd94;
+    --yellow2: #ca8a04;
+    --gold: #fdc055;
+    --red: #FC887B;
+    --purple: #ccabd8;
+    --purple2: #8744a4;
+    --light:  #F2F2F7;
+    --gray: rgba(169, 177, 191, 1);
+    --gray-md: #4f555a;
+    --gray-dark: rgba(20, 21, 21, 1);
   --linear1: linear-gradient(96.45deg, #ccabda 0%, #99d4d2 167.29%);
   --linear2: linear-gradient(
     88.9deg,
@@ -67,6 +69,17 @@
   --shadow-dark: 8px 8px 24px 0px rgba(0, 0, 0, 0.05);
   --shadow-medium: 0px 1px 3px 0px rgba(96, 108, 128, 0.05);
 }
+.dark{
+ --blue: #336099;
+  --green: #50B0A2;
+  --yellow: #FDC055;
+  --gold: #fdc055;
+  --red: #EC8C50;
+  --purple: #DF6F5B; 
+    --linear1: linear-gradient(95.7deg, #346399 0%, #50B0A2 145.42%);
+
+}
+
 
 * {
   margin: 0;
@@ -77,6 +90,7 @@ body {
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
   direction: ltr;
+  background-color: var(--light);
 }
 
 body[dir="rtl"] {
@@ -93,6 +107,10 @@ button {
   cursor: pointer;
   outline: none;
   border: none;
+}
+input[type="password"] {
+  font-family: "inter", sans-serif;
+  font-size: 14px;
 }
 label {
   font-family: "jost", sans-serif;
@@ -118,7 +136,7 @@ option {
   transform: translateX(-50%);
   margin-bottom: 20px;
 }
-.loader{
+.loader {
   display: flex;
   justify-content: center;
   align-items: center;

@@ -17,10 +17,14 @@ module.exports = {
           dark: "var(--gray-dark)",
           md: "var(--gray-md)",
         },
+        gold: "var(--gold)",
         yellow: "var(--yellow)",
         green: "var(--green)",
         light: "var(--light)",
-        purple: "var(--purple)",
+        purple: {
+          DEFAULT: "var(--purple)",
+          dark: "var(--purple2)",
+        },
       },
       backgroundImage: {
         linear_1: "var(--linear1)",
@@ -35,10 +39,18 @@ module.exports = {
         workSans: ['"Poppins"', "sans-serif"],
         jost: ['"jost"', "sans-serif"],
       },
-      // shadow
       shadow: {
         dark: "var(--shadow-dark)",
         medium: "var(--shadow-medium)",
+      },
+      transitionProperty: {
+        custom: "all",
+      },
+      transitionTimingFunction: {
+        custom: "ease-in-out",
+      },
+      transitionDuration: {
+        custom: "0.5s",
       },
     },
   },

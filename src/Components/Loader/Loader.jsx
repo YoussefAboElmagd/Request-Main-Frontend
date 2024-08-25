@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Lottie from "lottie-react";
 import LoadingData from "../../assets/images/loading.json";
 

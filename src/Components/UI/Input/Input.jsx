@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import  { useState } from "react";
+import { useState } from "react";
 import "./Input.scss";
 
 const Input = ({
@@ -10,10 +10,13 @@ const Input = ({
   autoFocus = false,
   id,
   pattern,
+  value,
   placeholder,
-  icons = [],
+  inputIcons = [],
   label,
+  labelIcon, 
   required,
+  iconClass,
   ...rest
 }) => {
   const [inputType, setInputType] = useState(type);
@@ -27,7 +30,14 @@ const Input = ({
   return (
     <div className="Input_container">
       {label && (
-        <label className="Input_label mb-2" htmlFor={id}>
+        <label
+          className="Input_label flex items-center gap-2 font-jost text-base font-medium "
+          htmlFor={id}
+        >
+          {labelIcon && (
+            <span className="label-icon w-4 h-4 ">{labelIcon}</span>
+          )}
+
           {label}
         </label>
       )}
@@ -41,15 +51,18 @@ const Input = ({
           pattern={pattern}
           placeholder={placeholder}
           required={required}
-          className={`Input font-jost font-normal text-base my-3 py-2 px-4 ${className}`}
+          value={value}
+          className={`Input font-jost font-normal text-base  my-2 py-2 px-4 ${className}`}
           {...rest}
         />
-        {icons.length > 0 && (
+        {inputIcons.length > 0 && (
           <span
-            className="Input_icon absolute right-2 cursor-pointer"
+            className={`Input_icon absolute cursor-pointer right-4 ${iconClass}`}
             onClick={handleIconClick}
           >
-            {isPasswordVisible ? icons[1].element : icons[0].element}
+            {isPasswordVisible
+              ? inputIcons[1]?.element
+              : inputIcons[0]?.element}
           </span>
         )}
       </div>
