@@ -76,7 +76,7 @@ const AuthHeader = () => {
           {t("signIn")}
         </button>
       </Link>
-      <Link to="/SignUp">
+      <Link to="/SignUp/ChooseRole">
         <button className="py-1 px-10 bg-white border border-purple border-solid rounded-3xl text-purple m-2 font-semibold text-xl">
           {t("Register")}
         </button>

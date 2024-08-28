@@ -13,6 +13,11 @@
   }
   
 }
+.Input_wrapper{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 .Input[type="tel"].flag::placeholder {
   text-align: right; 
 }
@@ -24,7 +29,6 @@
 .Input_icon {
   position: absolute;
   right: 5px;
-  padding-inline: 5px;
   border-left: 1px solid rgba(155, 155, 155, 1);
   border-radius: 8px 18px 18px 8px;
   padding-inline: 7px;
@@ -42,4 +46,12 @@
   border-left: 1px solid rgba(155, 155, 155, 1);
   border-right: none;
   border-radius: 8px 18px 18px 8px;
+}
+.phone_input{
+  width: 100%!important;
+  padding-inline: 40px;
+}
+
+.phone_input .Input_icon {
+  right: 10px;
 }

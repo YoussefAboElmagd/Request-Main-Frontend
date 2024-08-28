@@ -1,6 +1,6 @@
 .effect {
   &::before,
-   &::after {
+  &::after {
     content: "";
     position: absolute;
     top: 0px;
@@ -11,18 +11,17 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    filter: blur(100px); 
-    z-index: -30; 
+    filter: blur(100px);
+    z-index: -30;
   }
 
   &::before {
-    background-image: url('../../../assets/images/yellow.png');
+    background-image: url("../../../assets/images/yellow.png");
     transform: translate(-20%, -10%);
   }
 
   &::after {
-    background-image: url('../../../assets/images/purple.png');
+    background-image: url("../../../assets/images/purple.png");
     transform: translate(20%, 10%);
   }
 }
-

@@ -1,22 +1,19 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import Button from "../../../Components/UI/Button/Button";
 import "./style.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { finishSignUp, startSignUp } from "../../../redux/slices/authSlice";
-import { signUp } from "../../../Services/api";
+import { useSelector } from "react-redux";
 import Loader from "../../../Components/Loader/Loader";
 
 const Role = () => {
   const [selectedRole, setSelectedRole] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const { email, password, phone, name } = location.state || {};
-  const { isLoadingSignUp } = useSelector((state) => state.auth);
+
+  const { isLoading } = useSelector((state) => state.auth);
+
   const handleRoleSelect = (role) => {
     if (selectedRole === role) {
       setSelectedRole("");
@@ -26,27 +23,21 @@ const Role = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(startSignUp());
-
-    try {
-      const userData = { email, password, phone, name, role: selectedRole };
-      console.log(userData);
-      const res = await signUp(userData);
-      console.log(res);
-      dispatch(finishSignUp());
-      navigate("/");
-    } catch (err) {
-      dispatch(finishSignUp());
-      dispatch(setError(err.message || "Sign-up failed"));
+    if (!selectedRole) {
+      setError("Please select a role.");
+      return;
     }
+
+    // Navigate to SignUp page with the selected role
+    navigate("/SignUp", { state: { role: selectedRole } });
   };
 
   return (
     <div className="Role effect">
-      {isLoadingSignUp ? (
+      {isLoading ? (
         <div className="flex items-center justify-center">
           <Loader />
         </div>
@@ -75,7 +66,7 @@ const Role = () => {
                 {t("owner")}
               </button>
               <button
-                className={`RoleBtn  consultant ${
+                className={`RoleBtn consultant ${
                   selectedRole === "consultant" ? "selected" : ""
                 }`}
                 onClick={() => handleRoleSelect("consultant")}
@@ -99,7 +90,9 @@ const Role = () => {
               </div>
             )}
             <div className="Next flex items-center justify-center mt-5">
-              <Button onClick={handleSubmit}>{t("Next")}</Button>
+              <Button onClick={handleSubmit} disabled={!selectedRole}>
+                {t("Next")}
+              </Button>
             </div>
           </div>
         </>

@@ -1,67 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
+const getUserFromLocalStorage = () => {
+  const user = localStorage.getItem("user");
+  if (user === null || user === undefined) {
+    return null;
+  }
+  try {
+    return JSON.parse(user);
+  } catch (error) {
+    console.error("Error parsing user from localStorage", error);
+    return null;
+  }
+};
+
+const initialState = {
+  user: getUserFromLocalStorage(),
+  token: localStorage.getItem("authToken") || null,
+  isAuthenticated: !!localStorage.getItem("authToken"),
+  isLoading: false,
+  error: null,
+};
 
 const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    email: "",
-    password: "",
-    name: "",
-    phone: "",
-    otp: "",
-    isLoading: false,
-    isLoadingSignIn: false,
-    isLoadingSignUp: false,
-    error: null,
-  },
+  initialState,
   reducers: {
-    setEmail(state, action) {
-      state.email = action.payload;
-    },
-    setPassword(state, action) {
-      state.password = action.payload;
-    },
-    setName(state, action) {
-      state.name = action.payload;
-    },
-    setPhone(state, action) {
-      state.phone = action.payload;
-    },
-    setOtp(state, action) {
-      state.otp = action.payload;
-    },
-    startSignUp(state) {
-      state.isLoadingSignUp = true;
+    startAuth(state) {
+      state.isLoading = true;
       state.error = null;
     },
-    finishSignUp(state) {
-      state.isLoadingSignUp = false;
-    },
-    startSignIn(state) {
-      state.isLoadingSignIn = true;
+    authSuccess(state, action) {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      state.isLoading = false;
       state.error = null;
     },
-    finishSignIn(state) {
-      state.isLoadingSignIn = false;
-    },
-    setError(state, action) {
+    authFailure(state, action) {
+      state.isLoading = false;
       state.error = action.payload;
-      state.isLoadingSignIn = false;
-      state.isLoadingSignUp = false;
+    },
+    logoutSuccess(state) {
+      state.user = null;
+      state.token = null;
+      state.isAuthenticated = false;
     },
   },
 });
 
-export const {
-  setEmail,
-  setPassword,
-  setName,
-  setPhone,
-  setOtp,
-  startSignUp,
-  finishSignUp,
-  startSignIn,
-  finishSignIn,
-  setError,
-} = authSlice.actions;
-
+export const { startAuth, authSuccess, authFailure, logoutSuccess } =
+  authSlice.actions;
 export default authSlice.reducer;

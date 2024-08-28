@@ -8,6 +8,18 @@ export const signUp = async (userData) => {
     return response.data;
   } catch (error) {
     console.error("Sign-up error: ", error);
-    throw error; 
+    throw error;
+  }
+};
+// Sign in
+
+export const signIn = async (userData) => {
+  try {
+    const response = await axiosInstance.post("auth/signin", userData);
+    console.log("Response => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Sign-in error: ", error);
+    throw error;
   }
 };

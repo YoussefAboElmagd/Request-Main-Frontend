@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom"
+import Button from "../../Components/UI/Button/Button";
 
 const Home = () => {
   return (
-      <Link to={"/LogIn"} className="text-red">
-        Log In By Phone
-      </Link>
-    
+    <>
+      <Button>
+        <Link to="/SignUp/ChooseRole">Sign Up</Link>
+      </Button>
+    </>
   );
 }
 

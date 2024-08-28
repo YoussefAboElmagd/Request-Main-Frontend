@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../Components/UI/Button/Button";
 import SignUpImg from "../../../assets/images/SignUp.png";
 import Input from "../../../Components/UI/Input/Input";
@@ -11,13 +11,9 @@ import "./style.scss";
 import { t } from "i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setEmail,
-  setPassword,
-  setName,
-  setPhone,
-  startSignUp,
-  finishSignUp,
-  setError,
+  startAuth,
+  authSuccess,
+  authFailure,
 } from "../../../redux/slices/authSlice";
 import { useState } from "react";
 import Loader from "../../../Components/Loader/Loader";
@@ -29,19 +25,24 @@ import { TbUserEdit } from "react-icons/tb";
 import { CiMail } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
 import { MdLockOutline } from "react-icons/md";
-
+import { handleSignUp } from "../../../redux/services/authServices";
 const SignUp = () => {
   const dispatch = useDispatch();
-  const { email, password, name, phone, isLoadingSignUp, error } = useSelector(
-    (state) => state.auth
-  );
+  const location = useLocation();
+  const { role } = location.state || {};
+  const { isLoading, error } = useSelector((state) => state.auth);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [country, setCountry] = useState({
     value: "SA",
     label: "Saudi Arabia",
   });
 
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
 
   const handleConfirmPasswordChange = (e) => {
@@ -55,26 +56,23 @@ const SignUp = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
 
-    dispatch(startSignUp());
-
-    try {
-      const userData = { email, password, name, phone };
-      dispatch(finishSignUp());
-      dispatch(setError(""));
-      navigate("/SignUp/ChooseRole", { state: userData });
-    } catch (err) {
-      dispatch(finishSignUp());
-      dispatch(setError(err.message || "Sign-up failed"));
-    }
+    const userData = { email, password, name, phone, role };
+    dispatch(handleSignUp(userData))
+      .unwrap() // Use unwrap to handle resolved or rejected promises
+      .then(() => {
+        navigate("/");
+      })
+      .catch((err) => {
+        console.error("Sign Up failed:", err);
+      });
   };
-  console.log(countries());
 
   const countryOptions = countries()
     .getData()
@@ -82,60 +80,59 @@ const SignUp = () => {
       value: country.value,
       label: `${country.label}`,
     }));
-const customStyles = {
-  container: (provided) => ({
-    ...provided,
-    width: "40%",
-    borderRadius: "1.5rem",
-    margin: "0.5rem 1rem",
-    position: "absolute",
-    zIndex: "99",
-    right: "0",
-    backgroundColor: "#EAF0F7",
-  }),
-  control: (provided) => ({
-    ...provided,
-    border: "none",
-    boxShadow: "none",
-    backgroundColor: "#EAF0F7",
-  }),
-  menu: (provided) => ({
-    ...provided,
-    borderRadius: "0.5rem",
-    font: "jost",
-    boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.1)",
-    transform: "translateY(-10px)",
-    transition: "opacity 200ms ease, transform 200ms ease",
-    ".react-select__menu-list": {
-      opacity: 1,
-      transform: "translateY(0)",
-    },
-  }),
-  menuList: (provided) => ({
-    ...provided,
-    padding: 0,
-    borderRadius: "0.5rem",
-    overflow: "auto",
-    overflowX: "hidden",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    cursor:"pointer",
-    borderRadius : state.isSelected ? ".25rem" : "0", 
-    background: state.isSelected ? "var(--linear1)" : "#EAF0F7   ",
-    color: state.isSelected ? "#ffffff" : "#000000",
-    "&:hover": {
-      background: state.isSelected ? "var(--linear1)" : "#f0f0f0",
-    },
-  }),
-};
 
+  const customStyles = {
+    container: (provided) => ({
+      ...provided,
+      width: "40%",
+      borderRadius: "1.5rem",
+      margin: "0.5rem 1rem",
+      position: "absolute",
+      zIndex: "99",
+      right: "0",
+      backgroundColor: "#EAF0F7",
+    }),
+    control: (provided) => ({
+      ...provided,
+      border: "none",
+      boxShadow: "none",
+      backgroundColor: "#EAF0F7",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "0.5rem",
+      font: "jost",
+      boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.1)",
+      transform: "translateY(-10px)",
+      transition: "opacity 200ms ease, transform 200ms ease",
+      ".react-select__menu-list": {
+        opacity: 1,
+        transform: "translateY(0)",
+      },
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: 0,
+      borderRadius: "0.5rem",
+      overflow: "auto",
+      overflowX: "hidden",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      cursor: "pointer",
+      borderRadius: state.isSelected ? ".25rem" : "0",
+      background: state.isSelected ? "var(--linear1)" : "#EAF0F7",
+      color: state.isSelected ? "#ffffff" : "#000000",
+      "&:hover": {
+        background: state.isSelected ? "var(--linear1)" : "#f0f0f0",
+      },
+    }),
+  };
 
   return (
-    <div className="LogIn h-screen relative effect overflow-hidden ">
-      {isLoadingSignUp ? (
+    <div className="LogIn h-screen relative effect overflow-hidden">
+      {isLoading ? (
         <div className="flex items-center justify-center">
-          {" "}
           <Loader />
         </div>
       ) : (
@@ -169,7 +166,7 @@ const customStyles = {
                     type="text"
                     id="name"
                     value={name}
-                    onChange={(e) => dispatch(setName(e.target.value))}
+                    onChange={(e) => setName(e.target.value)}
                     autoFocus
                     label={t("yourName")}
                     labelIcon={<TbUserEdit />}
@@ -185,35 +182,33 @@ const customStyles = {
                     autoComplete="email"
                     required
                     value={email}
-                    onChange={(e) => dispatch(setEmail(e.target.value))}
+                    onChange={(e) => setEmail(e.target.value)}
                     labelIcon={<CiMail />}
                     label={t("enter email")}
                   />
                 </div>
                 <div className="phone relative">
-                  <label className="Input_label flex items-center  gap-2 font-jost text-base font-medium ">
-                    <span className="label_icon w-4 h-4 ">
+                  <label className="Input_label flex items-center gap-2 font-jost text-base font-medium">
+                    <span className="label_icon w-4 h-4">
                       <FiPhone />
                     </span>
                     {t("PhoneNumber")}
                   </label>
-                  <div className="input flex items-center my-2  ">
+                  <div className="input flex items-center my-2">
                     <PhoneInput
                       international
                       defaultCountry={country.value}
                       country={country.value}
-                      onChange={(value) => {
-                        dispatch(setPhone(value));
-                      }}
+                      onChange={(value) => setPhone(value)}
                       value={phone}
                       placeholder={"+96244679900"}
-                      className="Input font-jost font-normal text-base py-2 !relative px-4 w-full "
+                      className="Input font-jost font-normal text-base py-2 !relative px-4 w-full"
                     />
                     <Select
                       options={countryOptions}
                       value={country}
                       onChange={(option) => setCountry(option)}
-                      className=" "
+                      className=""
                       styles={customStyles}
                       classNamePrefix="select"
                     />
@@ -230,7 +225,7 @@ const customStyles = {
                     value={password}
                     label={t("Enter password")}
                     labelIcon={<MdLockOutline />}
-                    onChange={(e) => dispatch(setPassword(e.target.value))}
+                    onChange={(e) => setPassword(e.target.value)}
                     minLength={8}
                     inputIcons={[
                       {
@@ -247,7 +242,7 @@ const customStyles = {
                 <div className="confirmPassword">
                   <label
                     htmlFor="confirmPassword"
-                    className="font-inter confirmPassword_label  font-normal text-xs absolute z-10 mx-2 bg-white p-1 rounded-3xl text-purple-dark "
+                    className="font-inter confirmPassword_label font-normal text-xs absolute z-10 mx-2 bg-white p-1 rounded-3xl text-purple-dark"
                   >
                     {t("confirm password")}
                   </label>
@@ -256,7 +251,7 @@ const customStyles = {
                     type="password"
                     id="confirmPassword"
                     autoComplete="password"
-                    className="confirmPassword_input border-purple-dark border focus:!border  relative placeholder:font-normal placeholder:text-xl placeholder:font-inter"
+                    className="confirmPassword_input border-purple-dark border focus:!border relative placeholder:font-normal placeholder:text-xl placeholder:font-inter"
                     required
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
@@ -272,33 +267,22 @@ const customStyles = {
                       },
                     ]}
                   />
+                  {passwordError && (
+                    <div className="error text-red-500 text-xs mt-2">
+                      {passwordError}
+                    </div>
+                  )}
                 </div>
-                {passwordError && (
-                  <div className="text-center">
-                    <p className="text-red">{passwordError}</p>
-                  </div>
-                )}
-                <Button className="mt-5 w-full" onClick={handleSubmit}>
+                <Button
+                  type="submit"
+                  className="w-full h-12 text-white bg-primary mt-6"
+                >
                   {t("Register")}
                 </Button>
                 {error && (
-                  <div className="text-center">
-                    <p className="text-red">{error}</p>
-                  </div>
+                  <div className="error text-red-500 mt-4">{error}</div>
                 )}
               </form>
-              <hr className="my-4" />
-              <div className="flex items-center justify-between mt-4 gap-4">
-                <div className="box_Google">
-                  <img src={Google} alt="Google" width={23} height={28} />
-                </div>
-                <div className="box_Apple">
-                  <img src={Apple} alt="Apple" width={23} height={28} />
-                </div>
-                <div className="box_Facebook">
-                  <img src={Facebook} alt="Facebook" width={23} height={28} />
-                </div>
-              </div>
             </div>
           </div>
         </>
