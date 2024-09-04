@@ -1,0 +1,26 @@
+.Tag {
+  background: #ccfff3;
+  color: #097a60;
+}
+.high {
+  color: #4285f4;
+  background: #007aff1a;
+}
+.working,
+.medium {
+  color: #ca8a04;
+  background: #eab3081a;
+}
+.waiting {
+  color: #34c759;
+  background: #34c75926;
+}
+.completed {
+  background: #ccabda33;
+  color: #a855f7;
+}
+
+.low {
+  background: #ec48991a;
+  color: #db2777;
+}

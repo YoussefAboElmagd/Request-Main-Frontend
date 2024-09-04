@@ -16,7 +16,7 @@ import Button from "../UI/Button/Button";
 import { handleLogout } from "../../redux/services/authServices"; 
 
 const Sidebar = () => {
-  const [Open, setOpen] = useState(true);
+  const [Open, setOpen] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
   const user = useSelector((state) => state.auth.user); 
   console.log(user);
@@ -81,7 +81,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="Sidebar">
+    <div className="Sidebar rtl:left-0">
       <div
         className={`bg-white h-screen py-5 pt-8 relative transition-custom duration-500 flex flex-col ${
           !Open ? "w-72" : "w-24"
@@ -115,7 +115,7 @@ const Sidebar = () => {
               <div className="flex flex-col">
                 <p className="name font-bold font-inter text-xs">{user.name}</p>
                 <p className="role font-bold font-inter text-xs text-gray">
-                  {user.role}
+                  {user.role.name}
                 </p>
               </div>
             )}

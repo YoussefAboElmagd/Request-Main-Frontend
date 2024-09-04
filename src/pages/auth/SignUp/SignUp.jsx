@@ -29,7 +29,7 @@ import { handleSignUp } from "../../../redux/services/authServices";
 const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { role } = location.state || {};
+  const { roleId } = location.state || {};
   const { isLoading, error } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
@@ -63,9 +63,9 @@ const SignUp = () => {
       return;
     }
 
-    const userData = { email, password, name, phone, role };
+    const userData = { email, password, name, phone, role: roleId };
     dispatch(handleSignUp(userData))
-      .unwrap() // Use unwrap to handle resolved or rejected promises
+      .unwrap() 
       .then(() => {
         navigate("/");
       })

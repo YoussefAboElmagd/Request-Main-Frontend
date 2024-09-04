@@ -9,7 +9,7 @@
   "sign in To activate your business easily": "Sign in to activate your business easily",
   "if you don’t have an account you can": "If you don’t have an account you can",
   "Register here!": "Register here!",
-  "or": "or",
+  "or": "Or continue with ",
   "Login with Google": "Login with Google",
   "Login with Facebook": "Login with Facebook",
   "Login with Apple": "Login with Apple",
@@ -23,5 +23,15 @@
   "Next": "Next",
   "owner": "Owner",
   "consultant": "Consultant",
-  "contractor": "Contractor"
+  "contractor": "Contractor",
+  "Profile": "Profile",
+  "UserName": "UserName",
+  "Email": "Email",
+  "Address": "Address",
+  "dob": "Date Of Birth",
+  "Country": "Country",
+  "City": "City",
+  "EditProfile": "Edit Profile",
+  "save": "Save",
+  "role": "Client Type"
 }

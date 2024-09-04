@@ -4,7 +4,9 @@ import LoadingData from "../../assets/images/loading.json";
 
 const Loader = ({ className }) => {
   return (
-    <Lottie animationData={LoadingData} className={` ${className} w-52`} />
+    <div className="flex justify-center items-center m-auto">
+      <Lottie animationData={LoadingData} className={` ${className} w-52`} />
+    </div>
   );
 };
 

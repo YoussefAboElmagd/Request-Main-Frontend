@@ -24,6 +24,8 @@ const LoginByMail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
+  console.log(error);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,14 +35,14 @@ const LoginByMail = () => {
       await dispatch(signInThunk({ email, password })).unwrap();
       navigate("/");
     } catch (err) {
-      // Error handling is managed by authSlice
+
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="LogIn h-screen relative effect overflow-hidden">
+    <div className="LogIn h-screen relative effect overflow-hidden ">
       {loading || isLoading ? (
         <div className="loader">
           <Loader />
@@ -48,7 +50,7 @@ const LoginByMail = () => {
       ) : (
         <>
           <AuthHeader />
-          <div className="Wrapper flex items-center justify-between">
+          <div className="Wrapper flex items-center justify-between ">
             <div className="w-96 my-40">
               <h3 className="font-workSans font-bold text-5xl">
                 {t("sign in To activate your business easily")}
@@ -60,7 +62,7 @@ const LoginByMail = () => {
                 </Link>
               </p>
             </div>
-            <div className="LogIn_Image flex justify-center -z-10">
+            <div className="LogIn_Image flex justify-center ">
               <img
                 src={image}
                 alt="LogIn By Phone"
@@ -68,7 +70,7 @@ const LoginByMail = () => {
                 loading="lazy"
               />
             </div>
-            <div className="form flex flex-col mt-14">
+            <div className="form flex flex-col mt-14 ">
               <form onSubmit={handleSubmit}>
                 <div className="email">
                   <Input
@@ -111,7 +113,7 @@ const LoginByMail = () => {
                 </div>
 
                 <Button className="mt-5 w-full" type="submit">
-                  {t("Sign In")}
+                  {t("signIn")}
                 </Button>
                 {error && (
                   <div className="text-center">
@@ -120,7 +122,7 @@ const LoginByMail = () => {
                 )}
               </form>
               <div className="my-2 flex items-center justify-center relative">
-                <span className="or">Or continue with</span>
+                <span className="or">{t("or")}</span>
               </div>
               <div className="flex items-center justify-between mt-4 gap-4">
                 <div className="box_Google">

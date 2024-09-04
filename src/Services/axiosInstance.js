@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const ApiUrl = "http://62.72.32.44:8000/api/v1/";
-
 const axiosInstance = axios.create({
   baseURL: ApiUrl,
   timeout: 10000,
@@ -13,9 +12,20 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    return Promise.reject(
-      error.response ? error.response.data : { message: "Network error" }
-    );
+    // Check if error.response exists, otherwise return a default error message
+    if (error.response) {
+      return Promise.reject(error.response.data); // Server responded with a status other than 2xx
+    } else if (error.request) {
+      // Request was made, but no response was received
+      return Promise.reject({
+        message: "No response received from the server",
+      });
+    } else {
+      // Something happened in setting up the request
+      return Promise.reject({
+        message: error.message || "An unknown error occurred",
+      });
+    }
   }
 );
 

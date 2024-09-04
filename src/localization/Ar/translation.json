@@ -9,7 +9,7 @@
   "sign in To activate your business easily": "سجّل الدخول لتفعيل عملك بسهولة",
   "if you don’t have an account you can": "إذا لم يكن لديك حساب يمكنك",
   "Register here!": "التسجيل هنا!",
-  "or": "أو",
+  "or": "أو المتابعة بـ",
   "Login with Google": "تسجيل الدخول باستخدام Google",
   "Login with Facebook": "تسجيل الدخول باستخدام Facebook",
   "Login with Apple": "تسجيل الدخول باستخدام Apple",
@@ -23,5 +23,15 @@
   "Next": "التالي",
   "owner": "مالك",
   "consultant": "استشاري",
-  "contractor": "مقاول"
+  "contractor": "مقاول",
+  "Profile": "الملف الشخصي",
+  "UserName": "اسم المستخدم",
+  "Email": "البريد الإلكتروني",
+  "Address": "العنوان",
+  "dob": "تاريخ الميلاد",
+  "Country": "الدولة",
+  "City": "المدينة",
+  "EditProfile": "تعديل الملف الشخصي ",
+  "save":"حفظ",
+  "role":"نوع العميل"
 }

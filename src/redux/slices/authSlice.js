@@ -14,8 +14,8 @@ const getUserFromLocalStorage = () => {
 
 const initialState = {
   user: getUserFromLocalStorage(),
-  token: localStorage.getItem("authToken") || null,
-  isAuthenticated: !!localStorage.getItem("authToken"),
+  token: localStorage.getItem("token") || null,
+  isAuthenticated: !!localStorage.getItem("token"),
   isLoading: false,
   error: null,
 };

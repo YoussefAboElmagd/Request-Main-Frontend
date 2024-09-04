@@ -71,7 +71,7 @@ const AuthHeader = () => {
           {theme === "light" ? <FaSun /> : <IoMoon />}
         </button>
       </div>
-      <Link to="/LogIn">
+      <Link to="/LogIn/Mail">
         <button className="py-1 px-10 bg-linear_1 rounded-3xl text-white m-2 font-semibold text-xl">
           {t("signIn")}
         </button>

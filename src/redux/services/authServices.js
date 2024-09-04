@@ -1,6 +1,6 @@
 // authService.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signUp, signIn } from "../../Services/api.js";
+import { signUp, signIn, updateUser, uploadAvatar } from "../../Services/api.js";
 import {
   authSuccess,
   authFailure,
@@ -15,8 +15,11 @@ export const handleSignUp = createAsyncThunk(
     try {
       dispatch(startAuth());
       const response = await signUp(userData);
+      console.log(response);
+
       localStorage.setItem("user", JSON.stringify(response.results));
-      localStorage.setItem("authToken", response.token);
+      localStorage.setItem("token", response.token);
+
       dispatch(authSuccess({ user: response.results, token: response.token }));
     } catch (error) {
       dispatch(authFailure(error.message));
@@ -32,7 +35,7 @@ export const signInThunk = createAsyncThunk(
 
       // Save user and token to localStorage
       localStorage.setItem("user", JSON.stringify(response.isFound));
-      localStorage.setItem("authToken", response.token);
+      localStorage.setItem("token", response.token);
 
       dispatch(
         authSuccess({
@@ -52,10 +55,51 @@ export const handleLogout = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       localStorage.removeItem("user");
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("token");
+      localStorage.removeItem("token");
       dispatch(logoutSuccess());
     } catch (error) {
       dispatch(authFailure(error.message));
+    }
+  }
+);
+
+// Update User Thunk
+export const handleUpdateUser = createAsyncThunk(
+  "auth/updateUser",
+  async ({ updatedData, avatar }, { dispatch, getState, rejectWithValue }) => {
+    try {
+      dispatch(startAuth());
+
+      const state = getState();
+      const { user, token } = state.auth;
+      const userId = user._id;
+
+      // Update user data
+      const updateResponse = await updateUser(userId, updatedData, token);
+      console.log("Update Response => ", updateResponse);
+
+      let userUpdated = { ...user, ...updatedData };
+
+      // Upload avatar if provided
+      if (avatar) {
+        const avatarResponse = await uploadAvatar(userId, avatar, token);
+        console.log("Avatar Response => ", avatarResponse);
+
+        // Merge avatar URL or other relevant data
+        userUpdated = { ...userUpdated, profilePic: avatarResponse.profilePic }; // Adjust based on the server response
+      }
+
+      // Save updated user data in local storage
+      localStorage.setItem("user", JSON.stringify(userUpdated));
+
+      // Update Redux store
+      dispatch(authSuccess({ user: userUpdated, token }));
+
+      return userUpdated;
+    } catch (error) {
+      console.error("Error updating user:", error);
+      return rejectWithValue(error.message);
     }
   }
 );

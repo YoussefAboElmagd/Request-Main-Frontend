@@ -55,3 +55,25 @@
 .phone_input .Input_icon {
   right: 10px;
 }
+
+
+.Input_UI {
+  border: 1px solid var(--gray-md);
+  border-radius: 15px;
+  padding: 10px;
+  &:focus {
+    border: 1px solid var(--gray);
+    outline: none;
+  }
+  &::placeholder {
+    color: var(--gray-md);
+  }
+}
+.label_UI {
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 400;
+
+  margin: 3px;
+  margin-inline: 5px;
+}

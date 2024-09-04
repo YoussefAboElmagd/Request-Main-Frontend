@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
@@ -6,33 +6,53 @@ import Button from "../../../Components/UI/Button/Button";
 import "./style.scss";
 import { useSelector } from "react-redux";
 import Loader from "../../../Components/Loader/Loader";
+import { getAllRoles } from "../../../Services/api";
 
 const Role = () => {
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRoleId, setSelectedRoleId] = useState("");
+  const [Roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const { isLoading } = useSelector((state) => state.auth);
 
-  const handleRoleSelect = (role) => {
-    if (selectedRole === role) {
-      setSelectedRole("");
+  const handleRoleSelect = (roleId) => {
+    if (selectedRoleId === roleId) {
+      setSelectedRoleId(""); // Deselect if the same role is clicked
     } else {
-      setSelectedRole(role);
+      setSelectedRoleId(roleId); // Select the new role
       setError("");
     }
   };
 
+  useEffect(() => {
+    const getRoles = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllRoles();
+        setRoles(data.results);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getRoles();
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedRole) {
+    if (!selectedRoleId) {
       setError("Please select a role.");
       return;
     }
+    console.log(selectedRoleId);
+    
 
-    // Navigate to SignUp page with the selected role
-    navigate("/SignUp", { state: { role: selectedRole } });
+    // Navigate to SignUp page with the selected role ID
+    navigate("/SignUp", { state: { roleId: selectedRoleId } });
   };
 
   return (
@@ -46,7 +66,7 @@ const Role = () => {
           <AuthHeader />
           <div className="Wrapper flex flex-col justify-center">
             <div className="flex items-start justify-center flex-col mt-16">
-              <h3 className="font-inter font-bold text-5xl leading-[50px] max-w-[745px]">
+              <h3 className="font-inter font-bold text-5xl leading-[50px] max-w-[745px] text-purple-dark">
                 {t("What kind of customer are you?")}
               </h3>
               <p className="font-inter font-light text-xl leading-8 max-w-[600px]">
@@ -56,33 +76,18 @@ const Role = () => {
               </p>
             </div>
             <div className="Buttons flex justify-center items-center gap-32 my-10">
-              <button
-                className={`RoleBtn owner ${
-                  selectedRole === "owner" ? "selected" : ""
-                }`}
-                onClick={() => handleRoleSelect("owner")}
-                disabled={selectedRole && selectedRole !== "owner"}
-              >
-                {t("owner")}
-              </button>
-              <button
-                className={`RoleBtn consultant ${
-                  selectedRole === "consultant" ? "selected" : ""
-                }`}
-                onClick={() => handleRoleSelect("consultant")}
-                disabled={selectedRole && selectedRole !== "consultant"}
-              >
-                {t("consultant")}
-              </button>
-              <button
-                className={`RoleBtn contractor ${
-                  selectedRole === "contractor" ? "selected" : ""
-                }`}
-                onClick={() => handleRoleSelect("contractor")}
-                disabled={selectedRole && selectedRole !== "contractor"}
-              >
-                {t("contractor")}
-              </button>
+              {Roles.map((role) => (
+                <button
+                  key={role._id}
+                  className={`RoleBtn ${role.name.toLowerCase()} ${
+                    selectedRoleId === role._id ? "selected" : ""
+                  }`}
+                  onClick={() => handleRoleSelect(role._id)}
+                  disabled={selectedRoleId && selectedRoleId !== role._id} 
+                >
+                  {role.name}
+                </button>
+              ))}
             </div>
             {error && (
               <div className="text-center text-red">
@@ -90,7 +95,7 @@ const Role = () => {
               </div>
             )}
             <div className="Next flex items-center justify-center mt-5">
-              <Button onClick={handleSubmit} disabled={!selectedRole}>
+              <Button onClick={handleSubmit} disabled={!selectedRoleId}>
                 {t("Next")}
               </Button>
             </div>
