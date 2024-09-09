@@ -11,23 +11,23 @@ import { IoMoon } from "react-icons/io5";
 const AuthHeader = () => {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const { t, i18n } = useTranslation();
-    const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const [isRTL, setIsRTL] = useState(false);
   const toggleLangOptions = () => {
     setIsLangOpen(!isLangOpen);
   };
 
- useEffect(() => {
-   const lang = i18n.language || "en";
-   setIsRTL(lang === "ar");
-   document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
- }, [i18n.language]);
+  useEffect(() => {
+    const lang = i18n.language || "en";
+    setIsRTL(lang === "ar");
+    document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+  }, [i18n.language]);
 
- const changeLanguage = (lang) => {
-   i18n.changeLanguage(lang);
-   document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-   window.location.reload();
- };
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+    window.location.reload();
+  };
   return (
     <div className="top-0 bg-white flex items-center justify-end m-2 mx-5 rtl:inline-flex">
       <div className="lang relative">

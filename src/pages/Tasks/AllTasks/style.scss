@@ -1,0 +1,9 @@
+.AddTask {
+  .text {
+    background: var(--linear1); /* Use your global linear gradient color */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+}

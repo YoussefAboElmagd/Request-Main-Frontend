@@ -28,7 +28,7 @@ const Otp = () => {
   return (
     <div className="Otp h-screen  relative effect overflow-hidden ">
       {loading ? (
-        <div className="loader">
+        <div className="loader flex justify-center items-center  m-auto">
           <Loader />
         </div>
       ) : (

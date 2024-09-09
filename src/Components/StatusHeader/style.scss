@@ -1,0 +1,37 @@
+.StatusHeader {
+  position: relative;
+  .BtnGroup {
+    display: flex;
+    position: relative;
+  }
+
+  .btn {
+    position: relative;
+    cursor: pointer;
+    transition: color ease 0.3s;
+  }
+
+  .bar {
+    position: relative;
+    height: 1px;
+    margin-top: 10px;
+    border-radius: 12px;
+    background-color: var(--purple);
+    margin-inline: 5px;
+    .active-indicator {
+      position: absolute;
+      height: 5px;
+      border-radius: 12px;
+      width: 64px;
+      background-color: white;
+      transition: left cubic-bezier(0.88, -0.35, 0.565, 1.35) 0.4s;
+    }
+  }
+}
+
+.active_all {
+  color: var(--purple);
+}
+.active_waiting {
+  color: var(--green);
+}

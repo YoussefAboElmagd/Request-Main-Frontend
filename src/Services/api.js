@@ -75,7 +75,7 @@ export const uploadAvatar = async (userId, profilePic, token) => {
   }
 };
 
-// get all roles 
+// get all roles
 
 export const getAllRoles = async (token) => {
   try {
@@ -93,9 +93,9 @@ export const getAllRoles = async (token) => {
   }
 };
 
-// get all project For User 
+// get all project For User
 
-    export const getAllProjectsForUser = async (userId, token) => {
+export const getAllProjectsForUser = async (userId, token) => {
   try {
     const response = await axiosInstance.get(`project/user/${userId}`, {
       headers: {
@@ -106,7 +106,10 @@ export const getAllRoles = async (token) => {
     console.log("Response from projects => ", response);
     return response.data;
   } catch (error) {
-    console.error("Get projects error: ", error.response?.data || error.message);
+    console.error(
+      "Get projects error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
@@ -131,6 +134,56 @@ export const getAnalysis = async (UserId, token) => {
       "Get analysis error: ",
       error.response?.data || error.message
     );
+    throw error;
+  }
+};
+
+// get Project details
+
+export const getProjectDetails = async (projectId) => {
+  try {
+    const response = await axiosInstance.get(`project/${projectId}`);
+
+    console.log("Response from project details => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get project details error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// add Project
+
+export const addProject = async (token, projectData) => {
+  try {
+    const response = await axiosInstance.post(`project`, projectData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from add project => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Add project error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// get all tasks Per Project
+
+export const getAllTasksPerProject = async (projectId) => {
+  try {
+    const response = await axiosInstance.get(`task/project/${projectId}`);
+
+    console.log("Response from tasks => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get tasks error: ", error.response?.data || error.message);
     throw error;
   }
 };

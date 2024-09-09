@@ -31,7 +31,7 @@ const Input = ({
     <div className="Input_container">
       {label && (
         <label
-          className="Input_label flex items-center gap-2 font-jost text-base font-medium "
+          className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 "
           htmlFor={id}
         >
           {labelIcon && (

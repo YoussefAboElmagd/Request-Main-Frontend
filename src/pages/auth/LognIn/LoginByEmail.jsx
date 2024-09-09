@@ -44,7 +44,7 @@ const LoginByMail = () => {
   return (
     <div className="LogIn h-screen relative effect overflow-hidden ">
       {loading || isLoading ? (
-        <div className="loader">
+        <div className="loader flex justify-center items-center  m-auto">
           <Loader />
         </div>
       ) : (

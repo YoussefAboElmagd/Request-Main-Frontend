@@ -58,7 +58,7 @@ const Role = () => {
   return (
     <div className="Role effect">
       {isLoading ? (
-        <div className="flex items-center justify-center">
+        <div className="loader flex justify-center items-center  m-auto">
           <Loader />
         </div>
       ) : (
@@ -83,7 +83,7 @@ const Role = () => {
                     selectedRoleId === role._id ? "selected" : ""
                   }`}
                   onClick={() => handleRoleSelect(role._id)}
-                  disabled={selectedRoleId && selectedRoleId !== role._id} 
+                  disabled={selectedRoleId && selectedRoleId !== role._id}
                 >
                   {role.name}
                 </button>

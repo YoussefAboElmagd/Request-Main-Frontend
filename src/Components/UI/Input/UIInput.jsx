@@ -23,13 +23,9 @@ const UiInput = ({
     <div className="Input_container flex flex-col   ">
       {label && (
         <label
-          className="label_UI  text-sm font-medium text-gray-700"
+          className="label_UI  text-sm font-medium text-gray-700 flex justify-start"
           htmlFor={id}
         >
-          {/* {labelIcon && (
-            <span className="label-icon w-4 h-4 ">{labelIcon}</span>
-          )} */}
-
           {label}
         </label>
       )}

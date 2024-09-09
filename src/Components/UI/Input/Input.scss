@@ -11,19 +11,18 @@
   :dir(rtl) &::placeholder {
     text-align: right;
   }
-  
 }
-.Input_wrapper{
+.Input_wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 .Input[type="tel"].flag::placeholder {
-  text-align: right; 
+  text-align: right;
 }
 
 :dir(rtl) .Input[type="tel"].flag::placeholder {
-  text-align: left; 
+  text-align: left;
 }
 
 .Input_icon {
@@ -47,15 +46,14 @@
   border-right: none;
   border-radius: 8px 18px 18px 8px;
 }
-.phone_input{
-  width: 100%!important;
+.phone_input {
+  width: 100% !important;
   padding-inline: 40px;
 }
 
 .phone_input .Input_icon {
   right: 10px;
 }
-
 
 .Input_UI {
   border: 1px solid var(--gray-md);
@@ -73,7 +71,10 @@
   font-family: "Inter";
   font-size: 12px;
   font-weight: 400;
-
   margin: 3px;
   margin-inline: 5px;
+}
+// select
+.select__control--is-focused .select__dropdown-indicator {
+  transform: rotate(180deg);
 }

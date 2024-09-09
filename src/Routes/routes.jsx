@@ -6,7 +6,10 @@ import SignUp from "../pages/auth/SignUp/SignUp";
 import Role from "../pages/auth/SignUp/Role";
 import LoginByMail from "../pages/auth/LognIn/LoginByEmail";
 import Profile from "../pages/Profile/Profile";
-import ProjectDetails from "../pages/ProjectDetails/ProjectDetails";
+import ProjectDetails from "../pages/Projects/ProjectDetails/ProjectDetails";
+import AddProject from "../pages/Projects/AddProject/AddProject";
+import AddTask from "../pages/Tasks/AddTask/AddTask";
+import AllTasks from "../pages/Tasks/AllTasks/AllTasks";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -21,6 +24,9 @@ const AppRoutes = () => {
       <Route path="/SignUp/ChooseRole" element={<Role />} />
       <Route path="/Profile" element={<Profile />} />
       <Route path="/ProjectDetails/:id" element={<ProjectDetails />} />
+      <Route path="/AddProject" element={<AddProject />} />
+      <Route path="/AddTask" element={<AddTask />} />
+      <Route path="/Project/Tasks/:id" element={<AllTasks />} />
     </Routes>
   );
 };

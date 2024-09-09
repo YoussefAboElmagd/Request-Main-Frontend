@@ -41,7 +41,7 @@ const LoginByPhone = () => {
   return (
     <div className="LogIn h-screen relative effect overflow-hidden ">
       {loading ? (
-        <div className="loader">
+        <div className="loader flex justify-center items-center  m-auto">
           <Loader />
         </div>
       ) : (
@@ -69,10 +69,7 @@ const LoginByPhone = () => {
                   {t("PhoneNumber")}
                 </label>
                 <div className="input flex items-center my-2  ">
-                  <TelPhone
-                    value={phoneNumber} 
-                    onChange={handlePhoneChange} 
-                  />
+                  <TelPhone value={phoneNumber} onChange={handlePhoneChange} />
                 </div>
               </div>
               {error && <p className="error text-red text-sm ">{error}</p>}

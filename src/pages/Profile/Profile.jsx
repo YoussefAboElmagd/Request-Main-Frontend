@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPencilAlt } from "react-icons/fa";
-import avatar from "../../assets/images/avatar.png";
+// import avatar from "../../assets/images/avatar.png";
 import Button from "../../Components/UI/Button/Button";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 import { t } from "i18next";
 import { handleUpdateUser } from "../../redux/services/authServices";
 import UiInput from "../../Components/UI/Input/UIInput";
@@ -136,7 +136,7 @@ const Profile = () => {
             <div className="flex flex-col my-2">
               <label
                 htmlFor="dob"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-gray-700 flex justify-start"
               >
                 {t("dob")}
               </label>
@@ -147,7 +147,7 @@ const Profile = () => {
                 placeholder={user.dateOfBirth}
                 primaryColor={"purple"}
                 popoverDirection="up"
-                toggleClassName="text-yellow absolute top-3 right-4"
+                toggleClassName="text-yellow absolute top-3 ltr:right-4 rtl:left-4"
                 inputClassName="Input_UI p-2 border border-gray-300 rounded-xl w-full"
                 onChange={(e) => setDob(e)}
               />

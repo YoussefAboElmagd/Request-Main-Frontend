@@ -9,6 +9,7 @@
   color: var(--gray-dark);
   box-shadow: -6px 3px 15px 0px #0000001A;
   overflow: hidden;
+  transition: all 0.3s ease;
   
   span {
     color: var(--purple);

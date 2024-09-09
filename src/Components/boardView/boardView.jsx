@@ -3,6 +3,7 @@ import "./style.scss";
 import { FaPen } from "react-icons/fa";
 import { FaFileLines } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
+import { t } from "i18next";
 
 const BoardView = ({
   Tagname,
@@ -92,13 +93,13 @@ const BoardView = ({
       <hr className="h-px bg-gray mx-3" />
       <div className="date flex justify-between items-center mx-2 my-3">
         <div className="sDate flex items-center gap-1">
-          <p className="font-poppins font-bold text-xs">Start Date:</p>
+          <p className="font-poppins font-bold text-xs">{t("sDate")}:</p>
           <span className="font-poppins font-normal text-xs text-gray">
             {sDate}
           </span>
         </div>
         <div className="eDate  flex items-center gap-1  ">
-          <p className="font-poppins font-bold text-xs">End Date:</p>
+          <p className="font-poppins font-bold text-xs">{t("dDate")}:</p>
           <span className="font-poppins font-normal text-xs text-gray">
             {eDate}
           </span>

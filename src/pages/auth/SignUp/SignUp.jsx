@@ -132,7 +132,7 @@ const SignUp = () => {
   return (
     <div className="LogIn h-screen relative effect overflow-hidden">
       {isLoading ? (
-        <div className="flex items-center justify-center">
+        <div className="loader flex items-center justify-center m-auto">
           <Loader />
         </div>
       ) : (
