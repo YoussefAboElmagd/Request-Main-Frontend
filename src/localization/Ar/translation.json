@@ -71,5 +71,15 @@
   "ProjectTasks": "مهام المشروع",
   "listView": "عرض القائمة",
   "boardView": "عرض اللوحة",
-  "timeLineView": "عرض الجدول الزمني"
+  "timeLineView": "عرض الجدول الزمني",
+  "All" : "الجميع",
+  "Completed": "المكتملة",
+  "Delayed": "المؤجلة",
+  "In Progress": "قيد التنفيذ",
+  "Ongoing" : "قيد التنفيذ",
+  "Pending": "قيد الانتظار",
+  "Waiting": "قيد الانتظار",
+  "Ended" : "تم الانتهاء",
+  "TName" : "اسم العلامة",
+  "createTag": "انشاءعلامه "
 }

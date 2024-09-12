@@ -62,5 +62,15 @@
   "ProjectTasks": "Project Tasks",
   "listView": "List View",
   "boardView": "Board view",
-  "timeLineView" : "Time Line View"
+  "timeLineView": "Time Line View",
+  "All": "All",
+  "Completed": "Completed",
+  "Delayed": "Delayed",
+  "In Progress": "In Progress ",
+  "Ongoing": " Ongoing",
+  "Pending": "Pending ",
+  "Waiting": "Waiting",
+  "Ended": "Ended",
+  "TName": "Tag Name",
+  "createTag": "Create Tag"
 } 

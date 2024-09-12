@@ -1,6 +1,11 @@
 // authService.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signUp, signIn, updateUser, uploadAvatar } from "../../Services/api.js";
+import {
+  signUp,
+  signIn,
+  updateUser,
+  uploadAvatar,
+} from "../../Services/api.js";
 import {
   authSuccess,
   authFailure,
@@ -64,10 +69,12 @@ export const handleLogout = createAsyncThunk(
   }
 );
 
-// Update User Thunk
 export const handleUpdateUser = createAsyncThunk(
   "auth/updateUser",
-  async ({ updatedData, avatar }, { dispatch, getState, rejectWithValue }) => {
+  async (
+    { updatedData, profilePic },
+    { dispatch, getState, rejectWithValue }
+  ) => {
     try {
       dispatch(startAuth());
 
@@ -82,12 +89,13 @@ export const handleUpdateUser = createAsyncThunk(
       let userUpdated = { ...user, ...updatedData };
 
       // Upload avatar if provided
-      if (avatar) {
-        const avatarResponse = await uploadAvatar(userId, avatar, token);
-        console.log("Avatar Response => ", avatarResponse);
+      if (profilePic) {
+        // Use FormData to handle file upload
+        const formData = new FormData();
+        formData.append("avatar", profilePic);
+        const avatarResponse = await uploadAvatar(userId, profilePic, token);
 
-        // Merge avatar URL or other relevant data
-        userUpdated = { ...userUpdated, profilePic: avatarResponse.profilePic }; // Adjust based on the server response
+        userUpdated = { ...userUpdated, profilePic: avatarResponse.profilePic };
       }
 
       // Save updated user data in local storage

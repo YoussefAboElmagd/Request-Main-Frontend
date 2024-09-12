@@ -29,9 +29,20 @@
   }
 }
 
-.active_all {
+.btn.active_all {
   color: var(--purple);
 }
-.active_waiting {
-  color: var(--green);
+.btn.active_waiting {
+  color: #02d0a2;
 }
+
+.btn.active_ongoing {
+  color: #ffaf05;
+}
+.btn.active_delayed {
+  color: #FC887B ;
+}
+.btn.active_ended {
+  color: #8744A4 ;
+}
+ 

@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import "./style.scss"
-const StatusHeader = ({ buttons }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0); 
-  const [indicatorLeft, setIndicatorLeft] = useState(0); 
+import "./style.scss";
+
+const StatusHeader = ({ buttons, onFilterChange }) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [indicatorLeft, setIndicatorLeft] = useState(0);
 
   const handleButtonClick = (index) => {
-    setIndicatorLeft(index * 60); 
+    setIndicatorLeft(index * 65);
     setSelectedIndex(index);
-    // setTimeout(() => {
-    //   setSelectedIndex(index); 
 
-    // }, 300);
+    // Call the onFilterChange function with the selected value
+    onFilterChange(buttons[index].value);
+    
   };
 
   return (
@@ -22,7 +23,7 @@ const StatusHeader = ({ buttons }) => {
             <button
               key={button.value}
               className={`btn px-4 py-5 font-inter font-bold text-xs text-gray w-16  ${
-                selectedIndex === index ? `active_${button.value} ` : ""
+                selectedIndex === index ? `active_${button.value}` : ""
               }`}
               onClick={() => handleButtonClick(index)}
             >
@@ -50,6 +51,7 @@ StatusHeader.propTypes = {
       value: PropTypes.string.isRequired,
     })
   ).isRequired,
+  onFilterChange: PropTypes.func.isRequired, // Add this prop type
 };
 
 export default StatusHeader;

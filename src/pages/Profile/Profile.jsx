@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPencilAlt } from "react-icons/fa";
-// import avatar from "../../assets/images/avatar.png";
 import Button from "../../Components/UI/Button/Button";
-// import { format } from "date-fns";
 import { t } from "i18next";
 import { handleUpdateUser } from "../../redux/services/authServices";
 import UiInput from "../../Components/UI/Input/UIInput";
@@ -11,8 +9,8 @@ import Datepicker from "react-tailwindcss-datepicker";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
-
   const dispatch = useDispatch();
+
   const [dob, setDob] = useState(user.dateOfBirth);
   const [Name, setName] = useState(user.name);
   const [Email, setEmail] = useState(user.email);
@@ -37,11 +35,19 @@ const Profile = () => {
     }
   };
 
+  // Date formatting function
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const handleUpdate = () => {
-    // Format the date to yyyy-mm-dd
-    const formattedDate = dob.endDate
-      ? new Date(dob.endDate).toISOString()
-      : "";
+    // Use the formatDate function to format the date
+    const formattedDate = dob.endDate ? formatDate(dob.endDate) : "";
 
     console.log("Formatted Date:", formattedDate);
 

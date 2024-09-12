@@ -3,11 +3,10 @@ import { useSelector } from "react-redux";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RiGalleryView2 } from "react-icons/ri";
 import { FaBars } from "react-icons/fa6";
-import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import Loader from "../../Components/Loader/Loader";
 import Empty from "../../Components/empty/empty";
 import BoardView from "../../Components/boardView/boardView";
-import header from "../../assets/images/Project.png";
+import header from "../../assets/images/Project1.png";
 import avatar1 from "../../assets/images/avatar1.png";
 import avatar2 from "../../assets/images/avatar2.png";
 import { getAllProjectsForUser, getAnalysis } from "../../Services/api";
@@ -73,7 +72,7 @@ const Home = () => {
   return (
     <div className="home">
       {/* Header */}
-      <div className="header grid grid-cols-4 gap-2">
+      <div className="header grid grid-cols-4 gap-2">                              
         <div className="box col-span-3 bg-white rounded-3xl shadow-sm p-3 flex items-center justify-between">
           <div className="content">
             <h6 className="font-poppins font-normal text-xl text-gray m-2">
@@ -179,18 +178,23 @@ const Home = () => {
               <div className="grid grid-cols-4 gap-3">
                 {project.tasks.map((task) => (
                   <div className="task" key={task._id}>
-                    <BoardView
-                      ProgressValue={70}
-                      NameOfTask={task.title}
-                      Tagname={"Project"}
-                      taskPriority={task.taskPriority}
-                      status={task.taskStatus}
-                      avatars={[avatar1, avatar2]}
-                      filesLength={2}
-                      MsgLength={6}
-                      sDate={formatDate(task.startDate)}
-                      eDate={formatDate(task.dueDate)}
-                    />
+                    <Link
+                      to={`/TaskDetails/${task._id}`}
+                      state={{ taskId: task._id }}
+                    >
+                      <BoardView
+                        ProgressValue={70}
+                        NameOfTask={task.title}
+                        Tagname={"Project"}
+                        taskPriority={task.taskPriority}
+                        status={task.taskStatus}
+                        avatars={[avatar1, avatar2]}
+                        filesLength={2}
+                        MsgLength={6}
+                        sDate={formatDate(task.startDate)}
+                        eDate={formatDate(task.dueDate)}
+                      />
+                    </Link>
                   </div>
                 ))}
               </div>

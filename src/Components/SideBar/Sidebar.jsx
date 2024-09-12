@@ -162,7 +162,7 @@ const Sidebar = () => {
               onClick={handleLogoutClick}
               className={`mt-auto  mx-2 ${Open && "hidden"}`}
             >
-              Logout
+             {t("logout")}
             </Button>
           ) : (
             <Button className="mt-auto w-full">

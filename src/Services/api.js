@@ -51,7 +51,7 @@ export const uploadAvatar = async (userId, profilePic, token) => {
   try {
     const formData = new FormData();
     formData.append("profilePic", profilePic);
-    console.log(formData.append("profilePic", profilePic));
+ 
 
     const response = await axiosInstance.put(
       `users/photo/${userId}`,
@@ -176,14 +176,36 @@ export const addProject = async (token, projectData) => {
 
 // get all tasks Per Project
 
-export const getAllTasksPerProject = async (projectId) => {
+export const getAllTasksPerProject = async (projectId, params = {}) => {
   try {
-    const response = await axiosInstance.get(`task/project/${projectId}`);
+    // Construct the query parameters
+    const queryParams = new URLSearchParams(params).toString();
+    
+    // Append query parameters to the request URL
+    const response = await axiosInstance.get(`task/project/${projectId}?${queryParams}`);
 
     console.log("Response from tasks => ", response);
     return response.data;
   } catch (error) {
     console.error("Get tasks error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+// get Task details 
+
+export const getTaskDetails = async (taskId) => {
+  try {
+    const response = await axiosInstance.get(`task/${taskId}`);
+
+    console.log("Response from task details => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get task details error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
