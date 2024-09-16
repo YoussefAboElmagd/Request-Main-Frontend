@@ -15,13 +15,25 @@ const Otp = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { phone } = location.state || {};
+  const userData = location.state?.userData || {};
+  const token = location.state?.token || "";
+  console.log(userData , ",,,,",  token);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    if (!error) {
+
+    // Compare the entered OTP with the verification code
+    if (otp === userData.verificationCode) {
+      // Save user and token to localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("token", token);
       navigate("/");
+    } else {
+      setError(t("OTP is incorrect"));
+      setLoading(false);
     }
   };
 
@@ -66,6 +78,7 @@ const Otp = () => {
                 value={otp}
                 onChange={setOtp}
                 numInputs={4}
+                shouldAutoFocus
                 required
                 renderSeparator={<span> </span>}
                 renderInput={(props) => <input {...props} />}
@@ -89,6 +102,11 @@ const Otp = () => {
               <Button className={"mt-5"} onClick={handleSubmit}>
                 {t("verify")}
               </Button>
+              {error && (
+                <div className="text-center text-red mt-4">
+                  <p>{error}</p>
+                </div>
+              )}
             </div>
           </div>
         </>

@@ -37,17 +37,17 @@ export const signInThunk = createAsyncThunk(
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await signIn({ email, password });
+      console.log("Response :: => ", response);
 
-      // Save user and token to localStorage
-      localStorage.setItem("user", JSON.stringify(response.isFound));
-      localStorage.setItem("token", response.token);
+     
 
       dispatch(
         authSuccess({
-          user: response.isFound,
+          user: response.userData,
           token: response.token,
         })
       );
+      return response;
     } catch (error) {
       return rejectWithValue(error.message);
     }

@@ -25,17 +25,20 @@ const LoginByMail = () => {
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
   console.log(error);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setLoading(true);
     try {
-      await dispatch(signInThunk({ email, password })).unwrap();
-      navigate("/");
-    } catch (err) {
+      const result = await dispatch(signInThunk({ email, password })).unwrap();
+      console.log("result :::: =>  ", result);
 
+      const userData = result.userData;
+      const token = result.token;
+
+      navigate("/LogIn/Otp", { state: { userData, token } });
+    } catch (err) {
     } finally {
       setLoading(false);
     }
