@@ -114,6 +114,7 @@ const Profile = () => {
                 type="email"
                 id="email"
                 value={Email}
+                disabled
                 label={t("Email")}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email@example.com"

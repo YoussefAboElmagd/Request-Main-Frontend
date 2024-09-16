@@ -37,7 +37,7 @@ const LoginByMail = () => {
       const userData = result.userData;
       const token = result.token;
 
-      navigate("/LogIn/Otp", { state: { userData, token } });
+      navigate("/LogIn/Otp", { state: { userData, token, password } });
     } catch (err) {
     } finally {
       setLoading(false);
