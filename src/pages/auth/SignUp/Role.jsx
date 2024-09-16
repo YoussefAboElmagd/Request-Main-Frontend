@@ -19,9 +19,9 @@ const Role = () => {
 
   const handleRoleSelect = (roleId) => {
     if (selectedRoleId === roleId) {
-      setSelectedRoleId(""); // Deselect if the same role is clicked
+      setSelectedRoleId("");
     } else {
-      setSelectedRoleId(roleId); // Select the new role
+      setSelectedRoleId(roleId); 
       setError("");
     }
   };
@@ -79,7 +79,7 @@ const Role = () => {
               {Roles.map((role) => (
                 <button
                   key={role._id}
-                  className={`RoleBtn ${role.name.toLowerCase()} ${
+                  className={`RoleBtn ${role.name} ${
                     selectedRoleId === role._id ? "selected" : ""
                   }`}
                   onClick={() => handleRoleSelect(role._id)}

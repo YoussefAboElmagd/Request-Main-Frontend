@@ -51,7 +51,6 @@ export const uploadAvatar = async (userId, profilePic, token) => {
   try {
     const formData = new FormData();
     formData.append("profilePic", profilePic);
- 
 
     const response = await axiosInstance.put(
       `users/photo/${userId}`,
@@ -180,9 +179,11 @@ export const getAllTasksPerProject = async (projectId, params = {}) => {
   try {
     // Construct the query parameters
     const queryParams = new URLSearchParams(params).toString();
-    
+
     // Append query parameters to the request URL
-    const response = await axiosInstance.get(`task/project/${projectId}?${queryParams}`);
+    const response = await axiosInstance.get(
+      `task/project/${projectId}?${queryParams}`
+    );
 
     console.log("Response from tasks => ", response);
     return response.data;
@@ -192,8 +193,7 @@ export const getAllTasksPerProject = async (projectId, params = {}) => {
   }
 };
 
-
-// get Task details 
+// get Task details
 
 export const getTaskDetails = async (taskId) => {
   try {
@@ -206,6 +206,78 @@ export const getTaskDetails = async (taskId) => {
       "Get task details error: ",
       error.response?.data || error.message
     );
+    throw error;
+  }
+};
+
+// get all Owners
+
+export const getAllOwners = async (token) => {
+  try {
+    const response = await axiosInstance.get(`users/owners`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from owners => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get owners error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+//  get all consultant
+
+export const getAllConsultants = async (token) => {
+  try {
+    const response = await axiosInstance.get(`users/consultant`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from consultants => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get consultants error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+// get all contractor 
+
+export const getAllContractors = async (token) => {
+  try {
+    const response = await axiosInstance.get(`users/contractor`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from contractors => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get contractors error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// addTask function
+export const addTask = async (taskData) => {
+  try {
+    const response = await axiosInstance.post(`task`, taskData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from add task => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Add task error: ", error.response?.data || error.message);
     throw error;
   }
 };

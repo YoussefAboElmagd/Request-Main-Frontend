@@ -153,12 +153,12 @@ const TaskDetails = () => {
             iconClass={"text-yellow"}
           />
           {assignee && (
-            <div className="Tasksetter">
-              <label className="font-inter font-bold text-sm leading-4">
+            <div className="Tasksetter my-2">
+              <p className="font-inter font-bold text-sm leading-4 my-2">
                 {t("Tasksetter")}
-              </label>
+              </p>
               <div className="flex justify-between items-center gap-1">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-5">
                   <img
                     className="h-10 w-10 rounded-full"
                     src={assignee.profilePic}
@@ -176,10 +176,17 @@ const TaskDetails = () => {
               </div>
             </div>
           )}
-          <div className="Tag">
-            <span className="font-inter font-medium text-base">{t("Tag")}</span>
-            <span className="font-inter font-semibold text-base">
-              {Task.taskStatus}
+
+          <div className="Tag_wrapper my-2">
+            <p className="font-inter font-bold text-sm leading-4 my-2">{t("Tag")}</p>
+            <span
+              className="font-inter font-semibold text-base text-center py-1 px-6 rounded-2xl m-2"
+              style={{
+                background: "#81D4C236",
+                color: "#34C759",
+              }}
+            >
+              Electricity
             </span>
           </div>
           <div className="flex right-0 my-2 items-center justify-end">

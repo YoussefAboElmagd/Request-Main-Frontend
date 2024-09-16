@@ -1,17 +1,18 @@
 import React from "react";
 import ReactSelect from "react-select";
 import "../Input/Input.scss";
+import ContentLoader from "../../Loader/ContentLoader";
 
 const customStyles = {
   control: (provided) => ({
     ...provided,
     backgroundColor: "white",
-    border: "1px solid var(--purple)", 
-    borderRadius: "15px", 
+    border: "1px solid var(--purple)",
+    borderRadius: "15px",
     padding: "5px",
     minHeight: "42px",
-    boxShadow: "none", 
-    "&:hover": { borderColor: "var(--purple)" }, 
+    boxShadow: "none",
+    "&:hover": { borderColor: "var(--purple)" },
   }),
   placeholder: (provided) => ({
     ...provided,
@@ -22,16 +23,16 @@ const customStyles = {
     color: "#FFDD94",
     "&:hover": { color: "#FFDD94" },
   }),
-  indicatorSeparator: () => ({ display: "none" }), 
+  indicatorSeparator: () => ({ display: "none" }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isSelected ? "var(--purple)" : "white",
-    color: state.isSelected ? "white" : "var(--gray)",
+    backgroundColor: state.isSelected ? "#CCABDA66" : "white",
+    color: state.isSelected ? "var(--purple)" : "var(--gray)",
     padding: "10px",
-    borderRadius: "8px", 
+    borderRadius: "8px",
     cursor: "pointer",
     "&:hover": {
-      backgroundColor: "var(--purple)", 
+      backgroundColor: "var(--purple)",
       color: "white",
     },
   }),
@@ -54,6 +55,9 @@ const Select = ({
   isDisabled = false,
   isClearable = true,
   isSearchable = true,
+  loading = false,
+  InputClassName = "",
+ ...rest
 }) => {
   return (
     <div className={`Input_container flex flex-col ${className}`}>
@@ -75,8 +79,11 @@ const Select = ({
         isClearable={isClearable}
         isSearchable={isSearchable}
         classNamePrefix="select"
+        className={InputClassName}
         styles={customStyles}
+        isLoading={loading}
       />
+      {loading && <ContentLoader />}
     </div>
   );
 };

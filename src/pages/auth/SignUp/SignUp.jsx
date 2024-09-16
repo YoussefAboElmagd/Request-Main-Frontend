@@ -67,7 +67,7 @@ const SignUp = () => {
     dispatch(handleSignUp(userData))
       .unwrap() 
       .then(() => {
-        navigate("/");
+        navigate("/signUp/createCompany");
       })
       .catch((err) => {
         console.error("Sign Up failed:", err);

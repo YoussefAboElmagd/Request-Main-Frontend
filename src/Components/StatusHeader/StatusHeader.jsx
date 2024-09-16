@@ -51,7 +51,7 @@ StatusHeader.propTypes = {
       value: PropTypes.string.isRequired,
     })
   ).isRequired,
-  onFilterChange: PropTypes.func.isRequired, // Add this prop type
+  onFilterChange: PropTypes.func.isRequired, 
 };
 
 export default StatusHeader;

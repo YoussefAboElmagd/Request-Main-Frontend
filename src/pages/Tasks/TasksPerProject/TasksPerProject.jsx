@@ -82,7 +82,8 @@ const TasksPerProject = () => {
       ) : (
         <div className="content grid grid-cols-4 gap-2 mt-4">
           <Link
-            to="/AddTask"
+            to={`/AddTask/${id}`}
+            state={{ ProjectId: id }}
             className="AddTask box bg-white rounded-md shadow-sm p-5 flex flex-col justify-center gap-4 items-center col-span-1 h-[286px]"
           >
             <span>

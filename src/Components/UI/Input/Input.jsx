@@ -17,6 +17,7 @@ const Input = ({
   labelIcon, 
   required,
   iconClass,
+  label_class,
   ...rest
 }) => {
   const [inputType, setInputType] = useState(type);
@@ -31,7 +32,7 @@ const Input = ({
     <div className="Input_container">
       {label && (
         <label
-          className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 "
+          className={`Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 ${label_class}`}
           htmlFor={id}
         >
           {labelIcon && (

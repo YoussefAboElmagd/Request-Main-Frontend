@@ -7,9 +7,7 @@ import "./style.scss";
 import Button from "../../Components/UI/Button/Button";
 import { PlayIcon } from "../../Components/UI/checkMark/Playbtn";
 function Point({ color, checked }) {
-  console.log("Point Component Rendered");
-  console.log("Color:", color);
-  console.log("Checked:", checked ? "✔️" : "No");
+
 
   if (!checked) return null;
 

@@ -12,6 +12,7 @@ const Layout = () => {
     "/LogIn/Otp",
     "/SignUp",
     "/SignUp/ChooseRole",
+    "/SignUp/createCompany",
   ];
 
   const showSidebar = !noSidebarRoutes.includes(location.pathname);

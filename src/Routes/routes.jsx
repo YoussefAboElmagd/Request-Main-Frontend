@@ -12,6 +12,7 @@ import AddTask from "../pages/Tasks/AddTask/AddTask";
 import TasksPerProject from "../pages/Tasks/TasksPerProject/TasksPerProject";
 import CreateTag from "../pages/Tags/CreateTag";
 import TaskDetails from "../pages/Tasks/TaskDetails/TaskDetails";
+import CreateCompany from "../pages/auth/company/createCompany";
 
 
 const AppRoutes = () => {
@@ -25,11 +26,12 @@ const AppRoutes = () => {
       <Route path="/LogIn/Otp" element={<Otp />} />
       <Route path="/SignUp" element={<SignUp />} />
       <Route path="/SignUp/ChooseRole" element={<Role />} />
+      <Route path="/SignUp/createCompany" element={<CreateCompany />} />
       <Route path="/Profile" element={<Profile />} />
       <Route path="/ProjectDetails/:id" element={<ProjectDetails />} />
       <Route path="/TaskDetails/:id" element={<TaskDetails />} />
       <Route path="/AddProject" element={<AddProject />} />
-      <Route path="/AddTask" element={<AddTask />} />
+      <Route path="/AddTask/:ProjectId" element={<AddTask />} />
       <Route path="/Project/Tasks/:id" element={<TasksPerProject />} />
       <Route path="/createTag" element={<CreateTag />} />
     </Routes>
