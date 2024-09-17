@@ -24,8 +24,7 @@ const LoginByMail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
-  console.log(error);
-
+  console.log("Error object:", error); 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -114,8 +113,11 @@ const LoginByMail = () => {
                     ]}
                   />
                 </div>
+                <Link to={"/forgotPassword"} className="forgot_Password text-purple   underline underline-offset-1 font-normal  text-sm" >
+                  {t("Forgot Password?")}
+                </Link>
 
-                <Button className="mt-5 w-full" type="submit">
+                <Button className="mt-5 w-full flex justify-center  items-center" type="submit">
                   {t("signIn")}
                 </Button>
                 {error && (

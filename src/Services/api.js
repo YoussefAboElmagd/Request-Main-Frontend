@@ -19,10 +19,29 @@ export const signIn = async (userData) => {
     console.log("Response => ", response);
     return response.data;
   } catch (error) {
-    console.error("Sign-in error: ", error);
-    throw error;
+    console.error(
+      "Sign-in error:",
+      error.response ? error.response.data : error.message
+    );
+    throw error; // Rethrow the error for further handling
   }
 };
+// forget password 
+
+export const forgetPassword = async (email) => {
+  try {
+    const response = await axiosInstance.post("auth/forget", { email });
+    console.log("Response => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Forget password error:",
+      error.response? error.response.data : error.message
+    );
+    throw error; 
+  }
+};
+
 
 // Update User API Call
 export const updateUser = async (userId, userData, token) => {

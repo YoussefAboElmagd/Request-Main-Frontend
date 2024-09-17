@@ -39,8 +39,6 @@ export const signInThunk = createAsyncThunk(
       const response = await signIn({ email, password });
       console.log("Response :: => ", response);
 
-     
-
       dispatch(
         authSuccess({
           user: response.userData,
@@ -49,7 +47,12 @@ export const signInThunk = createAsyncThunk(
       );
       return response;
     } catch (error) {
-      return rejectWithValue(error.message);
+      dispatch(
+        authFailure(error.response ? error.response.data : error.message)
+      );
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
     }
   }
 );

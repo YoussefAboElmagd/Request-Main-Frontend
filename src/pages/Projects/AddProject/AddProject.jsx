@@ -24,7 +24,7 @@ const AddProject = () => {
     Description: false,
     sDate: false,
     eDate: false,
-    budget: false,
+    // budget: false,
   });
 
   const formatDate = (date) => {
@@ -41,7 +41,7 @@ const AddProject = () => {
     setDescription("");
     setSDate(null);
     setEDate(null);
-    setBudget("");
+    // setBudget("");
   };
 
 const handleSubmit = async (e) => {
@@ -54,7 +54,7 @@ const handleSubmit = async (e) => {
     Description: !Description.trim(),
     sDate: !sDate.startDate,
     eDate: !eDate.endDate,
-    budget: !budget.toString().trim(),
+    // budget: !budget.toString().trim(),
   };
 
   setFieldErrors(newFieldErrors);
@@ -74,6 +74,7 @@ const handleSubmit = async (e) => {
       Description,
       StartDate: formattedSDate,
       EndDate: formattedEDate,
+      budget: 50,
     };
     setLoading(true);
     console.log("Project data =>  ", projectData);

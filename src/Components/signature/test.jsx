@@ -6,12 +6,13 @@ import {
 } from "@material-tailwind/react";
 import Swatch from "@uiw/react-color-swatch";
 import Signature from "@uiw/react-signature";
-import { hsvaToHex } from "@uiw/color-convert";
-import React, { useRef, useState, useEffect } from "react";
+import { hsvaToHex, getContrastingColor } from "@uiw/color-convert";
+import React, { useRef, useState } from "react";
 import { CgImage } from "react-icons/cg";
 import { FaSignature } from "react-icons/fa";
 import { PiSignatureBold } from "react-icons/pi";
 import { RiCloseCircleLine, RiDeleteBinLine } from "react-icons/ri";
+import { PlayIcon } from "../UI/checkMark/Playbtn";
 import { v4 as uuidv4 } from "uuid";
 
 // Point component for swatch
@@ -37,7 +38,9 @@ function Point({ color, checked }) {
         alignItems: "center",
         justifyContent: "center",
       }}
-    ></div>
+    >
+      {checked ? <PlayIcon color={getContrastingColor(color)} /> : null}
+    </div>
   );
 }
 
@@ -58,34 +61,82 @@ function SwatchComponent({ color, onChange }) {
       onChange={(hsvColor) => {
         const hexColor = hsvaToHex(hsvColor);
         onChange(hexColor);
+        console.log(hexColor);
       }}
     />
   );
 }
 
-// Signature Button Component
+const pointsToSVGPath = (points) => {
+  if (!Array.isArray(points) || points.length === 0) {
+    console.warn("No points data available.");
+    return "";
+  }
+
+  // Create path commands
+  const pathCommands = points
+    .map((point, index) => {
+      if (!Array.isArray(point) || point.length !== 2) {
+        console.warn(`Point ${index} is not valid. Point data:`, point);
+        return "";
+      }
+
+      const [x, y] = point;
+      if (
+        typeof x !== "number" ||
+        typeof y !== "number" ||
+        !isFinite(x) ||
+        !isFinite(y)
+      ) {
+        console.warn(
+          `Point ${index} has invalid coordinates. Coordinates:`,
+          point
+        );
+        return "";
+      }
+
+      return index === 0 ? `M ${x} ${y}` : `L ${x} ${y}`;
+    })
+    .filter((command) => command !== "")
+    .join(" ");
+
+  // Ensure path is properly closed
+  if (pathCommands.trim() === "") {
+    console.warn("Generated path data is empty.");
+    return "";
+  }
+
+  return pathCommands + " Z"; // Close the path
+};
+
+const generateSVGData = (points, color, size) => {
+  const path = pointsToSVGPath(points);
+  if (!path) {
+    console.warn("Invalid SVG path data.");
+    return "";
+  }
+
+  // Generate SVG data
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+    <path d="${path}" fill="none" stroke="${color}" stroke-width="${size}" />
+  </svg>`;
+  console.log("Generated SVG data:", svg); // Debug SVG data
+
+  return svg;
+};
+
 export function SignatureBtn() {
+  const $svg = useRef(null);
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState("#000");
   const [fontWeight, setFontWeight] = useState("normal");
-  const [trimmedDataURL, setTrimmedDataURL] = useState(null);
-  const sigPadRef = useRef(null);
+  const [points, setPoints] = useState([]);
+  const [savedSignature, setSavedSignature] = useState(null);
 
-  useEffect(() => {
-    // Load saved signature from localStorage on mount
-    const savedSignature = localStorage.getItem("trimmedSignature");
-    if (savedSignature) {
-      setTrimmedDataURL(savedSignature);
-    }
-  }, []);
-
-  // Function to handle clear
+  // Function to clear the signature canvas
   const handleClear = () => {
-    if (sigPadRef.current) {
-      sigPadRef.current.clear();
-      localStorage.removeItem("trimmedSignature");
-      setTrimmedDataURL(null);
-    }
+    $svg.current?.clear();
+    setPoints([]);
   };
 
   // Function to handle opening and closing the dialog
@@ -96,33 +147,45 @@ export function SignatureBtn() {
     setFontWeight(weight);
   };
 
-  const handleTrim = () => {
-    if (sigPadRef.current && sigPadRef.current.svg) {
-      const svgElement = sigPadRef.current.svg;
+  // Function to handle saving the signature
+  const handleSave = (e) => {
+    e.preventDefault();
+    if (points.length > 0) {
+      // Generate SVG data from points
+      const svgData = generateSVGData(points, color, signatureOptions.size);
+      if (!svgData) return;
 
-      // Serialize the SVG element to an XML string
-      const svgData = new XMLSerializer().serializeToString(svgElement);
+      const uniqueId = uuidv4();
+      const filename = `signature_${uniqueId}.svg`;
 
-      // Create a data URL from the serialized SVG string
-      const trimmedDataURL = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
-        svgData
-      )}`;
+      // Create a blob from the SVG data
+      const blob = new Blob([svgData], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      console.log(url);
 
-      console.log("SVG Data URL:", trimmedDataURL);
+      // Set the SVG URL to display
+      setSavedSignature(url);
 
-      // Update state and save to localStorage
-      setTrimmedDataURL(trimmedDataURL);
-      localStorage.setItem("trimmedSignature", trimmedDataURL);
-
-      const uniqueId = uuidv4().slice(0, 4);
+      // Create a download link for the SVG
       const a = document.createElement("a");
-      a.href = trimmedDataURL;
-      a.download = `signature_${uniqueId}.svg`;
+      a.href = url;
+      a.download = filename;
       a.click();
-    }
 
+      // Clean up
+      URL.revokeObjectURL(url);
+    }
     handleOpen(false);
   };
+const handlePoints = (newPoints) => {
+  console.log("Received points data:", newPoints); // Debug points data
+  if (Array.isArray(newPoints) && newPoints.length > 0) {
+    // Replace the existing points with the new points
+    setPoints(newPoints);
+  }
+};
+
+
 
   const signatureOptions = {
     size:
@@ -147,9 +210,7 @@ export function SignatureBtn() {
   };
 
   return (
-    <> 
-
-
+    <>
       <button
         className="box flex justify-center items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer"
         onClick={handleOpen}
@@ -165,14 +226,16 @@ export function SignatureBtn() {
         <span className="font-workSans font-semibold text-xl leading-5">
           Signature
         </span>
+        {savedSignature && (
+          <div>
+            <img
+              src={savedSignature}
+              alt="Saved Signature"
+              style={{ width: "80px", height: "80px" }}
+            />
+          </div>
+        )}
       </button>
-      {trimmedDataURL && (
-        <img
-          src={trimmedDataURL}
-          alt="Trimmed Signature"
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-        />
-      )}
       <Dialog
         open={open}
         handler={handleOpen}
@@ -204,9 +267,10 @@ export function SignatureBtn() {
         </DialogHeader>
         <DialogBody>
           <Signature
-            ref={sigPadRef}
+            ref={$svg}
             fill={color}
             options={signatureOptions}
+            onPointer={handlePoints}
             style={{
               "--w-signature-background": "#fff",
               fontWeight: fontWeight,
@@ -240,14 +304,18 @@ export function SignatureBtn() {
               </span>
             </button>
           </div>
-          <button
-            className="save bg-linear_1 text-white px-4 py-2 rounded-md"
-            onClick={handleTrim}
-          >
-            Save
-          </button>
+          <div className="save">
+            <button
+              className="py-2 px-5 text-white bg-purple rounded-lg"
+              onClick={handleSave}
+            >
+              Save
+            </button>
+          </div>
         </DialogFooter>
       </Dialog>
     </>
   );
 }
+
+export default SignatureBtn;

@@ -9,6 +9,7 @@ import { t } from "i18next";
 import "./style.scss";
 import { signInThunk } from "../../../redux/services/authServices";
 import { useDispatch } from "react-redux";
+import { forgetPassword } from "../../../Services/api";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
@@ -18,11 +19,11 @@ const Otp = () => {
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { phone } = location.state || {};
-  const userData = location.state?.userData || {};
-  const token = location.state?.token || "";
-  const password = location.state?.password || "";
+  const { phone, forget, userData, token, password, email } =
+    location.state || {};
+
   const dispatch = useDispatch();
+
   // Countdown timer logic
   useEffect(() => {
     if (timeLeft > 0) {
@@ -36,48 +37,74 @@ const Otp = () => {
     }
   }, [timeLeft]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    if (otp === userData.verificationCode) {
-      // Save user data and token to localStorage
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("token", token);
-      navigate("/");
-    } else {
-      setError(t("OTP is incorrect"));
+    try {
+      if (forget) {
+        if (otp === forget.verificationCode) {
+          localStorage.setItem("user", JSON.stringify(userData));
+          localStorage.setItem("token", token);
+          const forget_id = forget.id;
+          navigate("/forgotPassword", { state: { forget_id } });
+        } else {
+          setError(t("OTP is incorrect"));
+        }
+      } else if (phone) {
+        if (otp === userData.verificationCode) {
+          localStorage.setItem("user", JSON.stringify(userData));
+          localStorage.setItem("token", token);
+          navigate("/");
+        } else {
+          setError(t("OTP is incorrect"));
+        }
+      } else if (userData) {
+        console.log(userData);
+
+        if (otp === userData.verificationCode) {
+          // Save user data and token to localStorage
+          localStorage.setItem("user", JSON.stringify(userData));
+          localStorage.setItem("token", token);
+          navigate("/");
+        } else {
+          setError(t("OTP is incorrect"));
+        }
+      }
+    } catch (err) {
+      console.error("Error verifying OTP:", err);
+      setError(t("Error verifying OTP. Please try again."));
+    } finally {
       setLoading(false);
     }
   };
+const handleResendOtp = async (e) => {
+  e.preventDefault();
+  setCanResend(false);
+  setTimeLeft(60);
+  setError("");
+  setLoading(true);
 
-  // Handle resend OTP functionality
- const handleResendOtp = async (e) => {
-   e.preventDefault();
-   setCanResend(false);
-   setTimeLeft(60);
-   setError("");
+  try {
+    let result;
 
-   try {
-     const email = userData.email;
+    if (userData) {
+      result = await dispatch(signInThunk({ email, password })).unwrap();
+      userData.verificationCode = result.userData.verificationCode;
+    } else if (email) {
+      result = await dispatch(forgetPassword({ email })).unwrap();
+      forget.verificationCode = result.verificationCode;
+    }
 
-     // Resend the OTP by dispatching the signInThunk with email and password
-     const result = await dispatch(signInThunk({ email, password })).unwrap();
-
-     console.log(result);
-
-     // Update the userData with the new OTP sent from the backend
-     const newVerificationCode = result.userData.verificationCode;
-     userData.verificationCode = newVerificationCode;
-
-     setLoading(false);
-   } catch (error) {
-     setLoading(false);
-     console.error("Error resending OTP:", error);
-     setError(t("Error resending OTP. Please try again."));
-   }
- };
+    console.log("Resent OTP successfully", result);
+  } catch (error) {
+    console.error("Error resending OTP:", error);
+    setError(t("Error resending OTP. Please try again."));
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   return (
@@ -92,17 +119,19 @@ const Otp = () => {
           <div className="Wrapper flex items-center justify-between">
             <div className="w-96 my-40">
               <h3 className="font-workSans font-bold text-5xl">
-                {t("sign in To activate your business easily")}
+                {t("Sign in to activate your business easily")}
               </h3>
               <p className="font-jost font-medium text-2xl">
-                {t("if you don’t have an account you can")}
-                <Link className="text-blue block">{t("Register here!")}</Link>
+                {t("If you don’t have an account you can")}
+                <Link className="text-blue block" to="/register">
+                  {t("Register here!")}
+                </Link>
               </p>
             </div>
             <div className="LogIn_Image flex justify-center -z-10">
               <img
                 src={OtpImg}
-                alt="image"
+                alt="OTP"
                 width={590}
                 height={516}
                 loading="lazy"
@@ -111,11 +140,12 @@ const Otp = () => {
             <div className="form flex flex-col items-center">
               <div className="Otp_text font-workSans font-normal text-xl text-center">
                 <p>
-                  {t("An OTP Message containing your code has been sent to")}
+                  {t(
+                    `An OTP message containing your code has been sent to ${
+                      userData ? userData.email : phone
+                    }`
+                  )}
                 </p>
-                <span className="text-red font-workSans font-normal text-xl my-2">
-                  {userData.email}
-                </span>
               </div>
               <OTPInput
                 value={otp}
@@ -150,7 +180,7 @@ const Otp = () => {
               <button
                 disabled={!canResend}
                 onClick={handleResendOtp}
-                className={`mt-2 underline underline-offset-1 text-gray  ${
+                className={`mt-2 underline underline-offset-1 text-gray ${
                   canResend && "text-red"
                 }`}
               >
@@ -158,7 +188,7 @@ const Otp = () => {
               </button>
 
               <Button className={"mt-5"} onClick={handleSubmit}>
-                {t("verify")}
+                {t("Verify")}
               </Button>
               {error && (
                 <div className="text-center text-red mt-4">

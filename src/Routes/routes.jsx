@@ -13,6 +13,7 @@ import TasksPerProject from "../pages/Tasks/TasksPerProject/TasksPerProject";
 import CreateTag from "../pages/Tags/CreateTag";
 import TaskDetails from "../pages/Tasks/TaskDetails/TaskDetails";
 import CreateCompany from "../pages/auth/company/createCompany";
+import ForgotPassword from "../pages/auth/LognIn/ForgotPassword";
 
 
 const AppRoutes = () => {
@@ -23,6 +24,7 @@ const AppRoutes = () => {
       <Route index element={<Home />} />
       <Route path="/LogIn" element={<LoginByPhone />} />
       <Route path="/LogIn/Mail" element={<LoginByMail />} />
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/LogIn/Otp" element={<Otp />} />
       <Route path="/SignUp" element={<SignUp />} />
       <Route path="/SignUp/ChooseRole" element={<Role />} />
