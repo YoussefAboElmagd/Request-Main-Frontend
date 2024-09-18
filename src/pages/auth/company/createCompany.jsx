@@ -78,7 +78,7 @@ const CreateCompany = () => {
               required={true}
               label={"Company Name"}
               className={
-                "bg-white border border-solid border-purple focus:border focus:border-solid focus:border-purple px-6"
+                "bg-white border border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans  font-bold  text-xl"
               }
               label_class={"text-purple font-workSans font-bold text-xl"}
             />

@@ -5,7 +5,7 @@ import {
   DialogHeader,
 } from "@material-tailwind/react";
 import Swatch from "@uiw/react-color-swatch";
-import Signature from "@uiw/react-signature";
+import SignaturePad from "react-signature-canvas";
 import { hsvaToHex } from "@uiw/color-convert";
 import React, { useRef, useState, useEffect } from "react";
 import { CgImage } from "react-icons/cg";
@@ -18,7 +18,16 @@ import "./style.scss";
 // Point component for swatch
 function Point({ color, checked }) {
   if (!checked) return null;
-  return <div style={{ height: 24, width: 24, borderRadius: "4px" }}></div>;
+  return (
+    <div
+      style={{
+        height: 24,
+        width: 24,
+        borderRadius: "4px",
+        backgroundColor: color,
+      }}
+    ></div>
+  );
 }
 
 // Swatch component to choose colors
@@ -44,121 +53,144 @@ function SwatchComponent({ color, onChange }) {
 }
 
 // Signature Button Component
-export function SignatureBtn() {
+export function SignatureBtn({ onSignatureChange }) {
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState("#000");
   const [fontWeight, setFontWeight] = useState("normal");
-  const [trimmedDataURL, setTrimmedDataURL] = useState(null);
-  const sigPadRef = useRef(null);
+  const [signaturePad, setSignaturePad] = useState(null);
+  const [preview, setPreview] = useState(null);
 
+  // Load saved signature from local storage
   useEffect(() => {
-    // Load saved signature from localStorage on mount
-    const savedSignature = localStorage.getItem("trimmedSignature");
+    const savedSignature = localStorage.getItem("Signature");
     if (savedSignature) {
-      setTrimmedDataURL(savedSignature);
+      setPreview(savedSignature);
     }
   }, []);
 
   // Function to handle clear
   const handleClear = () => {
-    if (sigPadRef.current) {
-      sigPadRef.current.clear();
-      localStorage.removeItem("trimmedSignature");
-      setTrimmedDataURL(null);
-      console.log("Signature cleared", trimmedDataURL);
+    if (signaturePad) {
+      signaturePad.clear();
+      setPreview(null);
+      localStorage.removeItem("Signature");
+      console.log("Signature cleared", signaturePad);
     }
   };
 
   // Function to handle opening and closing the dialog
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => {
+    setOpen(!open);
+  };
 
   // Function to change font weight
   const handleFontWeightChange = (weight) => {
     setFontWeight(weight);
+    console.log(weight);
   };
 
   // Handle signature edit - load the saved signature back into the pad
   const handleEdit = () => {
     handleOpen();
-    console.log("////////", trimmedDataURL);
+    if (signaturePad) {
+      const savedSignature = localStorage.getItem("Signature");
+      if (savedSignature) {
+        console.log("savedSignature from edit ", savedSignature);
 
-    if (trimmedDataURL) {
-      console.log(sigPadRef.current, "---------------", trimmedDataURL);
-
-      // Load the existing signature
-      console.log(sigPadRef.current.load(trimmedDataURL));
-
-      sigPadRef.current.load(trimmedDataURL);
+        const img = new Image();
+        img.src = savedSignature;
+        img.onload = () => {
+          signaturePad.clear();
+          signaturePad.fromDataURL(savedSignature);
+        };
+      }
     }
   };
 
   const handleTrim = () => {
-    if (sigPadRef.current && sigPadRef.current.svg) {
-      const svgElement = sigPadRef.current.svg;
-      console.log("svgElement:", svgElement);
-      // Serialize the SVG element to an XML string
-      const svgData = new XMLSerializer().serializeToString(svgElement);
-
-      // Create a data URL from the serialized SVG string
-      const trimmedDataURL = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
-        svgData
-      )}`;
-
-      console.log("SVG Data URL:", trimmedDataURL);
-
-      // Update state and save to localStorage
-      setTrimmedDataURL(trimmedDataURL);
-      localStorage.setItem("trimmedSignature", trimmedDataURL);
-
+    if (signaturePad) {
+      const res = signaturePad.getTrimmedCanvas().toDataURL("image/jpeg");
+      setPreview(res);
+      localStorage.setItem("Signature", res);
+      if (onSignatureChange) {
+        onSignatureChange(res);
+      }
       const uniqueId = uuidv4().slice(0, 4);
       const a = document.createElement("a");
-      a.href = trimmedDataURL;
-      a.download = `signature_${uniqueId}.svg`;
+      a.href = res;
+      a.download = `signature_${uniqueId}.jpeg`;
       a.click();
+      handleOpen(false);
     }
-
-    handleOpen(false);
   };
 
+  const getStrokeSettings = () => {
+    switch (fontWeight) {
+      case "lighter":
+        return {
+          dotSize: 0.5,
+          minWidth: 1,
+          maxWidth: 2,
+        };
+      case "normal":
+        return {
+          dotSize: 1,
+          minWidth: 2,
+          maxWidth: 4,
+        };
+      case "bold":
+        return {
+          dotSize: 6,
+          minWidth: 3,
+          maxWidth: 9,
+        };
+      default:
+        return {
+          dotSize: 1,
+          minWidth: 2,
+          maxWidth: 4,
+        };
+    }
+  };
+
+  const strokeSettings = getStrokeSettings();
+
   const signatureOptions = {
-    size:
-      fontWeight === "lighter"
-        ? 2
-        : fontWeight === "bold"
-        ? 8
-        : fontWeight === "normal"
-        ? 6
-        : 6,
-    smoothing: 0.46,
-    thinning: 0.73,
-    streamline: 0.5,
-    start: {
-      taper: 0,
-      cap: true,
+    dotSize: strokeSettings.dotSize,
+    velocityFilterWeight: 0.7,
+    minWidth: strokeSettings.minWidth,
+    maxWidth: strokeSettings.maxWidth,
+    minDistance: 5,
+    penColor: color,
+    throttle: 16,
+    clearOnResize: true,
+    backgroundColor: "#fff",
+
+    onBegin: () => {
+      console.log("Stroke began");
     },
-    end: {
-      taper: 0,
-      cap: true,
+    onEnd: () => {
+      console.log("Stroke ended");
     },
   };
 
   return (
     <>
-      <div className="box flex justify-between items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer  ">
+      <div className="box flex justify-between items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer">
         <button
           onClick={handleOpen}
-          className="flex justify-start items-center  "
+          className="flex justify-start items-center"
         >
           <span
-            className="icon_wrapper rounded-2xl p-5 my-2 mx-4 "
+            className="icon_wrapper rounded-2xl p-5 my-2 mx-4"
             style={{ background: "#CCABDA33" }}
           >
             <PiSignatureBold className="text-purple w-6 h-6" />
           </span>
-          {trimmedDataURL ? (
+          {preview ? (
             <img
-              className="w-[66px] h-[62px] object-cover rounded-lg  border border-solid border-purple"
-              src={trimmedDataURL}
+              className="w-[66px] h-[62px] object-contain"
+              src={preview}
               alt="Signature"
             />
           ) : (
@@ -168,12 +200,11 @@ export function SignatureBtn() {
           )}
         </button>
         <div className="Signature_fun">
-          {trimmedDataURL && (
+          {preview && (
             <div className="flex items-center justify-between gap-4">
               <button className="clear" onClick={handleClear}>
                 <RiDeleteBinLine className="text-red w-5 h-5" />
               </button>
-
               <button onClick={handleEdit}>
                 <FaEdit className="text-purple w-5 h-5" />
               </button>
@@ -204,14 +235,15 @@ export function SignatureBtn() {
           </button>
         </DialogHeader>
         <DialogBody>
-          <Signature
-            ref={sigPadRef}
-            fill={color}
-            options={signatureOptions}
-            style={{
-              "--w-signature-background": "#fff",
-              fontWeight: fontWeight,
+          <SignaturePad
+            ref={setSignaturePad}
+            penColor={color}
+            backgroundColor="rgba(255,255,255,1)"
+            canvasProps={{
+              width: 580,
+              height: 200,
             }}
+            {...signatureOptions}
           />
         </DialogBody>
         <DialogFooter className="flex items-center justify-between gap-3">
