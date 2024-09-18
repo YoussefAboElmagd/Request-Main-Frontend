@@ -58,18 +58,20 @@ export function SignatureBtn({ onSignatureChange }) {
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState("#000");
   const [fontWeight, setFontWeight] = useState("normal");
+   const [activeWeight, setActiveWeight] = useState("normal");
+   const [isDrawnSignature, setIsDrawnSignature] = useState(true); 
   const [preview, setPreview] = useState(null);
   const signaturePadRef = useRef(null); 
 
   // Load saved signature from local storage
-useEffect(() => {
-  if (open && signaturePadRef.current) {
-    const savedSignature = localStorage.getItem("Signature");
-    if (savedSignature) {
-      signaturePadRef.current.fromDataURL(savedSignature);
-    }
-  }
-}, [open]);
+ useEffect(() => {
+   if (open && signaturePadRef.current && isDrawnSignature) {
+     const savedSignature = localStorage.getItem("Signature");
+     if (savedSignature) {
+       signaturePadRef.current.fromDataURL(savedSignature);
+     }
+   }
+ }, [open, isDrawnSignature]);
 
   // Function to handle clear
   const handleClear = () => {
@@ -88,6 +90,7 @@ useEffect(() => {
   // Function to change font weight
   const handleFontWeightChange = (weight) => {
     setFontWeight(weight);
+     setActiveWeight(weight);
   };
 
   // Handle signature edit - load the saved signature back into the pad
@@ -127,6 +130,29 @@ useEffect(() => {
       handleOpen(false);
     }
   };
+
+    const handleImageUpload = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setPreview(reader.result);
+          setIsDrawnSignature(false); 
+          localStorage.setItem("Signature", reader.result);
+          if (onSignatureChange) {
+            onSignatureChange(reader.result);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+      setOpen(false)
+    };
+
+    const handleDeleteImageUpload = () => {
+      setPreview(null);
+      setIsDrawnSignature(true);
+      localStorage.removeItem("Signature");
+    }
 
   const getStrokeSettings = () => {
     switch (fontWeight) {
@@ -185,7 +211,7 @@ useEffect(() => {
         <div className="Signature_fun">
           {preview && (
             <div className="flex items-center justify-between gap-4">
-              <button className="clear" onClick={handleClear}>
+              <button className="clear" onClick={handleDeleteImageUpload}>
                 <RiDeleteBinLine className="text-red w-5 h-5" />
               </button>
               <button onClick={handleEdit}>
@@ -199,9 +225,19 @@ useEffect(() => {
       <Dialog open={open} handler={handleOpen}>
         <DialogHeader className="flex items-center justify-center relative">
           <div className="flex items-center justify-between gap-7">
-            <p className="text-gray flex items-center gap-2 font-workSans font-semibold text-base cursor-pointer">
+            <label
+              htmlFor="signature"
+              className="text-gray flex items-center gap-2 font-workSans font-semibold text-base cursor-pointer"
+            >
               <CgImage className="text-gray w-5 h-5" /> Image
-            </p>
+            </label>
+            <input
+              type="file"
+              name="signature"
+              id="signature"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
             <p className="text-purple flex items-center gap-2 font-workSans font-semibold text-base">
               <FaSignature className="text-purple w-5 h-5" /> Draw
             </p>
@@ -212,7 +248,7 @@ useEffect(() => {
         </DialogHeader>
         <DialogBody>
           <SignaturePad
-            ref={signaturePadRef} 
+            ref={signaturePadRef}
             penColor={color}
             backgroundColor="rgba(255,255,255,1)"
             canvasProps={{ width: 580, height: 200 }}
@@ -228,13 +264,22 @@ useEffect(() => {
             <input type="hidden" name="color" value={color} />
           </div>
           <div className="Select_font flex items-center gap-3 cursor-pointer">
-            <button onClick={() => handleFontWeightChange("lighter")}>
+            <button
+              onClick={() => handleFontWeightChange("lighter")}
+              className={`${activeWeight === "lighter" ? "text-purple" : ""}`}
+            >
               <FaSignature className="w-5 h-5 font-light" />
             </button>
-            <button onClick={() => handleFontWeightChange("normal")}>
+            <button
+              onClick={() => handleFontWeightChange("normal")}
+              className={`${activeWeight === "normal" ? "text-purple" : ""}`}
+            >
               <FaSignature className="w-5 h-5 font-medium" />
             </button>
-            <button onClick={() => handleFontWeightChange("bold")}>
+            <button
+              onClick={() => handleFontWeightChange("bold")}
+              className={`${activeWeight === "bold" ? "text-purple" : ""}`}
+            >
               <FaSignature className="w-5 h-5 font-extrabold" />
             </button>
           </div>

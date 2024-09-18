@@ -10,6 +10,7 @@ import { SignatureBtn } from "../../../Components/signature/signature";
 const CreateCompany = () => {
   const [logoPreview, setLogoPreview] = useState(null);
   const [stampPreview, setStampPreview] = useState(null);
+  const [signature, setSignature] = useState(null);
 
   // Function to handle image change and set preview for logo
   const handleLogoChange = (e) => {
@@ -27,13 +28,24 @@ const CreateCompany = () => {
     }
   };
 
+  const handleSignatureChange = (dataUrl) => {
+    setSignature(dataUrl);
+  };
+
+
+  // handle submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+  }
+
   return (
     <div className="CreateCompany h-screen relative effect overflow-hidden">
       <AuthHeader />
       <div className="Wrapper flex items-center justify-between gap-2">
         <form action="submit" className="form flex flex-col">
           {/* Logo Input */}
-          <div className="addLogo">
+          <div className="addLogo w-[250px] m-auto shadow-sm rounded-3xl my-2">
             <label
               htmlFor="logo"
               className="bg-white p-2 flex flex-col justify-center items-center rounded-3xl shadow-sm cursor-pointer"
@@ -78,14 +90,14 @@ const CreateCompany = () => {
               required={true}
               label={"Company Name"}
               className={
-                "bg-white border border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans  font-bold  text-xl"
+                "bg-white w-[500px] border  border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans  font-bold  text-base"
               }
-              label_class={"text-purple font-workSans font-bold text-xl"}
+              label_class={"text-purple font-workSans font-bold text-base"}
             />
           </div>
 
           {/* Stamp Input */}
-          <div className="stamp">
+          <div className="stamp w-[500px]">
             <label
               htmlFor="stamp"
               className="box flex justify-start items-center bg-white py-1 px-6 gap-2 rounded-2xl m-2 shadow-mdc1"
@@ -122,7 +134,7 @@ const CreateCompany = () => {
 
           {/* Signature Input */}
           <div className="signature">
-            <SignatureBtn />
+            <SignatureBtn onSignatureChange={handleSignatureChange} />
           </div>
         </form>
 
