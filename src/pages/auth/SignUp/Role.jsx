@@ -6,40 +6,29 @@ import Button from "../../../Components/UI/Button/Button";
 import "./style.scss";
 import { useSelector } from "react-redux";
 import Loader from "../../../Components/Loader/Loader";
-import { getAllRoles } from "../../../Services/api";
 
 const Role = () => {
   const [selectedRoleId, setSelectedRoleId] = useState("");
-  const [Roles, setRoles] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const { isLoading } = useSelector((state) => state.auth);
 
+  // Static roles
+  const roles = [
+    { _id: "66d33a4b4ad80e468f231f83", name: "owner" },
+    { _id: "66d33ec44ad80e468f231f91", name: "contractor" },
+    { _id: "66d33e7a4ad80e468f231f8d", name: "consultant" },
+  ];
+
   const handleRoleSelect = (roleId) => {
     if (selectedRoleId === roleId) {
       setSelectedRoleId("");
     } else {
-      setSelectedRoleId(roleId); 
+      setSelectedRoleId(roleId);
       setError("");
     }
   };
-
-  useEffect(() => {
-    const getRoles = async () => {
-      setLoading(true);
-      try {
-        const data = await getAllRoles();
-        setRoles(data.results);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    getRoles();
-  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,7 +38,6 @@ const Role = () => {
       return;
     }
     console.log(selectedRoleId);
-    
 
     // Navigate to SignUp page with the selected role ID
     navigate("/SignUp", { state: { roleId: selectedRoleId } });
@@ -76,7 +64,7 @@ const Role = () => {
               </p>
             </div>
             <div className="Buttons flex justify-center items-center gap-32 my-10">
-              {Roles.map((role) => (
+              {roles.map((role) => (
                 <button
                   key={role._id}
                   className={`RoleBtn ${role.name} ${

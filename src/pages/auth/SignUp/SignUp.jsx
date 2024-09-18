@@ -30,6 +30,8 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { roleId } = location.state || {};
+  console.log("role id from state =>" ,  roleId);
+  
   const { isLoading, error } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
@@ -64,10 +66,11 @@ const SignUp = () => {
     }
 
     const userData = { email, password, name, phone, role: roleId };
+    console.log("userData :::: =>  ", userData);
     dispatch(handleSignUp(userData))
       .unwrap() 
       .then(() => {
-        navigate("/signUp/createCompany");
+        navigate("/SignUp/createCompany");
       })
       .catch((err) => {
         console.error("Sign Up failed:", err);

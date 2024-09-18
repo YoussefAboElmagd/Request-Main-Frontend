@@ -9,36 +9,16 @@ import Signature from "@uiw/react-signature";
 import { hsvaToHex } from "@uiw/color-convert";
 import React, { useRef, useState, useEffect } from "react";
 import { CgImage } from "react-icons/cg";
-import { FaSignature } from "react-icons/fa";
+import { FaSignature, FaEdit } from "react-icons/fa";
 import { PiSignatureBold } from "react-icons/pi";
 import { RiCloseCircleLine, RiDeleteBinLine } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
+import "./style.scss";
 
 // Point component for swatch
 function Point({ color, checked }) {
   if (!checked) return null;
-
-  return (
-    <div
-      style={{
-        height: 24,
-        width: 24,
-        position: "absolute",
-        top: 32,
-        left: 32,
-        borderRadius: "4px",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        opacity: 0.2,
-        filter: `brightness(${checked ? 1 : 0.5})`,
-        transform: "translate(-50%, -50%)",
-        transition: "all 0.3s ease",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    ></div>
-  );
+  return <div style={{ height: 24, width: 24, borderRadius: "4px" }}></div>;
 }
 
 // Swatch component to choose colors
@@ -85,6 +65,7 @@ export function SignatureBtn() {
       sigPadRef.current.clear();
       localStorage.removeItem("trimmedSignature");
       setTrimmedDataURL(null);
+      console.log("Signature cleared", trimmedDataURL);
     }
   };
 
@@ -96,10 +77,25 @@ export function SignatureBtn() {
     setFontWeight(weight);
   };
 
+  // Handle signature edit - load the saved signature back into the pad
+  const handleEdit = () => {
+    handleOpen();
+    console.log("////////", trimmedDataURL);
+
+    if (trimmedDataURL) {
+      console.log(sigPadRef.current, "---------------", trimmedDataURL);
+
+      // Load the existing signature
+      console.log(sigPadRef.current.load(trimmedDataURL));
+
+      sigPadRef.current.load(trimmedDataURL);
+    }
+  };
+
   const handleTrim = () => {
     if (sigPadRef.current && sigPadRef.current.svg) {
       const svgElement = sigPadRef.current.svg;
-
+      console.log("svgElement:", svgElement);
       // Serialize the SVG element to an XML string
       const svgData = new XMLSerializer().serializeToString(svgElement);
 
@@ -147,32 +143,45 @@ export function SignatureBtn() {
   };
 
   return (
-    <> 
-
-
-      <button
-        className="box flex justify-center items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer"
-        onClick={handleOpen}
-      >
-        <span
-          className="icon_wrapper rounded-2xl p-5 my-2 mx-4"
-          style={{
-            background: "#CCABDA33",
-          }}
+    <>
+      <div className="box flex justify-between items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer  ">
+        <button
+          onClick={handleOpen}
+          className="flex justify-start items-center  "
         >
-          <PiSignatureBold className="text-purple w-6 h-6" />
-        </span>
-        <span className="font-workSans font-semibold text-xl leading-5">
-          Signature
-        </span>
-      </button>
-      {trimmedDataURL && (
-        <img
-          src={trimmedDataURL}
-          alt="Trimmed Signature"
-          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-        />
-      )}
+          <span
+            className="icon_wrapper rounded-2xl p-5 my-2 mx-4 "
+            style={{ background: "#CCABDA33" }}
+          >
+            <PiSignatureBold className="text-purple w-6 h-6" />
+          </span>
+          {trimmedDataURL ? (
+            <img
+              className="w-[66px] h-[62px] object-cover rounded-lg  border border-solid border-purple"
+              src={trimmedDataURL}
+              alt="Signature"
+            />
+          ) : (
+            <span className="font-workSans font-semibold text-xl leading-5">
+              Signature
+            </span>
+          )}
+        </button>
+        <div className="Signature_fun">
+          {trimmedDataURL && (
+            <div className="flex items-center justify-between gap-4">
+              <button className="clear" onClick={handleClear}>
+                <RiDeleteBinLine className="text-red w-5 h-5" />
+              </button>
+
+              <button onClick={handleEdit}>
+                <FaEdit className="text-purple w-5 h-5" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       <Dialog
         open={open}
         handler={handleOpen}
@@ -184,22 +193,14 @@ export function SignatureBtn() {
         <DialogHeader className="flex items-center justify-center relative">
           <div className="flex items-center justify-between gap-7">
             <p className="text-gray flex items-center gap-2 font-workSans font-semibold text-base cursor-pointer">
-              <span>
-                <CgImage className="text-gray w-5 h-5" />
-              </span>
-              Image
+              <CgImage className="text-gray w-5 h-5" /> Image
             </p>
             <p className="text-purple flex items-center gap-2 font-workSans font-semibold text-base">
-              <span>
-                <FaSignature className="text-purple w-5 h-5" />
-              </span>
-              Draw
+              <FaSignature className="text-purple w-5 h-5" /> Draw
             </p>
           </div>
           <button onClick={handleOpen}>
-            <span className="absolute right-4 top-4 cursor-pointer">
-              <RiCloseCircleLine className="text-red" />
-            </span>
+            <RiCloseCircleLine className="text-red absolute right-4 top-4 cursor-pointer" />
           </button>
         </DialogHeader>
         <DialogBody>
@@ -215,9 +216,7 @@ export function SignatureBtn() {
         </DialogBody>
         <DialogFooter className="flex items-center justify-between gap-3">
           <button className="clear" onClick={handleClear}>
-            <span>
-              <RiDeleteBinLine className="text-red w-5 h-5" />
-            </span>
+            <RiDeleteBinLine className="text-red w-5 h-5" />
           </button>
           <div className="Select_color">
             <SwatchComponent color={color} onChange={setColor} />
@@ -225,19 +224,13 @@ export function SignatureBtn() {
           </div>
           <div className="Select_font flex items-center gap-3 cursor-pointer">
             <button onClick={() => handleFontWeightChange("lighter")}>
-              <span className="light cursor-pointer">
-                <FaSignature className="w-5 h-5 font-light" />
-              </span>
+              <FaSignature className="w-5 h-5 font-light" />
             </button>
             <button onClick={() => handleFontWeightChange("normal")}>
-              <span className="normal cursor-pointer">
-                <FaSignature className="w-5 h-5 font-medium" />
-              </span>
+              <FaSignature className="w-5 h-5 font-medium" />
             </button>
             <button onClick={() => handleFontWeightChange("bold")}>
-              <span className="bold cursor-pointer">
-                <FaSignature className="w-5 h-5 font-extrabold" />
-              </span>
+              <FaSignature className="w-5 h-5 font-extrabold" />
             </button>
           </div>
           <button
