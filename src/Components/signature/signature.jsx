@@ -14,6 +14,7 @@ import { PiSignatureBold } from "react-icons/pi";
 import { RiCloseCircleLine, RiDeleteBinLine } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
+import { MdOutlinePanoramaHorizontal } from "react-icons/md";
 
 // Point component for swatch
 function Point({ color, checked }) {
@@ -57,24 +58,25 @@ export function SignatureBtn({ onSignatureChange }) {
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState("#000");
   const [fontWeight, setFontWeight] = useState("normal");
-  const [signaturePad, setSignaturePad] = useState(null);
   const [preview, setPreview] = useState(null);
+  const signaturePadRef = useRef(null); 
 
   // Load saved signature from local storage
-  useEffect(() => {
+useEffect(() => {
+  if (open && signaturePadRef.current) {
     const savedSignature = localStorage.getItem("Signature");
     if (savedSignature) {
-      setPreview(savedSignature);
+      signaturePadRef.current.fromDataURL(savedSignature);
     }
-  }, []);
+  }
+}, [open]);
 
   // Function to handle clear
   const handleClear = () => {
-    if (signaturePad) {
-      signaturePad.clear();
+    if (signaturePadRef.current) {
+      signaturePadRef.current.clear();
       setPreview(null);
       localStorage.removeItem("Signature");
-      console.log("Signature cleared", signaturePad);
     }
   };
 
@@ -86,30 +88,32 @@ export function SignatureBtn({ onSignatureChange }) {
   // Function to change font weight
   const handleFontWeightChange = (weight) => {
     setFontWeight(weight);
-    console.log(weight);
   };
 
   // Handle signature edit - load the saved signature back into the pad
   const handleEdit = () => {
     handleOpen();
-    if (signaturePad) {
+    if (signaturePadRef.current) {
       const savedSignature = localStorage.getItem("Signature");
       if (savedSignature) {
-        console.log("savedSignature from edit ", savedSignature);
-
         const img = new Image();
         img.src = savedSignature;
         img.onload = () => {
-          signaturePad.clear();
-          signaturePad.fromDataURL(savedSignature);
+          signaturePadRef.current.clear();
+          signaturePadRef.current.fromDataURL(savedSignature);
+        };
+        img.onerror = (e) => {
+          console.error("Error loading image:", e);
         };
       }
     }
   };
 
   const handleTrim = () => {
-    if (signaturePad) {
-      const res = signaturePad.getTrimmedCanvas().toDataURL("image/jpeg");
+    if (signaturePadRef.current) {
+      const res = signaturePadRef.current
+        .getTrimmedCanvas()
+        .toDataURL("image/jpeg");
       setPreview(res);
       localStorage.setItem("Signature", res);
       if (onSignatureChange) {
@@ -127,29 +131,13 @@ export function SignatureBtn({ onSignatureChange }) {
   const getStrokeSettings = () => {
     switch (fontWeight) {
       case "lighter":
-        return {
-          dotSize: 0.5,
-          minWidth: 1,
-          maxWidth: 2,
-        };
+        return { dotSize: 0.5, minWidth: 1, maxWidth: 2 };
       case "normal":
-        return {
-          dotSize: 1,
-          minWidth: 2,
-          maxWidth: 4,
-        };
+        return { dotSize: 1, minWidth: 2, maxWidth: 4 };
       case "bold":
-        return {
-          dotSize: 6,
-          minWidth: 3,
-          maxWidth: 9,
-        };
+        return { dotSize: 6, minWidth: 3, maxWidth: 9 };
       default:
-        return {
-          dotSize: 1,
-          minWidth: 2,
-          maxWidth: 4,
-        };
+        return { dotSize: 1, minWidth: 2, maxWidth: 4 };
     }
   };
 
@@ -165,13 +153,8 @@ export function SignatureBtn({ onSignatureChange }) {
     throttle: 16,
     clearOnResize: true,
     backgroundColor: "#fff",
-
-    onBegin: () => {
-      console.log("Stroke began");
-    },
-    onEnd: () => {
-      console.log("Stroke ended");
-    },
+    onBegin: () => console.log("Stroke began"),
+    onEnd: () => console.log("Stroke ended"),
   };
 
   return (
@@ -213,14 +196,7 @@ export function SignatureBtn({ onSignatureChange }) {
         </div>
       </div>
 
-      <Dialog
-        open={open}
-        handler={handleOpen}
-        animate={{
-          mount: { scale: 1, y: 0 },
-          unmount: { scale: 0.9, y: -100 },
-        }}
-      >
+      <Dialog open={open} handler={handleOpen}>
         <DialogHeader className="flex items-center justify-center relative">
           <div className="flex items-center justify-between gap-7">
             <p className="text-gray flex items-center gap-2 font-workSans font-semibold text-base cursor-pointer">
@@ -236,13 +212,10 @@ export function SignatureBtn({ onSignatureChange }) {
         </DialogHeader>
         <DialogBody>
           <SignaturePad
-            ref={setSignaturePad}
+            ref={signaturePadRef} 
             penColor={color}
             backgroundColor="rgba(255,255,255,1)"
-            canvasProps={{
-              width: 580,
-              height: 200,
-            }}
+            canvasProps={{ width: 580, height: 200 }}
             {...signatureOptions}
           />
         </DialogBody>
