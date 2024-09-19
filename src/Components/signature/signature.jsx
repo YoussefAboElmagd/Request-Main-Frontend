@@ -58,20 +58,20 @@ export function SignatureBtn({ onSignatureChange }) {
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState("#000");
   const [fontWeight, setFontWeight] = useState("normal");
-   const [activeWeight, setActiveWeight] = useState("normal");
-   const [isDrawnSignature, setIsDrawnSignature] = useState(true); 
+  const [activeWeight, setActiveWeight] = useState("normal");
+  const [isDrawnSignature, setIsDrawnSignature] = useState(true);
   const [preview, setPreview] = useState(null);
-  const signaturePadRef = useRef(null); 
+  const signaturePadRef = useRef(null);
 
   // Load saved signature from local storage
- useEffect(() => {
-   if (open && signaturePadRef.current && isDrawnSignature) {
-     const savedSignature = localStorage.getItem("Signature");
-     if (savedSignature) {
-       signaturePadRef.current.fromDataURL(savedSignature);
-     }
-   }
- }, [open, isDrawnSignature]);
+  useEffect(() => {
+    if (open && signaturePadRef.current && isDrawnSignature) {
+      const savedSignature = localStorage.getItem("Signature");
+      if (savedSignature) {
+        signaturePadRef.current.fromDataURL(savedSignature);
+      }
+    }
+  }, [open, isDrawnSignature]);
 
   // Function to handle clear
   const handleClear = () => {
@@ -90,7 +90,7 @@ export function SignatureBtn({ onSignatureChange }) {
   // Function to change font weight
   const handleFontWeightChange = (weight) => {
     setFontWeight(weight);
-     setActiveWeight(weight);
+    setActiveWeight(weight);
   };
 
   // Handle signature edit - load the saved signature back into the pad
@@ -112,7 +112,8 @@ export function SignatureBtn({ onSignatureChange }) {
     }
   };
 
-  const handleTrim = () => {
+  const handleTrim = (e) => {
+    e.preventDefault();
     if (signaturePadRef.current) {
       const res = signaturePadRef.current
         .getTrimmedCanvas()
@@ -131,28 +132,28 @@ export function SignatureBtn({ onSignatureChange }) {
     }
   };
 
-    const handleImageUpload = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          setPreview(reader.result);
-          setIsDrawnSignature(false); 
-          localStorage.setItem("Signature", reader.result);
-          if (onSignatureChange) {
-            onSignatureChange(reader.result);
-          }
-        };
-        reader.readAsDataURL(file);
-      }
-      setOpen(false)
-    };
-
-    const handleDeleteImageUpload = () => {
-      setPreview(null);
-      setIsDrawnSignature(true);
-      localStorage.removeItem("Signature");
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreview(reader.result);
+        setIsDrawnSignature(false);
+        localStorage.setItem("Signature", reader.result);
+        if (onSignatureChange) {
+          onSignatureChange(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
     }
+    setOpen(false);
+  };
+
+  const handleDeleteImageUpload = () => {
+    setPreview(null);
+    setIsDrawnSignature(true);
+    localStorage.removeItem("Signature");
+  };
 
   const getStrokeSettings = () => {
     switch (fontWeight) {
@@ -185,7 +186,10 @@ export function SignatureBtn({ onSignatureChange }) {
 
   return (
     <>
-      <div className="box flex justify-between items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer">
+      <div
+        onClick={handleOpen}
+        className="box flex justify-between items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer"
+      >
         <button
           onClick={handleOpen}
           className="flex justify-start items-center"

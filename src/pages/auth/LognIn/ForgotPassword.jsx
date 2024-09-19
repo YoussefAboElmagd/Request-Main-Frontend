@@ -31,7 +31,7 @@ const ForgotPassword = () => {
       } else {
         const result = await forgetPassword(email);
         console.log(result);
-        navigate("/LogIn/Otp", { state: { email } });
+        navigate("/Otp", { state: { email } });
       }
     } catch (err) {
       console.error("Error processing request:", err);

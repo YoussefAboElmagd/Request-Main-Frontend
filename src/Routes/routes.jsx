@@ -5,7 +5,6 @@ import Otp from "../pages/auth/Otp/Otp";
 import SignUp from "../pages/auth/SignUp/SignUp";
 import Role from "../pages/auth/SignUp/Role";
 import LoginByMail from "../pages/auth/LognIn/LoginByEmail";
-import Profile from "../pages/Profile/Profile";
 import ProjectDetails from "../pages/Projects/ProjectDetails/ProjectDetails";
 import AddProject from "../pages/Projects/AddProject/AddProject";
 import AddTask from "../pages/Tasks/AddTask/AddTask";
@@ -14,7 +13,7 @@ import CreateTag from "../pages/Tags/CreateTag";
 import TaskDetails from "../pages/Tasks/TaskDetails/TaskDetails";
 import CreateCompany from "../pages/auth/company/createCompany";
 import ForgotPassword from "../pages/auth/LognIn/ForgotPassword";
-
+import Profile from "../pages/Profile/Profile";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -25,7 +24,7 @@ const AppRoutes = () => {
       <Route path="/LogIn" element={<LoginByPhone />} />
       <Route path="/LogIn/Mail" element={<LoginByMail />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
-      <Route path="/LogIn/Otp" element={<Otp />} />
+      <Route path="/Otp" element={<Otp />} />
       <Route path="/SignUp" element={<SignUp />} />
       <Route path="/SignUp/ChooseRole" element={<Role />} />
       <Route path="/SignUp/createCompany" element={<CreateCompany />} />

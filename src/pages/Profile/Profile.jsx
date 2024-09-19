@@ -50,7 +50,7 @@ const Profile = () => {
     const formattedDate = dob.endDate ? formatDate(dob.endDate) : "";
 
     console.log("Formatted Date:", formattedDate);
-
+    
     // Prepare updated user data
     const updatedUser = {
       name: Name,

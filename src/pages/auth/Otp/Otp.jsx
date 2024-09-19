@@ -1,5 +1,10 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect, version } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useRouteLoaderData,
+} from "react-router-dom";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import OtpImg from "../../../assets/images/Otp.png";
 import Button from "../../../Components/UI/Button/Button";
@@ -7,9 +12,12 @@ import OTPInput from "react-otp-input";
 import Loader from "../../../Components/Loader/Loader";
 import { t } from "i18next";
 import "./style.scss";
-import { signInThunk } from "../../../redux/services/authServices";
+import {
+  handleSignUp,
+  signInThunk,
+} from "../../../redux/services/authServices";
 import { useDispatch } from "react-redux";
-import { forgetPassword } from "../../../Services/api";
+import { forgetPassword, resendVerificationCode } from "../../../Services/api";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
@@ -19,8 +27,15 @@ const Otp = () => {
   const [canResend, setCanResend] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { phone, forget, userData, token, password, email } =
-    location.state || {};
+  const {
+    phone,
+    forget,
+    token,
+    userData_signUp,
+    email_logIn,
+    userData_login,
+    email_signUp,
+  } = location.state || {};
 
   const dispatch = useDispatch();
 
@@ -43,34 +58,60 @@ const Otp = () => {
     setLoading(true);
 
     try {
-      if (forget) {
-        if (otp === forget.verificationCode) {
-          localStorage.setItem("user", JSON.stringify(userData));
-          localStorage.setItem("token", token);
-          const forget_id = forget.id;
-          navigate("/forgotPassword", { state: { forget_id } });
-        } else {
-          setError(t("OTP is incorrect"));
-        }
-      } else if (phone) {
-        if (otp === userData.verificationCode) {
-          localStorage.setItem("user", JSON.stringify(userData));
-          localStorage.setItem("token", token);
-          navigate("/");
-        } else {
-          setError(t("OTP is incorrect"));
-        }
-      } else if (userData) {
-        console.log(userData);
+      switch (true) {
+        case !!forget:
+          if (otp === forget.verificationCode) {
+            localStorage.setItem("user", JSON.stringify(userData));
+            localStorage.setItem("token", token);
+            navigate("/forgotPassword", { state: { forget_id: forget.id } });
+          } else {
+            setError(t("OTP is incorrect"));
+          }
+          break;
 
-        if (otp === userData.verificationCode) {
-          // Save user data and token to localStorage
-          localStorage.setItem("user", JSON.stringify(userData));
-          localStorage.setItem("token", token);
-          navigate("/");
-        } else {
-          setError(t("OTP is incorrect"));
-        }
+        case !!phone:
+          if (otp === userData.verificationCode) {
+            localStorage.setItem("user", JSON.stringify(userData));
+            localStorage.setItem("token", token);
+            navigate("/");
+          } else {
+            setError(t("OTP is incorrect"));
+          }
+          break;
+
+        case !!userData_login:
+          console.log("userData_login", userData_login);
+
+          if (otp === userData_login.verificationCode) {
+            console.log(
+              "otp === userData_login.verificationCode",
+              otp,
+              userData_login.verificationCode
+            );
+            localStorage.setItem("user", JSON.stringify(userData_login));
+            localStorage.setItem("token", token);
+            navigate("/");
+          } else {
+            setError(t("OTP is incorrect"));
+          }
+          break;
+
+        case !!email_signUp:
+          if (otp === userData_signUp.verificationCode) {
+            console.log(otp);
+            console.log(userData_signUp);
+            console.log(userData_signUp.verificationCode);
+            localStorage.setItem("user", JSON.stringify(userData_signUp));
+            localStorage.setItem("token", token);
+            navigate("/SignUp/createCompany");
+          } else {
+            setError(t("OTP is incorrect"));
+          }
+          break;
+
+        default:
+          setError(t("Invalid OTP request"));
+          break;
       }
     } catch (err) {
       console.error("Error verifying OTP:", err);
@@ -79,33 +120,45 @@ const Otp = () => {
       setLoading(false);
     }
   };
-const handleResendOtp = async (e) => {
-  e.preventDefault();
-  setCanResend(false);
-  setTimeLeft(60);
-  setError("");
-  setLoading(true);
 
-  try {
-    let result;
+  const handleResendOtp = async (e) => {
+    e.preventDefault();
+    setCanResend(false);
+    setTimeLeft(60);
+    setError("");
+    setLoading(true);
 
-    if (userData) {
-      result = await dispatch(signInThunk({ email, password })).unwrap();
-      userData.verificationCode = result.userData.verificationCode;
-    } else if (email) {
-      result = await dispatch(forgetPassword({ email })).unwrap();
-      forget.verificationCode = result.verificationCode;
+    try {
+      let result;
+
+      // Handle resend OTP for different scenarios
+      if (forget) {
+        result = await dispatch(
+          forgetPassword({ email: forget.email })
+        ).unwrap();
+        forget.verificationCode = result.verificationCode;
+      } else if (email_logIn) {
+        result = await resendVerificationCode(email_logIn);
+        userData_login.verificationCode = result.verificationCode;
+        console.log(
+          "Updated verification code after login resend:",
+          userData_login.verificationCode
+        );
+      } else if (email_signUp) {
+        result = await resendVerificationCode(email_signUp);
+        userData_login.verificationCode = result.verificationCode;
+      } else {
+        throw new Error("Unable to resend OTP. Invalid request.");
+      }
+
+      console.log("Resent OTP successfully", result);
+    } catch (error) {
+      console.error("Error resending OTP:", error);
+      setError(t("Error resending OTP. Please try again."));
+    } finally {
+      setLoading(false);
     }
-
-    console.log("Resent OTP successfully", result);
-  } catch (error) {
-    console.error("Error resending OTP:", error);
-    setError(t("Error resending OTP. Please try again."));
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div className="Otp h-screen relative effect overflow-hidden">
@@ -140,12 +193,9 @@ const handleResendOtp = async (e) => {
             <div className="form flex flex-col items-center">
               <div className="Otp_text font-workSans font-normal text-xl text-center">
                 <p>
-                  {t(
-                    `An OTP message containing your code has been sent to ${
-                      userData ? userData.email : phone
-                    }`
-                  )}
+                  {t(`An OTP message containing your code has been sent to `)}
                 </p>
+                <span className="text-red d-block">email</span>
               </div>
               <OTPInput
                 value={otp}

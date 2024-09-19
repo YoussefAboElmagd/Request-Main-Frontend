@@ -6,11 +6,24 @@ import { LiaStampSolid } from "react-icons/lia";
 import Input from "../../../Components/UI/Input/Input";
 import "./style.scss";
 import { SignatureBtn } from "../../../Components/signature/signature";
+import { t } from "i18next";
+import Button from "../../../Components/UI/Button/Button";
+import { handleUpdateUser } from "../../../redux/services/authServices";
+import { useDispatch } from "react-redux";
+import Loader from "../../../Components/Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 const CreateCompany = () => {
   const [logoPreview, setLogoPreview] = useState(null);
   const [stampPreview, setStampPreview] = useState(null);
   const [signature, setSignature] = useState(null);
+  const [logo, setLogo] = useState(null);
+  const [stamp, setStamp] = useState(null);
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [Loading, setLoading] = useState(false)
+  const dispatch = useDispatch();
+  const navigate =  useNavigate()
 
   // Function to handle image change and set preview for logo
   const handleLogoChange = (e) => {
@@ -18,6 +31,7 @@ const CreateCompany = () => {
     if (file) {
       setLogoPreview(URL.createObjectURL(file));
     }
+    setLogo(file);
   };
 
   // Function to handle image change and set preview for stamp
@@ -26,6 +40,7 @@ const CreateCompany = () => {
     if (file) {
       setStampPreview(URL.createObjectURL(file));
     }
+    setStamp(file);
   };
 
   const handleSignatureChange = (dataUrl) => {
@@ -33,17 +48,72 @@ const CreateCompany = () => {
   };
 
 
+const clearFields = () => {
+  setLogoPreview(null);
+  setLogo(null);
+  setName("");
+  setStampPreview(null);
+  setStamp(null);
+};
+
   // handle submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-  }
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+
+   if (!logo || !stamp || !name || !signature) {
+     setError("Please fill in all required fields.");
+     return;
+   }
+   setLoading(true)
+  // Prepare updated user data
+  const files = {
+    companyLogo: logo,
+    electronicStamp: stamp,
+    signature: signature,
+  };
+
+  const updatedUser = {
+    companyName: name,
+  };
+
+  console.log("files: ", files);
+  console.log("updatedUser: ", updatedUser);
+
+  // Dispatch the update action
+  dispatch(handleUpdateUser({ updatedData: updatedUser, companyFiles: files }))
+    .unwrap()
+    .then(() => {
+      console.log("User updated successfully");
+      setError("")
+      setLoading(false)
+      navigate("/")
+    clearFields()
+
+    })
+    .catch((err) => {
+      console.error("Update user failed:", err);
+      setError(err);
+      setLoading(false);
+    });
+};
+if (Loading) {
+  return (
+    <div className="flex justify-center items-center">
+      <Loader  />
+    </div>
+  );
+}
 
   return (
     <div className="CreateCompany h-screen relative effect overflow-hidden">
       <AuthHeader />
       <div className="Wrapper flex items-center justify-between gap-2">
-        <form action="submit" className="form flex flex-col">
+        <form
+          action="submit"
+          className="form flex flex-col"
+          onSubmit={handleSubmit}
+        >
           {/* Logo Input */}
           <div className="addLogo w-[250px] m-auto shadow-sm rounded-3xl my-2">
             <label
@@ -67,7 +137,7 @@ const CreateCompany = () => {
                 </div>
               )}
               <span className="font-workSans font-extrabold text-xl my-2 mx-4">
-                Add Logo
+                {t("AddLogo")}
               </span>
             </label>
             <input
@@ -86,8 +156,9 @@ const CreateCompany = () => {
               type={"text"}
               id={"companyName"}
               name={"companyName"}
-              placeholder={"Company name"}
+              placeholder={t("CompanyName")}
               required={true}
+              onChange={(e) => setName(e.target.value)}
               label={"Company Name"}
               className={
                 "bg-white w-[500px] border  border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans  font-bold  text-base"
@@ -118,7 +189,7 @@ const CreateCompany = () => {
                 />
               ) : (
                 <span className="font-workSans font-semibold text-xl leading-5">
-                  Electronic stamp
+                  {t("stamp")}
                 </span>
               )}
             </label>
@@ -135,6 +206,10 @@ const CreateCompany = () => {
           {/* Signature Input */}
           <div className="signature">
             <SignatureBtn onSignatureChange={handleSignatureChange} />
+          </div>
+          {error && <p className="text-red">{error}</p>}
+          <div className="btn flex items-center justify-center md:justify-end my-3 mx-1 !px-0">
+            <Button type="submit">{t("save")}</Button>
           </div>
         </form>
 

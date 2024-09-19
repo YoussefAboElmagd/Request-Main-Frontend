@@ -21,23 +21,22 @@ const LoginByPhone = () => {
   const navigate = useNavigate();
   const { phone, error } = useSelector((state) => state.auth);
   const [phoneNumber, setPhoneNumber] = useState(phone);
- 
 
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   try {
   //     // setError("");
   //     // setLoading(true);
-  //     navigate("/LogIn/Otp");
+  //     navigate("/Otp");
   //   } catch (err) {
   //     console.log(err);
   //   } finally {
   //     setLoading(false);
   //   }
   // };
- const handlePhoneChange = (newPhoneValue) => {
-   setPhoneNumber(newPhoneValue);
- };
+  const handlePhoneChange = (newPhoneValue) => {
+    setPhoneNumber(newPhoneValue);
+  };
   return (
     <div className="LogIn h-screen relative effect overflow-hidden ">
       {loading ? (

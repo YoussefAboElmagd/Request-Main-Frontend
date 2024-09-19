@@ -5,6 +5,7 @@ import {
   signIn,
   updateUser,
   uploadAvatar,
+  uploadCompanyFiles,
 } from "../../Services/api.js";
 import {
   authSuccess,
@@ -20,12 +21,10 @@ export const handleSignUp = createAsyncThunk(
     try {
       dispatch(startAuth());
       const response = await signUp(userData);
-      console.log(response);
-
-      localStorage.setItem("user", JSON.stringify(response.results));
-      localStorage.setItem("token", response.token);
+      console.log("response ======>>>  ", response);
 
       dispatch(authSuccess({ user: response.results, token: response.token }));
+      return response;
     } catch (error) {
       dispatch(authFailure(error.message));
     }
@@ -71,11 +70,10 @@ export const handleLogout = createAsyncThunk(
     }
   }
 );
-
 export const handleUpdateUser = createAsyncThunk(
   "auth/updateUser",
   async (
-    { updatedData, profilePic },
+    { updatedData, profilePic, companyFiles },
     { dispatch, getState, rejectWithValue }
   ) => {
     try {
@@ -93,12 +91,37 @@ export const handleUpdateUser = createAsyncThunk(
 
       // Upload avatar if provided
       if (profilePic) {
-        // Use FormData to handle file upload
         const formData = new FormData();
         formData.append("avatar", profilePic);
-        const avatarResponse = await uploadAvatar(userId, profilePic, token);
-
+        const avatarResponse = await uploadAvatar(userId, formData, token);
         userUpdated = { ...userUpdated, profilePic: avatarResponse.profilePic };
+      }
+
+      // Upload company files if provided
+      if (companyFiles) {
+        const formData = new FormData();
+
+        if (companyFiles.companyLogo) {
+          formData.append("companyLogo", companyFiles.companyLogo);
+        }
+
+        if (companyFiles.electronicStamp) {
+          formData.append("electronicStamp", companyFiles.electronicStamp);
+        }
+
+        if (companyFiles.signature) {
+          const signatureBlob = dataURItoBlob(companyFiles.signature);
+          formData.append("signature", signatureBlob, "signature.jpg");
+        }
+
+        console.log("FormData being sent: ", formData);
+
+        const companyFilesResponse = await uploadCompanyFiles(
+          userId,
+          token,
+          formData
+        );
+        console.log("Company Files Response => ", companyFilesResponse);
       }
 
       // Save updated user data in local storage
@@ -114,3 +137,17 @@ export const handleUpdateUser = createAsyncThunk(
     }
   }
 );
+
+// Helper function to convert base64 to Blob
+const dataURItoBlob = (dataURI) => {
+  const byteString = atob(dataURI.split(",")[1]);
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([ab], { type: mimeString });
+};

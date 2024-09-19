@@ -5,6 +5,8 @@ export const signUp = async (userData) => {
   try {
     const response = await axiosInstance.post("auth/signup", userData);
     console.log("Response => ", response);
+    console.log("Response => ", response.data);
+
     return response.data;
   } catch (error) {
     console.error("Sign-up error: ", error);
@@ -23,10 +25,28 @@ export const signIn = async (userData) => {
       "Sign-in error:",
       error.response ? error.response.data : error.message
     );
-    throw error; // Rethrow the error for further handling
+    throw error; 
   }
 };
-// forget password 
+
+
+// resend verification code
+
+export const resendVerificationCode = async (email) => {
+  try {
+    const response = await axiosInstance.post("auth/resend", { email });
+    console.log("Response => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Resend verification code error:",
+      error.response? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+
+// forget password
 
 export const forgetPassword = async (email) => {
   try {
@@ -36,12 +56,11 @@ export const forgetPassword = async (email) => {
   } catch (error) {
     console.error(
       "Forget password error:",
-      error.response? error.response.data : error.message
+      error.response ? error.response.data : error.message
     );
-    throw error; 
+    throw error;
   }
 };
-
 
 // Update User API Call
 export const updateUser = async (userId, userData, token) => {
@@ -63,6 +82,32 @@ export const updateUser = async (userId, userData, token) => {
     throw error;
   }
 };
+export const uploadCompanyFiles = async (userId, token, formData) => {
+  try {
+    const response = await axiosInstance.put(
+      `users/company/${userId}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log("Response from update => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Update company files error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+
 
 // upload avatar
 
@@ -260,13 +305,15 @@ export const getAllConsultants = async (token) => {
     console.log("Response from consultants => ", response);
     return response.data;
   } catch (error) {
-    console.error("Get consultants error: ", error.response?.data || error.message);
+    console.error(
+      "Get consultants error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
 
-
-// get all contractor 
+// get all contractor
 
 export const getAllContractors = async (token) => {
   try {
@@ -279,7 +326,10 @@ export const getAllContractors = async (token) => {
     console.log("Response from contractors => ", response);
     return response.data;
   } catch (error) {
-    console.error("Get contractors error: ", error.response?.data || error.message);
+    console.error(
+      "Get contractors error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

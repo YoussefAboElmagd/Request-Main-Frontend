@@ -72,5 +72,8 @@
   "Waiting": "Waiting",
   "Ended": "Ended",
   "TName": "Tag Name",
-  "createTag": "Create Tag"
-} 
+  "createTag": "Create Tag",
+  "AddLogo": "Add Logo",
+  "CompanyName": "Company Name",
+  "stamp": "Electronic stamp"
+}

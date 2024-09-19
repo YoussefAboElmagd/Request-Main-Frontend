@@ -30,8 +30,8 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { roleId } = location.state || {};
-  console.log("role id from state =>" ,  roleId);
-  
+  console.log("role id from state =>", roleId);
+
   const { isLoading, error } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
@@ -58,23 +58,34 @@ const SignUp = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setPasswordError("Passwords do not match");
-      return;
-    }
+
 
     const userData = { email, password, name, phone, role: roleId };
     console.log("userData :::: =>  ", userData);
-    dispatch(handleSignUp(userData))
-      .unwrap() 
-      .then(() => {
-        navigate("/SignUp/createCompany");
-      })
-      .catch((err) => {
-        console.error("Sign Up failed:", err);
+    try {
+      const result = await dispatch(handleSignUp(userData)).unwrap();
+      console.log("result -----> ", result);
+      console.log(result.results);
+      console.log(result.token);
+
+    
+      const userData_signUp = result.results;
+      const token_signUp = result.token;
+
+      // Navigate to OTP page with user data
+      navigate("/Otp", {
+        state: {
+          email_signUp: email,
+          userData_signUp,
+          token_signUp,
+          
+        },
       });
+    } catch (err) {
+      console.error("Sign Up failed:", err);
+    }
   };
 
   const countryOptions = countries()
@@ -271,20 +282,20 @@ const SignUp = () => {
                     ]}
                   />
                   {passwordError && (
-                    <div className="error text-red-500 text-xs mt-2">
+                    <div className="error text-red text-xs mt-2 mx-auto text-center">
                       {passwordError}
                     </div>
                   )}
                 </div>
+                {error && (
+                  <div className="error text-red mt-4 text-center">{error}</div>
+                )}
                 <Button
                   type="submit"
                   className="w-full h-12 text-white bg-primary mt-6"
                 >
                   {t("Register")}
                 </Button>
-                {error && (
-                  <div className="error text-red-500 mt-4">{error}</div>
-                )}
               </form>
             </div>
           </div>
