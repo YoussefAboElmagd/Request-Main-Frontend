@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
-import image from "../../../assets/images/LogInByPhone.png";
+import image from "../../../assets/images/LogInMail.png";
 import "./style.scss";
 import Button from "../../../Components/UI/Button/Button";
 import { useState } from "react";
@@ -51,7 +51,7 @@ const LoginByMail = () => {
   };
 
   return (
-    <div className="LogIn h-screen relative effect overflow-hidden ">
+    <div className="LogIn h-screen relative  effect overflow-hidden ">
       {loading || isLoading ? (
         <div className="loader flex justify-center items-center  m-auto">
           <Loader />
@@ -75,7 +75,8 @@ const LoginByMail = () => {
               <img
                 src={image}
                 alt="LogIn By Phone"
-                width={400}
+                width={500}
+                height={500}
                 loading="lazy"
               />
             </div>

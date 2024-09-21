@@ -165,10 +165,9 @@ const SignUp = () => {
             <div className="LogIn_Image flex justify-center -z-10">
               <img
                 src={SignUpImg}
-                className="mb-40"
-                alt="image"
-                width={400}
-                height={400}
+                alt="SignUpImg"
+                width={500}
+                height={500}
                 loading="lazy"
               />
             </div>

@@ -1,4 +1,7 @@
-.effect {
+body{
+    background-color: white!important;
+}
+.effect_right {
   &::before,
   &::after {
     content: "";
@@ -17,6 +20,6 @@
 
   &::before {
     background-image: url("../../../assets/images/effect.jpg");
-    transform: translate(90%, 20%);
+    transform: translate(90%, 20%)!important;
   }
 }

@@ -1,3 +1,7 @@
+body {
+  background-color: white !important;
+}
+
 .box_Apple,
 .box_Facebook,
 .box_Google {
@@ -48,10 +52,10 @@
     color: var(--purple2);
   }
   &:hover:not(.selected):not(:disabled).consultant {
-    color:  var(--red);
+    color: var(--red);
   }
   &:hover:not(.selected):not(:disabled).contractor {
-    color:var(--blue);
+    color: var(--blue);
   }
   &:disabled {
     background-color: #ccc;
@@ -84,19 +88,11 @@
   }
 
   &::before {
-    background-image: url("../../../assets/images/yellow.png");
-    transform: translate(-20%, -10%);
-  }
-
-  &::after {
-    background-image: url("../../../assets/images/purple.png");
-    transform: translate(20%, 10%);
+    background-image: url("../../../assets/images/effect.jpg");
+    transform: translate(20%, 5%)!important;
   }
 }
 
-// .confirmPassword{
-//   transition: all ease-in-out 5s;
-// }
 .confirmPassword_label {
   opacity: 1;
   transition: all ease-in-out 0.5s;

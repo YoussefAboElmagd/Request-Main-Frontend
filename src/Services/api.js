@@ -50,7 +50,7 @@ export const resendVerificationCode = async (email) => {
 
 export const forgetPassword = async (email) => {
   try {
-    const response = await axiosInstance.post("auth/forget", { email });
+    const response = await axiosInstance.post("auth/forget/", { email });
     console.log("Response => ", response);
     return response.data;
   } catch (error) {
@@ -66,7 +66,6 @@ export const forgetPassword = async (email) => {
 export const updateUser = async (userId, userData, token) => {
   try {
     // Check userData before sending the request
-    console.log("Prepared User Data:", userData);
 
     const response = await axiosInstance.put(`users/${userId}`, userData, {
       headers: {

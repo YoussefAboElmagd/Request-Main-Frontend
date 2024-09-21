@@ -14,6 +14,7 @@ import TaskDetails from "../pages/Tasks/TaskDetails/TaskDetails";
 import CreateCompany from "../pages/auth/company/createCompany";
 import ForgotPassword from "../pages/auth/LognIn/ForgotPassword";
 import Profile from "../pages/Profile/Profile";
+import Setting from "../pages/setting/setting";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const AppRoutes = () => {
       <Route path="/SignUp/ChooseRole" element={<Role />} />
       <Route path="/SignUp/createCompany" element={<CreateCompany />} />
       <Route path="/Profile" element={<Profile />} />
+      <Route path="/Settings" element={<Setting />} />
       <Route path="/ProjectDetails/:id" element={<ProjectDetails />} />
       <Route path="/TaskDetails/:id" element={<TaskDetails />} />
       <Route path="/AddProject" element={<AddProject />} />

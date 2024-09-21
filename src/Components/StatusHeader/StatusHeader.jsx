@@ -16,7 +16,7 @@ const StatusHeader = ({ buttons, onFilterChange }) => {
   };
 
   return (
-    <div className="StatusHeader my-2">
+    <div className="StatusHeader my-2 bg-light">
       <div className="flex">
         <div className="BtnGroup">
           {buttons.map((button, index) => (

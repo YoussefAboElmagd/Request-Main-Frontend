@@ -29,6 +29,7 @@ const Otp = () => {
   const location = useLocation();
   const {
     phone,
+    forget_email,
     forget,
     token,
     userData_signUp,
@@ -59,10 +60,13 @@ const Otp = () => {
 
     try {
       switch (true) {
-        case !!forget:
+        case !!forget_email:
           if (otp === forget.verificationCode) {
-            localStorage.setItem("user", JSON.stringify(userData));
-            localStorage.setItem("token", token);
+            console.log(
+              "otp ===  forget.verificationCode",
+              otp,
+              forget.verificationCode
+            );
             navigate("/forgotPassword", { state: { forget_id: forget.id } });
           } else {
             setError(t("OTP is incorrect"));
@@ -96,7 +100,7 @@ const Otp = () => {
           }
           break;
 
-        case !!email_signUp:
+        case !!userData_signUp:
           if (otp === userData_signUp.verificationCode) {
             console.log(otp);
             console.log(userData_signUp);
@@ -126,16 +130,16 @@ const Otp = () => {
     setCanResend(false);
     setTimeLeft(60);
     setError("");
-    setLoading(true);
 
     try {
       let result;
 
       // Handle resend OTP for different scenarios
-      if (forget) {
-        result = await dispatch(
-          forgetPassword({ email: forget.email })
-        ).unwrap();
+      if (forget_email) {
+        result = await forgetPassword(forget_email);
+        console.log(result);
+        console.log(result.verificationCode);
+
         forget.verificationCode = result.verificationCode;
       } else if (email_logIn) {
         result = await resendVerificationCode(email_logIn);
@@ -146,7 +150,11 @@ const Otp = () => {
         );
       } else if (email_signUp) {
         result = await resendVerificationCode(email_signUp);
-        userData_login.verificationCode = result.verificationCode;
+        userData_signUp.verificationCode = result.verificationCode;
+        console.log(
+          "Updated verification code after login resend:",
+          userData_signUp.verificationCode
+        );
       } else {
         throw new Error("Unable to resend OTP. Invalid request.");
       }
@@ -185,8 +193,8 @@ const Otp = () => {
               <img
                 src={OtpImg}
                 alt="OTP"
-                width={590}
-                height={516}
+                width={500}
+                height={500}
                 loading="lazy"
               />
             </div>
@@ -195,13 +203,27 @@ const Otp = () => {
                 <p>
                   {t(`An OTP message containing your code has been sent to `)}
                 </p>
-                <span className="text-red d-block">email</span>
+                <span className="text-red d-block">
+                  {
+                    phone
+                     ? `+${phone.substring(0, 2)} ${phone.substring(2, 5)} ${phone.substring(
+                          5
+                        )}`
+                      : forget_email
+                     ? forget_email
+                      : email_logIn
+                     ? email_logIn
+                      : email_signUp
+                     ? email_signUp
+                      : ""
+                  }
+                </span>
               </div>
               <OTPInput
                 value={otp}
                 onChange={setOtp}
                 numInputs={4}
-                shouldAutoFocus
+                shouldAutoFocus={true}
                 required
                 renderSeparator={<span> </span>}
                 renderInput={(props) => <input {...props} />}

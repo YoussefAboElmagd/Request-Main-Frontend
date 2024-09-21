@@ -88,8 +88,7 @@ body {
   font-family: "Work Sans", sans-serif;
   scroll-behavior: smooth;
   direction: ltr;
-
-  // background-color: var(--light);
+  background-color: var(--light) !important;
 }
 
 body[dir="rtl"] {

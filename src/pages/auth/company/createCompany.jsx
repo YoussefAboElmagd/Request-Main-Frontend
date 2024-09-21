@@ -21,9 +21,9 @@ const CreateCompany = () => {
   const [stamp, setStamp] = useState(null);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const [Loading, setLoading] = useState(false)
+  const [Loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const navigate =  useNavigate()
+  const navigate = useNavigate();
 
   // Function to handle image change and set preview for logo
   const handleLogoChange = (e) => {
@@ -47,66 +47,65 @@ const CreateCompany = () => {
     setSignature(dataUrl);
   };
 
-
-const clearFields = () => {
-  setLogoPreview(null);
-  setLogo(null);
-  setName("");
-  setStampPreview(null);
-  setStamp(null);
-};
+  const clearFields = () => {
+    setLogoPreview(null);
+    setLogo(null);
+    setName("");
+    setStampPreview(null);
+    setStamp(null);
+  };
 
   // handle submit
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if (!logo || !stamp || !name || !signature) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+    setLoading(true);
+    // Prepare updated user data
+    const files = {
+      companyLogo: logo,
+      electronicStamp: stamp,
+      signature: signature,
+    };
 
-   if (!logo || !stamp || !name || !signature) {
-     setError("Please fill in all required fields.");
-     return;
-   }
-   setLoading(true)
-  // Prepare updated user data
-  const files = {
-    companyLogo: logo,
-    electronicStamp: stamp,
-    signature: signature,
+    const updatedUser = {
+      companyName: name,
+    };
+
+    console.log("files: ", files);
+    console.log("updatedUser: ", updatedUser);
+
+    // Dispatch the update action
+    dispatch(
+      handleUpdateUser({ updatedData: updatedUser, companyFiles: files })
+    )
+      .unwrap()
+      .then(() => {
+        console.log("User updated successfully");
+        setError("");
+        setLoading(false);
+        navigate("/");
+        clearFields();
+      })
+      .catch((err) => {
+        console.error("Update user failed:", err);
+        setError(err);
+        setLoading(false);
+      });
   };
-
-  const updatedUser = {
-    companyName: name,
-  };
-
-  console.log("files: ", files);
-  console.log("updatedUser: ", updatedUser);
-
-  // Dispatch the update action
-  dispatch(handleUpdateUser({ updatedData: updatedUser, companyFiles: files }))
-    .unwrap()
-    .then(() => {
-      console.log("User updated successfully");
-      setError("")
-      setLoading(false)
-      navigate("/")
-    clearFields()
-
-    })
-    .catch((err) => {
-      console.error("Update user failed:", err);
-      setError(err);
-      setLoading(false);
-    });
-};
-if (Loading) {
-  return (
-    <div className="flex justify-center items-center">
-      <Loader  />
-    </div>
-  );
-}
+  if (Loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
-    <div className="CreateCompany h-screen relative effect overflow-hidden">
+    <div className="CreateCompany h-screen relative effect_right overflow-hidden">
       <AuthHeader />
       <div className="Wrapper flex items-center justify-between gap-2">
         <form

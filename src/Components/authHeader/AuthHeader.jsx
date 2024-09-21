@@ -29,7 +29,7 @@ const AuthHeader = () => {
     window.location.reload();
   };
   return (
-    <div className="top-0 bg-white flex items-center justify-end m-2 mx-5 rtl:inline-flex">
+    <div className="top-0  flex items-center justify-end m-2 mx-5 rtl:inline-flex">
       <div className="lang relative">
         <div
           className="lang_wrapper mx-2 flex gap-1 items-center cursor-pointer"
@@ -77,7 +77,7 @@ const AuthHeader = () => {
         </button>
       </Link>
       <Link to="/SignUp/ChooseRole">
-        <button className="py-1 px-10 bg-white border border-purple border-solid rounded-3xl text-purple m-2 font-semibold text-xl">
+        <button className="py-1 px-10 bg-light border border-purple border-solid rounded-3xl text-purple m-2 font-semibold text-xl">
           {t("Register")}
         </button>
       </Link>
