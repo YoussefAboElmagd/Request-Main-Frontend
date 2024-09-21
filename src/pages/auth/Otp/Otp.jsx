@@ -168,6 +168,22 @@ const Otp = () => {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        handleSubmit(e);
+      }
+    };
+
+    // Add event listener for keydown
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []); 
+
   return (
     <div className="Otp h-screen relative effect overflow-hidden">
       {loading ? (
@@ -204,19 +220,18 @@ const Otp = () => {
                   {t(`An OTP message containing your code has been sent to `)}
                 </p>
                 <span className="text-red d-block">
-                  {
-                    phone
-                     ? `+${phone.substring(0, 2)} ${phone.substring(2, 5)} ${phone.substring(
-                          5
-                        )}`
-                      : forget_email
-                     ? forget_email
-                      : email_logIn
-                     ? email_logIn
-                      : email_signUp
-                     ? email_signUp
-                      : ""
-                  }
+                  {phone
+                    ? `+${phone.substring(0, 2)} ${phone.substring(
+                        2,
+                        5
+                      )} ${phone.substring(5)}`
+                    : forget_email
+                    ? forget_email
+                    : email_logIn
+                    ? email_logIn
+                    : email_signUp
+                    ? email_signUp
+                    : ""}
                 </span>
               </div>
               <OTPInput

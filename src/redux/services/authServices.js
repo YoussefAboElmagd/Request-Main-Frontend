@@ -13,6 +13,8 @@ import {
   logoutSuccess,
   startAuth,
 } from "../slices/authSlice.js";
+import { DataURItoBlob } from "../../utils/dataURItoBlob.jsx";
+
 
 // Sign Up Thunk
 export const handleSignUp = createAsyncThunk(
@@ -100,28 +102,31 @@ export const handleUpdateUser = createAsyncThunk(
       // Upload company files if provided
       if (companyFiles) {
         const formData = new FormData();
+        formData.append("companyLogo", companyFiles.companyLogo);
+        formData.append("electronicStamp", companyFiles.electronicStamp);
 
-        if (companyFiles.companyLogo) {
-          formData.append("companyLogo", companyFiles.companyLogo);
-        }
-
-        if (companyFiles.electronicStamp) {
-          formData.append("electronicStamp", companyFiles.electronicStamp);
-        }
-
-        if (companyFiles.signature) {
-          const signatureBlob = dataURItoBlob(companyFiles.signature);
-          formData.append("signature", signatureBlob, "signature.jpg");
-        }
+        // Convert signature from base64 to blob and append it to FormData
+        const signatureBlob = DataURItoBlob(companyFiles.signature);
+        formData.append("signature", signatureBlob, "signature.jpg");
 
         console.log("FormData being sent: ", formData);
 
+        // Upload the company files
         const companyFilesResponse = await uploadCompanyFiles(
           userId,
           token,
           formData
         );
+
         console.log("Company Files Response => ", companyFilesResponse);
+
+        // Update the user object with new file URLs
+        userUpdated = {
+          ...userUpdated,
+          companyLogo: companyFilesResponse.companyLogo,
+          electronicStamp: companyFilesResponse.electronicStamp,
+          signature: companyFilesResponse.signature,
+        };
       }
 
       // Save updated user data in local storage
