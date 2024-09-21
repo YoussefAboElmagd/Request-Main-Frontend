@@ -9,11 +9,11 @@ import ProjectDetails from "../pages/Projects/ProjectDetails/ProjectDetails";
 import AddProject from "../pages/Projects/AddProject/AddProject";
 import AddTask from "../pages/Tasks/AddTask/AddTask";
 import TasksPerProject from "../pages/Tasks/TasksPerProject/TasksPerProject";
-import CreateTag from "../pages/Tags/CreateTag";
+import CreateTag from "../pages/setting/Tags/CreateTag.jsx";
 import TaskDetails from "../pages/Tasks/TaskDetails/TaskDetails";
 import CreateCompany from "../pages/auth/company/createCompany";
 import ForgotPassword from "../pages/auth/LognIn/ForgotPassword";
-import Profile from "../pages/Profile/Profile";
+import Profile from "../pages/setting/Profile/Profile.jsx";
 import Setting from "../pages/setting/setting";
 
 const AppRoutes = () => {

@@ -110,7 +110,7 @@ export const handleUpdateUser = createAsyncThunk(
         formData.append("signature", signatureBlob, "signature.jpg");
 
         console.log("FormData being sent: ", formData);
-
+ 
         // Upload the company files
         const companyFilesResponse = await uploadCompanyFiles(
           userId,

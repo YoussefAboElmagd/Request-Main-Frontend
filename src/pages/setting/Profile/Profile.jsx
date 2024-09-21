@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPencilAlt } from "react-icons/fa";
-import Button from "../../Components/UI/Button/Button";
+import { CiCamera } from "react-icons/ci";
+import Button from "../../../Components/UI/Button/Button";
 import { t } from "i18next";
-import { handleUpdateUser } from "../../redux/services/authServices";
-import UiInput from "../../Components/UI/Input/UIInput";
+import { handleUpdateUser } from "../../../redux/services/authServices";
+import UiInput from "../../../Components/UI/Input/UIInput";
 import Datepicker from "react-tailwindcss-datepicker";
 
 const Profile = () => {
@@ -24,7 +25,7 @@ const Profile = () => {
 
   // Handle image upload
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files;
     if (file) {
       setProfilePic(file);
       const reader = new FileReader();
@@ -50,7 +51,7 @@ const Profile = () => {
     const formattedDate = dob.endDate ? formatDate(dob.endDate) : "";
 
     console.log("Formatted Date:", formattedDate);
-    
+
     // Prepare updated user data
     const updatedUser = {
       name: Name,
@@ -75,35 +76,33 @@ const Profile = () => {
 
   return (
     <div className="Profile ">
-      <h1 className="title font-inter font-bold text-3xl text-black m-2">
-        {t("Profile")}
-      </h1>
       <div className="wrapper bg-white rounded-xl p-4 m-2">
-        <div className="flex gap-4">
-          <div className="flex flex-col">
-            <h6 className="sub_title font-inter font-medium text-base underline underline-offset-8 p-4">
-              {t("EditProfile")}
-            </h6>
-            <div className="avatar mx-4 my-2 relative">
-              <img
-                src={preview}
-                alt="avatar"
-                className="rounded-xl bg-red-200 w-24 h-24 object-contain"
-              />
-              <button
-                onClick={() => document.getElementById("fileInput").click()}
-                className="bg-purple-500 absolute w-8 h-8 rounded-full flex items-center justify-center -right-2 -bottom-1 cursor-pointer"
-              >
-                <FaPencilAlt className="text-white" />
-              </button>
-            </div>
+        <div className="flex flex-col">
+          <div className="avatar  my-2 relative ">
+            <img
+              src={preview}
+              alt="avatar"
+              className="rounded-full  w-24 h-24 object-contain relative border border-solid  border-gray p-2"
+            />
+            <button
+              onClick={() => document.getElementById("fileInput").click()}
+              className="absolute  h-10 rounded-b-full flex items-center justify-center left-0  bottom-px  cursor-pointer "
+              style={{
+                background: "#9E9E9E",
+                width: "95px",
+              }}
+            >
+              <CiCamera className="text-white w-5 h-5" />
+            </button>
           </div>
+        </div>
+        <div className="flex gap-4">
           <form className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
             <div className="flex flex-col my-2 md:col-span-2">
               <UiInput
                 type="text"
                 id="name"
-                label={t("UserName")}
+                label={t("Your Name")}
                 value={Name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Full Name"
@@ -191,9 +190,9 @@ const Profile = () => {
             </div>
           </form>
         </div>
-        <div className="btn flex items-center justify-center md:justify-end my-3">
+        {/* <div className="btn flex items-center justify-center md:justify-end my-3">
           <Button onClick={handleUpdate}>{t("save")}</Button>
-        </div>
+        </div> */}
         <input
           type="file"
           accept="image/*"

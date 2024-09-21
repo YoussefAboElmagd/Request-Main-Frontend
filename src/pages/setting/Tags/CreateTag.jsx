@@ -2,27 +2,25 @@ import React, { useState } from "react";
 import { hsvaToHex, getContrastingColor } from "@uiw/color-convert";
 import Swatch from "@uiw/react-color-swatch";
 import { t } from "i18next";
-import Input from "../../Components/UI/Input/Input";
+import Input from "../../../Components/UI/Input/Input";
 import "./style.scss";
-import Button from "../../Components/UI/Button/Button";
-import { PlayIcon } from "../../Components/UI/checkMark/Playbtn";
+import Button from "../../../Components/UI/Button/Button";
+import { PlayIcon } from "../../../Components/UI/checkMark/Playbtn";
 function Point({ color, checked }) {
-
-
   if (!checked) return null;
 
   return (
     <div
       style={{
-        height: 64,
-        width: 64,
+        height: 40,
+        width: 40,
         position: "absolute",
-        top: 32,
-        left: 32,
+        top: 20,
+        left: 20,
         borderRadius: "50%",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0.2,
+        opacity: 0.5,
         filter: `brightness(${checked ? 1 : 0.5})`,
         transform: "translate(-50%, -50%)",
         transition: "all 0.3s ease",
@@ -31,7 +29,7 @@ function Point({ color, checked }) {
         justifyContent: "center",
       }}
     >
-      {checked ? <PlayIcon color={getContrastingColor(color)} /> : null}
+      {checked ? <PlayIcon color={"white"} /> : null}
     </div>
   );
 }
@@ -63,8 +61,8 @@ function SwatchComponent({ color, onChange }) {
       rectProps={{
         children: <Point />,
         style: {
-          width: 64,
-          height: 64,
+          width: 40,
+          height: 40,
           borderRadius: "50%",
         },
       }}
@@ -80,10 +78,10 @@ const CreateTag = () => {
 
   return (
     <div className="CreateTag ">
-      <h1 className="title font-inter font-bold text-3xl text-black m-2">
-        {t("createTag")}
-      </h1>
       <div className="wrapper bg-white rounded-3xl p-3 m-2">
+        <h6>Previous tags</h6>
+        <div className="PreviousTags"></div>
+        <h6>+Add new tag</h6>
         <form action="submit">
           <Input
             label={t("TName")}
@@ -101,8 +99,8 @@ const CreateTag = () => {
 
           <input type="hidden" name="color" value={color} />
 
-          <div className="btn flex items-center justify-center md:justify-end m-4">
-            <Button>{t("save")}</Button>
+          <div className="btn flex items-center justify-center md:justify-end m-4 ">
+            <Button className={"!font-bold text-base !px-10 "}>{t("+Add new tag")}</Button>
           </div>
         </form>
       </div>
