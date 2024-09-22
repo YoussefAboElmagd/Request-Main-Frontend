@@ -349,3 +349,44 @@ export const addTask = async (taskData) => {
     throw error;
   }
 };
+
+
+// get all tags 
+
+export const getAllTags = async (token) => {
+  try {
+    const response = await axiosInstance.get(`tags`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from tags => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get tags error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+//  Add  Tag
+export const addTag = async ( tag) => {
+  try {
+    const response = await axiosInstance.post(
+      `tags`,
+      tag,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Response from add tag => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Add tag error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
