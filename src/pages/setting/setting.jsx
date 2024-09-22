@@ -2,12 +2,31 @@ import React, { useState } from "react";
 import Button from "../../Components/UI/Button/Button";
 import General from "./General/General";
 import Company from "./company/Company";
-import Security from "./Security";
+import Security from "./security/Security";
 import Profile from "./Profile/Profile";
 import CreateTag from "./Tags/CreateTag";
 import "./style.scss";
 import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
 import { addTag } from "../../Services/api";
+
+//  check input
+export function CheckInput({}) {
+  return (
+    <div className="toggle">
+      <label className="label">
+        <input
+          className="toggle-state"
+          type="checkbox"
+          name="check"
+          value="check"
+        />
+        <div className="toggle">
+          <div className="indicator"></div>
+        </div>
+      </label>
+    </div>
+  );
+}
 
 const Setting = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -35,7 +54,7 @@ const Setting = () => {
 
       const savePromises = tags.map(async (tag) => {
         try {
-          console.log("Sending tag to API:", tag); 
+          console.log("Sending tag to API:", tag);
           const response = await addTag(tag);
           console.log(`Tag added successfully:`, response);
           return response;

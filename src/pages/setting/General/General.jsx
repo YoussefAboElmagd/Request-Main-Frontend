@@ -3,26 +3,9 @@ import "./style.scss";
 import Button from "../../../Components/UI/Button/Button";
 import ContactUs from "../../../assets/images/ContactUs.svg";
 import { Link } from "react-router-dom";
+import { CheckInput } from "../setting";
 
-//  check input
 
-function CheckInput({}) {
-  return (
-    <div className="toggle">
-      <label className="label">
-        <input
-          className="toggle-state"
-          type="checkbox"
-          name="check"
-          value="check"
-        />
-        <div className="toggle">
-          <div className="indicator"></div>
-        </div>
-      </label>
-    </div>
-  );
-}
 
 function Wrapper({ head, paragraph }) {
   return (

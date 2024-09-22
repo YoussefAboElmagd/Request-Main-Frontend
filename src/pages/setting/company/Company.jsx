@@ -5,6 +5,7 @@ import Input from "../../../Components/UI/Input/Input";
 import { t } from "i18next";
 import { LiaStampSolid } from "react-icons/lia";
 import { SignatureBtn } from "../../../Components/signature/signature";
+import Button from "../../../Components/UI/Button/Button";
 
 const Company = () => {
   const user = useSelector((state) => state.auth.user);
@@ -13,18 +14,17 @@ const Company = () => {
   const [stampPreview, setStampPreview] = useState(user.electronicStamp);
   const [signature, setSignature] = useState(null);
 
+  const handleStampChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setStampPreview(URL.createObjectURL(file));
+    }
+    setStamp(file);
+  };
 
-    const handleStampChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        setStampPreview(URL.createObjectURL(file));
-      }
-      setStamp(file);
-    };
-
-    const handleSignatureChange = (dataUrl) => {
-      setSignature(dataUrl);
-    };
+  const handleSignatureChange = (dataUrl) => {
+    setSignature(dataUrl);
+  };
   // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -41,7 +41,7 @@ const Company = () => {
     <div className="Company">
       <div className="wrapper bg-white rounded-xl p-4 m-2">
         <div className="flex flex-col">
-          <div className="avatar  my-2 relative ">
+          <div className="avatar  my-2  mx-4 relative ">
             <img
               src={preview}
               alt="avatar"
@@ -60,7 +60,7 @@ const Company = () => {
           </div>
         </div>
         <div className="flex flex-col ">
-          <div className="companyName">
+          <div className="companyName mx-4 my-2">
             <Input
               type={"text"}
               id={"companyName"}
@@ -70,9 +70,8 @@ const Company = () => {
               onChange={(e) => setName(e.target.value)}
               label={"Company Name"}
               className={
-                "bg-white w-[500px] border  border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans  font-bold  text-base"
+                "bg-white  border   border-solid border-gray focus:border focus:border-solid focus:border-gray px-6 font-workSans  font-bold  text-base"
               }
-              label_class={"text-purple font-workSans font-bold text-base"}
             />
           </div>
 
@@ -102,11 +101,17 @@ const Company = () => {
               id="stamp"
               className="hidden"
               required={true}
+              onChange={handleStampChange}
             />
           </div>
           <div className="signature">
             <SignatureBtn onSignatureChange={handleSignatureChange} />
           </div>
+        </div>
+        <div className="flex items-center justify-end gap-2 m-2">
+          <Button  >
+            {t("Save")}
+          </Button>
         </div>
       </div>
       <input
