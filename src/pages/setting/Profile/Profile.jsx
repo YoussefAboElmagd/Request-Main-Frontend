@@ -7,6 +7,9 @@ import { t } from "i18next";
 import { handleUpdateUser } from "../../../redux/services/authServices";
 import UiInput from "../../../Components/UI/Input/UIInput";
 import Datepicker from "react-tailwindcss-datepicker";
+import Alert from "../../../Components/Alert/Alert";
+import { TfiLock } from "react-icons/tfi";
+import "./style.scss"
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
@@ -25,7 +28,7 @@ const Profile = () => {
 
   // Handle image upload
   const handleImageUpload = (e) => {
-    const file = e.target.files;
+    const file = e.target.files[0];
     if (file) {
       setProfilePic(file);
       const reader = new FileReader();
@@ -97,7 +100,10 @@ const Profile = () => {
           </div>
         </div>
         <div className="flex gap-4">
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          <form
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full"
+            onSubmit={handleUpdate}
+          >
             <div className="flex flex-col my-2 md:col-span-2">
               <UiInput
                 type="text"
@@ -188,6 +194,15 @@ const Profile = () => {
                 placeholder="Country"
               />
             </div>
+            <Alert
+              icon={<TfiLock className="w-5 h-5 text-gray-600" />}
+              msg={
+                "We keep your data private and never share it with third-parties.  "
+              }
+              msg_class={"msg_profile"}
+              icon_class={"icon_profile"}
+              customClass={"alert_profile col-span-2"}
+            />
           </form>
         </div>
         {/* <div className="btn flex items-center justify-center md:justify-end my-3">

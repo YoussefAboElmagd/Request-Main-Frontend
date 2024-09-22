@@ -14,7 +14,7 @@ const SwitchTabs = ({ data, onTabChange }) => {
   };
 
   return (
-    <div className="switchingTabs rounded-lg p-1">
+    <div className="switchingTabs  p-1">
       <div className="tabItems gap-5 flex items-center relative ">
         {data.map((tab, index) => (
           <span

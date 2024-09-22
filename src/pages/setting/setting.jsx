@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "../../Components/UI/Button/Button";
-import General from "./General";
-import Company from "./Company";
+import General from "./General/General";
+import Company from "./company/Company";
 import Security from "./Security";
 import Profile from "./Profile/Profile";
 import CreateTag from "./Tags/CreateTag";
@@ -35,7 +35,7 @@ const Setting = () => {
 
       const savePromises = tags.map(async (tag) => {
         try {
-          console.log("Sending tag to API:", tag); // Log the tag being sent
+          console.log("Sending tag to API:", tag); 
           const response = await addTag(tag);
           console.log(`Tag added successfully:`, response);
           return response;
