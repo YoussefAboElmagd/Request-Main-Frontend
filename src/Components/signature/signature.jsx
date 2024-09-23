@@ -15,6 +15,7 @@ import { RiCloseCircleLine, RiDeleteBinLine } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
 import { MdOutlinePanoramaHorizontal } from "react-icons/md";
+import { t } from "i18next";
 
 // Point component for swatch
 function Point({ color, checked }) {
@@ -208,7 +209,7 @@ export function SignatureBtn({ onSignatureChange }) {
             />
           ) : (
             <span className="font-workSans font-semibold text-xl leading-5">
-              Signature
+              {t("Signature")}
             </span>
           )}
         </button>

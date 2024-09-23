@@ -2,10 +2,21 @@ import { useLocation } from "react-router-dom";
 import AppRoutes from "../../Routes/routes";
 import Sidebar from "../SideBar/Sidebar";
 import Header from "../Header/Header";
+import { ToastContainer } from "react-toastify";
+  import "react-toastify/dist/ReactToastify.css";
+
 
 const Layout = () => {
   const location = useLocation();
-
+  const options = {
+    position: "bottom-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
   const noSidebarRoutes = [
     "/LogIn/Mail",
     "/LogIn",
@@ -27,6 +38,7 @@ const Layout = () => {
           <AppRoutes />
         </main>
       </div>
+      <ToastContainer  options={options} />
     </div>
   );
 };

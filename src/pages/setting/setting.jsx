@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Button from "../../Components/UI/Button/Button";
 import General from "./General/General";
 import Company from "./company/Company";
@@ -8,6 +8,8 @@ import CreateTag from "./Tags/CreateTag";
 import "./style.scss";
 import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
 import { addTag } from "../../Services/api";
+import { toast } from "react-toastify";
+import { t } from "i18next";
 
 //  check input
 export function CheckInput({}) {
@@ -31,13 +33,20 @@ export function CheckInput({}) {
 const Setting = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [tags, setTags] = useState([]);
-
+  const profileRef = useRef();
+  const generalRef = useRef();
   const saveGeneralChanges = () => {
-    console.log("Saving General Settings...");
+     if (generalRef.current) {
+       const settings = generalRef.current.handleSave();
+       console.log("General Settings Saved:", settings);
+       toast.success("General settings saved successfully!");
+     }
   };
 
   const saveProfileChanges = () => {
-    console.log("Saving Profile Settings...");
+    if (profileRef.current) {
+      profileRef.current.handleUpdate();
+    }
   };
 
   const saveCompanyChanges = () => {
@@ -46,6 +55,11 @@ const Setting = () => {
 
   const saveSecurityChanges = () => {
     console.log("Saving Security Settings...");
+  };
+
+  const handleSaveChanges = () => {
+    const currentTab = buttons[selectedTab];
+    currentTab.handleSave();
   };
 
   const saveCreateTagChanges = async () => {
@@ -77,31 +91,33 @@ const Setting = () => {
 
   const buttons = [
     {
-      label: "General",
+      label: t("General"),
       value: "General",
-      component: <General />,
+      component: <General ref={generalRef} />,
       handleSave: saveGeneralChanges,
     },
     {
-      label: "Personal Profile",
+      label: t("Personal Profile"),
       value: "Profile",
-      component: <Profile />,
+      component: (
+        <Profile ref={profileRef} onProfileUpdate={saveProfileChanges} />
+      ),
       handleSave: saveProfileChanges,
     },
     {
-      label: "Company Information",
+      label: t("Company Information"),
       value: "Company",
       component: <Company />,
       handleSave: saveCompanyChanges,
     },
     {
-      label: "Access & Security",
+      label: t("Access & Security"),
       value: "Security",
       component: <Security />,
       handleSave: saveSecurityChanges,
     },
     {
-      label: "Create Tags",
+      label: t("createTag"),
       value: "CreateTags",
       component: <CreateTag onTagsChange={handleTagsChange} />,
       handleSave: saveCreateTagChanges,
@@ -110,11 +126,6 @@ const Setting = () => {
 
   const handleTabChange = (tab, index) => {
     setSelectedTab(index);
-  };
-
-  const handleSaveChanges = () => {
-    const currentTab = buttons[selectedTab];
-    currentTab.handleSave();
   };
 
   return (
@@ -129,7 +140,7 @@ const Setting = () => {
               className={"!px-12 font-medium"}
               onClick={handleSaveChanges}
             >
-              Save Changes
+              {t("Save Changes")}
             </Button>
           </div>
         </div>

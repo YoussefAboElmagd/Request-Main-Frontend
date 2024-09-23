@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import { useState, useImperativeHandle, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaPencilAlt } from "react-icons/fa";
 import { CiCamera } from "react-icons/ci";
-import Button from "../../../Components/UI/Button/Button";
 import { t } from "i18next";
 import { handleUpdateUser } from "../../../redux/services/authServices";
 import UiInput from "../../../Components/UI/Input/UIInput";
 import Datepicker from "react-tailwindcss-datepicker";
 import Alert from "../../../Components/Alert/Alert";
 import { TfiLock } from "react-icons/tfi";
-import "./style.scss"
+import "./style.scss";
+import { toast } from "react-toastify";
+import  defaultAvatar from "../../../assets/images/avatar1.png"
 
-const Profile = () => {
+const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ const Profile = () => {
   const [city, setCity] = useState(user.city);
   const [country, setCountry] = useState(user.country);
   const [preview, setPreview] = useState(user.profilePic);
-
+  const [isUpdating, setIsUpdating] = useState(false);
   // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -50,12 +50,11 @@ const Profile = () => {
   };
 
   const handleUpdate = () => {
-    // Use the formatDate function to format the date
+    if (isUpdating) return; 
+
+    setIsUpdating(true); 
     const formattedDate = dob.endDate ? formatDate(dob.endDate) : "";
 
-    console.log("Formatted Date:", formattedDate);
-
-    // Prepare updated user data
     const updatedUser = {
       name: Name,
       email: Email,
@@ -66,16 +65,28 @@ const Profile = () => {
       dateOfBirth: formattedDate,
     };
 
-    console.log("Updated User Data: ", updatedUser);
+    const updateAction = profilePic
+      ? handleUpdateUser({ updatedData: updatedUser, profilePic })
+      : handleUpdateUser({ updatedData: updatedUser });
 
-    if (profilePic) {
-      dispatch(
-        handleUpdateUser({ updatedData: updatedUser, profilePic: profilePic })
-      );
-    } else {
-      dispatch(handleUpdateUser({ updatedData: updatedUser }));
-    }
+    dispatch(updateAction)
+      .then(() => {
+        toast.success("Profile changes saved successfully!");
+        setIsUpdating(false);
+
+        if (onProfileUpdate) {
+          onProfileUpdate();
+        }
+      })
+      .catch(() => {
+        setIsUpdating(false);
+      });
   };
+
+  // Expose the handleUpdate function
+  useImperativeHandle(ref, () => ({
+    handleUpdate,
+  }));
 
   return (
     <div className="Profile ">
@@ -83,13 +94,13 @@ const Profile = () => {
         <div className="flex flex-col">
           <div className="avatar  my-2 relative ">
             <img
-              src={preview}
+              src={preview || defaultAvatar}
               alt="avatar"
               className="rounded-full  w-24 h-24 object-contain relative border border-solid  border-gray p-2"
             />
             <button
               onClick={() => document.getElementById("fileInput").click()}
-              className="absolute  h-10 rounded-b-full flex items-center justify-center left-0  bottom-px  cursor-pointer "
+              className="absolute  h-10 rounded-b-full flex items-center justify-center ltr:left-0  rtl:right-0 bottom-px  cursor-pointer "
               style={{
                 background: "#9E9E9E",
                 width: "95px",
@@ -108,7 +119,7 @@ const Profile = () => {
               <UiInput
                 type="text"
                 id="name"
-                label={t("Your Name")}
+                label={t("yourName")}
                 value={Name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Full Name"
@@ -196,9 +207,9 @@ const Profile = () => {
             </div>
             <Alert
               icon={<TfiLock className="w-5 h-5 text-gray-600" />}
-              msg={
-                "We keep your data private and never share it with third-parties.  "
-              }
+              msg={t(
+                "We keep your data private and never share it with third-parties."
+              )}
               msg_class={"msg_profile"}
               icon_class={"icon_profile"}
               customClass={"alert_profile col-span-2"}
@@ -218,6 +229,6 @@ const Profile = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Profile;

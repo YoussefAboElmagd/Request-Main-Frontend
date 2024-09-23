@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "./style.scss";
+import { useLanguage } from "../../context/LanguageContext";
 
 const SwitchTabs = ({ data, onTabChange }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [activePosition, setActivePosition] = useState(0);
+  const { isRTL } = useLanguage();
 
   const activeTab = (tab, index) => {
     setActivePosition(index * 220); 
@@ -27,7 +29,7 @@ const SwitchTabs = ({ data, onTabChange }) => {
             {tab}
           </span>
         ))}
-        <span className="movingBg" style={{ left: `${activePosition}px` }} />
+        <span className="movingBg" style={{ ...(isRTL ? { right: `${activePosition}px` } : { left: `${activePosition}px` }), }} />
       </div>
     </div>
   );

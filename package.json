@@ -38,6 +38,7 @@
     "react-select-country-list": "^2.2.3",
     "react-signature-canvas": "^1.0.6",
     "react-tailwindcss-datepicker": "^1.7.2",
+    "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
     "sass": "^1.77.6",
     "tailwind-datepicker-react": "^1.4.3",

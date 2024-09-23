@@ -29,7 +29,7 @@
       border-radius: 15px;
       // background: var(--linear1);
       background-color: white;
-      transition: left cubic-bezier(0.88, -0.35, 0.565, 1.35) 0.4s;
+      transition: left cubic-bezier(0.88, -0.35, 0.565, 1.35) 0.4s ,  right cubic-bezier(0.88, -0.35, 0.565, 1.35) 0.4s ;
     }
   }
 }

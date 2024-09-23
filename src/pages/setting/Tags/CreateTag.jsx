@@ -112,7 +112,9 @@ const CreateTag = ({ onTagsChange }) => {
         </div>
       ) : (
         <div className="wrapper bg-white rounded-3xl p-3 m-2">
-          <h6 className="font-semibold text-sm leading-4">Previous tags</h6>
+          <h6 className="font-semibold text-sm leading-4">
+            {t("Previous tags")}
+          </h6>
           <div className="PreviousTags grid grid-cols-6 gap-2 bg-white rounded-3xl p-4 shadow-lg">
             {tags.map((tag, index) => (
               <div
@@ -129,7 +131,7 @@ const CreateTag = ({ onTagsChange }) => {
           </div>
 
           <h6 className="font-semibold text-sm leading-4 my-4">
-            + Add new tag
+            {t("+ Add new tag")}
           </h6>
 
           <form onSubmit={handleAddTag} className="py-5 px-8">
@@ -153,7 +155,7 @@ const CreateTag = ({ onTagsChange }) => {
 
             <div className="btn flex items-center justify-center md:justify-end m-4 ">
               <Button className={"!font-bold text-base !px-10"} type="submit">
-                {t("+Add new tag")}
+                {t("+ Add new tag")}
               </Button>
             </div>
           </form>

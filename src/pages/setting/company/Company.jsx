@@ -49,7 +49,7 @@ const Company = () => {
             />
             <button
               onClick={() => document.getElementById("fileInput").click()}
-              className="absolute  h-10 rounded-b-full flex items-center justify-center left-0  bottom-px  cursor-pointer "
+              className="absolute  h-10 rounded-b-full flex items-center justify-center ltr:left-0  rtl:right-0  bottom-px  cursor-pointer "
               style={{
                 background: "#9E9E9E",
                 width: "95px",
@@ -68,7 +68,7 @@ const Company = () => {
               placeholder={Name}
               required={true}
               onChange={(e) => setName(e.target.value)}
-              label={"Company Name"}
+              label={t("CompanyName")}
               className={
                 "bg-white  border   border-solid border-gray focus:border focus:border-solid focus:border-gray px-6 font-workSans  font-bold  text-base"
               }
@@ -109,9 +109,7 @@ const Company = () => {
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 m-2">
-          <Button  >
-            {t("Save")}
-          </Button>
+          <Button>{t("save")}</Button>
         </div>
       </div>
       <input
