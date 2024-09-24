@@ -6,7 +6,6 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdOutlinePayment,
 } from "react-icons/md";
-import avatar from "../../assets/images/avatar.png";
 import { CiGrid32, CiHome } from "react-icons/ci";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./style.scss";
 import Button from "../UI/Button/Button";
 import { handleLogout } from "../../redux/services/authServices";
+import avatar from "../../assets/images/avatar1.png"
 import { t } from "i18next";
 
 const Sidebar = () => {
@@ -111,7 +111,7 @@ const Sidebar = () => {
           >
             <div className="relative">
               <img
-                src={user.profilePic}
+                src={user.profilePic || avatar}
                 alt="avatar"
                 className="w-12 h-12 rounded-full object-cover transition-custom duration-500"
               />
@@ -162,7 +162,7 @@ const Sidebar = () => {
               onClick={handleLogoutClick}
               className={`mt-auto  mx-2 ${Open && "hidden"}`}
             >
-             {t("logout")}
+              {t("logout")}
             </Button>
           ) : (
             <Button className="mt-auto w-full">

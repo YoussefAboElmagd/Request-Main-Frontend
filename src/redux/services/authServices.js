@@ -5,7 +5,6 @@ import {
   signIn,
   updateUser,
   uploadAvatar,
-  uploadCompanyFiles,
 } from "../../Services/api.js";
 import {
   authSuccess,
@@ -13,8 +12,6 @@ import {
   logoutSuccess,
   startAuth,
 } from "../slices/authSlice.js";
-import { DataURItoBlob } from "../../utils/dataURItoBlob.jsx";
-
 
 // Sign Up Thunk
 export const handleSignUp = createAsyncThunk(
@@ -75,7 +72,7 @@ export const handleLogout = createAsyncThunk(
 export const handleUpdateUser = createAsyncThunk(
   "auth/updateUser",
   async (
-    { updatedData, profilePic, companyFiles },
+    { updatedData, profilePic },
     { dispatch, getState, rejectWithValue }
   ) => {
     try {
@@ -85,13 +82,11 @@ export const handleUpdateUser = createAsyncThunk(
       const { user, token } = state.auth;
       const userId = user._id;
 
-      // Update user data
       const updateResponse = await updateUser(userId, updatedData, token);
-      console.log("Update Response => ", updateResponse);
+      console.log("Update Response =>", updateResponse);
 
       let userUpdated = { ...user, ...updatedData };
 
-      // Upload avatar if provided
       if (profilePic) {
         const formData = new FormData();
         formData.append("avatar", profilePic);
@@ -99,41 +94,8 @@ export const handleUpdateUser = createAsyncThunk(
         userUpdated = { ...userUpdated, profilePic: avatarResponse.profilePic };
       }
 
-      // Upload company files if provided
-      if (companyFiles) {
-        const formData = new FormData();
-        formData.append("companyLogo", companyFiles.companyLogo);
-        formData.append("electronicStamp", companyFiles.electronicStamp);
-
-        // Convert signature from base64 to blob and append it to FormData
-        const signatureBlob = DataURItoBlob(companyFiles.signature);
-        formData.append("signature", signatureBlob, "signature.jpg");
-
-        console.log("FormData being sent: ", formData);
- 
-        // Upload the company files
-        const companyFilesResponse = await uploadCompanyFiles(
-          userId,
-          token,
-          formData
-        );
-
-        console.log("Company Files Response => ", companyFilesResponse);
-
-        // Update the user object with new file URLs
-        userUpdated = {
-          ...userUpdated,
-          companyLogo: companyFilesResponse.companyLogo,
-          electronicStamp: companyFilesResponse.electronicStamp,
-          signature: companyFilesResponse.signature,
-        };
-      }
-
-      // Save updated user data in local storage
-      localStorage.setItem("user", JSON.stringify(userUpdated));
-
-      // Update Redux store
       dispatch(authSuccess({ user: userUpdated, token }));
+      localStorage.setItem("user", JSON.stringify(userUpdated));
 
       return userUpdated;
     } catch (error) {
@@ -143,16 +105,5 @@ export const handleUpdateUser = createAsyncThunk(
   }
 );
 
-// Helper function to convert base64 to Blob
-const dataURItoBlob = (dataURI) => {
-  const byteString = atob(dataURI.split(",")[1]);
-  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
 
-  for (let i = 0; i < byteString.length; i++) {
-    ia[i] = byteString.charCodeAt(i);
-  }
 
-  return new Blob([ab], { type: mimeString });
-};

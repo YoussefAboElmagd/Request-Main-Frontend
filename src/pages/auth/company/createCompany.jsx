@@ -9,11 +9,15 @@ import { SignatureBtn } from "../../../Components/signature/signature";
 import { t } from "i18next";
 import Button from "../../../Components/UI/Button/Button";
 import { handleUpdateUser } from "../../../redux/services/authServices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../Components/Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { uploadCompanyFiles } from "../../../Services/api";
+import { toast } from "react-toastify";
 
 const CreateCompany = () => {
+    const user = useSelector((state) => state.auth.user);
+    const userId = user._id;
   const [logoPreview, setLogoPreview] = useState(null);
   const [stampPreview, setStampPreview] = useState(null);
   const [signature, setSignature] = useState(null);
@@ -22,7 +26,6 @@ const CreateCompany = () => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [Loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Function to handle image change and set preview for logo
@@ -56,46 +59,42 @@ const CreateCompany = () => {
   };
 
   // handle submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+   e.preventDefault();
+   setLoading(true);
 
-    if (!logo || !stamp || !name || !signature) {
-      setError("Please fill in all required fields.");
-      return;
-    }
-    setLoading(true);
-    // Prepare updated user data
-    const files = {
-      companyLogo: logo,
-      electronicStamp: stamp,
-      signature: signature,
-    };
+   // Prepare updated data
+   const updatedData = {
+     companyLogo: logo,
+     electronicStamp: stamp,
+     signature: signature,
+     companyName: name,
+   };
+   console.log("Updated data:", updatedData);
 
-    const updatedUser = {
-      companyName: name,
-    };
+   try {
+     const res = await uploadCompanyFiles(userId, updatedData);
+     console.log("Response from server:", res);
 
-    console.log("files: ", files);
-    console.log("updatedUser: ", updatedUser);
+     const updatedUser = { ...user, ...res.updates };
+     console.log("Updated user data:", updatedUser);
 
-    // Dispatch the update action
-    dispatch(
-      handleUpdateUser({ updatedData: updatedUser, companyFiles: files })
-    )
-      .unwrap()
-      .then(() => {
-        console.log("User updated successfully");
-        setError("");
-        setLoading(false);
-        navigate("/");
-        clearFields();
-      })
-      .catch((err) => {
-        console.error("Update user failed:", err);
-        setError(err);
-        setLoading(false);
-      });
-  };
+     // Save to local storage
+     localStorage.setItem("user", JSON.stringify(updatedUser));
+     console.log("User saved to local storage successfully");
+
+     toast.success("User created successfully");
+     setError(null);
+     clearFields();
+     setLoading(false);
+     navigate("/");
+   } catch (err) {
+     console.error("Update user failed:", err);
+     setError(err.message || "An error occurred");
+   } finally {
+     setLoading(false);
+   }
+ };
   if (Loading) {
     return (
       <div className="flex justify-center items-center">

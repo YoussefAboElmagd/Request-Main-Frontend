@@ -18,6 +18,12 @@ const initialState = {
   isAuthenticated: !!localStorage.getItem("token"),
   isLoading: false,
   error: null,
+  preferences: {
+    languageChecked: false,
+    offersAndPackages: false,
+    notifications: false,
+    renewalSubscription: false,
+  },
 };
 
 const authSlice = createSlice({
@@ -44,9 +50,20 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
     },
+    updateUserPreferences(state, action) {
+      state.preferences = {
+        ...state.preferences,
+        ...action.payload,
+      };
+    },
   },
 });
 
-export const { startAuth, authSuccess, authFailure, logoutSuccess } =
-  authSlice.actions;
+export const {
+  startAuth,
+  authSuccess,
+  authFailure,
+  logoutSuccess,
+  updateUserPreferences,
+} = authSlice.actions;
 export default authSlice.reducer;

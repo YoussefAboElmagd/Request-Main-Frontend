@@ -9,7 +9,7 @@ import Alert from "../../../Components/Alert/Alert";
 import { TfiLock } from "react-icons/tfi";
 import "./style.scss";
 import { toast } from "react-toastify";
-import  defaultAvatar from "../../../assets/images/avatar1.png"
+import defaultAvatar from "../../../assets/images/avatar1.png";
 
 const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const user = useSelector((state) => state.auth.user);
@@ -50,9 +50,9 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   };
 
   const handleUpdate = () => {
-    if (isUpdating) return; 
+    if (isUpdating) return;
 
-    setIsUpdating(true); 
+    setIsUpdating(true);
     const formattedDate = dob.endDate ? formatDate(dob.endDate) : "";
 
     const updatedUser = {

@@ -5,9 +5,10 @@ import { t } from "i18next";
 import Input from "../../../Components/UI/Input/Input";
 import Button from "../../../Components/UI/Button/Button";
 import Loader from "../../../Components/Loader/Loader";
-import { getAllTags } from "../../../Services/api";
+import { getAllTagsByUser } from "../../../Services/api";
 import "./style.scss";
 import { PlayIcon } from "../../../Components/UI/checkMark/Playbtn";
+import { useSelector } from "react-redux";
 
 function Point({ checked }) {
   if (!checked) return null;
@@ -63,7 +64,7 @@ function SwatchComponent({ color, onChange }) {
       color={color}
       rectProps={{
         style: { width: 40, height: 40, borderRadius: "50%" },
-        children: <Point />,
+        children: <Point checked={true} />,
       }}
       onChange={(hsvColor) => onChange(hsvaToHex(hsvColor))}
     />
@@ -71,16 +72,19 @@ function SwatchComponent({ color, onChange }) {
 }
 
 const CreateTag = ({ onTagsChange }) => {
-  const [color, setColor] = useState("#ffffff");
+  const user = useSelector((state) => state.auth.user);
+  const userId = user._id;
+  const [color, setColor] = useState("#73A8FF");
   const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState([]);
+  const [newTags, setNewTags] = useState([]); // Track newly created tags
   const [newTagName, setNewTagName] = useState("");
 
   useEffect(() => {
     const getTags = async () => {
       setLoading(true);
       try {
-        const result = await getAllTags();
+        const result = await getAllTagsByUser(userId);
         setTags(result.results);
       } catch (error) {
         console.error("Error fetching tags:", error);
@@ -89,23 +93,30 @@ const CreateTag = ({ onTagsChange }) => {
       }
     };
     getTags();
-  }, []);
+  }, [userId]);
 
-  // Function to handle form submission and add the new tag
   const handleAddTag = (e) => {
     e.preventDefault();
-
     const TagData = { name: newTagName, colorCode: color };
-    console.log("Tag Data from create :" ,  TagData );
-    
-    // Optimistically update the UI
-     const updatedTags = [...tags, TagData];
+
+    const updatedTags = [...tags, TagData];
     setTags(updatedTags);
+    setNewTags([...newTags, TagData]); // Add to newTags
+    onTagsChange(updatedTags);
+    setNewTagName("");
+  };
+
+  const handleDeleteTag = (tagToDelete) => {
+    const updatedTags = tags.filter((tag) => tag !== tagToDelete);
+    const updatedNewTags = newTags.filter((tag) => tag !== tagToDelete);
+
+    setTags(updatedTags);
+    setNewTags(updatedNewTags); // Update newTags
     onTagsChange(updatedTags);
   };
 
   return (
-    <div className="CreateTag ">
+    <div className="CreateTag">
       {loading ? (
         <div className="loader flex items-center justify-center m-auto">
           <Loader />
@@ -113,22 +124,42 @@ const CreateTag = ({ onTagsChange }) => {
       ) : (
         <div className="wrapper bg-white rounded-3xl p-3 m-2">
           <h6 className="font-semibold text-sm leading-4">
-            {t("Previous tags")}
+            {t("tags")}
           </h6>
-          <div className="PreviousTags grid grid-cols-6 gap-2 bg-white rounded-3xl p-4 shadow-lg">
-            {tags.map((tag, index) => (
-              <div
-                key={index}
-                className={`tag col-span-1 rounded-3xl p-1 text-center`}
-                style={{
-                  background: `${tag.colorCode}40`, // Opacity 25%
-                  color: tag.colorCode,
-                }}
-              >
-                {tag.name}
-              </div>
-            ))}
-          </div>
+          {tags.length > 0 ? (
+            <div className="PreviousTags grid grid-cols-6 gap-2 bg-white rounded-3xl p-4 shadow-lg">
+              {tags.map((tag, index) => (
+                <div
+                  key={index}
+                  className={`tag col-span-1 rounded-3xl p-1 text-center relative`}
+                  style={{
+                    background: `${tag.colorCode}40`, // Opacity 25%
+                    color: tag.colorCode,
+                  }}
+                >
+                  {tag.name}
+                  {newTags.includes(tag) && (
+                    <button
+                      className="absolute rounded-full bg-white w-6 -top-3 right-2"
+                      onClick={() => handleDeleteTag(tag)}
+                      style={{
+                      
+                        color: tag.colorCode,
+                      }}
+                    >
+                      <span className="w-4  font-semibold text-sm">
+                        &#x2715;
+                      </span>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-sm leading-4 text-gray-600">
+              {t("No previous tags")}
+            </div>
+          )}
 
           <h6 className="font-semibold text-sm leading-4 my-4">
             {t("+ Add new tag")}

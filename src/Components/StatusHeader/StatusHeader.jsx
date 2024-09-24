@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
 
-const StatusHeader = ({ buttons, onFilterChange }) => {
+const  StatusHeader = ({ buttons, onFilterChange }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [indicatorLeft, setIndicatorLeft] = useState(0);
 

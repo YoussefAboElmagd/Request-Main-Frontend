@@ -16,6 +16,7 @@ import ForgotPassword from "../pages/auth/LognIn/ForgotPassword";
 import Profile from "../pages/setting/Profile/Profile.jsx";
 import Setting from "../pages/setting/setting";
 import ContactUs from "../pages/contactUs/ContactUs.jsx";
+import ProjectHistory from "../pages/Projects/ProjectHistory/ProjectHistory.jsx";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ const AppRoutes = () => {
       <Route path="/Settings/Profile" element={<Profile />} />
       <Route path="/Settings" element={<Setting />} />
       <Route path="/ProjectDetails/:id" element={<ProjectDetails />} />
+      <Route path="/Projects" element={<ProjectHistory />} />
       <Route path="/TaskDetails/:id" element={<TaskDetails />} />
       <Route path="/AddProject" element={<AddProject />} />
       <Route path="/AddTask/:ProjectId" element={<AddTask />} />

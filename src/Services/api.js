@@ -25,10 +25,9 @@ export const signIn = async (userData) => {
       "Sign-in error:",
       error.response ? error.response.data : error.message
     );
-    throw error; 
+    throw error;
   }
 };
-
 
 // resend verification code
 
@@ -40,7 +39,7 @@ export const resendVerificationCode = async (email) => {
   } catch (error) {
     console.error(
       "Resend verification code error:",
-      error.response? error.response.data : error.message
+      error.response ? error.response.data : error.message
     );
     throw error;
   }
@@ -65,8 +64,6 @@ export const forgetPassword = async (email) => {
 // Update User API Call
 export const updateUser = async (userId, userData, token) => {
   try {
-    // Check userData before sending the request
-
     const response = await axiosInstance.put(`users/${userId}`, userData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -81,14 +78,13 @@ export const updateUser = async (userId, userData, token) => {
     throw error;
   }
 };
-export const uploadCompanyFiles = async (userId, token, formData) => {
+export const uploadCompanyFiles = async (userId,  updatedData) => {
   try {
     const response = await axiosInstance.put(
       `users/company/${userId}`,
-      formData,
+      updatedData,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       }
@@ -104,9 +100,6 @@ export const uploadCompanyFiles = async (userId, token, formData) => {
     throw error;
   }
 };
-
-
-
 
 // upload avatar
 
@@ -170,6 +163,31 @@ export const getAllProjectsForUser = async (userId, token) => {
   } catch (error) {
     console.error(
       "Get projects error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+// get Project history 
+
+export const getProjectHistory = async (Status, token) => {
+  try {
+    const response = await axiosInstance.get(
+      `project/admin/status/?status=${Status}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Response from project history => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get project history error: ",
       error.response?.data || error.message
     );
     throw error;
@@ -350,16 +368,11 @@ export const addTask = async (taskData) => {
   }
 };
 
+// get all tags
 
-// get all tags 
-
-export const getAllTags = async (token) => {
+export const getAllTagsByUser = async (userId) => {
   try {
-    const response = await axiosInstance.get(`tags`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.get(`tags/user/${userId}`);
 
     console.log("Response from tags => ", response);
     return response.data;
@@ -369,24 +382,39 @@ export const getAllTags = async (token) => {
   }
 };
 
-
 //  Add  Tag
-export const addTag = async ( tag) => {
+export const addTag = async (tag, userId) => {
   try {
-    const response = await axiosInstance.post(
-      `tags`,
-      tag,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axiosInstance.post(`tags/${userId}`, tag, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     console.log("Response from add tag => ", response);
     return response.data;
   } catch (error) {
     console.error("Add tag error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+//  send email contact us
+
+export const sendEmailContactUs = async (contactData, userId) => {
+  try {
+    const response = await axiosInstance.post(
+      `users/email/${userId}`,
+      contactData
+    );
+
+    console.log("Response from send email contact us => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Send email contact us error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

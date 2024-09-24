@@ -10,17 +10,18 @@ import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
 import { addTag } from "../../Services/api";
 import { toast } from "react-toastify";
 import { t } from "i18next";
+import { useSelector } from "react-redux";
 
 //  check input
-export function CheckInput({}) {
+export function CheckInput({ checked, onChange }) {
   return (
     <div className="toggle">
       <label className="label">
         <input
           className="toggle-state"
           type="checkbox"
-          name="check"
-          value="check"
+          checked={checked}
+          onChange={onChange}
         />
         <div className="toggle">
           <div className="indicator"></div>
@@ -30,17 +31,19 @@ export function CheckInput({}) {
   );
 }
 
+
 const Setting = () => {
+  const user = useSelector((state) => state.auth.user);
   const [selectedTab, setSelectedTab] = useState(0);
   const [tags, setTags] = useState([]);
   const profileRef = useRef();
   const generalRef = useRef();
   const saveGeneralChanges = () => {
-     if (generalRef.current) {
-       const settings = generalRef.current.handleSave();
-       console.log("General Settings Saved:", settings);
-       toast.success("General settings saved successfully!");
-     }
+    if (generalRef.current) {
+      const settings = generalRef.current.handleSave();
+      console.log("General Settings Saved:", settings);
+      toast.success("General settings saved successfully!");
+    }
   };
 
   const saveProfileChanges = () => {
@@ -69,7 +72,7 @@ const Setting = () => {
       const savePromises = tags.map(async (tag) => {
         try {
           console.log("Sending tag to API:", tag);
-          const response = await addTag(tag);
+          const response = await addTag(tag, user._id);
           console.log(`Tag added successfully:`, response);
           return response;
         } catch (error) {
@@ -79,6 +82,8 @@ const Setting = () => {
       });
 
       const results = await Promise.all(savePromises);
+      toast.success("tags created Successfully");
+
       console.log("All tags saved successfully:", results);
     } catch (error) {
       console.error("Error saving tags:", error);

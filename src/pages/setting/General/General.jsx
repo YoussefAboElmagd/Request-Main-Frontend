@@ -1,4 +1,4 @@
-import  { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { MdOutlineLanguage } from "react-icons/md";
 import "./style.scss";
 import Button from "../../../Components/UI/Button/Button";
@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 import { CheckInput } from "../setting";
 import { useLanguage } from "../../../context/LanguageContext";
 import { t } from "i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserPreferences } from "../../../redux/slices/authSlice";
+
 
 function Wrapper({ head, paragraph, checked, onToggle }) {
   return (
@@ -28,25 +31,38 @@ function Wrapper({ head, paragraph, checked, onToggle }) {
 }
 
 const General = forwardRef((props, ref) => {
-  const { isRTL, changeLanguage } = useLanguage();
-  const [languageChecked, setLanguageChecked] = useState(true); 
-  const [offersChecked, setOffersChecked] = useState(true);
-  const [notificationsChecked, setNotificationsChecked] = useState(true);
-  const [renewalChecked, setRenewalChecked] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const { changeLanguage } = useLanguage();
+
+  const [languageChecked, setLanguageChecked] = useState(
+    user.languageChecked || false
+  );
+  const [offersChecked, setOffersChecked] = useState(
+    user.offersAndPackages || false
+  );
+  const [notificationsChecked, setNotificationsChecked] = useState(
+    user.notifications || false
+  );
+  const [renewalChecked, setRenewalChecked] = useState(
+    user.renewalSubscription || false
+  );
 
   useImperativeHandle(ref, () => ({
     handleSave: () => {
-      if (languageChecked) {
-        changeLanguage("ar");
-      } else {
-        changeLanguage("en");
-      }
-      return {
+      changeLanguage(languageChecked ? "ar" : "en");
+
+      // Update user object
+      const updatedUser = {
+        ...user,
         languageChecked,
-        offersChecked,
-        notificationsChecked,
-        renewalChecked,
+        offersAndPackages: offersChecked,
+        notifications: notificationsChecked,
+        renewalSubscription: renewalChecked,
       };
+      // Save updated user to Redux and localStorage
+      dispatch(updateUserPreferences(updatedUser));
+      localStorage.setItem("user", JSON.stringify(updatedUser));
     },
   }));
 
@@ -117,7 +133,7 @@ const General = forwardRef((props, ref) => {
             )}
           </p>
           <Link to={"/ContactUs"}>
-            <Button className={"w-fit mt-2"}> {t("Contact us")}</Button>
+            <Button className={"w-fit mt-2"}>{t("Contact us")}</Button>
           </Link>
         </div>
         <div className="image">
