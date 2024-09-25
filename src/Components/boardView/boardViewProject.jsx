@@ -15,14 +15,30 @@ const BoardViewProject = ({
   filesLength,
   sDate,
   eDate,
+  onApprove, 
+  onCancel, 
 }) => {
+
+
+    const getStatusDisplay = (status) => {
+      switch (status) {
+        case "waiting":
+          return "Waiting for Review";
+        case "onGoing":
+          return "Working on It";
+        case "ended":
+          return "Completed";
+        default:
+          return status; 
+      }
+    };
   return (
-    <div className="box bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
+    <div className="box h-full bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
       <div className="tagName flex justify-center">
         <span
           className={`${Status} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
         >
-          {Status}
+          {getStatusDisplay(Status)}
         </span>
       </div>
       <div className="name flex justify-between items-center mx-2 my-3">
@@ -87,20 +103,29 @@ const BoardViewProject = ({
             {sDate}
           </span>
         </div>
-        <div className="eDate  flex items-center gap-1  ">
+        <div className="eDate flex items-center gap-1">
           <p className="font-poppins font-bold text-xs">{t("dDate")}:</p>
           <span className="font-poppins font-normal text-xs text-gray">
             {eDate}
           </span>
         </div>
       </div>
-      <div className="priority flex justify-center items-center mx-2 my-3">
-        <span
-          className={`${Submit}  py-3 w-full text-center rounded-xl font-inter font-semibold text-sm`}
-        >
-          {Submit}
-        </span>
-      </div>
+      {Status === "waiting" && (
+        <div className="buttons mx-2 my-3 flex justify-around gap-2 ">
+          <button
+            onClick={onCancel}
+            className="bg-red text-white rounded-3xl w-full font-bold py-2 px-4 "
+          >
+            {t("Cancel")}
+          </button>
+          <button
+            onClick={onApprove}
+            className="bg-green text-white rounded-3xl  w-full  font-bold py-2 px-4 "
+          >
+            {t("Approve")}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

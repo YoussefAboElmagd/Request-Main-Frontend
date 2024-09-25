@@ -171,7 +171,7 @@ const Otp = () => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Enter") {
-        handleSubmit(e);
+        handleSubmit();
       }
     };
 

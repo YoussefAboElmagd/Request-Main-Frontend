@@ -174,14 +174,11 @@ export const getAllProjectsForUser = async (userId, token) => {
 
 export const getProjectHistory = async (Status, token) => {
   try {
-    const response = await axiosInstance.get(
-      `project/admin/status/?status=${Status}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get(`project?status=${Status}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     console.log("Response from project history => ", response);
     return response.data;
@@ -404,7 +401,7 @@ export const addTag = async (tag, userId) => {
 export const sendEmailContactUs = async (contactData, userId) => {
   try {
     const response = await axiosInstance.post(
-      `users/email/${userId}`,
+      `users/contactUs/${userId}`,
       contactData
     );
 

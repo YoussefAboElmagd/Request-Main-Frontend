@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./style.scss";
+import { useLanguage } from "../../context/LanguageContext";
 
-const  StatusHeader = ({ buttons, onFilterChange }) => {
+const StatusHeader = ({ buttons, onFilterChange }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [indicatorLeft, setIndicatorLeft] = useState(0);
-
+  const [activePosition, setActivePosition] = useState(0);
+  const { isRTL } = useLanguage();
   const handleButtonClick = (index) => {
-    setIndicatorLeft(index * 65);
+    setActivePosition(index * 65);
     setSelectedIndex(index);
 
     // Call the onFilterChange function with the selected value
     onFilterChange(buttons[index].value);
-    
   };
 
   return (
@@ -22,7 +22,7 @@ const  StatusHeader = ({ buttons, onFilterChange }) => {
           {buttons.map((button, index) => (
             <button
               key={button.value}
-              className={`btn px-4 py-5 font-inter font-bold text-xs text-gray w-16  ${
+              className={`btn px-4 py-5 font-inter font-bold text-xs text-gray  md:w-16  ${
                 selectedIndex === index ? `active_${button.value}` : ""
               }`}
               onClick={() => handleButtonClick(index)}
@@ -36,7 +36,11 @@ const  StatusHeader = ({ buttons, onFilterChange }) => {
       <div className="bar">
         <span
           className="active-indicator"
-          style={{ left: `${indicatorLeft}px` }}
+          style={{
+            ...(isRTL
+              ? { right: `${activePosition}px` }
+              : { left: `${activePosition}px` }),
+          }}
         ></span>
       </div>
     </div>
@@ -51,7 +55,7 @@ StatusHeader.propTypes = {
       value: PropTypes.string.isRequired,
     })
   ).isRequired,
-  onFilterChange: PropTypes.func.isRequired, 
+  onFilterChange: PropTypes.func.isRequired,
 };
 
 export default StatusHeader;

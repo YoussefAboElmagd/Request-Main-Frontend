@@ -14,6 +14,8 @@ import "./style.scss";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { t } from "i18next";
+import { Box, CircularProgress } from "@mui/joy";
+import { Typography } from "@material-tailwind/react";
 
 const Home = () => {
   const user = useSelector((state) => state.auth.user);
@@ -69,10 +71,10 @@ const Home = () => {
     (project) => project.tasks && project.tasks.length > 0
   );
 
-  return (  
+  return (
     <div className="home">
       {/* Header */}
-      <div className="header grid grid-cols-4 gap-2">                              
+      <div className="header grid grid-cols-4 gap-2">
         <div className="box col-span-3 bg-white rounded-3xl shadow-sm p-3 flex items-center justify-between mx-2  ">
           <div className="content">
             <h6 className="font-poppins font-normal text-xl text-gray m-2">
@@ -206,6 +208,7 @@ const Home = () => {
           </div>
         )}
       </div>
+      
     </div>
   );
 };

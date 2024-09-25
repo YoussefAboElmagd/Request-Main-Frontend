@@ -7,7 +7,8 @@
   background: #007aff1a;
 }
 .working,
-.medium {
+.medium,
+.onGoing {
   color: #ca8a04;
   background: #eab3081a;
 }
@@ -26,7 +27,7 @@
 }
 .Submitting{
   color: white;
-  background-color: #34A853;
+  background-color: #34A853; 
 }
 .delayed{
   color: var(--red);

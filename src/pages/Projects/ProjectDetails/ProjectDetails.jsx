@@ -3,14 +3,17 @@ import React, { useEffect, useState } from "react";
 import Input from "../../../Components/UI/Input/Input";
 import { MdCalendarToday } from "react-icons/md";
 import { FaFileLines } from "react-icons/fa6";
-import { IoPrint } from "react-icons/io5";
+import { IoAddOutline, IoPrint } from "react-icons/io5";
 import { FaCommentMedical } from "react-icons/fa6";
 import { CircularProgress } from "@mui/joy";
+import { CircularProgress as CircularProgressbar } from "@mui/material";
+
 import { getProjectDetails } from "../../../Services/api";
 import { Link, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import Loader from "../../../Components/Loader/Loader";
 import { BiTask } from "react-icons/bi";
+import { Box } from "@mui/material";
 
 const ProjectDetails = () => {
   const [loading, setLoading] = useState(false);
@@ -52,6 +55,24 @@ const ProjectDetails = () => {
       return "Invalid Date";
     }
   };
+  const teamMembers = [
+    {
+      name: "Alice Johnson",
+      avatarUrl: "https://randomuser.me/api/portraits/women/1.jpg",
+    },
+    {
+      name: "Bob Smith",
+      avatarUrl: "https://randomuser.me/api/portraits/men/1.jpg",
+    },
+    {
+      name: "Charlie Brown",
+      avatarUrl: "https://randomuser.me/api/portraits/women/2.jpg",
+    },
+    {
+      name: "Diana Prince",
+      avatarUrl: "https://randomuser.me/api/portraits/men/2.jpg",
+    },
+  ];
   if (loading) {
     return (
       <div className="loader flex items-center justify-center   m-auto">
@@ -114,63 +135,218 @@ const ProjectDetails = () => {
           </span>
         </div>
       </div>
+      <div className="team flex items-center justify-between my-2 mx-3">
+        <h5 className="Team font-bold text-2xl  ">Team</h5>
+        <div className="avatars flex items-center  -space-x-1">
+          {teamMembers.length > 0 ? (
+            teamMembers.map((member, index) => (
+              <div
+                key={index}
+                className="avatar-container  w-10 h-10  ring-2  ring-white inline-block rounded-full   overflow-hidden"
+                title={member.name}
+              >
+                <img
+                  src={member.avatarUrl}
+                  alt={`${member.name}'s avatar`}
+                  className="w-full h-full object-cover "
+                />
+              </div>
+            ))
+          ) : (
+            <p>No Team Members</p>
+          )}
+          <button
+            className="w-10 h-10 rounded-full  flex justify-center items-center"
+            style={{
+              background: "#444D61",
+            }}
+          >
+            <span>
+              <IoAddOutline className="w-6 h-6 text-white" />
+            </span>
+          </button>
+        </div>
+      </div>
       <div className="wrapper bg-white grid grid-cols-2 rounded-3xl m-2 ">
-        <div className="box relative flex justify-center items-center">
-          <span className="index text-gray font-inter font-bold  text-2xl absolute left-12 top-12">
-            # 132
-          </span>
-          <div className="analytics_box rounded-md shadow-sm p-8 flex flex-col  gap-3 items-center">
-            <div className="progress_wrapper rounded-2xl shadow-md p-8 relative">
-              <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
-                Progress
-              </span>
-              <CircularProgress
-                className="!text-black font-poppins font-normal text-4xl"
-                determinate
-                sx={{
-                  "--CircularProgress-size": "180px",
-                  "--CircularProgress-trackThickness": "30px",
-                  "--CircularProgress-progressThickness": "30px",
-                  "--CircularProgress-animationDuration": "1s",
-                  "--CircularProgress-trackColor": "#F5F5F5",
-                  "--CircularProgress-progressColor": "var(--purple)",
-                  "--CircularProgress-trackShadowColor": "rgba(0, 0, 0, 0.12)",
-                  "--CircularProgress-progressShadowColor":
-                    "rgba(0, 0, 0, 0.12)",
-                  "--CircularProgress-trackBorderRadius": "50%",
-                  "--CircularProgress-progressBorderRadius": "50%",
-                  "--CircularProgress-trackShadowBlur": "10px",
-                  "--CircularProgress-progressShadowBlur": "10px",
-                  "--CircularProgress-progressShadowOffset": "0px 2px",
-                }}
-                value={70}
-                variant="solid"
-              >
-                70%
-              </CircularProgress>
+        <div className="box relative flex flex-col ">
+          <div className="head flex items-center  justify-between  my-3 mx-4">
+            <h5 className="font-bold  text-2xl ">{Project.name}</h5>
+            <p className="font-semibold  text-sm">{"Architecture"}</p>
+          </div>
+          <div className="analytics_box rounded-md shadow-md p-8 flex flex-col gap-3  mt-4 mb-4 mx-4 ">
+            <div className="progress_wrapper  flex items-center justify-between rounded-2xl shadow-md p-8 relative">
+              <div className="Progress">
+                <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
+                  Progress
+                </span>
+                <CircularProgress
+                  className="!text-black font-poppins font-normal text-4xl"
+                  determinate
+                  sx={{
+                    "--CircularProgress-size": "180px",
+                    "--CircularProgress-trackThickness": "30px",
+                    "--CircularProgress-progressThickness": "30px",
+                    "--CircularProgress-animationDuration": "1s",
+                    "--CircularProgress-trackColor": "#F5F5F5",
+                    "--CircularProgress-progressColor": "var(--purple)",
+                    "--CircularProgress-trackShadowColor":
+                      "rgba(0, 0, 0, 0.12)",
+                    "--CircularProgress-progressShadowColor":
+                      "rgba(0, 0, 0, 0.12)",
+                    "--CircularProgress-trackBorderRadius": "50%",
+                    "--CircularProgress-progressBorderRadius": "50%",
+                    "--CircularProgress-trackShadowBlur": "10px",
+                    "--CircularProgress-progressShadowBlur": "10px",
+                    "--CircularProgress-progressShadowOffset": "0px 2px",
+                  }}
+                  value={70}
+                  variant="solid"
+                >
+                  70%
+                </CircularProgress>
+              </div>
+
+              <div className="tags">
+                <Box position="relative" display="inline-flex">
+                  {/* Green Progress Circle */}
+                  <CircularProgressbar
+                    variant="determinate"
+                    value={100}
+                    sx={{
+                      color: "var(--green)",
+                      "--CircularProgress-size": "180px",
+                      "--CircularProgress-trackThickness": "30px",
+                      "--CircularProgress-progressThickness": "30px",
+                    }}
+                    size={180}
+                    thickness={6}
+                  />
+                  <Box
+                    position="absolute"
+                    top="30%"
+                    left="4%"
+                    transform="translate(-50%, -50%)"
+                    color="white"
+                    fontSize="14px"
+                  >
+                    50
+                  </Box>
+
+                  {/* Purple Progress Circle */}
+                  <CircularProgressbar
+                    variant="determinate"
+                    value={70}
+                    sx={{
+                      color: "var(--purple)",
+                      position: "absolute",
+                      left: 0,
+                      "--CircularProgress-size": "180px",
+                      "--CircularProgress-trackThickness": "30px",
+                      "--CircularProgress-progressThickness": "30px",
+                    }}
+                    size={180}
+                    thickness={6}
+                  />
+                  <Box
+                    position="absolute"
+                    bottom="5%"
+                    left="30%"
+                    transform="translate(-50%, -50%)"
+                    color="white"
+                    fontSize="14px"
+                  >
+                    70
+                  </Box>
+
+                  {/* Red Progress Circle */}
+                  <CircularProgressbar
+                    variant="determinate"
+                    value={40}
+                    sx={{
+                      color: "var(--red)",
+                      position: "absolute",
+                      left: 0,
+                      "--CircularProgress-size": "180px",
+                      "--CircularProgress-trackThickness": "30px",
+                      "--CircularProgress-progressThickness": "30px",
+                    }}
+                    size={180}
+                    thickness={6}
+                  />
+                  <Box
+                    position="absolute"
+                    top="50%"
+                    right="3px"
+                    transform="translate(-50%, -50%)"
+                    color="white"
+                    fontSize="14px"
+                  >
+                    40
+                  </Box>
+
+                  {/* Yellow Progress Circle */}
+                  <CircularProgressbar
+                    variant="determinate"
+                    value={20}
+                    sx={{
+                      color: "var(--yellow)",
+                      position: "absolute",
+                      left: 0,
+                      "--CircularProgress-size": "180px",
+                      "--CircularProgress-trackThickness": "30px",
+                      "--CircularProgress-progressThickness": "30px",
+                    }}
+                    size={180}
+                    thickness={6}
+                  />
+                  <Box
+                    position="absolute"
+                    top="10%"
+                    right="20%"
+                    transform="translate(-50%, -50%)"
+                    color="white"
+                    fontSize="14px"
+                  >
+                    20
+                  </Box>
+                </Box>
+              </div>
             </div>
-            <div className="status_wrapper">
+            <div className="Badges flex items-center  justify-around gap-2">
               <span
-                className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
-                style={{
-                  background: "#FFDD9533",
-                  color: "#CA8A04",
-                }}
+                className={`working w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
               >
-                Work On It
+                Work on it
+              </span>
+              <span
+                className={`high w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
+              >
+                High
               </span>
             </div>
+            {Project.tags && Project.tags.length > 0 && (
+              <div className="Tags flex flex-wrap gap-2">
+                {Project.tags.map((tag, index) => (
+                  <div
+                    key={index}
+                    className="tag-item flex items-center gap-1 px-3 py-1 rounded-full"
+                  >
+                    <span
+                      className="w-4  h-4  rounded-sm"
+                      style={{
+                        backgroundColor: tag.colorCode || "#D3D3D3",
+                      }}
+                    />
+                    <span className="text-black font-semibold text-xs">
+                      {tag.name || "Unknown Tag"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         <div className="form m-3 mr-24 ">
-          <Input
-            type={"name"}
-            required={true}
-            className="bg-white border border-purple border-solid "
-            label={t("PName")}
-            placeholder={Project.name}
-            disabled
-          />
           <Input
             disabled
             required={true}
@@ -201,7 +377,7 @@ const ProjectDetails = () => {
             required={true}
             className="bg-white border border-purple border-solid "
             label={t("owner")}
-            placeholder={Owner.name}
+            placeholder={"belal"}
           />
           <Input
             disabled
@@ -209,7 +385,15 @@ const ProjectDetails = () => {
             required={true}
             className="bg-white border border-purple border-solid "
             label={t("contractor")}
-            placeholder={Contractor.name}
+            placeholder={"boda"}
+          />
+          <Input
+            disabled
+            type={"name"}
+            required={true}
+            className="bg-white border border-purple border-solid "
+            label={t("location")}
+            placeholder={"location"}
           />
           <div className="flex right-0 my-2 items-center justify-end">
             <button className="files flex items-center gap-1 mx-1">
