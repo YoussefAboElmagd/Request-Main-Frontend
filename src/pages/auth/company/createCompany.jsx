@@ -25,7 +25,7 @@ const CreateCompany = () => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isFormValid, setIsFormValid] = useState(false); // New state to track form validation
+  const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
 
   // Function to handle image change and set preview for logo
@@ -61,7 +61,7 @@ const CreateCompany = () => {
   // Form validation logic
   useEffect(() => {
     const isValid = logo && stamp && signature && name;
-    setIsFormValid(isValid); // Update form validation status
+    setIsFormValid(isValid);
   }, [logo, stamp, signature, name]);
 
   // handle submit
@@ -82,6 +82,7 @@ const CreateCompany = () => {
       };
 
       const res = await uploadCompanyFiles(userId, updatedData);
+      
 
       const updatedUser = { ...user, ...res.updates };
       localStorage.setItem("user", JSON.stringify(updatedUser));
@@ -100,7 +101,6 @@ const CreateCompany = () => {
       <AuthHeader />
       <div className="Wrapper flex items-center justify-between gap-2">
         <form
-          action="submit"
           className="form flex flex-col"
           onSubmit={handleSubmit}
         >
@@ -198,13 +198,13 @@ const CreateCompany = () => {
             <SignatureBtn onSignatureChange={handleSignatureChange} />
           </div>
 
-          {error && <p className="text-red">{error}</p>}
+          {error && <p className="text-red text-center">{error}</p>}
 
           {/* Submit Button */}
           <div className="btn flex items-center justify-center md:justify-end my-3 mx-1 !px-0">
             <Button
               type="submit"
-              disabled={!isFormValid} 
+              disabled={!isFormValid}
               className={`${
                 !isFormValid
                   ? "bg-gray-400 text-white cursor-not-allowed"
