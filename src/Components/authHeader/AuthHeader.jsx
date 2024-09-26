@@ -49,7 +49,7 @@ const AuthHeader = () => {
             onClick={() => changeLanguage("ar")}
             className="ar font-workSans font-medium text-base text-gray-md m-1 cursor-pointer text-center"
           >
-            العربيه
+            العربية
           </div>
           <div
             onClick={() => changeLanguage("en")}

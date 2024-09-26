@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import { BiImageAdd } from "react-icons/bi";
 import { PiSignatureBold } from "react-icons/pi";
@@ -8,16 +8,15 @@ import "./style.scss";
 import { SignatureBtn } from "../../../Components/signature/signature";
 import { t } from "i18next";
 import Button from "../../../Components/UI/Button/Button";
-import { handleUpdateUser } from "../../../redux/services/authServices";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Loader from "../../../Components/Loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { uploadCompanyFiles } from "../../../Services/api";
 import { toast } from "react-toastify";
 
 const CreateCompany = () => {
-    const user = useSelector((state) => state.auth.user);
-    const userId = user._id;
+  const user = useSelector((state) => state.auth.user);
+  const userId = user._id;
   const [logoPreview, setLogoPreview] = useState(null);
   const [stampPreview, setStampPreview] = useState(null);
   const [signature, setSignature] = useState(null);
@@ -25,7 +24,8 @@ const CreateCompany = () => {
   const [stamp, setStamp] = useState(null);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false); // New state to track form validation
   const navigate = useNavigate();
 
   // Function to handle image change and set preview for logo
@@ -58,50 +58,42 @@ const CreateCompany = () => {
     setStamp(null);
   };
 
+  // Form validation logic
+  useEffect(() => {
+    const isValid = logo && stamp && signature && name;
+    setIsFormValid(isValid); // Update form validation status
+  }, [logo, stamp, signature, name]);
+
   // handle submit
- const handleSubmit = async (e) => {
-   e.preventDefault();
-   setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-   // Prepare updated data
-   const updatedData = {
-     companyLogo: logo,
-     electronicStamp: stamp,
-     signature: signature,
-     companyName: name,
-   };
-   console.log("Updated data:", updatedData);
+    if (!isFormValid) {
+      setError("All fields are required");
+      return;
+    }
 
-   try {
-     const res = await uploadCompanyFiles(userId, updatedData);
-     console.log("Response from server:", res);
+    try {
+      const updatedData = {
+        companyLogo: logo,
+        electronicStamp: stamp,
+        signature: signature,
+        companyName: name,
+      };
 
-     const updatedUser = { ...user, ...res.updates };
-     console.log("Updated user data:", updatedUser);
+      const res = await uploadCompanyFiles(userId, updatedData);
 
-     // Save to local storage
-     localStorage.setItem("user", JSON.stringify(updatedUser));
-     console.log("User saved to local storage successfully");
-
-     toast.success("User created successfully");
-     setError(null);
-     clearFields();
-     setLoading(false);
-     navigate("/");
-   } catch (err) {
-     console.error("Update user failed:", err);
-     setError(err.message || "An error occurred");
-   } finally {
-     setLoading(false);
-   }
- };
-  if (Loading) {
-    return (
-      <div className="flex justify-center items-center">
-        <Loader />
-      </div>
-    );
-  }
+      const updatedUser = { ...user, ...res.updates };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      toast.success("User created successfully");
+      clearFields();
+      navigate("/");
+    } catch (err) {
+      console.error("Update user failed:", err);
+      setError(err.message || "An error occurred");
+      toast.error(err.message || "An error occurred");
+    }
+  };
 
   return (
     <div className="CreateCompany h-screen relative effect_right overflow-hidden">
@@ -159,7 +151,7 @@ const CreateCompany = () => {
               onChange={(e) => setName(e.target.value)}
               label={"Company Name"}
               className={
-                "bg-white w-[500px] border  border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans  font-bold  text-base"
+                "bg-white w-[500px] border border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans font-bold text-base"
               }
               label_class={"text-purple font-workSans font-bold text-base"}
             />
@@ -205,9 +197,22 @@ const CreateCompany = () => {
           <div className="signature">
             <SignatureBtn onSignatureChange={handleSignatureChange} />
           </div>
+
           {error && <p className="text-red">{error}</p>}
+
+          {/* Submit Button */}
           <div className="btn flex items-center justify-center md:justify-end my-3 mx-1 !px-0">
-            <Button type="submit">{t("save")}</Button>
+            <Button
+              type="submit"
+              disabled={!isFormValid} 
+              className={`${
+                !isFormValid
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-purple text-white"
+              }`}
+            >
+              {t("save")}
+            </Button>
           </div>
         </form>
 

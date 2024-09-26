@@ -182,7 +182,7 @@ const Otp = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []); 
+  }, []);
 
   return (
     <div className="Otp h-screen relative effect overflow-hidden">

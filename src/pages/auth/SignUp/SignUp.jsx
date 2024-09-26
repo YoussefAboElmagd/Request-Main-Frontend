@@ -155,11 +155,11 @@ const SignUp = () => {
           <div className="Wrapper flex items-center justify-between">
             <div className="w-96 my-40">
               <h3 className="font-workSans font-bold text-5xl">
-                {t("sign in To activate your business easily")}
+                {t("sign up To activate your business easily")}
               </h3>
               <p className="font-jost font-medium text-2xl">
                 {t("if you don’t have an account you can")}
-                <Link className="text-blue block">{t("Register here!")}</Link>
+                <Link className="text-blue block">{t("sign in here!")}</Link>
               </p>
             </div>
             <div className="LogIn_Image flex justify-center -z-10">

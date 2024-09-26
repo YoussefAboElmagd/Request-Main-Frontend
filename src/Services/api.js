@@ -78,7 +78,7 @@ export const updateUser = async (userId, userData, token) => {
     throw error;
   }
 };
-export const uploadCompanyFiles = async (userId,  updatedData) => {
+export const uploadCompanyFiles = async (userId, updatedData) => {
   try {
     const response = await axiosInstance.put(
       `users/company/${userId}`,
@@ -169,8 +169,7 @@ export const getAllProjectsForUser = async (userId, token) => {
   }
 };
 
-
-// get Project history 
+// get Project history
 
 export const getProjectHistory = async (Status, token) => {
   try {

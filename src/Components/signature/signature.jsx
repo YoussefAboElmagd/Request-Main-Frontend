@@ -113,23 +113,22 @@ export function SignatureBtn({ onSignatureChange }) {
     }
   };
 
-  const handleTrim = (e) => {
-    e.preventDefault();
+ 
+  const handleSaveSignature = () => {
     if (signaturePadRef.current) {
-      const res = signaturePadRef.current
-        .getTrimmedCanvas()
-        .toDataURL("image/jpeg");
-      setPreview(res);
-      localStorage.setItem("Signature", res);
+      const trimmedCanvas = signaturePadRef.current.getTrimmedCanvas();
+      const dataUrl = trimmedCanvas.toDataURL("image/png");
+
+      setPreview(dataUrl);
+      localStorage.setItem("Signature", dataUrl);
+
       if (onSignatureChange) {
-        onSignatureChange(res);
+        onSignatureChange(dataUrl); // Pass back to parent
       }
-      const uniqueId = uuidv4().slice(0, 4);
-      const a = document.createElement("a");
-      a.href = res;
-      a.download = `signature_${uniqueId}.jpeg`;
-      a.click();
-      handleOpen(false);
+
+      handleOpen(); // Close the dialog after saving
+    } else {
+      toast.error("Please draw your signature first.");
     }
   };
 
@@ -191,10 +190,7 @@ export function SignatureBtn({ onSignatureChange }) {
         onClick={handleOpen}
         className="box flex justify-between items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer"
       >
-        <button
-          onClick={handleOpen}
-          className="flex justify-start items-center"
-        >
+        <button className="flex justify-start items-center">
           <span
             className="icon_wrapper rounded-2xl p-5 my-2 mx-4"
             style={{ background: "#CCABDA33" }}
@@ -290,7 +286,7 @@ export function SignatureBtn({ onSignatureChange }) {
           </div>
           <button
             className="save bg-linear_1 text-white px-4 py-2 rounded-md"
-            onClick={handleTrim}
+            onClick={handleSaveSignature}
           >
             Save
           </button>
