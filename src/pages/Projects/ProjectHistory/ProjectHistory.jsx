@@ -8,12 +8,6 @@ import BoardViewProject from "../../../Components/boardView/boardViewProject";
 import { Link } from "react-router-dom";
 import { IoAddOutline } from "react-icons/io5";
 import Loader from "../../../Components/Loader/Loader";
-// import { Box, CircularProgress, Typography } from "@mui/material";
-// import {
-//   CircularProgressbar,
-//   CircularProgressbarWithChildren,
-//   buildStyles,
-// } from "react-circular-progressbar";
 import avatar from "../../../assets/images/Avatar.jpg"
 
 const ProjectHistory = () => {
@@ -128,27 +122,3 @@ export default ProjectHistory;
 
 
 
-//       <CircularProgressbarWithChildren
-//         value={80}
-//         styles={buildStyles({
-//           pathColor: "red",
-//           trailColor: "blue",
-//           strokeLinecap: "butt",
-//         })}
-//       >
-//         {/* Foreground path */}
-//         <CircularProgressbar
-//           value={70}
-//           styles={buildStyles({
-//             trailColor: "orange",
-//             strokeLinecap: "butt",
-//           })}
-//         />
-//         <CircularProgressbar
-//           value={70}
-//           styles={buildStyles({
-//             trailColor: "green",
-//             strokeLinecap: "butt",
-//           })}
-//         />
-//       </CircularProgressbarWithChildren>

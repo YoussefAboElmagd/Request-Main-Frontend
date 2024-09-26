@@ -10,6 +10,7 @@ import { getAllTasksPerProject } from "../../../Services/api";
 import BoardView from "../../../Components/boardView/boardView";
 import Loader from "../../../Components/Loader/Loader";
 import { format } from "date-fns";
+import avatar from "../../../assets/images/Avatar.jpg"
 
 const TasksPerProject = () => {
   const { id } = useParams();
@@ -95,7 +96,7 @@ const TasksPerProject = () => {
           </Link>
           {data.map((task) => {
             const avatars = task.assignees.map(
-              (assignee) => assignee.profilePic
+              (assignee) => assignee.profilePic || avatar
             );
 
             return (

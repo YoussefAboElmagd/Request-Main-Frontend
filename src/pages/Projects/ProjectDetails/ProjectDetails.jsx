@@ -118,6 +118,7 @@ const ProjectDetails = () => {
               </span>
             </div>
           </div>
+          
           <div className="team flex items-center justify-between my-2 mx-3">
             <h5 className="Team font-bold text-2xl  ">Team</h5>
             <div className="avatars flex items-center  -space-x-1">

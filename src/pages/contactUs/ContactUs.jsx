@@ -20,10 +20,23 @@ const ContactUs = () => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+
+  // Trim the message input
+  const trimmedMessage = Message.trim();
+
+  // Check if the trimmed message is empty
+  if (!trimmedMessage) {
+    toast.error("Please enter a message.");
+    return; // Exit the function if validation fails
+  }
+if (trimmedMessage === "" ) {
+  toast.error("message cannot be empty. ");
+  return; 
+}
   try {
     setError("");
     setLoading(true);
-    const formattedData = { message: Message };
+    const formattedData = { message: trimmedMessage };
     const res = await sendEmailContactUs(formattedData, userId);
     console.log(res);
     toast.success("Message sent successfully");
@@ -36,7 +49,6 @@ const handleSubmit = async (e) => {
     setMessage("");
   }
 };
-
 
   if (loading){
     return (
