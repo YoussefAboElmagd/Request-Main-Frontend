@@ -94,8 +94,7 @@ const ProjectHistory = () => {
             const avatars = Project.members.map(
               (member) => member.profilePic || avatar
             );
-            console.log(avatars);
-            
+         
 
             return (
               <div className="Project" key={Project._id}>

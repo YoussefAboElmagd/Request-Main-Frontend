@@ -7,8 +7,8 @@ import Loader from "../../Components/Loader/Loader";
 import Empty from "../../Components/empty/empty";
 import BoardView from "../../Components/boardView/boardView";
 import header from "../../assets/images/Project1.png";
-import avatar1 from "../../assets/images/avatar1.png";
-import avatar2 from "../../assets/images/avatar2.png";
+import avatar from "../../assets/images/Avatar.jpg";
+
 import { getAllProjectsForUser, getAnalysis } from "../../Services/api";
 import "./style.scss";
 import { format } from "date-fns";
@@ -166,47 +166,58 @@ const Home = () => {
               </button>
             </div>
             {filteredProjects.length > 0 ? (
-              filteredProjects.map((project) => (
-                <div className="project" key={project._id}>
-                  <Link
-                    to={`/ProjectDetails/${project._id}`}
-                    state={{ projectId: project._id }}
-                  >
-                    {" "}
-                    <div className="title flex items-center gap-3 m-3">
-                      <p className="font-inter font-semibold text-base">
-                        {project.name}
-                      </p>
-                      <span className="text-red font-extrabold text-xs w-6 h-6 rounded-full num flex justify-center items-center">
-                        {project.taskCount}
-                      </span>
-                    </div>
-                  </Link>
-                  <div className="grid grid-cols-4 gap-3">
-                    {project.tasks.map((task) => (
-                      <div className="task" key={task._id}>
-                        <Link
-                          to={`/TaskDetails/${task._id}`}
-                          state={{ taskId: task._id }}
-                        >
-                          <BoardView
-                            ProgressValue={70}
-                            NameOfTask={task.title}
-                            Tagname={"Project"}
-                            taskPriority={task.taskPriority}
-                            status={task.taskStatus}
-                            avatars={[avatar1, avatar2]}
-                            filesLength={2}
-                            MsgLength={6}
-                            sDate={formatDate(task.startDate)}
-                            eDate={formatDate(task.dueDate)}
-                          />
-                        </Link>
+              filteredProjects.map((project) => {
+                return (
+                  <div className="project" key={project._id}>
+                    <Link
+                      to={`/ProjectDetails/${project._id}`}
+                      state={{ projectId: project._id }}
+                    >
+                      <div className="title flex items-center gap-3 m-3">
+                        <p className="font-inter font-semibold text-base">
+                          {project.name}
+                        </p>
+                        <span className="text-red font-extrabold text-xs w-6 h-6 rounded-full num flex justify-center items-center">
+                          {project.taskCount}
+                        </span>
                       </div>
-                    ))}
+                    </Link>
+                    <div className="grid grid-cols-4 gap-3">
+                      {project.tasks.map((task) => {
+                        // Get avatars from assignees, falling back to the default avatar
+                        const avatars =
+                          Array.isArray(task.assignees) &&
+                          task.assignees.length > 0
+                            ? task.assignees.map(
+                                (assignee) => assignee.profilePic || avatar
+                              )
+                            : [avatar]; 
+                        return (
+                          <div className="task" key={task._id}>
+                            <Link
+                              to={`/TaskDetails/${task._id}`}
+                              state={{ taskId: task._id }}
+                            >
+                              <BoardView
+                                ProgressValue={70}
+                                NameOfTask={task.title}
+                                Tagname={"Project"}
+                                taskPriority={task.taskPriority}
+                                status={task.taskStatus}
+                                avatars={avatars}
+                                filesLength={2}
+                                MsgLength={6}
+                                sDate={formatDate(task.startDate)}
+                                eDate={formatDate(task.dueDate)}
+                              />
+                            </Link>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="empty flex items-center justify-center mt-20">
                 <Empty />
