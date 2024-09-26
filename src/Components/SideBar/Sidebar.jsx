@@ -43,7 +43,7 @@ const Sidebar = () => {
     {
       title: t("Home"),
       icon: <CiHome className="sidebar_icon" />,
-      path: "/Settings",
+      path: "/",
       notificationCount: notifications.Home,
     },
     {
@@ -105,7 +105,7 @@ const Sidebar = () => {
           }`}
         >
           <Link
-            to="/Profile"
+            to="/Settings"
             onClick={handleProfileClick}
             className="flex gap-2 items-center"
           >
