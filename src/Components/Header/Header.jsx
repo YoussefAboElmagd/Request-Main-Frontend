@@ -14,9 +14,9 @@ const Header = () => {
   const toggleNonfiction = () => {
     setIsOpen(!isOpen);
   };
-  const toggleLangOptions = () => {
-    setIsLangOpen(!isLangOpen);
-  };
+  // const toggleLangOptions = () => {
+  //   setIsLangOpen(!isLangOpen);
+  // };
 
   useEffect(() => {
     const lang = i18n.language || "en";
@@ -24,11 +24,11 @@ const Header = () => {
     document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
   }, [i18n.language]);
 
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-    document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-    window.location.reload();
-  };
+  // const changeLanguage = (lang) => {
+  //   i18n.changeLanguage(lang);
+  //   document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+  //   window.location.reload();
+  // };
   return (
     <div className="Header bg-white border border-light">
       <header className="flex justify-between align-center p-3">
@@ -53,7 +53,7 @@ const Header = () => {
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <div className="lang relative">
+          {/* <div className="lang relative">
             <div
               className="lang_wrapper mx-2 flex gap-1 items-center cursor-pointer"
               onClick={toggleLangOptions}
@@ -81,7 +81,7 @@ const Header = () => {
                 English
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="notifications">
             <button onClick={toggleNonfiction}>
               <MdNotificationsNone className=" w-[34px] h-[34px] text-gray relative" />

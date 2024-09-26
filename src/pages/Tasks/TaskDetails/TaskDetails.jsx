@@ -10,7 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import Loader from "../../../Components/Loader/Loader";
 import { getTaskDetails } from "../../../Services/api";
-
+import avatar from "../../../assets/images/avatar1.png";
 const TaskDetails = () => {
   const [loading, setLoading] = useState(false);
   const [Task, setTask] = useState({});
@@ -54,20 +54,39 @@ const TaskDetails = () => {
     );
   }
 
-  const assignee = Task.assignees && Task.assignees[0]; 
+  const assignee = Task.assignees && Task.assignees[0];
 
   return (
     <div className="TaskDetails mx-1">
-      <h1 className="title font-inter font-bold text-3xl text-black m-2">
-        {t("TaskDetails")}
-      </h1>
+      <div className="header m-2">
+        <h1 className="title font-inter font-bold text-3xl text-black ">
+          {Task.title}
+        </h1>
+        <div className="sData">
+          <span className="text-purple text-sm font-medium">task started:</span>
+          <span
+            className="text-sm  font-semibold mx-1"
+            style={{
+              color: "#A9B1BF",
+            }}
+          >
+            {formatDate(Task.startDate)}
+          </span>
+        </div>
+      </div>
 
       <div className="wrapper bg-white grid grid-cols-2 rounded-3xl m-2 ">
         <div className="box relative flex justify-center items-center">
-          <span className="index text-gray font-inter font-bold text-2xl absolute left-12 top-12">
-            # 132
-          </span>
           <div className="analytics_box rounded-md shadow-sm p-8 flex flex-col gap-3 items-center">
+            <span
+              className="font-inter font-semibold text-base text-center py-1 px-6 w-full rounded-2xl m-2"
+              style={{
+                background: "#81D4C236",
+                color: "#34C759",
+              }}
+            >
+              Electricity
+            </span>
             <div className="progress_wrapper rounded-2xl shadow-md p-8 relative">
               <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
                 Progress
@@ -99,20 +118,22 @@ const TaskDetails = () => {
             </div>
             <div className="status_wrapper flex flex-col">
               <span
-                className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
+                className="Tag px-14 py-2 w-full  rounded-3xl font-inter font-semibold text-sm mt-2"
                 style={{
                   background: "#FFDD9533",
                   color: "#CA8A04",
                 }}
               >
-                {Task.taskStatus}
+                {Task.taskStatus === "working"
+                  ? "Working On It"
+                  : "waiting"
+                  ? "Waiting For Review"
+                  : "Ended"
+                  ? "Completed"
+                  : Task.taskStatus}
               </span>
               <span
-                className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2 text-center"
-                style={{
-                  background: "#DEEBFFAD",
-                  color: "#0086D5",
-                }}
+                className={`Tag ${Task.taskPriority} px-14 py-2 w-full  rounded-3xl font-inter font-semibold text-sm mt-2 text-center`}
               >
                 {Task.taskPriority}
               </span>
@@ -152,16 +173,41 @@ const TaskDetails = () => {
             }}
             iconClass={"text-yellow"}
           />
-          {assignee && (
+          {Task.createdBy && (
             <div className="Tasksetter my-2">
               <p className="font-inter font-bold text-sm leading-4 my-2">
                 {t("Tasksetter")}
               </p>
-              <div className="flex justify-between items-center gap-1">
+              <div className="flex justify-between items-center gap-1 border border-purple rounded-lg py-1  px-2">
                 <div className="flex items-center gap-5">
                   <img
-                    className="h-10 w-10 rounded-full"
-                    src={assignee.profilePic}
+                    className="h-8 w-8 rounded-full"
+                    src={Task.createdBy.profilePic || avatar}
+                    alt="Tasksetter"
+                  />
+
+                  <span className="font-inter font-medium text-base">
+                    {Task.createdBy.name}
+                  </span>
+                </div>
+
+                <span className="font-inter font-medium text-base">
+                  {Task.createdBy.role.name}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {assignee && (
+            <div className="Responsible my-2">
+              <p className="font-inter font-bold text-sm leading-4 my-2">
+                {t("Responsible Person")}
+              </p>
+              <div className="flex justify-between items-center gap-1 border border-purple rounded-lg py-1  px-2">
+                <div className="flex items-center gap-5">
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src={assignee.profilePic || avatar}
                     alt="Tasksetter"
                   />
 
@@ -177,18 +223,6 @@ const TaskDetails = () => {
             </div>
           )}
 
-          <div className="Tag_wrapper my-2">
-            <p className="font-inter font-bold text-sm leading-4 my-2">{t("Tag")}</p>
-            <span
-              className="font-inter font-semibold text-base text-center py-1 px-6 rounded-2xl m-2"
-              style={{
-                background: "#81D4C236",
-                color: "#34C759",
-              }}
-            >
-              Electricity
-            </span>
-          </div>
           <div className="flex right-0 my-2 items-center justify-end">
             <button className="files flex items-center gap-1 mx-1">
               <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
@@ -205,9 +239,19 @@ const TaskDetails = () => {
                 />
               </span>
             </button>
-            <button className="print mx-1">
-              <IoPrint className="h-7 w-7 text-gray" />
-            </button>
+          </div>
+        </div>
+      </div>
+      <div className="desc ">
+        <h6 className="title m-2  ">{t("desc")}</h6>
+        <div className="bg-white rounded-3xl m-2">
+          <div
+            className="content px-4 py-4 font-normal text-base "
+            style={{
+              color: "#A9B1BF",
+            }}
+          >
+            {Task.description}
           </div>
         </div>
       </div>
