@@ -26,6 +26,7 @@ import { CiMail } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
 import { MdLockOutline } from "react-icons/md";
 import { handleSignUp } from "../../../redux/services/authServices";
+import { toast } from "react-toastify";
 const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -61,8 +62,41 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedName = name.trim();
+    const trimmedPhone = phone.trim();
+    const trimmedConfirmPassword = confirmPassword.trim();
 
-    const userData = { email, password, name, phone, role: roleId };
+    if (
+      trimmedEmail === "" ||
+      trimmedPassword === "" ||
+      trimmedName === "" ||
+      trimmedPhone === ""
+    ) {
+      toast.error(t("field cannot be empty, Please fill in all fields."));
+      return;
+    }
+
+    // Check for empty fields
+    if (
+      !trimmedEmail ||
+      !trimmedPassword ||
+      !trimmedName ||
+      !trimmedPhone ||
+      !trimmedConfirmPassword
+    ) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    const userData = {
+      email: trimmedEmail,
+      password: trimmedPassword,
+      name: trimmedName,
+      phone: trimmedPhone,
+      role: roleId,
+    };
     console.log("userData :::: =>  ", userData);
     try {
       const result = await dispatch(handleSignUp(userData)).unwrap();
@@ -70,17 +104,15 @@ const SignUp = () => {
       console.log(result.results);
       console.log(result.token);
 
-    
       const userData_signUp = result.results;
       const token_signUp = result.token;
 
       // Navigate to OTP page with user data
       navigate("/Otp", {
         state: {
-          email_signUp: email,
+          email_signUp: trimmedEmail,
           userData_signUp,
           token_signUp,
-          
         },
       });
     } catch (err) {

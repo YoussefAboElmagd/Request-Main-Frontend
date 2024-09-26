@@ -15,23 +15,21 @@ const BoardViewProject = ({
   filesLength,
   sDate,
   eDate,
-  onApprove, 
-  onCancel, 
+  onApprove,
+  onCancel,
 }) => {
-
-
-    const getStatusDisplay = (status) => {
-      switch (status) {
-        case "waiting":
-          return "Waiting for Review";
-        case "onGoing":
-          return "Working on It";
-        case "ended":
-          return "Completed";
-        default:
-          return status; 
-      }
-    };
+  const getStatusDisplay = (status) => {
+    switch (status) {
+      case "waiting":
+        return "Waiting for Review";
+      case "onGoing":
+        return "Working on It";
+      case "ended":
+        return "Completed";
+      default:
+        return status;
+    }
+  };
   return (
     <div className="box h-full bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
       <div className="tagName flex justify-center">
@@ -71,17 +69,16 @@ const BoardViewProject = ({
       </div>
       <div className="flex items-center justify-between mx-2 my-3">
         {avatars && (
-
-        <div className="members flex -space-x-2">
-          {avatars.map((avatar, index) => (
-            <img
-              key={index}
-              src={avatar}
-              alt="avatar"
-              className="w-8 h-8 border-2 border-white rounded-full m-1"
-            />
-          ))}
-        </div>
+          <div className="members flex -space-x-2">
+            {avatars.map((avatar, index) => (
+              <img
+                key={index}
+                src={avatar}
+                alt="avatar"
+                className="w-8 h-8 border-2 border-white rounded-full m-1"
+              />
+            ))}
+          </div>
         )}
         <div className="files flex items-center gap-3 cursor-pointer">
           <div className="files flex items-center gap-1">

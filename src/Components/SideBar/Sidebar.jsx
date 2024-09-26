@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./style.scss";
 import Button from "../UI/Button/Button";
 import { handleLogout } from "../../redux/services/authServices";
-import avatar from "../../assets/images/avatar1.png"
+import avatar from "../../assets/images/Avatar.jpg"
 import { t } from "i18next";
 
 const Sidebar = () => {

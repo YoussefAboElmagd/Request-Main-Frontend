@@ -78,7 +78,7 @@ const CreateTag = ({ onTagsChange }) => {
   const [color, setColor] = useState("#73A8FF");
   const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState([]);
-  const [newTags, setNewTags] = useState([]); // Track newly created tags
+  const [newTags, setNewTags] = useState([]); 
   const [newTagName, setNewTagName] = useState("");
 
   useEffect(() => {
@@ -100,7 +100,7 @@ const CreateTag = ({ onTagsChange }) => {
     e.preventDefault();
     const trimmedTagName = newTagName.trim(); 
     if (trimmedTagName === "") {
-      toast.error(t("Tag name cannot be empty")); // Example alert
+      toast.error(t("Tag name cannot be empty"));
       return;
     }
 

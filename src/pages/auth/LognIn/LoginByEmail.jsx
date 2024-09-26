@@ -15,6 +15,7 @@ import Google from "../../../assets/images/Google.png";
 import Apple from "../../../assets/images/Apple.png";
 import Facebook from "../../../assets/images/Facebook.png";
 import { signInThunk } from "../../../redux/services/authServices";
+import { toast } from "react-toastify";
 
 const LoginByMail = () => {
   const [loading, setLoading] = useState(false);
@@ -25,30 +26,44 @@ const LoginByMail = () => {
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
   console.log("Error object:", error);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    setLoading(true);
-    try {
-      const result = await dispatch(signInThunk({ email, password })).unwrap();
-      console.log("result :::: =>  ", result);
+  // Trim values from the input fields
+  const trimmedEmail = email.trim();
+  const trimmedPassword = password.trim();
 
-      const userData = result.userData;
-      const token = result.token;
+  // Check if any trimmed field is empty
+  if (!trimmedEmail || !trimmedPassword) {
+    toast.error("Please fill in all fields."); 
+    return; // Exit the function if validation fails
+  }
 
-      navigate("/Otp", {
-        state: {
-          userData_login: userData,
-          token,
-          password_logIn : password,
-          email_logIn: email,
-        },
-      });
-    } catch (err) {
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  try {
+    const result = await dispatch(
+      signInThunk({ email: trimmedEmail, password: trimmedPassword })
+    ).unwrap();
+    console.log("result :::: =>  ", result);
+
+    const userData = result.userData;
+    const token = result.token;
+
+    navigate("/Otp", {
+      state: {
+        userData_login: userData,
+        token,
+        password_logIn: trimmedPassword,
+        email_logIn: trimmedEmail,
+      },
+    });
+  } catch (err) {
+    // Optionally handle errors here, e.g., showing another toast
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="LogIn h-screen relative  effect overflow-hidden ">
