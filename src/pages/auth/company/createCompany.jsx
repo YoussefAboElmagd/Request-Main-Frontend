@@ -58,16 +58,7 @@ const CreateCompany = () => {
     setStamp(null);
   };
 
-   const options = {
-     position: "bottom-right",
-     autoClose: 5000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     stacked,
-   };
+   
   // Form validation logic
   useEffect(() => {
     const isValid = logo && stamp && signature && name;
@@ -79,7 +70,7 @@ const CreateCompany = () => {
     e.preventDefault();
     const trimmedName = name.trim()
     if (!trimmedName) {
-      toast.error("Company name cannot be empty", options);
+      toast.error("Company name cannot be empty");
       return;
     }
     if (!isFormValid) {

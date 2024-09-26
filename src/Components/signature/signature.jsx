@@ -114,17 +114,7 @@ export function SignatureBtn({ onSignatureChange }) {
   };
 
 
-   const options = {
-     position: "bottom-right",
-     autoClose: 5000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     stacked,
-   };
- 
+  
   const handleSaveSignature = () => {
     if (signaturePadRef.current) {
       const trimmedCanvas = signaturePadRef.current.getTrimmedCanvas();
@@ -139,7 +129,7 @@ export function SignatureBtn({ onSignatureChange }) {
 
       handleOpen(); // Close the dialog after saving
     } else {
-      toast.error("Please draw your signature first.", options);
+      toast.error("Please draw your signature first.");
     }
   };
 

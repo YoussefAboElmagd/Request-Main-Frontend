@@ -168,21 +168,21 @@ const Otp = () => {
     }
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Enter") {
-        handleSubmit(e);
-      }
-    };
+  // useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === "Enter") {
+  //       handleSubmit(e);
+  //     }
+  //   };
 
-    // Add event listener for keydown
-    window.addEventListener("keydown", handleKeyDown);
+  //   // Add event listener for keydown
+  //   window.addEventListener("keydown", handleKeyDown);
 
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  //   // Clean up the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
 
   return (
     <div className="Otp h-screen relative effect overflow-hidden">

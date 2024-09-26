@@ -96,21 +96,12 @@ const CreateTag = ({ onTagsChange }) => {
     getTags();
   }, [userId]);
 
-   const options = {
-     position: "bottom-right",
-     autoClose: 5000,
-     hideProgressBar: false,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     stacked,
-   };
+ 
   const handleAddTag = (e) => {
     e.preventDefault();
     const trimmedTagName = newTagName.trim(); 
     if (trimmedTagName === "") {
-      toast.error(t("Tag name cannot be empty"), options);
+      toast.error(t("Tag name cannot be empty"));
       return;
     }
 
