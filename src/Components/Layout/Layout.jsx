@@ -38,7 +38,7 @@ const Layout = () => {
           <AppRoutes />
         </main>
       </div>
-      <ToastContainer  options={options} />
+      <ToastContainer options={options} stacked />
     </div>
   );
 };

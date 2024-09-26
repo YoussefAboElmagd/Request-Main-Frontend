@@ -52,7 +52,16 @@ const handleImageUpload = (e) => {
     const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
-
+ const options = {
+   position: "bottom-right",
+   autoClose: 5000,
+   hideProgressBar: false,
+   closeOnClick: true,
+   pauseOnHover: true,
+   draggable: true,
+   progress: undefined,
+   stacked,
+ };
   const handleUpdate = () => {
     if (isUpdating || loading) return;
     setLoading(true);
@@ -76,7 +85,7 @@ const handleImageUpload = (e) => {
 
     dispatch(updateAction)
       .then(() => {
-        toast.success("Profile changes saved successfully!");
+        toast.success("Profile changes saved successfully!", options);
         setIsUpdating(false);
         setLoading(false);
 

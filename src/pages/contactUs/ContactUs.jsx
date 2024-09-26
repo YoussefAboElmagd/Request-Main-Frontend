@@ -78,9 +78,9 @@ if (trimmedMessage === "" ) {
                 "Do not hesitate to leave us a message about your problem or suggestion, and the support team will reply to you."
               )}
             </p>
-            <Link to={"/"}>
+            {/* <Link to={"/"}>
               <Button className={"w-fit mt-2"}>{t("Contact us")}</Button>
-            </Link>
+            </Link> */}
           </div>
           <div className="image">
             <img

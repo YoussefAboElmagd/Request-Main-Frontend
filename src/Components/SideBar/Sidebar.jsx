@@ -43,7 +43,7 @@ const Sidebar = () => {
     {
       title: t("Home"),
       icon: <CiHome className="sidebar_icon" />,
-      path: "/",
+      path: "/Settings",
       notificationCount: notifications.Home,
     },
     {
