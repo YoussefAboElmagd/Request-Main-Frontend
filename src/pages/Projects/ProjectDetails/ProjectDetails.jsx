@@ -206,7 +206,10 @@ const ProjectDetails = () => {
                 </CircularProgress>
               </div>
 
-              <div className="tags">
+              <div className="tags relative">
+                <span className="absolute -top-5 font-inter font-extrabold text-xs leading-4 my-1 ">
+                  tags
+                </span>
                 <Box position="relative" display="inline-flex">
                   {/* Green Progress Circle */}
                   <CircularProgressbar

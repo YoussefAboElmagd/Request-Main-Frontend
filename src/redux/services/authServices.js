@@ -88,12 +88,9 @@ export const handleUpdateUser = createAsyncThunk(
       let userUpdated = { ...user, ...updatedData };
 
       if (profilePic) {
-        const formData = new FormData();
-        formData.append("avatar", profilePic);
-        const avatarResponse = await uploadAvatar(userId, formData, token);
+        const avatarResponse = await uploadAvatar(userId, profilePic, token);
         userUpdated = { ...userUpdated, profilePic: avatarResponse.profilePic };
       }
-
       dispatch(authSuccess({ user: userUpdated, token }));
       localStorage.setItem("user", JSON.stringify(userUpdated));
 

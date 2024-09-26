@@ -10,6 +10,7 @@ import { TfiLock } from "react-icons/tfi";
 import "./style.scss";
 import { toast } from "react-toastify";
 import defaultAvatar from "../../../assets/images/avatar1.png";
+import Loader from "../../../Components/Loader/Loader";
 
 const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const user = useSelector((state) => state.auth.user);
@@ -26,18 +27,21 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const [country, setCountry] = useState(user.country);
   const [preview, setPreview] = useState(user.profilePic);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [loading, setLoading] = useState(false)
   // Handle image upload
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfilePic(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+const handleImageUpload = (e) => {
+  const file = e.target.files[0]; // Access the first file in the FileList
+  if (file) {
+     console.log("Selected file:", file); // Debugging: Check if file is selected correctly
+    setProfilePic(file); // Set the selected file
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreview(reader.result); // Set the preview image
+    };
+    reader.readAsDataURL(file); // Read the file as a Data URL
+  }
+};
+
 
   // Date formatting function
   const formatDate = (date) => {
@@ -50,7 +54,8 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   };
 
   const handleUpdate = () => {
-    if (isUpdating) return;
+    if (isUpdating || loading) return;
+    setLoading(true);
 
     setIsUpdating(true);
     const formattedDate = dob.endDate ? formatDate(dob.endDate) : "";
@@ -66,13 +71,14 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
     };
 
     const updateAction = profilePic
-      ? handleUpdateUser({ updatedData: updatedUser, profilePic })
+      ? handleUpdateUser({ updatedData: updatedUser, profilePic: profilePic })
       : handleUpdateUser({ updatedData: updatedUser });
 
     dispatch(updateAction)
       .then(() => {
         toast.success("Profile changes saved successfully!");
         setIsUpdating(false);
+        setLoading(false);
 
         if (onProfileUpdate) {
           onProfileUpdate();
@@ -80,6 +86,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
       })
       .catch(() => {
         setIsUpdating(false);
+        setLoading(false);
       });
   };
 
@@ -87,6 +94,14 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   useImperativeHandle(ref, () => ({
     handleUpdate,
   }));
+
+  if(loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="Profile ">

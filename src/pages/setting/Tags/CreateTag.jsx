@@ -9,6 +9,7 @@ import { getAllTagsByUser } from "../../../Services/api";
 import "./style.scss";
 import { PlayIcon } from "../../../Components/UI/checkMark/Playbtn";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 function Point({ checked }) {
   if (!checked) return null;
@@ -97,14 +98,21 @@ const CreateTag = ({ onTagsChange }) => {
 
   const handleAddTag = (e) => {
     e.preventDefault();
-    const TagData = { name: newTagName, colorCode: color };
+    const trimmedTagName = newTagName.trim(); 
+    if (trimmedTagName === "") {
+      toast.error(t("Tag name cannot be empty")); // Example alert
+      return;
+    }
+
+    const TagData = { name: trimmedTagName, colorCode: color };
 
     const updatedTags = [...tags, TagData];
     setTags(updatedTags);
     setNewTags([...newTags, TagData]); // Add to newTags
     onTagsChange(updatedTags);
-    setNewTagName("");
+    setNewTagName(""); // Clear input after adding the tag
   };
+
 
   const handleDeleteTag = (tagToDelete) => {
     const updatedTags = tags.filter((tag) => tag !== tagToDelete);
@@ -177,7 +185,6 @@ const CreateTag = ({ onTagsChange }) => {
               value={newTagName}
               onChange={(e) => setNewTagName(e.target.value)}
             />
-
             <div className="mt-4">
               <SwatchComponent color={color} onChange={setColor} />
             </div>

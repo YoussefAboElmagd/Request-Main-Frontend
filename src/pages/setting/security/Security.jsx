@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { CheckInput } from "../setting";
 import { t } from "i18next";
+import { Link } from "react-router-dom";
 
 const Security = () => {
   const user = useSelector((state) => state.auth.user);
@@ -14,7 +15,9 @@ const Security = () => {
       </div>
       <div className="changePassword flex items-center  justify-between   m-2 mt-8">
         <p>{t("Password")}</p>
-        <button className="btn  text-gold">{t("Change password")}</button>
+        <Link to={"/forgotPassword"}>
+          <button className="btn  text-gold">{t("Change password")}</button>
+        </Link>
       </div>
       <div className="divider h-px w-full bg-gray my-2"></div>
       <div className="twoFactor flex items-center  justify-between   mx-2 mt-4 mb-8">

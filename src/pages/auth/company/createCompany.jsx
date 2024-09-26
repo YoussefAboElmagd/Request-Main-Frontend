@@ -72,6 +72,7 @@ const CreateCompany = () => {
       setError("All fields are required");
       return;
     }
+    setLoading(true);
 
     try {
       const updatedData = {
@@ -86,13 +87,18 @@ const CreateCompany = () => {
 
       const updatedUser = { ...user, ...res.updates };
       localStorage.setItem("user", JSON.stringify(updatedUser));
+      setLoading(false);
       toast.success("User created successfully");
       clearFields();
       navigate("/");
+      window.location.reload();
+
     } catch (err) {
       console.error("Update user failed:", err);
       setError(err.message || "An error occurred");
       toast.error(err.message || "An error occurred");
+    }finally{
+      setLoading(false);
     }
   };
 

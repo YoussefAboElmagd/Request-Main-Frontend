@@ -74,6 +74,7 @@ const Setting = () => {
           console.log("Sending tag to API:", tag);
           const response = await addTag(tag, user._id);
           console.log(`Tag added successfully:`, response);
+         
           return response;
         } catch (error) {
           console.error(`Error adding tag: ${tag.name}`, error);
@@ -82,6 +83,7 @@ const Setting = () => {
       });
 
       const results = await Promise.all(savePromises);
+      window.location.reload()
       toast.success("tags created Successfully");
 
       console.log("All tags saved successfully:", results);

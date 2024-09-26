@@ -14,6 +14,7 @@ import Loader from "../../../Components/Loader/Loader";
 //   CircularProgressbarWithChildren,
 //   buildStyles,
 // } from "react-circular-progressbar";
+import avatar from "../../../assets/images/Avatar.jpg"
 
 const ProjectHistory = () => {
   const [data, setData] = useState([]);
@@ -90,7 +91,11 @@ const ProjectHistory = () => {
             </span>
           </Link>
           {data.map((Project) => {
-            const avatars = Project.members.map((member) => member.profilePic);
+            const avatars = Project.members.map(
+              (member) => member.profilePic || avatar
+            );
+            console.log(avatars);
+            
 
             return (
               <div className="Project" key={Project._id}>
@@ -103,7 +108,7 @@ const ProjectHistory = () => {
                     NameOfTask={"Project"}
                     Tagname={"title"}
                     Status={Project.status}
-                    avatars={avatars}
+                    avatars={avatars }
                     filesLength={2}
                     MsgLength={6}
                     sDate={"10 jan"}

@@ -70,6 +70,8 @@ const BoardViewProject = ({
         />
       </div>
       <div className="flex items-center justify-between mx-2 my-3">
+        {avatars && (
+
         <div className="members flex -space-x-2">
           {avatars.map((avatar, index) => (
             <img
@@ -80,6 +82,7 @@ const BoardViewProject = ({
             />
           ))}
         </div>
+        )}
         <div className="files flex items-center gap-3 cursor-pointer">
           <div className="files flex items-center gap-1">
             <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
