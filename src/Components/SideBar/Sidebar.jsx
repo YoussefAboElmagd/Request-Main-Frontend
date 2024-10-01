@@ -6,6 +6,7 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdOutlinePayment,
 } from "react-icons/md";
+import { RiTeamFill } from "react-icons/ri";
 import { CiGrid32, CiHome } from "react-icons/ci";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,6 +30,7 @@ const Sidebar = () => {
     Inbox: 0,
     Drive: 0,
     Plan: 1,
+    Team : 0,
     Settings: 0,
   });
   const dispatch = useDispatch();
@@ -61,7 +63,7 @@ const Sidebar = () => {
     {
       title: t("Drive"),
       icon: <MdDriveFolderUpload className="sidebar_icon" />,
-      path: "/Drive",
+      path: "/DriveFiles",
       notificationCount: notifications.Drive,
     },
     {
@@ -69,6 +71,12 @@ const Sidebar = () => {
       icon: <MdOutlinePayment className="sidebar_icon" />,
       path: "/plan",
       notificationCount: notifications.Plan,
+    },
+    {
+      title: t("Team"),
+      icon: <RiTeamFill className="sidebar_icon" />,
+      path: "/Team",
+      notificationCount: notifications.Team,
     },
     {
       title: t("settings"),

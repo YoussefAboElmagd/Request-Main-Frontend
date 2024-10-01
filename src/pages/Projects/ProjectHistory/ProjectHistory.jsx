@@ -18,8 +18,8 @@ const ProjectHistory = () => {
   const buttonData = [
     { label: t("All"), value: "all" },
     { label: t("Waiting"), value: "waiting" },
-    { label: t("Ongoing"), value: "onGoing" },
-    { label: t("Ended"), value: "ended" },
+    { label: t("working"), value: "working" },
+    { label: t("completed"), value: "completed" },
     { label: t("Delayed"), value: "delayed" },
   ];
   useEffect(() => {

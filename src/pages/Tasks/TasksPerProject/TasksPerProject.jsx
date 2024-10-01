@@ -10,7 +10,7 @@ import { getAllTasksPerProject } from "../../../Services/api";
 import BoardView from "../../../Components/boardView/boardView";
 import Loader from "../../../Components/Loader/Loader";
 import { format } from "date-fns";
-import avatar from "../../../assets/images/Avatar.jpg"
+import avatar from "../../../assets/images/Avatar.jpg";
 
 const TasksPerProject = () => {
   const { id } = useParams();

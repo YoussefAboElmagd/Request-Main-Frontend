@@ -22,10 +22,8 @@ const BoardViewProject = ({
     switch (status) {
       case "waiting":
         return "Waiting for Review";
-      case "onGoing":
+      case "working":
         return "Working on It";
-      case "ended":
-        return "Completed";
       default:
         return status;
     }

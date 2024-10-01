@@ -414,3 +414,46 @@ export const sendEmailContactUs = async (contactData, userId) => {
     throw error;
   }
 };
+
+//  get all Docs
+
+export const getAllDocs = async () => {
+  try {
+    const response = await axiosInstance.get(`project/admin/files`);
+
+    console.log("Response from docs => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get docs error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+//  get all discipline 
+
+export const getAllDiscipline = async () => {
+  try {
+    const response = await axiosInstance.get(`discipline`);
+
+    console.log("Response from discipline => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get discipline error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+// get all ActionCodes
+
+export const getAllActionCodes = async () => {
+  try {
+    const response = await axiosInstance.get(`action`);
+
+    console.log("Response from action codes => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get action codes error: ", error.response?.data || error.message);
+    throw error;
+  }
+};

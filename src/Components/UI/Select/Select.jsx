@@ -55,9 +55,9 @@ const Select = ({
   isDisabled = false,
   isClearable = true,
   isSearchable = true,
-  loading = false,
+  loading = false, 
   InputClassName = "",
- ...rest
+  ...rest
 }) => {
   return (
     <div className={`Input_container flex flex-col ${className}`}>
@@ -74,16 +74,21 @@ const Select = ({
         value={options.find((option) => option.value === value)}
         onChange={(selectedOption) => onChange(selectedOption?.value)}
         options={options}
-        placeholder={placeholder}
-        isDisabled={isDisabled}
+        placeholder={loading ? "Loading..." : placeholder} 
+        isDisabled={isDisabled || loading}
         isClearable={isClearable}
         isSearchable={isSearchable}
         classNamePrefix="select"
         className={InputClassName}
         styles={customStyles}
-        isLoading={loading}
+        isLoading={loading} 
+        {...rest}
       />
-      {loading && <ContentLoader />}
+      {loading && (
+        <div className="flex items-center justify-center mt-2">
+          <ContentLoader />
+        </div>
+      )}
     </div>
   );
 };
