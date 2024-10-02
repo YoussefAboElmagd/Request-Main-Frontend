@@ -55,10 +55,86 @@ const Select = ({
   isDisabled = false,
   isClearable = true,
   isSearchable = true,
-  loading = false, 
+  isMulti = false,
+  loading = false,
   InputClassName = "",
   ...rest
 }) => {
+  const tags = options;
+
+  const tagsStyle = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "white",
+      border: "1px solid var(--purple)",
+      borderRadius: "15px",
+      padding: "5px",
+      minHeight: "42px",
+      boxShadow: "none",
+      "&:hover": { borderColor: "var(--purple)" },
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#999",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "#FFDD94",
+      "&:hover": { color: "#FFDD94" },
+    }),
+    indicatorSeparator: () => ({ display: "none" }),
+    option: (provided, state) => {
+      // Get the colorCode from the current option if available
+      const currentTag = tags.find((tag) => tag.value === state.data.value);
+
+      return {
+        ...provided,
+        backgroundColor: `${currentTag.colorCode}40`,
+        color: currentTag.colorCode,
+        padding: "10px",
+        borderRadius: "8px",
+        margin: "5px 0px",
+        width: "100%",
+        textAlign: "center",
+        cursor: "pointer",
+      };
+    },
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "10px",
+      marginTop: "4px",
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+    }),
+    multiValue: (provided, state) => {
+      const currentTag = tags.find((tag) => tag.value === state.data.value);
+      return {
+        ...provided,
+        backgroundColor: `${currentTag.colorCode}40`,
+
+        borderRadius: "12px",
+        padding: "3px 6px",
+      };
+    },
+    multiValueLabel: (provided, state) => {
+      const currentTag = tags.find((tag) => tag.value === state.data.value);
+      return {
+        ...provided,
+        color: currentTag.colorCode,
+      };
+    },
+    multiValueRemove: (provided, state) => {
+      const currentTag = tags.find((tag) => tag.value === state.data.value);
+      return {
+        ...provided,
+        color: "white",
+        cursor: "pointer",
+        "&:hover": {
+          backgroundColor: `${currentTag.colorCode}10`,
+          color: currentTag.colorCode,
+        },
+      };
+    },
+  };
   return (
     <div className={`Input_container flex flex-col ${className}`}>
       {label && (
@@ -74,14 +150,15 @@ const Select = ({
         value={options.find((option) => option.value === value)}
         onChange={(selectedOption) => onChange(selectedOption?.value)}
         options={options}
-        placeholder={loading ? "Loading..." : placeholder} 
+        placeholder={loading ? "Loading..." : placeholder}
         isDisabled={isDisabled || loading}
         isClearable={isClearable}
         isSearchable={isSearchable}
+        isMulti={isMulti}
         classNamePrefix="select"
         className={InputClassName}
-        styles={customStyles}
-        isLoading={loading} 
+        styles={id === "tag" ? tagsStyle : customStyles}
+        isLoading={loading}
         {...rest}
       />
       {loading && (

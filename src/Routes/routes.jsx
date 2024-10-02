@@ -20,6 +20,8 @@ import ProjectHistory from "../pages/Projects/ProjectHistory/ProjectHistory.jsx"
 import Team from "../pages/Team/Team.jsx";
 import DriveFiles from "../pages/DriveFiles/DriveFiles.jsx";
 import RequestForMaterial from "../pages/Requests/RequestForMaterial.jsx";
+import FilesPerTag from "../pages/DriveFiles/FilesPerTag.jsx";
+import Models from "../pages/Requests/Models/Models.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -41,9 +43,12 @@ const AppRoutes = () => {
       <Route path="/AddProject" element={<AddProject />} />
       <Route path="/AddTask/:ProjectId" element={<AddTask />} />
       <Route path="/Project/Tasks/:id" element={<TasksPerProject />} />
-      <Route path="/createTag" element={<CreateTag />} /> 
+      <Route path="/createTag" element={<CreateTag />} />
       <Route path="/ContactUs" element={<ContactUs />} />
+      <Route path="/ContactUs" element={<ContactUs />} />
+      <Route path="/Models" element={<Models />} />
       <Route path="/DriveFiles" element={<DriveFiles />} />
+      <Route path="/DriveFiles/Tag/:TagName" element={<FilesPerTag />} />
       <Route
         path="/Requests/RequestForMaterial"
         element={<RequestForMaterial />}

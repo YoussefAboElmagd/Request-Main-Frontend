@@ -191,7 +191,7 @@ const Home = () => {
                             ? task.assignees.map(
                                 (assignee) => assignee.profilePic || avatar
                               )
-                            : [avatar]; 
+                            : [avatar];
                         return (
                           <div className="task" key={task._id}>
                             <Link
@@ -220,7 +220,9 @@ const Home = () => {
               })
             ) : (
               <div className="empty flex items-center justify-center mt-20">
-                <Empty />
+                <Empty
+                  paragraph={" You're just steps away from your screens"}
+                />
               </div>
             )}
           </div>

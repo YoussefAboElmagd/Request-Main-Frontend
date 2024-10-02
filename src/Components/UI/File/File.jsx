@@ -4,7 +4,6 @@ import { PiFilePdfFill } from "react-icons/pi";
 const File = ({
   TaskName,
   Pdf_Name,
-  TagName,
   style_bg,
   style_color,
   documentUrl, 
@@ -37,7 +36,7 @@ const File = ({
         </button>
       </div>
       <div
-        className="pdf_icon m-auto w-20 h-20 flex items-center justify-center rounded-full"
+        className="pdf_icon m-auto w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full"
         style={{
           backgroundColor: style_bg?.backgroundColor || "transparent",
         }}
@@ -51,17 +50,6 @@ const File = ({
       </div>
       <div className="Pdf_Name m-auto">
         <span>{Pdf_Name}</span>
-      </div>
-      <div className="tagName flex justify-center">
-        <span
-          className="Tag w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm my-2 mx-4"
-          style={{
-            backgroundColor: style_bg?.backgroundColor || "transparent",
-            color: style_color?.color || "black",
-          }}
-        >
-          {TagName}
-        </span>
       </div>
     </div>
   );

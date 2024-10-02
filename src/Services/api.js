@@ -429,7 +429,41 @@ export const getAllDocs = async () => {
   }
 };
 
-//  get all discipline 
+//  get Files Per Tag
+
+export const getFilesPerTag = async (tagId) => {
+  try {
+    const response = await axiosInstance.get(`project/files/${tagId}`);
+
+    console.log("Response from files per tag => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get files per tag error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  download All Files
+
+export const downloadAllFiles = async (tagId) => {
+  try {
+    const response = await axiosInstance.get(`project/download/${tagId}`);
+
+    console.log("Response from download all files => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Download all files error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  get all discipline
 
 export const getAllDiscipline = async () => {
   try {
@@ -438,11 +472,13 @@ export const getAllDiscipline = async () => {
     console.log("Response from discipline => ", response);
     return response.data;
   } catch (error) {
-    console.error("Get discipline error: ", error.response?.data || error.message);
+    console.error(
+      "Get discipline error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
-
 
 // get all ActionCodes
 
@@ -453,7 +489,32 @@ export const getAllActionCodes = async () => {
     console.log("Response from action codes => ", response);
     return response.data;
   } catch (error) {
-    console.error("Get action codes error: ", error.response?.data || error.message);
+    console.error(
+      "Get action codes error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// send request
+
+export const sendRequest = async (token, requestData) => {
+  try {
+    const response = await axiosInstance.post(`request`, requestData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from send request => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Send request error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

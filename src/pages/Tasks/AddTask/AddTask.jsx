@@ -8,6 +8,7 @@ import {
   getAllConsultants,
   getAllContractors,
   getAllOwners,
+  getAllTagsByUser,
 } from "../../../Services/api";
 import Select from "../../../Components/UI/Select/Select";
 import Loader from "../../../Components/Loader/Loader";
@@ -25,7 +26,8 @@ const AddTask = () => {
   const [Description, setDescription] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
   const [SelectedStatus, setSelectedStatus] = useState("");
-
+  const [selectedTag, setSelectedTag] = useState("");
+  const [tags, setTags] = useState([]);
   const [selectedOwner, setSelectedOwner] = useState("");
   const [selectedContractor, setSelectedContractor] = useState("");
   const [selectedConsultant, setSelectedConsultant] = useState("");
@@ -35,6 +37,8 @@ const AddTask = () => {
   const [ContractorsLoading, setContractorsLoading] = useState(true);
   const [Consultants, setConsultants] = useState([]);
   const [ConsultantsLoading, setConsultantsLoading] = useState(true);
+  const [tagsLoading, setTagsLoading] = useState(true);
+
   const [sDate, setSDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -52,8 +56,12 @@ const AddTask = () => {
     contractor: false,
     consultant: false,
     priority: false,
+    status: false,
+    tag: false,
   });
 
+  console.log(selectedTag);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,6 +91,16 @@ const AddTask = () => {
           }))
         );
         setConsultantsLoading(false);
+
+        const Tags = await getAllTagsByUser(user._id);
+        setTags(
+          Tags.results.map((tag) => ({
+            value: tag._id,
+            label: tag.name,
+            colorCode: tag.colorCode, 
+          }))
+        );
+        setTagsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -90,7 +108,7 @@ const AddTask = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user._id]);
 
   const priorityOptions = [
     { value: "low", label: t("low") },
@@ -113,7 +131,7 @@ const AddTask = () => {
   };
 
   const clearFormFields = () => {
-    setName("");  
+    setName("");
     setDescription("");
     setSDate({
       startDate: new Date(),
@@ -127,7 +145,8 @@ const AddTask = () => {
     setSelectedOwner("");
     setSelectedContractor("");
     setSelectedConsultant("");
-    setSelectedStatus("")
+    setSelectedStatus("");
+    setSelectedTag("");
   };
 
   const handleSubmit = async (e) => {
@@ -143,6 +162,7 @@ const AddTask = () => {
       owner: !selectedOwner,
       contractor: !selectedContractor,
       consultant: !selectedConsultant,
+      tag: !selectedTag,
     };
 
     setFieldErrors(newFieldErrors);
@@ -170,6 +190,7 @@ const AddTask = () => {
         taskPriority: selectedPriority,
         taskStatus: SelectedStatus,
         createdBy: user._id,
+        tag: selectedTag,
       };
 
       setLoading(true);
@@ -187,6 +208,12 @@ const AddTask = () => {
       setLoading(false);
     }
   };
+
+        const handleTagChange = (selectedOptions) => {
+          console.log("Selected options:", selectedOptions); // Log selected options
+          setSelectedTag(selectedOptions || []); // Set selected tags or empty array if none selected
+        };
+
 
   return (
     <div className="AddTask mx-1">
@@ -294,6 +321,21 @@ const AddTask = () => {
                   options={priorityOptions}
                   error={false}
                 />
+
+                <Select
+                  id="tag"
+                  label={t("tag")}
+                  InputClassName={`${
+                    fieldErrors.tag ? "border  border-red rounded-2xl " : ""
+                  }`}
+                  value={selectedTag}
+                  onChange={handleTagChange}
+                  options={tags}
+                  isMulti
+                  error={false}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
                 <Select
                   id="status"
                   label={t("status")}
@@ -305,8 +347,6 @@ const AddTask = () => {
                   options={statusOptions}
                   error={false}
                 />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
                 <Select
                   id="owners"
                   label={t("Owners")}
@@ -319,6 +359,8 @@ const AddTask = () => {
                   loading={OwnersLoading}
                   error={!!error}
                 />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
                 <Select
                   id="contractors"
                   label={t("Contractors")}
@@ -333,21 +375,21 @@ const AddTask = () => {
                   loading={ContractorsLoading}
                   error={!!error}
                 />
+                <Select
+                  id="consultants"
+                  label={t("Consultants")}
+                  InputClassName={`${
+                    fieldErrors.consultant
+                      ? "border  border-red rounded-2xl "
+                      : ""
+                  }`}
+                  value={selectedConsultant}
+                  onChange={(e) => setSelectedConsultant(e)}
+                  options={Consultants}
+                  loading={ConsultantsLoading}
+                  error={!!error}
+                />
               </div>
-              <Select
-                id="consultants"
-                label={t("Consultants")}
-                InputClassName={`${
-                  fieldErrors.consultant
-                    ? "border  border-red rounded-2xl "
-                    : ""
-                }`}
-                value={selectedConsultant}
-                onChange={(e) => setSelectedConsultant(e)}
-                options={Consultants}
-                loading={ConsultantsLoading}
-                error={!!error}
-              />
 
               {error && (
                 <div className="text-red font-bold text-center p-2">

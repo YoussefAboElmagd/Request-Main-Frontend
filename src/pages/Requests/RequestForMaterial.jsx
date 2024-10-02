@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../Components/UI/Button/Button";
-import { getAllActionCodes, getAllDiscipline } from "../../Services/api";
+import {
+  getAllActionCodes,
+  getAllDiscipline,
+  getAllProjectsForUser,
+  sendRequest,
+} from "../../Services/api";
 import Loader from "../../Components/Loader/Loader";
 import CheckboxGroup from "../../Components/UI/CheckboxGroup/CheckboxGroup";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
+import Select from "react-select";
 import { FaSave } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const RequestForMaterial = () => {
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
   const [isReviewed, setIsReviewed] = useState(false);
   const [ActionCode, setActionCode] = useState([]);
   const [Discipline, setDiscipline] = useState([]);
+  const [Projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState([]);
   const [selectedActionCodes, setSelectedActionCodes] = useState("");
   const [selectedDisciplines, setSelectedDisciplines] = useState("");
+  const [refNO, setRefNO] = useState("");
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,12 +40,15 @@ const RequestForMaterial = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const actionCodeResponse = await getAllActionCodes();
-        const disciplineResponse = await getAllDiscipline();
+        const [actionCodeResponse, disciplineResponse, projectsByUser] =
+          await Promise.all([
+            getAllActionCodes(),
+            getAllDiscipline(),
+            getAllProjectsForUser(user._id, token),
+          ]);
         setActionCode(actionCodeResponse.results);
         setDiscipline(disciplineResponse.results);
-        console.log("actionCode => ", actionCodeResponse);
-        console.log("discipline => ", disciplineResponse);
+        setProjects(projectsByUser.results);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError("Failed to load data");
@@ -41,7 +57,39 @@ const RequestForMaterial = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [user._id, token]);
+
+  // handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+
+      if (!selectedActionCodes || !selectedDisciplines|| !selectedProject ) {
+        setError("All fields are required");
+        return;
+      }
+      const requestData = {
+        refNO,
+        actionCode: selectedActionCodes,
+        discipline: selectedDisciplines,
+        project: selectedProject.value,
+        comment: comments.map((comment) => comment.text),
+        date: new Date().toLocaleDateString(),
+        createdBy: user._id,
+      };
+
+      const req = await sendRequest(token, requestData);
+      console.log("Request sent successfully => ", req);
+      setError(null); // Clear any previous error message
+      toast.success("Request sent successfully ");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setError("Failed to submit form");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleReviewChange = (e) => {
     setIsReviewed(e.target.checked);
@@ -77,6 +125,46 @@ const RequestForMaterial = () => {
     setComments(newComments);
   };
 
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "white",
+      border: "1px solid var(--gray)",
+      borderRadius: "12px",
+      padding: "0  15px",
+      boxShadow: "none",
+      "&:hover": { borderColor: "var(--gray)" },
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#999",
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: "var(--gray)",
+      "&:hover": { color: "var(--gray)" },
+    }),
+    indicatorSeparator: () => ({ display: "none" }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "#CCABDA66" : "white",
+      color: state.isSelected ? "var(--purple)" : "var(--gray)",
+      padding: "10px",
+      borderRadius: "8px",
+      cursor: "pointer",
+      "&:hover": {
+        backgroundColor: "var(--purple)",
+        color: "white",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      borderRadius: "10px",
+      marginTop: "4px",
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+    }),
+  };
+
   return (
     <div className="RequestForMaterial">
       {loading ? (
@@ -86,13 +174,13 @@ const RequestForMaterial = () => {
       ) : (
         <>
           <div className="header bg-white p-4 rounded-l-3xl">
-            <h5 className="font-medium text-base">
+            <h5 className="font-bold text-base">
               Request for material submittal approval
             </h5>
           </div>
-          <div className="content bg-white p-4 rounded-3xl my-4">
-            <form action="submit">
-              <div className="Ref flex items-center gap-2 my-4">
+          <div className="content bg-white p-4 rounded-3xl my-6 ">
+            <form action="submit" onSubmit={handleSubmit}>
+              <div className="Ref flex items-center gap-2 my-6 ">
                 <label
                   htmlFor="Ref"
                   className="font-bold text-base text-gray-dark"
@@ -104,11 +192,13 @@ const RequestForMaterial = () => {
                     type="text"
                     id="Ref"
                     name="Ref"
-                    className="bg-white border border-gray rounded-2xl max-w-32"
+                    placeholder="ref no"
+                    onChange={(e) => setRefNO(e.target.value)}
+                    className="bg-white border border-gray rounded-lg p-1 max-w-52"
                   />
                 </div>
               </div>
-              <div className="Date flex items-center gap-2 my-4">
+              <div className="Date flex items-center gap-2 my-6 ">
                 <label
                   htmlFor="currentDay"
                   className="font-bold text-base text-gray-dark"
@@ -143,21 +233,25 @@ const RequestForMaterial = () => {
                 </div>
               </div>
 
-              <div className="ProjectName flex items-center gap-2 my-4">
+              <div className="ProjectName flex items-center gap-2 my-6 ">
                 <label
                   htmlFor="ProjectName"
                   className="font-bold text-base text-gray-dark"
                 >
                   Project Name
                 </label>
-                <input
-                  type="text"
-                  id="ProjectName"
-                  name="ProjectName"
-                  className="bg-white border border-gray rounded-2xl py-1 px-3"
-                  required
-                  placeholder="Project Name"
-                  maxLength={50}
+                <Select
+                  placeholder={"Project Name"}
+                  id={"name"}
+                  isClearable
+                  isLoading={loading}
+                  value={selectedProject}
+                  options={Projects.map((project) => ({
+                    value: project._id,
+                    label: project.name,
+                  }))}
+                  onChange={(e) => setSelectedProject(e)}
+                  styles={customStyles}
                 />
               </div>
 
@@ -165,29 +259,28 @@ const RequestForMaterial = () => {
                 <CheckboxGroup
                   label="Discipline"
                   options={Discipline.map((item) => ({
-                    name: item.id,
+                    id: item._id,
                     label: item.name,
                   }))}
                   namePrefix="discipline"
-                  selectedValues={selectedDisciplines}
-                  onChange={(e) => setSelectedDisciplines(e.target.checked)}
+                  selectedValue={selectedDisciplines}
+                  onChange={setSelectedDisciplines}
                 />
               )}
-
               {ActionCode.length > 0 && (
                 <CheckboxGroup
                   label="Action Code"
                   options={ActionCode.map((item) => ({
-                    name: item.id,
+                    id: item._id,
                     label: item.name,
                   }))}
                   namePrefix="actionCode"
-                  selectedValues={selectedActionCodes}
-                  onChange={(e) => setSelectedActionCodes(e.target.checked)}
+                  selectedValue={selectedActionCodes}
+                  onChange={setSelectedActionCodes}
                 />
               )}
 
-              <div className="comment flex flex-col">
+              <div className="comment flex flex-col my-6  ">
                 <label
                   htmlFor="comment"
                   className="font-bold text-base text-gray-dark"
@@ -212,7 +305,7 @@ const RequestForMaterial = () => {
                 </button>
               </div>
 
-              <div className="comments-container my-4">
+              <div className="comments-container my-6 ">
                 {comments.map((comment, index) => (
                   <div
                     key={index}
@@ -222,7 +315,7 @@ const RequestForMaterial = () => {
                       <input
                         type="text"
                         value={comment.text}
-                        className="w-[550px] p-1 rounded-md"
+                        className="w-full max-w-3xl h-full  p-1 rounded-md"
                         onChange={(e) =>
                           handleUpdateComment(index, e.target.value)
                         }
@@ -278,7 +371,7 @@ const RequestForMaterial = () => {
                   your Action code
                 </label>
               </div>
-
+              {error && <div className="error-message text-red text-center">{error}</div>}
               <div className="send text-end mt-5">
                 <Button disabled={!isReviewed} type="submit">
                   Send
