@@ -42,7 +42,11 @@ const DriveFiles = () => {
     setLoading(true); // Set loading to true when starting download
     try {
       const res = await downloadAllFiles(tagId);
-      const fileUrls = res.results;
+      console.log(tagId);
+      
+      console.log("res from downloadAllFiles => ", res);
+      
+      const fileUrls = res.results.tasks;
 
       // Check if the array is empty
       if (fileUrls.length === 0) {

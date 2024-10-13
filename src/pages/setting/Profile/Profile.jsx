@@ -27,21 +27,20 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const [country, setCountry] = useState(user.country);
   const [preview, setPreview] = useState(user.profilePic);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   // Handle image upload
-const handleImageUpload = (e) => {
-  const file = e.target.files[0]; // Access the first file in the FileList
-  if (file) {
-     console.log("Selected file:", file); // Debugging: Check if file is selected correctly
-    setProfilePic(file); // Set the selected file
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result); // Set the preview image
-    };
-    reader.readAsDataURL(file); // Read the file as a Data URL
-  }
-};
-
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]; // Access the first file in the FileList
+    if (file) {
+      console.log("Selected file:", file); // Debugging: Check if file is selected correctly
+      setProfilePic(file); // Set the selected file
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result); // Set the preview image
+      };
+      reader.readAsDataURL(file); // Read the file as a Data URL
+    }
+  };
 
   // Date formatting function
   const formatDate = (date) => {
@@ -95,7 +94,11 @@ const handleImageUpload = (e) => {
     handleUpdate,
   }));
 
-  if(loading) {
+  const nameParts = Name.split(" ");
+  const firstNameInitial = nameParts[0] ? nameParts[0][0] : "";
+  const lastNameInitial = nameParts[1] ? nameParts[1][0] : "";
+
+  if (loading) {
     return (
       <div className="flex justify-center items-center">
         <Loader />
@@ -108,11 +111,21 @@ const handleImageUpload = (e) => {
       <div className="wrapper bg-white rounded-xl p-4 m-2">
         <div className="flex flex-col">
           <div className="avatar  my-2 relative ">
-            <img
-              src={preview || defaultAvatar}
-              alt="avatar"
-              className="rounded-full  w-24 h-24 object-contain relative border border-solid  border-gray p-2"
-            />
+            {preview ? (
+              <img
+                src={preview}
+                alt="avatar"
+                className="rounded-full  w-24 h-24 object-contain relative border border-solid  border-gray p-2"
+              />
+            ) : (
+              <>
+                <span className="user-profile-image w-24 h-24 text-3xl">
+                  {firstNameInitial}
+                  {lastNameInitial}
+                </span>
+              </>
+            )}
+
             <button
               onClick={() => document.getElementById("fileInput").click()}
               className="absolute  h-10 rounded-b-full flex items-center justify-center ltr:left-0  rtl:right-0 bottom-px  cursor-pointer "

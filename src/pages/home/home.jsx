@@ -18,6 +18,7 @@ import { Box, CircularProgress } from "@mui/joy";
 import { Typography } from "@material-tailwind/react";
 import { LuAlarmPlus } from "react-icons/lu";
 import { RiProgress4Line } from "react-icons/ri";
+import ListView from "../../Components/ListView/listView";
 
 const Home = () => {
   const user = useSelector((state) => state.auth.user);
@@ -27,6 +28,7 @@ const Home = () => {
   const [data, setData] = useState({ results: [] });
   const [analysis, setAnalysis] = useState({});
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState("board");
 
   useEffect(() => {
     const fetchAnalysis = async () => {
@@ -57,6 +59,9 @@ const Home = () => {
     };
     fetchProjects();
   }, [userId, token]);
+  const handleViewChange = (mode) => {
+    setViewMode(mode);
+  };
 
   const formatDate = (date) => format(new Date(date), "dd MMM");
 
@@ -152,13 +157,19 @@ const Home = () => {
           </div>
           <div className="content">
             <div className="GroupBtn flex items-center  mx-2 my-4">
-              <button className="BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs text-gray-md">
+              <button
+                onClick={() => handleViewChange("board")}
+                className="BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs text-gray-md"
+              >
                 <span>
                   <RiGalleryView2 className="w-4  h-3  text-gray" />
                 </span>
                 {t("boardView")}
               </button>
-              <button className="ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs text-gray-md">
+              <button
+                onClick={() => handleViewChange("list")}
+                className="ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs text-gray-md"
+              >
                 <span>
                   <FaBars className="w-4  h-4  text-gray" />
                 </span>
@@ -182,39 +193,72 @@ const Home = () => {
                         </span>
                       </div>
                     </Link>
-                    <div className="grid grid-cols-4 gap-3">
-                      {project.tasks.map((task) => {
-                        // Get avatars from assignees, falling back to the default avatar
-                        const avatars =
-                          Array.isArray(task.assignees) &&
-                          task.assignees.length > 0
-                            ? task.assignees.map(
-                                (assignee) => assignee.profilePic || avatar
-                              )
-                            : [avatar];
-                        return (
-                          <div className="task" key={task._id}>
-                            <Link
-                              to={`/TaskDetails/${task._id}`}
-                              state={{ taskId: task._id }}
-                            >
-                              <BoardView
-                                ProgressValue={70}
-                                NameOfTask={task.title}
-                                Tagname={"Project"}
-                                taskPriority={task.taskPriority}
-                                status={task.taskStatus}
-                                avatars={avatars}
-                                filesLength={2}
-                                MsgLength={6}
-                                sDate={formatDate(task.startDate)}
-                                eDate={formatDate(task.dueDate)}
-                              />
-                            </Link>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    {viewMode === "board" && (
+                      <div className="grid grid-cols-4 gap-3">
+                        {project.tasks.map((task) => {
+                          const avatars =
+                            Array.isArray(task.assignees) &&
+                            task.assignees.length > 0
+                              ? task.assignees.map(
+                                  (assignee) => assignee.profilePic || avatar
+                                )
+                              : [avatar];
+                          return (
+                            <div className="task" key={task._id}>
+                              <Link
+                                to={`/TaskDetails/${task._id}`}
+                                state={{ taskId: task._id }}
+                              >
+                                <BoardView
+                                  ProgressValue={70}
+                                  NameOfTask={task.title}
+                                  Tagname={"Project"}
+                                  taskPriority={task.taskPriority}
+                                  status={task.taskStatus}
+                                  avatars={avatars}
+                                  filesLength={2}
+                                  MsgLength={6}
+                                  sDate={formatDate(task.startDate)}
+                                  eDate={formatDate(task.dueDate)}
+                                />
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {viewMode === "list" && (
+                      <div className="flex flex-col gap-3">
+                        {project.tasks.map((task) => {
+                          const avatars =
+                            Array.isArray(task.assignees) &&
+                            task.assignees.length > 0
+                              ? task.assignees.map(
+                                  (assignee) => assignee.profilePic || avatar
+                                )
+                              : [avatar];
+                          return (
+                            <div className="task" key={task._id}>
+                              <Link
+                                to={`/TaskDetails/${task._id}`}
+                                state={{ taskId: task._id }}
+                              >
+                                <ListView
+                                  ProgressValue={70}
+                                  NameOfTask={task.title}
+                                  Tagname={"Project"}
+                                  taskPriority={task.taskPriority}
+                                  status={task.taskStatus}
+                                  avatars={avatars}
+                                  filesLength={2}
+                                  MsgLength={6}
+                                />
+                              </Link>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 );
               })

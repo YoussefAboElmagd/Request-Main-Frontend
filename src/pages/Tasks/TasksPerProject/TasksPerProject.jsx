@@ -8,6 +8,7 @@ import "./style.scss";
 import { useEffect, useState } from "react";
 import { getAllTasksPerProject } from "../../../Services/api";
 import BoardView from "../../../Components/boardView/boardView";
+import ListView from "../../../Components/ListView/listView";
 import Loader from "../../../Components/Loader/Loader";
 import { format } from "date-fns";
 import avatar from "../../../assets/images/Avatar.jpg";
@@ -16,13 +17,14 @@ const TasksPerProject = () => {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filterValue, setFilterValue] = useState("all");
+  const [Status, setStatus] = useState("all");
+  const [viewMode, setViewMode] = useState("board");
 
   const buttonData = [
     { label: t("All"), value: "all" },
     { label: t("Waiting"), value: "waiting" },
-    { label: t("Ongoing"), value: "ongoing" },
-    { label: t("Ended"), value: "ended" },
+    { label: t("working"), value: "working" },
+    { label: t("completed"), value: "completed" },
     { label: t("Delayed"), value: "delayed" },
   ];
 
@@ -30,11 +32,7 @@ const TasksPerProject = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const params =
-          filterValue !== "all"
-            ? { filterType: "taskStatus", filterValue }
-            : {};
-        const data = await getAllTasksPerProject(id, params);
+        const data = await getAllTasksPerProject(id, Status);
         setData(data.results);
         console.log(data);
       } catch (error) {
@@ -44,10 +42,14 @@ const TasksPerProject = () => {
       }
     };
     fetchData();
-  }, [id, filterValue]);
+  }, [id, Status]);
 
   const handleFilterChange = (value) => {
-    setFilterValue(value);
+    setStatus(value);
+  };
+
+  const handleViewChange = (mode) => {
+    setViewMode(mode);
   };
 
   const formatDate = (date) => format(new Date(date), "dd MMM");
@@ -57,70 +59,141 @@ const TasksPerProject = () => {
       <h1 className="title font-inter font-bold text-3xl text-black m-2">
         {t("ProjectTasks")}
       </h1>
+
       <div className="GroupBtn flex items-center mx-2 my-4">
-        <button className="BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs text-gray-md">
+        <button
+          className={`BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs text-gray-md ${
+            viewMode === "board" ? "bg-gray-200" : ""
+          }`}
+          onClick={() => handleViewChange("board")}
+        >
           <span>
             <RiGalleryView2 className="w-4 h-3 text-gray" />
           </span>
           {t("boardView")}
         </button>
-        <button className="ListView flex items-center gap-2 p-2 border border-gray border-solid font-inter font-bold text-xs text-gray-md">
+        <button
+          className={`ListView flex items-center gap-2 p-2 border border-gray border-solid font-inter font-bold text-xs text-gray-md ${
+            viewMode === "list" ? "bg-gray-200" : ""
+          }`}
+          onClick={() => handleViewChange("list")}
+        >
           <span>
             <FaBars className="w-4 h-4 text-gray" />
           </span>
           {t("listView")}
         </button>
-        <button className="ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs text-gray-md">
+        <button
+          className={`ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs text-gray-md ${
+            viewMode === "timeline" ? "bg-gray-200" : ""
+          }`}
+          onClick={() => handleViewChange("timeline")}
+        >
           <span>
             <FaBars className="w-4 h-4 text-gray" />
           </span>
           {t("timeLineView")}
         </button>
       </div>
+
       <StatusHeader buttons={buttonData} onFilterChange={handleFilterChange} />
+
       {loading ? (
         <Loader />
       ) : (
-        <div className="content grid grid-cols-4 gap-2 mt-4">
+        <div
+          className={`content ${
+            viewMode === "board"
+              ? "grid grid-cols-4 gap-2"
+              : "flex flex-col gap-3"
+          } mt-4`}
+        >
           <Link
             to={`/AddTask/${id}`}
             state={{ ProjectId: id }}
-            className="AddTask box bg-white rounded-md shadow-sm p-5 flex flex-col justify-center gap-4 items-center col-span-1 h-[286px]"
+            className={`AddTask box bg-white  ${
+              viewMode === "list"
+                ? "flex items-center justify-center text-2xl"
+                : "flex flex-col p-5 justify-center gap-4 items-center col-span-1 h-[286px]"
+            } rounded-md shadow-sm p-5 `}
           >
             <span>
               <IoAddOutline className="w-12 h-12 text-purple" />
             </span>
-            <span className="text font-inter font-bold text-3xl">
+            <span
+              className={`text-linear font-inter font-bold  ${
+                viewMode === "board" ? "text-3xl" : "text-2xl"
+              } `}
+            >
               {t("AddTask")}
             </span>
           </Link>
-          {data.map((task) => {
-            const avatars = task.assignees.map(
-              (assignee) => assignee.profilePic || avatar
-            );
 
-            return (
-              <div className="task" key={task._id}>
-                <Link
-                  to={`/TaskDetails/${task._id}`}
-                  state={{ taskId: task._id }}
-                >
-                  <BoardView
-                    ProgressValue={70}
-                    NameOfTask={task.title}
-                    Tagname={task.title}
-                    taskPriority={task.taskPriority}
-                    status={task.taskStatus}
-                    avatars={avatars}
-                    filesLength={2}
-                    MsgLength={6}
-                    sDate={formatDate(task.startDate)}
-                    eDate={formatDate(task.dueDate)}
-                  />
-                </Link>
-              </div>
-            );
-          })}
+          {viewMode === "board" &&
+            data.map((task) => {
+              const avatars = task.assignees.map(
+                (assignee) => assignee.profilePic || avatar
+              );
+
+              return (
+                <div className="task" key={task._id}>
+                  <Link
+                    to={`/TaskDetails/${task._id}`}
+                    state={{ taskId: task._id }}
+                  >
+                    <BoardView
+                      ProgressValue={70}
+                      NameOfTask={task.title}
+                      Tagname={task.title}
+                      taskPriority={task.taskPriority}
+                      status={task.taskStatus}
+                      avatars={avatars}
+                      filesLength={2}
+                      MsgLength={6}
+                      sDate={formatDate(task.startDate)}
+                      eDate={formatDate(task.dueDate)}
+                    />
+                  </Link>
+                </div>
+              );
+            })}
+
+          {viewMode === "list" &&
+            data.map((task) => {
+              const avatars = task.assignees.map(
+                (assignee) => assignee.profilePic || avatar
+              );
+
+              return (
+                <div className="task" key={task._id}>
+                  <Link
+                    to={`/TaskDetails/${task._id}`}
+                    state={{ taskId: task._id }}
+                  >
+                    <ListView
+                      ProgressValue={70}
+                      NameOfTask={task.title}
+                      Tagname={task.title}
+                      taskPriority={task.taskPriority}
+                      status={task.taskStatus}
+                      avatars={avatars}
+                      filesLength={2}
+                      MsgLength={6}
+                      sDate={formatDate(task.startDate)}
+                      eDate={formatDate(task.dueDate)}
+                    />
+                  </Link>
+                </div>
+              );
+            })}
+
+          {viewMode === "timeline" && (
+            <div className="TimelineViewTasks">
+              {/* Render your timeline view tasks here */}
+              <p>Timeline View will be here</p>
+              <span>soon...</span>
+            </div>
+          )}
         </div>
       )}
     </div>

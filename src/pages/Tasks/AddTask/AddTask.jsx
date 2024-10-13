@@ -14,6 +14,7 @@ import Select from "../../../Components/UI/Select/Select";
 import Loader from "../../../Components/Loader/Loader";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Models from "../../../pages/Requests/Models/Models";
 
 const AddTask = () => {
   const { ProjectId } = useParams();
@@ -38,7 +39,8 @@ const AddTask = () => {
   const [Consultants, setConsultants] = useState([]);
   const [ConsultantsLoading, setConsultantsLoading] = useState(true);
   const [tagsLoading, setTagsLoading] = useState(true);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [TaskId, setTaskId] = useState(false);
   const [sDate, setSDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -60,8 +62,6 @@ const AddTask = () => {
     tag: false,
   });
 
-  console.log(selectedTag);
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -97,7 +97,7 @@ const AddTask = () => {
           Tags.results.map((tag) => ({
             value: tag._id,
             label: tag.name,
-            colorCode: tag.colorCode, 
+            colorCode: tag.colorCode,
           }))
         );
         setTagsLoading(false);
@@ -117,7 +117,7 @@ const AddTask = () => {
   ];
   const statusOptions = [
     { value: "completed", label: t("completed") },
-    { value: "working", label: t("medium") },
+    { value: "working", label: t("working") },
     { value: "waiting", label: t("waiting") },
   ];
 
@@ -174,8 +174,6 @@ const AddTask = () => {
 
     const formattedSDate = formatDate(sDate.startDate);
     const formattedEDate = formatDate(eDate.endDate);
-    console.log(formattedSDate);
-    console.log(formattedEDate);
 
     try {
       const taskData = {
@@ -190,14 +188,16 @@ const AddTask = () => {
         taskPriority: selectedPriority,
         taskStatus: SelectedStatus,
         createdBy: user._id,
-        tag: selectedTag,
+        tags: "66f5762ba0c219c81a79018a",
       };
 
       setLoading(true);
       console.log("task data =>  ", taskData);
       const res = await addTask(taskData);
+      setTaskId(res.addedTask._id);
       console.log(res);
       clearFormFields();
+      setIsModalOpen(true);
     } catch (err) {
       setError({
         message: err.response ? err.response.data.message : err.message,
@@ -209,14 +209,13 @@ const AddTask = () => {
     }
   };
 
-        const handleTagChange = (selectedOptions) => {
-          console.log("Selected options:", selectedOptions); // Log selected options
-          setSelectedTag(selectedOptions || []); // Set selected tags or empty array if none selected
-        };
-
+  const handleTagChange = (selectedOptions) => {
+    console.log("Selected options:", selectedOptions); // Log selected options
+    setSelectedTag(selectedOptions || []); // Set selected tags or empty array if none selected
+  };
 
   return (
-    <div className="AddTask mx-1">
+    <div className="AddTask mx-1 relative">
       {Loading ? (
         <div className="flex">
           <Loader />
@@ -390,6 +389,11 @@ const AddTask = () => {
                   error={!!error}
                 />
               </div>
+              {isModalOpen && (
+                <div className="model absolute top-0 left-0 w-full backdrop-blur-sm">
+                  <Models taskId={TaskId}  />
+                </div>
+              )}
 
               {error && (
                 <div className="text-red font-bold text-center p-2">

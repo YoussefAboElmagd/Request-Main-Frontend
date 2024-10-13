@@ -1,11 +1,13 @@
-import  { useState } from "react";
+import React, { useState } from "react";
+import { sendRequest } from "../../Services/api";
+
 import RequestForm from "./Request";
 
-const RequestForMaterial = () => {
+const RequestForInspection = () => {
   const [showProjectName, setShowProjectName] = useState(true);
   const [showDiscipline, setShowDiscipline] = useState(true);
   const [showActionCodes, setShowActionCodes] = useState(true);
-  const [showReasons, setShowReasons] = useState(false);
+  const [showReasons, setShowReasons] = useState(true);
 
   return (
     <div>
@@ -14,10 +16,10 @@ const RequestForMaterial = () => {
         showDiscipline={showDiscipline}
         showActionCodes={showActionCodes}
         showReasons={showReasons}
-        ReqTitle={"Request For Material"}
+        ReqTitle={"Request For Inspection"}
       />
     </div>
   );
 };
 
-export default RequestForMaterial;
+export default RequestForInspection;

@@ -52,6 +52,7 @@ const Input = ({
           pattern={pattern}
           placeholder={placeholder}
           required={required}
+          
           value={value}
           className={`Input font-jost font-normal text-base  my-2 py-2 px-4 ${className}`}
           {...rest}

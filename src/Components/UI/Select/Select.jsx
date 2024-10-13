@@ -89,7 +89,7 @@ const Select = ({
 
       return {
         ...provided,
-        backgroundColor: `${currentTag.colorCode}40`,
+        backgroundColor: `white`,
         color: currentTag.colorCode,
         padding: "10px",
         borderRadius: "8px",
@@ -109,7 +109,7 @@ const Select = ({
       const currentTag = tags.find((tag) => tag.value === state.data.value);
       return {
         ...provided,
-        backgroundColor: `${currentTag.colorCode}40`,
+        backgroundColor: `white`,
 
         borderRadius: "12px",
         padding: "3px 6px",
@@ -129,7 +129,7 @@ const Select = ({
         color: "white",
         cursor: "pointer",
         "&:hover": {
-          backgroundColor: `${currentTag.colorCode}10`,
+          backgroundColor: `white`,
           color: currentTag.colorCode,
         },
       };

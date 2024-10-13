@@ -234,6 +234,7 @@ export const getProjectDetails = async (projectId) => {
 // add Project
 
 export const addProject = async (token, projectData) => {
+  console.log(projectData);
   try {
     const response = await axiosInstance.post(`project`, projectData, {
       headers: {
@@ -252,14 +253,13 @@ export const addProject = async (token, projectData) => {
 
 // get all tasks Per Project
 
-export const getAllTasksPerProject = async (projectId, params = {}) => {
+export const getAllTasksPerProject = async (projectId, Status) => {
   try {
     // Construct the query parameters
-    const queryParams = new URLSearchParams(params).toString();
 
     // Append query parameters to the request URL
     const response = await axiosInstance.get(
-      `task/project/${projectId}?${queryParams}`
+      `task/project/${projectId}?status=${Status}`
     );
 
     console.log("Response from tasks => ", response);
@@ -497,6 +497,23 @@ export const getAllActionCodes = async () => {
   }
 };
 
+//  get all reason
+
+export const getAllReasons = async () => {
+  try {
+    const response = await axiosInstance.get(`reason`);
+
+    console.log("Response from reasons => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get reasons error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
 // send request
 
 export const sendRequest = async (token, requestData) => {
@@ -513,6 +530,46 @@ export const sendRequest = async (token, requestData) => {
   } catch (error) {
     console.error(
       "Send request error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+// add task table
+
+export const addTasksTable = async (tasksTableData) => {
+  try {
+    const response = await axiosInstance.post(`table`, tasksTableData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from add task table => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Add task table error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+// get all units
+
+export const getAllUnits = async () => {
+  try {
+    const response = await axiosInstance.get(`units`);
+
+    console.log("Response from units => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get units error: ",
       error.response?.data || error.message
     );
     throw error;

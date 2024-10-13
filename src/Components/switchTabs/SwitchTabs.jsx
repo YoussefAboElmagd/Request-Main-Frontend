@@ -22,14 +22,21 @@ const SwitchTabs = ({ data, onTabChange }) => {
           <span
             key={index}
             className={`tabItem py-1 text-center rounded-md my-1 cursor-pointer ${
-              selectedTab === index ? "active" : ""
+              selectedTab === index ? "activeTabItem" : ""
             }`}
             onClick={() => activeTab(tab, index)}
           >
             {tab}
           </span>
         ))}
-        <span className="movingBg" style={{ ...(isRTL ? { right: `${activePosition}px` } : { left: `${activePosition}px` }), }} />
+        <span
+          className="movingBg"
+          style={{
+            ...(isRTL
+              ? { right: `${activePosition}px` }
+              : { left: `${activePosition}px` }),
+          }}
+        />
       </div>
     </div>
   );

@@ -22,6 +22,11 @@ import DriveFiles from "../pages/DriveFiles/DriveFiles.jsx";
 import RequestForMaterial from "../pages/Requests/RequestForMaterial.jsx";
 import FilesPerTag from "../pages/DriveFiles/FilesPerTag.jsx";
 import Models from "../pages/Requests/Models/Models.jsx";
+import RequestForDocumentSubmittal from "../pages/Requests/RequestForDocumentSubmittal.jsx";
+import WorkRequest from "../pages/Requests/WorkRequest.jsx";
+import RequestForInspection from "../pages/Requests/RequestForInspection.jsx";
+import TableOfQuantities from "../pages/Requests/TableOfQuantities/TableOfQuantities.jsx";
+import Inbox from "../pages/Inbox/Inbox.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -49,9 +54,23 @@ const AppRoutes = () => {
       <Route path="/Models" element={<Models />} />
       <Route path="/DriveFiles" element={<DriveFiles />} />
       <Route path="/DriveFiles/Tag/:TagName" element={<FilesPerTag />} />
+      <Route path="/Inbox" element={<Inbox />} />
       <Route
         path="/Requests/RequestForMaterial"
         element={<RequestForMaterial />}
+      />
+      <Route
+        path="/Requests/RequestForDocumentSubmittal"
+        element={<RequestForDocumentSubmittal />}
+      />
+      <Route path="/Requests/WorkRequest" element={<WorkRequest />} />
+      <Route
+        path="/Requests/RequestForInspection"
+        element={<RequestForInspection />}
+      />
+      <Route
+        path="/Requests/TableOfQuantities"
+        element={<TableOfQuantities />}
       />
       <Route path="/Team" element={<Team />} />
     </Routes>

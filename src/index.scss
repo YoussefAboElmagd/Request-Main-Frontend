@@ -97,6 +97,19 @@ body[dir="rtl"] {
 ::selection {
   background-color: var(--purple);
 }
+
+::-webkit-scrollbar{
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track{
+  background-color:#d1d5db;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: #f3f4f6;
+  border-radius: 8px;
+}
 a {
   text-decoration: none;
 }
@@ -165,3 +178,22 @@ option {
     top: 50%;
   }
 }
+.text-linear {
+  background: var(--linear1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.user-profile-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  background-color: brown;
+  color: #ffffff;
+ 
+  border-radius: 50%;
+  font-weight: 800;
+}
+

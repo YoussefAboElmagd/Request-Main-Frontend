@@ -5,12 +5,21 @@ import Button from "../../../Components/UI/Button/Button";
 import { useState } from "react";
 import { addProject } from "../../../Services/api";
 import Loader from "../../../Components/Loader/Loader";
+import Select from "../../../Components/UI/Select/Select";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddProject = () => {
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [Name, setName] = useState("");
   const [Description, setDescription] = useState("");
+  const [budget, setBudget] = useState("");
+  const [priority, setPriority] = useState("");
   const [sDate, setSDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -24,7 +33,8 @@ const AddProject = () => {
     Description: false,
     sDate: false,
     eDate: false,
-    // budget: false,
+    budget: false,
+    priority: false,
   });
 
   const formatDate = (date) => {
@@ -41,54 +51,67 @@ const AddProject = () => {
     setDescription("");
     setSDate(null);
     setEDate(null);
-    // setBudget("");
+    setBudget("");
+    setPriority("");
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
 
-  // Validate each field and set errors
-  const newFieldErrors = {
-    Name: !Name.trim(),
-    Description: !Description.trim(),
-    sDate: !sDate.startDate,
-    eDate: !eDate.endDate,
-    // budget: !budget.toString().trim(),
-  };
-
-  setFieldErrors(newFieldErrors);
-
-  // If any field has an error, set a general error message and exit
-  if (Object.values(newFieldErrors).some((hasError) => hasError)) {
-    setError({ message: "All fields are required." });
-    return;
-  }
-
-  const formattedSDate = formatDate(sDate.startDate);
-  const formattedEDate = formatDate(eDate.endDate);
-
-  try {
-    const projectData = {
-      Name,
-      Description,
-      StartDate: formattedSDate,
-      EndDate: formattedEDate,
-      budget: 50,
+    // Validate each field and set errors
+    const newFieldErrors = {
+      Name: !Name.trim(),
+      Description: !Description.trim(),
+      sDate: !sDate.startDate,
+      eDate: !eDate.endDate,
+      // budget: !budget.toString().trim(),
     };
-    setLoading(true);
-    console.log("Project data =>  ", projectData);
-    const res = await addProject(projectData);
-    console.log(res);
-    clearFormFields();
-  } catch (err) {
-    setError({ message: err.response ? err.response.data.message : err.message });
-    console.log(err);
-    setLoading(false);
-  } finally {
-    setLoading(false);
-  }
-};
+
+    setFieldErrors(newFieldErrors);
+
+    // If any field has an error, set a general error message and exit
+    if (Object.values(newFieldErrors).some((hasError) => hasError)) {
+      setError({ message: "All fields are required." });
+      return;
+    }
+
+    const formattedSDate = formatDate(sDate.startDate);
+    const formattedEDate = formatDate(eDate.endDate);
+
+    try {
+      const projectData = {
+        name: Name,
+        description: Description,
+        sDate: formattedSDate,
+        dueDate: formattedEDate,
+        budget: budget,
+        projectPriority: priority,
+        createdBy: user._id,
+      };
+
+      setLoading(true);
+      console.log("Project data =>  ", projectData);
+      const res = await addProject(token, projectData);
+      console.log(res);
+      toast.success("Project Added Successfully");
+      clearFormFields();
+      const projectId = res.addedProject._id;
+      navigate("/Requests/TableOfQuantities", {
+        state: {
+          projectId,
+        },
+      });
+    } catch (err) {
+      setError({
+        message: err.response ? err.response.data.message : err.message,
+      });
+      console.log(err);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="AddProject mx-1">
@@ -182,7 +205,41 @@ const handleSubmit = async (e) => {
                   />
                 </div>
               </div>
-           
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex flex-col my-2 col-span-1">
+                  <Select
+                    label={t("priority")}
+                    isClearable
+                    options={[
+                      { value: "low", label: "Low" },
+                      { value: "medium", label: "Medium" },
+                      { value: "high", label: "High" },
+                    ]}
+                    className={`bg-white  ${
+                      fieldErrors.priority && "border-red"
+                    }`}
+                    value={priority}
+                    onChange={(value) => setPriority(value)}
+                  />
+                </div>
+                <div className="flex flex-col my-2 col-span-1">
+                  <Input
+                    label={t("budget")}
+                    placeholder={"budget"}
+                    className={`bg-white border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
+                      fieldErrors.Name && "border-red"
+                    }`}
+                    type={"number"}
+                    required={true}
+                    id={"budget"}
+                    min="0"
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                    autoFocus={true}
+                  />
+                </div>
+              </div>
+
               {error && (
                 <div className="text-center">
                   <p className="error text-red">{error.message}</p>

@@ -6,10 +6,9 @@ import { CiMail } from "react-icons/ci";
 import { t } from "i18next";
 import { getAllProjectsForUser, getAllTagsByUser } from "../../../Services/api";
 import { useSelector } from "react-redux";
-import Select ,{ components } from "react-select";
-import "../style.scss"
+import Select, { components } from "react-select";
+import "../style.scss";
 import { motion } from "framer-motion";
-
 
 const customStyles = {
   control: (provided) => ({
@@ -52,17 +51,17 @@ const customStyles = {
   }),
   multiValue: (provided) => ({
     ...provided,
-    backgroundColor: "var(--purple)", 
+    backgroundColor: "var(--purple)",
     borderRadius: "12px",
     padding: "3px 6px",
   }),
   multiValueLabel: (provided) => ({
     ...provided,
-    color: "white", 
+    color: "white",
   }),
   multiValueRemove: (provided) => ({
     ...provided,
-    color: "white", 
+    color: "white",
     cursor: "pointer",
     "&:hover": {
       backgroundColor: "var(--purple)",
@@ -120,11 +119,10 @@ const AnimatedMultiValue = (props) => {
   );
 };
 
-
 const AddNewAccess = () => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [Tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
@@ -245,7 +243,6 @@ const AddNewAccess = () => {
           <Select
             placeholder={"Projects"}
             id={"projects"}
-      
             label={"Projects"}
             options={Projects.map((project) => ({
               value: project._id,
@@ -254,7 +251,6 @@ const AddNewAccess = () => {
             onChange={(e) => setSelectedProject(e)}
             value={selectedProject}
             isLoading={loading}
-           
             isClearable
             styles={customStyles}
             components={{ MultiValue: AnimatedMultiValue }}

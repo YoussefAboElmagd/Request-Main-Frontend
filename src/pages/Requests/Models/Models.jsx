@@ -2,20 +2,62 @@ import { Link } from "react-router-dom";
 import logo from "../../../assets/images/Models.png";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import Button from "../../../Components/UI/Button/Button";
-import { useState } from "react";
-const Models = () => {
-    const [isReviewed, setIsReviewed] = useState(false);
+import { useEffect, useState } from "react";
+import { getTaskDetails } from "../../../Services/api";
+const Models = ({ taskId, ProjectId }) => {
+  const [isReviewed, setIsReviewed] = useState(false);
+  const [task, setTask] = useState([]);
+
+  // work request
+  // Request for Document submittal approval
+  // Request for inspection(RFI)
+  // Request for material submittal approval
+  // Table of quantities
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const response = await getTaskDetails(taskId);
+        setTask(response.results);
+        console.log("response from Model  => ", response);
+        console.log(task);
+      } catch (error) {
+        console.error("Error fetching Task:", error);
+      }
+    };
+    fetchTask();
+  }, [taskId]);
 
   const links = [
-    { label: "Approval of general documents", to: "/request/", approved: false },
-    { label: "Approval of schemes", to: "/request/", approved: true },
-    { label: "Table of quantities", to: "/request/", approved: false },
-    { label: "Request for Receipt of Works", to: "/request/", approved: true },
-    { label: "Work request", to: "/request/", approved: false },
-    { label: "Material Inspection Form", to: "/request/", approved: false },
+    {
+      label: "Approval of general documents",
+      to: "/request/",
+      approved: task.requestForDocumentSubmittalApproval,
+    },
+    {
+      label: "Approval of schemes",
+      to: "/request/",
+      approved: task.approvalOfSchemes,
+    },
+    {
+      label: "Table of quantities",
+      to: "/request/",
+      approved: task.tableOfQuantities,
+    },
+    {
+      label: "Request forApproval Of Materials",
+      to: "/request/RequestForMaterial",
+      approved: task.requestForApprovalOfMaterials,
+    },
+    { label: "Work request", to: "/request/", approved: task.workRequest },
+    {
+      label: "Material Inspection Form",
+      to: "/request/",
+      approved: task.requestForInspectionForm,
+    },
   ];
+
   return (
-    <div className="Models">
+    <div className="Models z-50 ">
       <div className="wrapper flex justify-center items-center mt-32 relative">
         <div className="logo absolute -top-12  z-10 ">
           <img src={logo} alt="logo" className="w-20 h-20 md:w-28 md:h-28 " />
@@ -75,7 +117,7 @@ const Models = () => {
             </label>
           </div>
           <div className="send text-end my-5 mx-3">
-            <Button  disabled={!isReviewed} type="submit">
+            <Button disabled={!isReviewed} type="submit">
               Send
             </Button>
           </div>

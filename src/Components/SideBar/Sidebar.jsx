@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./style.scss";
 import Button from "../UI/Button/Button";
 import { handleLogout } from "../../redux/services/authServices";
-import avatar from "../../assets/images/Avatar.jpg"
+import avatar from "../../assets/images/Avatar.jpg";
 import { t } from "i18next";
 
 const Sidebar = () => {
@@ -30,7 +30,7 @@ const Sidebar = () => {
     Inbox: 0,
     Drive: 0,
     Plan: 1,
-    Team : 0,
+    Team: 0,
     Settings: 0,
   });
   const dispatch = useDispatch();
@@ -93,11 +93,14 @@ const Sidebar = () => {
   const handleItemClick = (index) => {
     setActiveIndex(index);
   };
+  const nameParts = user.name.split(" ");
+  const firstNameInitial = nameParts[0] ? nameParts[0][0] : "";
+  const lastNameInitial = nameParts[1] ? nameParts[1][0] : "";
 
   return (
     <div className="Sidebar rtl:left-0">
       <div
-        className={`bg-white h-screen py-5 pt-8 relative transition-custom duration-500 hidden lg:flex flex-col ${
+        className={`bg-white h-full py-5 pt-8 relative transition-custom duration-500 hidden lg:flex flex-col ${
           !Open ? "w-72" : "w-24"
         }`}
       >
@@ -118,11 +121,20 @@ const Sidebar = () => {
             className="flex gap-2 items-center"
           >
             <div className="relative">
-              <img
-                src={user.profilePic || avatar}
-                alt="avatar"
-                className="w-12 h-12 rounded-full object-cover transition-custom duration-500"
-              />
+              {user.profilePic ? (
+                <img
+                  src={user.profilePic}
+                  alt="avatar"
+                  className="rounded-full  w-24 h-24 object-contain relative border border-solid  border-gray p-2"
+                />
+              ) : (
+                <>
+                  <span className="user-profile-image h-12 w-12 text-xl ">
+                    {firstNameInitial}
+                    {lastNameInitial}
+                  </span>
+                </>
+              )}
               <span className="bg-green absolute rounded-full w-4 h-4 left-8 top-8"></span>
             </div>
             {!Open && (
