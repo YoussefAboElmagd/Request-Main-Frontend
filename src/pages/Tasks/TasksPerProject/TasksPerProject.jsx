@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { FaBars } from "react-icons/fa6";
 import { RiGalleryView2 } from "react-icons/ri";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import StatusHeader from "../../../Components/StatusHeader/StatusHeader";
 import { IoAddOutline } from "react-icons/io5";
 import "./style.scss";
@@ -12,6 +12,15 @@ import ListView from "../../../Components/ListView/listView";
 import Loader from "../../../Components/Loader/Loader";
 import { format } from "date-fns";
 import avatar from "../../../assets/images/Avatar.jpg";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+import { TbTargetArrow } from "react-icons/tb";
+import Select from "../../../Components/UI/Select/Select";
+import Button from "../../../Components/UI/Button/Button";
 
 const TasksPerProject = () => {
   const { id } = useParams();
@@ -19,6 +28,10 @@ const TasksPerProject = () => {
   const [loading, setLoading] = useState(false);
   const [Status, setStatus] = useState("all");
   const [viewMode, setViewMode] = useState("board");
+  const [open, setOpen] = useState(false);
+  const [selectedTaskType, setSelectedTaskType] = useState("");
+  const navigate = useNavigate();
+  const handleOpen = () => setOpen(!open);
 
   const buttonData = [
     { label: t("All"), value: "all" },
@@ -50,6 +63,10 @@ const TasksPerProject = () => {
 
   const handleViewChange = (mode) => {
     setViewMode(mode);
+  };
+
+  const handleTaskTypeChange = (value) => {
+    setSelectedTaskType(value);
   };
 
   const formatDate = (date) => format(new Date(date), "dd MMM");
@@ -108,9 +125,10 @@ const TasksPerProject = () => {
               : "flex flex-col gap-3"
           } mt-4`}
         >
-          <Link
-            to={`/AddTask/${id}`}
-            state={{ ProjectId: id }}
+          {/*
+           */}
+          <button
+            onClick={handleOpen}
             className={`AddTask box bg-white  ${
               viewMode === "list"
                 ? "flex items-center justify-center text-2xl"
@@ -127,7 +145,44 @@ const TasksPerProject = () => {
             >
               {t("AddTask")}
             </span>
-          </Link>
+          </button>
+          <Dialog open={open} handler={handleOpen} className="h-[60vh]">
+            <DialogHeader className="relative flex justify-center  ">
+              <TbTargetArrow className="text-white absolute bg-linear_1 rounded-full  p-1 -top-7 w-16 h-16 " />
+              <span className="w-4 h-4 rounded-full bg-red absolute -top-16 left-72" />
+              <span className="w-4 h-4 rounded-full bg-yellow absolute -top-12 right-64" />
+              <span className="w-4 h-4 rounded-full bg-green absolute  right-60" />
+              <span className="w-4 h-4 rounded-full bg-gold absolute -top-3  left-60" />
+            </DialogHeader>
+            <DialogBody className="flex items-center flex-col">
+              <span className="mx-auto text-center font-bold text-xl">
+                The type of task you want to <br /> create
+              </span>
+              <Select
+                className={"w-3/4 my-4  "}
+                label={"Type"}
+                id={"type"}
+                options={[
+                  { label: t("Parent Task"), value: "ParentTask" },
+                  { label: t("Milestone"), value: "Milestone" },
+                  { label: t("Recurring Task"), value: "RecurringTask" },
+                  { label: t("One-time Task"), value: "OneTimeTask" },
+                ]}
+                required
+                onChange={handleTaskTypeChange}
+              />
+            </DialogBody>
+            <DialogFooter className="flex items-center justify-center mt-10">
+              <Button disabled={!selectedTaskType}>
+                <Link
+                  to={`/AddTask/${id}`}
+                  state={{ ProjectId: id, taskType: selectedTaskType }}
+                >
+                  Add
+                </Link>
+              </Button>
+            </DialogFooter>
+          </Dialog>
 
           {viewMode === "board" &&
             data.map((task) => {

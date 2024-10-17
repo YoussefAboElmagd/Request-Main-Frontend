@@ -15,6 +15,7 @@ const RequestForDocumentSubmittal = () => {
         showActionCodes={showActionCodes}
         showReasons={showReasons}
         ReqTitle={"Request For DocumentSubmittal"}
+        ApproveTitle={"requestForDocumentSubmittalApproval"}
       />
     </div>
   );

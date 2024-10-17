@@ -15,6 +15,7 @@ const RequestForMaterial = () => {
         showActionCodes={showActionCodes}
         showReasons={showReasons}
         ReqTitle={"Request For Material"}
+        ApproveTitle={"requestForApprovalOfMaterials"}
       />
     </div>
   );

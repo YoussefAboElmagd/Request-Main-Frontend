@@ -17,6 +17,7 @@ const RequestForInspection = () => {
         showActionCodes={showActionCodes}
         showReasons={showReasons}
         ReqTitle={"Request For Inspection"}
+        ApproveTitle={"requestForInspectionForm"}
       />
     </div>
   );

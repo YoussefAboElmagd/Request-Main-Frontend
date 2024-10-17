@@ -9,6 +9,13 @@ import Select from "../../../Components/UI/Select/Select";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+import { CiLink, CiSquarePlus } from "react-icons/ci";
 
 const AddProject = () => {
   const user = useSelector((state) => state.auth.user);
@@ -20,6 +27,9 @@ const AddProject = () => {
   const [Description, setDescription] = useState("");
   const [budget, setBudget] = useState("");
   const [priority, setPriority] = useState("");
+  const [Type, setType] = useState("");
+  const [InvitationMail, setInvitationMail] = useState("");
+  const [Invites, setInvites] = useState([]);
   const [sDate, setSDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -36,6 +46,9 @@ const AddProject = () => {
     budget: false,
     priority: false,
   });
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(!open);
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -65,7 +78,7 @@ const AddProject = () => {
       Description: !Description.trim(),
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
-      // budget: !budget.toString().trim(),
+      budget: !budget.toString().trim(),
     };
 
     setFieldErrors(newFieldErrors);
@@ -97,6 +110,8 @@ const AddProject = () => {
       toast.success("Project Added Successfully");
       clearFormFields();
       const projectId = res.addedProject._id;
+      console.log(projectId);
+
       navigate("/Requests/TableOfQuantities", {
         state: {
           projectId,
@@ -111,6 +126,11 @@ const AddProject = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const addNewInvite = () => {
+    const newInvite = {};
+    setInvites((prevTasks) => [...prevTasks, newInvite]);
   };
 
   return (
@@ -138,7 +158,7 @@ const AddProject = () => {
                 value={Name}
                 onChange={(e) => setName(e.target.value)}
                 autoComplete="name"
-                autoFocus={true}
+                autoFocus
               />
               <div className="desc">
                 <label
@@ -245,10 +265,63 @@ const AddProject = () => {
                   <p className="error text-red">{error.message}</p>
                 </div>
               )}
-              <div className="btn flex items-center justify-center md:justify-end my-3">
-                <Button onClick={handleSubmit}>{t("Next")}</Button>
+              <div className="btn flex items-center justify-center md:justify-end my-3 gap-2">
+                <button
+                  className={
+                    "bg-white text-purple border border-purple border-solid font-jost py-3 px-32 rounded-xl capitalize   opacity-100  disabled:opacity-50 text-base font-medium text-left"
+                  }
+                  onClick={handleOpen}
+                >
+                  {t("invite")}
+                </button>
+                <Button onClick={handleSubmit}>{t("Pubic")}</Button>
               </div>
             </form>
+          </div>
+          <div className="invite_popup">
+            <Dialog open={open} handler={handleOpen}>
+              <DialogBody>
+                <div className="flex items-center  gap-3 ">
+                  <Input
+                    className="bg-white border border-purple border-solid focus:border-solid focus:border focus:border-purple w-96"
+                    label={t("invite")}
+                    placeholder={"Email Address"}
+                    type={"email"}
+                    required={true}
+                    autoFocus={true}
+                    onChange={(e) => setInvitationMail(e.target.value)}
+                  />
+                  <Select
+                    label={t("type")}
+                    options={[
+                      { value: "owner", label: "Owner" },
+                      { value: "consultant", label: "Consultant" },
+                      { value: "contractor", label: "Contractor" },
+                    ]}
+                    value={Type}
+                    onChange={(value) => setType(value)}
+                  />
+                  {/* add new invitation  */}
+                  <button onClick={addNewInvite}>
+                    <span className="text-white">
+                      <CiSquarePlus className="w-10 h-10  bg-yellow text-white rounded-lg mt-4" />
+                    </span>
+                  </button>
+                </div>
+                <button className="copy text-purple-dark flex items-center gap-2 cursor-pointer mx-2">
+                  <span>
+                    <CiLink className="w-4 h-4" />
+                  </span>
+                  <span className="underline underline-offset-1">
+                    Copy link
+                  </span>
+                </button>
+                <div className="flex items-center justify-end mt-4">
+                  <Button>{t("invite")}</Button>
+                </div>
+              </DialogBody>
+              <DialogFooter></DialogFooter>
+            </Dialog>
           </div>
         </>
       )}

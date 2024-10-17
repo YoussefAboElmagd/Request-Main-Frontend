@@ -13,8 +13,10 @@ import {
   getAllProjectsForUser,
   getAllReasons,
   sendRequest,
+  updateProject,
 } from "../../Services/api";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { t } from "i18next";
 
 const RequestForm = ({
   ReqTitle,
@@ -22,10 +24,13 @@ const RequestForm = ({
   showDiscipline,
   showActionCodes,
   showReasons,
+  ApproveTitle,
 }) => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { projectId } = location.state || {};
   const [actionCodes, setActionCodes] = useState([]);
   const [disciplines, setDisciplines] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -76,6 +81,21 @@ const RequestForm = ({
   const handleReviewChange = (e) => {
     setIsReviewed(e.target.checked);
   };
+
+  const handleUpdateProject = async () => {
+    try {
+  
+      console.log("ApproveTitle :", ApproveTitle);
+
+      const res = await updateProject(projectId, {
+        [ApproveTitle]: true,
+      });
+      console.log("res from update project => ", res);
+    } catch (error) {
+      console.error("Failed to update tasks:", error);
+      toast.error(t("Failed to update tasks"));
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -106,7 +126,12 @@ const RequestForm = ({
       await sendRequest(token, requestData);
       toast.success("Request sent successfully ");
       resetForm();
-      Navigate("/");
+      handleUpdateProject();
+      navigate("/Models", {
+        state: {
+          projectId,
+        },
+      });
     } catch (error) {
       console.error("Error submitting form:", error);
       setError("Failed to submit form");

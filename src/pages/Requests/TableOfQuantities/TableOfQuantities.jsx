@@ -1,39 +1,28 @@
 import { useEffect, useState } from "react";
 import { t } from "i18next";
 import { BiTrash } from "react-icons/bi";
-import { addTasksTable, getAllUnits } from "../../../Services/api";
+import {
+  addTasksTable,
+  getAllUnits,
+  updateProject,
+} from "../../../Services/api";
 import Empty from "../../../Components/empty/empty";
 import Input from "../../../Components/UI/Input/Input";
 import Button from "../../../Components/UI/Button/Button";
 import Select from "../../../Components/UI/Select/Select";
 import { toast } from "react-toastify";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const TaskRow = ({ onRemove, units, UnitsLoading }) => {
-  const [task, setTask] = useState({
-    description: "",
-    price: "",
-    quantity: "",
-    unit: "",
-    total: "",
-  });
-
+const TaskRow = ({ task, index, onRemove, onChange, units, UnitsLoading }) => {
   const handleChange = (field, value) => {
-    setTask((prevTask) => ({
-      ...prevTask,
-      [field]: value,
-    }));
-
-    if (field === "price" || field === "quantity") {
-      calculateTotal({ ...task, [field]: value });
-    }
+    onChange(index, field, value);
   };
 
-  const calculateTotal = (updatedTask) => {
-    const { price, quantity } = updatedTask;
-    const total = Number(price || 0) * Number(quantity || 0);
-    setTask((prevTask) => ({ ...prevTask, total }));
+  const calculateTotal = (price, requiredQuantity) => {
+    const total = Number(price || 0) * Number(requiredQuantity || 0);
+    handleChange("total", total);
   };
-
   return (
     <tr>
       <td className="w-1/3">
@@ -47,16 +36,26 @@ const TaskRow = ({ onRemove, units, UnitsLoading }) => {
       <td>
         <Input
           type="number"
+          min={0}
           value={task.price}
-          onChange={(e) => handleChange("price", e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            handleChange("price", value);
+            calculateTotal(value, task.requiredQuantity);
+          }}
           className={`bg-white border border-gray mx-2 border-solid focus:border focus:border-gray focus:border-solid`}
         />
       </td>
       <td>
         <Input
           type="number"
-          value={task.quantity}
-          onChange={(e) => handleChange("quantity", e.target.value)}
+          min={0}
+          value={task.requiredQuantity}
+          onChange={(e) => {
+            const value = e.target.value;
+            handleChange("requiredQuantity", value);
+            calculateTotal(task.price, value);
+          }}
           className={`bg-white border border-gray mx-2 border-solid focus:border focus:border-gray focus:border-solid`}
         />
       </td>
@@ -64,6 +63,7 @@ const TaskRow = ({ onRemove, units, UnitsLoading }) => {
         <input
           className={`bg-white border rounded-2xl p-2  border-gray mx-2 border-solid focus:border focus:border-gray focus:border-solid`}
           type="number"
+          min={0}
           value={task.total}
           disabled
         />
@@ -71,7 +71,7 @@ const TaskRow = ({ onRemove, units, UnitsLoading }) => {
       <td>
         <Select
           options={units.map((unit) => ({
-            value: unit.name,
+            value: unit._id,
             label: unit.name,
           }))}
           placeholder="Unit"
@@ -95,10 +95,11 @@ const TableOfQuantities = () => {
   const [tasks, setTasks] = useState([]);
   const [units, setUnits] = useState([]);
   const [UnitsLoading, setUnitsLoading] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
+  const [errors, setErrors] = useState("");
+  const location = useLocation();
   const { projectId } = location.state || {};
-  console.log(location.state);
   console.log(projectId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUnits = async () => {
@@ -112,36 +113,82 @@ const TableOfQuantities = () => {
         setUnitsLoading(false);
       }
     };
-
     fetchUnits();
   }, []);
 
   const addNewTask = () => {
-    setTasks((prevTasks) => [...prevTasks, { id: prevTasks.length + 1 }]);
+    const newTask = {
+      description: "",
+      price: "",
+      requiredQuantity: "",
+      unit: "",
+      total: "",
+    };
+    setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
-  const removeTask = (id) => {
-    setTasks((prevTasks) => prevTasks.filter((_, index) => index !== id));
+  const removeTask = (index) => {
+    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
   };
 
-  // handle submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleTaskChange = (index, field, value) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task, i) =>
+        i === index ? { ...task, [field]: value } : task
+      )
+    );
+  };
+
+  // update project
+  const handleUpdateProject = async () => {
     try {
-      const tasksTableData = {
-        ...tasks,
-        projectId,
-      };
-      console.log(tasksTableData);
-
-      const res = addTasksTable(tasksTableData);
-      console.log(res);
-      toast.success("Tasks Added Success");
+      console.log("Project ID:", projectId);
+      const res = await updateProject(projectId, {
+        tableOfQuantities: true,
+      });
+      console.log("res from update project => ", res);
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to add tasks", error);
+      console.error("Failed to update tasks:", error);
+      toast.error(t("Failed to update tasks"));
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    for (const task of tasks) {
+      if (
+        !task.description.trim() ||
+        !task.price.trim() ||
+        !task.requiredQuantity.trim() ||
+        !task.unit
+      ) {
+        setErrors(t("Please fill all fields correctly."));
+        return;
+      }
+    }
+    const tasksTableData = tasks.map((task) => ({
+      ...task,
+      project: projectId,
+    }));
+
+    try {
+      const res = await addTasksTable(tasksTableData);
+      console.log(res);
+      toast.success(t("Tasks Added Success"));
+      handleUpdateProject();
+      navigate("/Models", {
+        state: {
+          projectId,
+        },
+        replace: true,
+      });
+    } catch (error) {
+      console.error("Failed to add tasks:", error);
+      toast.error(t("Failed to add tasks"));
+    }
+  };
+
   return (
     <div className="TableOfQuantities">
       <div className="header bg-white p-4 rounded-l-3xl flex items-center justify-between">
@@ -171,20 +218,27 @@ const TableOfQuantities = () => {
               {tasks.map((task, index) => (
                 <TaskRow
                   key={index}
+                  task={task}
+                  index={index}
                   onRemove={() => removeTask(index)}
+                  onChange={handleTaskChange}
                   units={units}
                   UnitsLoading={UnitsLoading}
                 />
               ))}
             </tbody>
           </table>
+          {errors && (
+            <p className="error-message text-center text-red">{errors}</p>
+          )}
           <div className="btn flex items-center justify-center md:justify-end my-3">
             <Button onClick={handleSubmit}>{t("save")}</Button>
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center mt-10">
+        <div className="flex flex-col items-center justify-center mt-10">
           <Empty paragraph={"You haven't posted any tasks yet"} />
+          <Link className="text-purple underline mt-4" to={"/Models"} >Skip This Request</Link>
         </div>
       )}
     </div>

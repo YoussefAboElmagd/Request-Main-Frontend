@@ -15,6 +15,7 @@ const WorkRequest = () => {
         showActionCodes={showActionCodes}
         showReasons={showReasons}
         ReqTitle={"Work Request"}
+        ApproveTitle={"workRequest"}
       />
     </div>
   );

@@ -12,15 +12,17 @@ import {
 } from "../../../Services/api";
 import Select from "../../../Components/UI/Select/Select";
 import Loader from "../../../Components/Loader/Loader";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Models from "../../../pages/Requests/Models/Models";
 
 const AddTask = () => {
   const { ProjectId } = useParams();
-  console.log("Params =>  ", ProjectId);
   const user = useSelector((state) => state.auth.user);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { projectId, taskType } = location.state || {};
+  console.log(location.state);
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [Name, setName] = useState("");
@@ -39,7 +41,6 @@ const AddTask = () => {
   const [Consultants, setConsultants] = useState([]);
   const [ConsultantsLoading, setConsultantsLoading] = useState(true);
   const [tagsLoading, setTagsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [TaskId, setTaskId] = useState(false);
   const [sDate, setSDate] = useState({
     startDate: new Date(),
@@ -197,7 +198,7 @@ const AddTask = () => {
       setTaskId(res.addedTask._id);
       console.log(res);
       clearFormFields();
-      setIsModalOpen(true);
+      navigate(`/Project/Tasks/${ProjectId}`);
     } catch (err) {
       setError({
         message: err.response ? err.response.data.message : err.message,
@@ -210,8 +211,8 @@ const AddTask = () => {
   };
 
   const handleTagChange = (selectedOptions) => {
-    console.log("Selected options:", selectedOptions); // Log selected options
-    setSelectedTag(selectedOptions || []); // Set selected tags or empty array if none selected
+    console.log("Selected options:", selectedOptions);
+    setSelectedTag(selectedOptions || []);
   };
 
   return (
@@ -320,19 +321,31 @@ const AddTask = () => {
                   options={priorityOptions}
                   error={false}
                 />
-
-                <Select
-                  id="tag"
-                  label={t("tag")}
-                  InputClassName={`${
-                    fieldErrors.tag ? "border  border-red rounded-2xl " : ""
-                  }`}
-                  value={selectedTag}
-                  onChange={handleTagChange}
-                  options={tags}
-                  isMulti
-                  error={false}
-                />
+                <div className="Tags">
+                  <Select
+                    label={t("tag")}
+                    id="tag"
+                    isMulti={false}
+                    value={selectedTag}
+                    onChange={handleTagChange}
+                    InputClassName={`${
+                      fieldErrors.tag ? "border  border-red rounded-2xl " : ""
+                    }`}
+                    options={tags.map((tag) => ({
+                      label: (
+                        <div className="flex items-center justify-between">
+                          <span className="text">{tag.label}</span>
+                          <span
+                            className="w-4 h-4 ml-2 rounded-full"
+                            style={{ backgroundColor: tag.colorCode }}
+                          />
+                        </div>
+                      ),
+                      value: tag._id,
+                    }))}
+                    error={false}
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <Select
@@ -389,11 +402,6 @@ const AddTask = () => {
                   error={!!error}
                 />
               </div>
-              {isModalOpen && (
-                <div className="model absolute top-0 left-0 w-full backdrop-blur-sm">
-                  <Models taskId={TaskId}  />
-                </div>
-              )}
 
               {error && (
                 <div className="text-red font-bold text-center p-2">

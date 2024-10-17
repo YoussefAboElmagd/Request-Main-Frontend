@@ -231,6 +231,24 @@ export const getProjectDetails = async (projectId) => {
   }
 };
 
+// update project
+
+export const updateProject = async ( projectId, updatedData) => {
+  try {
+    const response = await axiosInstance.put(`project/${projectId}`, updatedData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from update project => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Update project error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
 // add Project
 
 export const addProject = async (token, projectData) => {
