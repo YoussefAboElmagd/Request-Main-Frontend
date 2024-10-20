@@ -106,7 +106,7 @@ const ProjectHistory = () => {
             className={` box bg-white  ${
               viewMode === "list"
                 ? "flex items-center justify-center text-xl "
-                : "flex flex-col p-5 justify-center gap-4 items-center col-span-1 h-full"
+                : "flex flex-col p-5 justify-center gap-4 items-center col-span-1 min-h-[286px] h-full"
             } rounded-md shadow-sm  `}
           >
             <span>

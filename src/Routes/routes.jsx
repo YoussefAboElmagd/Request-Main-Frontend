@@ -28,7 +28,8 @@ import RequestForInspection from "../pages/Requests/RequestForInspection.jsx";
 import TableOfQuantities from "../pages/Requests/TableOfQuantities/TableOfQuantities.jsx";
 import Inbox from "../pages/Inbox/Inbox.jsx";
 import SeePlans from "../pages/Plans/SeePlans.jsx";
-import PlansDetails from "../pages/Plans/PlansDetails.jsx";
+import PlansInfo from "../pages/Plans/PlansInfo.jsx";
+import PlanDetails from "../pages/Plans/PlanDetails.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -76,7 +77,8 @@ const AppRoutes = () => {
       />
       <Route path="/Team" element={<Team />} />
       <Route path="/SeePlans" element={<SeePlans />} />
-      <Route path="/PlansDetails" element={<PlansDetails />} />
+      <Route path="/PlansInfo" element={<PlansInfo />} />
+      <Route path="/PlanDetails" element={<PlanDetails />} />
     </Routes>
   );
 };

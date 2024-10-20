@@ -15,23 +15,31 @@ const tiers = [
     description: "Best for personal use",
     features: [
       {
-        feature: "100 products",
+        feature: "14 day trial",
         accepted: true,
       },
       {
-        feature: "200 products",
+        feature: "2 projects",
         accepted: true,
       },
       {
-        feature: "Unlimited subscribers",
+        feature: "Weekly report",
         accepted: false,
       },
       {
-        feature: "Marketing automation",
+        feature: "certified extracts",
         accepted: true,
       },
       {
-        feature: "Custom integrations",
+        feature: "3 accounts",
+        accepted: true,
+      },
+      {
+        feature: "15 Storage space",
+        accepted: true,
+      },
+      {
+        feature: "Mobile App Integration",
         accepted: false,
       },
     ],
@@ -45,24 +53,32 @@ const tiers = [
     description: "Best for personal use",
     features: [
       {
-        feature: "100 products",
+        feature: "14 day trial",
         accepted: true,
       },
       {
-        feature: "200 products",
+        feature: "5 projects",
         accepted: true,
       },
       {
-        feature: "Unlimited subscribers",
+        feature: "Weekly report",
+        accepted: true,
+      },
+      {
+        feature: "certified extracts",
         accepted: false,
       },
       {
-        feature: "Marketing automation",
+        feature: "6 accounts",
         accepted: true,
       },
       {
-        feature: "Custom integrations",
-        accepted: false,
+        feature: "15 Storage space",
+        accepted: true,
+      },
+      {
+        feature: "Mobile App Integration",
+        accepted: true,
       },
     ],
     featured: true,
@@ -75,24 +91,32 @@ const tiers = [
     description: "Best for personal use",
     features: [
       {
-        feature: "100 products",
+        feature: "14 day trial",
         accepted: true,
       },
       {
-        feature: "200 products",
+        feature: "10 projects",
         accepted: true,
       },
       {
-        feature: "Unlimited subscribers",
+        feature: "Weekly report",
         accepted: false,
       },
       {
-        feature: "Marketing automation",
+        feature: "certified extracts",
         accepted: true,
       },
       {
-        feature: "Custom integrations",
-        accepted: false,
+        feature: "9 accounts",
+        accepted: true,
+      },
+      {
+        feature: "15 Storage space",
+        accepted: true,
+      },
+      {
+        feature: "Mobile App Integration",
+        accepted: true,
       },
     ],
     featured: false,
@@ -183,7 +207,11 @@ const SeePlans = () => {
                 >
                   <span>
                     {feature.accepted ? (
-                      <FaCheck className="text-blue" />
+                      <FaCheck
+                        style={{
+                          color: "#1D4ED8",
+                        }}
+                      />
                     ) : (
                       <FaXmark className="text-red" />
                     )}
@@ -192,12 +220,12 @@ const SeePlans = () => {
                 </li>
               ))}
             </ul>
-            <Button className={"mt-4 "}>Get Started</Button>
+            <Button className={"mt-4 font-normal text-xs"}>Get Started</Button>
           </div>
         ))}
       </div>
       <Link
-        to={"/PlansDetails"}
+        to={"/PlansInfo"}
         className="text-gold underline underline-offset-1"
       >
         More Details
