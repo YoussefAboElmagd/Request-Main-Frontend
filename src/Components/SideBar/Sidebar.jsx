@@ -69,7 +69,7 @@ const Sidebar = () => {
     {
       title: t("SeePlan"),
       icon: <MdOutlinePayment className="sidebar_icon" />,
-      path: "/plan",
+      path: "/SeePlans",
       notificationCount: notifications.Plan,
     },
     {

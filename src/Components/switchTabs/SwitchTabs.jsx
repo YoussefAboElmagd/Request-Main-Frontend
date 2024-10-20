@@ -2,35 +2,44 @@ import React, { useState } from "react";
 import "./style.scss";
 import { useLanguage } from "../../context/LanguageContext";
 
-const SwitchTabs = ({ data, onTabChange }) => {
+const SwitchTabs = ({
+  data,
+  onTabChange,
+  movingBg_style,
+  main_style,
+  activeTab_style,
+  tab_style,
+
+
+}) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [activePosition, setActivePosition] = useState(0);
   const { isRTL } = useLanguage();
 
   const activeTab = (tab, index) => {
-    setActivePosition(index * 220); 
+    setActivePosition(index * 220);
     setTimeout(() => {
-      setSelectedTab(index); 
+      setSelectedTab(index);
     }, 300);
     onTabChange(tab, index);
   };
 
   return (
-    <div className="switchingTabs  p-1">
+    <div className={`switchingTabs  ${main_style} p-1`}>
       <div className="tabItems gap-5 flex items-center relative ">
         {data.map((tab, index) => (
           <span
             key={index}
-            className={`tabItem py-1 text-center rounded-md my-1 cursor-pointer ${
-              selectedTab === index ? "activeTabItem" : ""
-            }`}
+            className={`tabItem ${tab_style} py-1 text-center rounded-md my-1 cursor-pointer ${
+              selectedTab === index ? `activeTabItem ${activeTab_style}` : ""
+            } `}
             onClick={() => activeTab(tab, index)}
           >
             {tab}
           </span>
         ))}
         <span
-          className="movingBg"
+          className={`movingBg ${movingBg_style}`}
           style={{
             ...(isRTL
               ? { right: `${activePosition}px` }

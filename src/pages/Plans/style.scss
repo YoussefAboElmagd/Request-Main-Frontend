@@ -1,0 +1,26 @@
+
+
+.tooltip {
+  position: absolute;
+  top: 0;
+  left: -80%;
+  padding: 0.3em 0.6em;
+  opacity: 1;
+  pointer-events: none;
+  transition: all 0.3s;
+  background: var(--green);   
+  border-radius: 5px;
+  width: 7em;
+  text-align: center;
+}
+
+.tooltip::before {
+  position: absolute;
+  content: "";
+  height: 0.6em;
+  width: 0.6em;
+  bottom: -0.2em;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  background: var(--green);
+}

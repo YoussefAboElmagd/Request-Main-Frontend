@@ -27,6 +27,8 @@ import WorkRequest from "../pages/Requests/WorkRequest.jsx";
 import RequestForInspection from "../pages/Requests/RequestForInspection.jsx";
 import TableOfQuantities from "../pages/Requests/TableOfQuantities/TableOfQuantities.jsx";
 import Inbox from "../pages/Inbox/Inbox.jsx";
+import SeePlans from "../pages/Plans/SeePlans.jsx";
+import PlansDetails from "../pages/Plans/PlansDetails.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -73,6 +75,8 @@ const AppRoutes = () => {
         element={<TableOfQuantities />}
       />
       <Route path="/Team" element={<Team />} />
+      <Route path="/SeePlans" element={<SeePlans />} />
+      <Route path="/PlansDetails" element={<PlansDetails />} />
     </Routes>
   );
 };
