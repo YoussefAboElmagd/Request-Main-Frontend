@@ -220,7 +220,11 @@ const SeePlans = () => {
                 </li>
               ))}
             </ul>
-            <Button className={"mt-4 font-normal text-xs"}>Get Started</Button>
+            <Link to={"/PlanDetails"}>
+              <Button className={"mt-4 font-normal text-xs"}>
+                Get Started
+              </Button>
+            </Link>
           </div>
         ))}
       </div>
