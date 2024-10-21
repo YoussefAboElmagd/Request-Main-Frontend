@@ -37,6 +37,8 @@ const Otp = () => {
     userData_login,
     email_signUp,
   } = location.state || {};
+  console.log(location.state);
+  
 
   const dispatch = useDispatch();
 

@@ -31,7 +31,7 @@ const Team = () => {
           <h5 className="font-semibold  text-base">Team</h5>
           <div className="TotalMembers flex items-center  gap-2">
             <span
-              className=" w-9 h-9  flex items-center  justify-center rounded-full"
+              className="w-7 h-7 md:w-9 md:h-9  flex items-center  justify-center rounded-full"
               style={{
                 background: "#CCABDA",
               }}
@@ -39,7 +39,7 @@ const Team = () => {
               <BsMicrosoftTeams className="text-purple-dark" />
             </span>
             <p
-              className="font-semibold  text-lg "
+              className="font-medium md:font-semibold  text-base md:text-lg "
               style={{
                 color: "#696A6B",
               }}

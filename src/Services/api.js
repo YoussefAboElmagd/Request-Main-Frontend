@@ -593,3 +593,61 @@ export const getAllUnits = async () => {
     throw error;
   }
 };
+
+//  get user-group
+
+export const getUserGroup = async (token) => {
+  try {
+    const response = await axiosInstance.get(`user-group`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from user-group => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get user-group error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+//  get all vocations
+
+export const getAllVocations = async () => {
+  try {
+    const response = await axiosInstance.get(`vocation`);
+
+    console.log("Response from vocations => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get vocations error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// update team
+
+export const updateTeam = async (token, teamId, teamData) => {
+  try {
+    const response = await axiosInstance.put(`team/${teamId}`, teamData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from update team => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Update team error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
