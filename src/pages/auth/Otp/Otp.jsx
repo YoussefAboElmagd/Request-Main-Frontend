@@ -32,6 +32,7 @@ const Otp = () => {
     forget_email,
     forget,
     token,
+    token_signUp,
     userData_signUp,
     email_logIn,
     userData_login,
@@ -108,7 +109,7 @@ const Otp = () => {
             console.log(userData_signUp);
             console.log(userData_signUp.verificationCode);
             localStorage.setItem("user", JSON.stringify(userData_signUp));
-            localStorage.setItem("token", token);
+            localStorage.setItem("token", token_signUp);
             navigate("/SignUp/createCompany");
           } else {
             setError(t("OTP is incorrect"));

@@ -598,7 +598,7 @@ export const getAllUnits = async () => {
 
 export const getUserGroup = async (token) => {
   try {
-    const response = await axiosInstance.get(`user-group`, {
+    const response = await axiosInstance.get(`userGroup`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -648,6 +648,54 @@ export const updateTeam = async (token, teamId, teamData) => {
     return response.data;
   } catch (error) {
     console.error("Update team error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+// delegated Team
+
+export const delegatedTeam = async (token, teamId) => {
+  try {
+    const response = await axiosInstance.get(`team/delegate/${teamId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from delegated team => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Delegated team error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+//  delete user from  project  in delegated Team
+
+export const deleteUserFromProject = async (token, project, userId) => {
+  try {
+ 
+    const response = await axiosInstance.delete(`team/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", 
+      },
+      data: { project }, 
+    });
+
+    console.log("Response from delete user from project => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Delete user from project error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

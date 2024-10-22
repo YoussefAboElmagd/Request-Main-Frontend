@@ -255,6 +255,8 @@ const AddNewAccess = () => {
       access: selectedAccess?.value,
       projects: selectedProject.map((p) => p.value),
     };
+    console.log(payload);
+    
 
     try {
       await updateTeam(token, user.team, payload);
