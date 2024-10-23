@@ -123,7 +123,7 @@ const handleSubmit = async (e) => {
                     label={t("Enter password")}
                     labelIcon={<MdLockOutline />}
                     onChange={(e) => setPassword(e.target.value)}
-                    minLength={8}
+                    // minLength={8}
                     inputIcons={[
                       {
                         element: <FaRegEyeSlash className="text-gold" />,

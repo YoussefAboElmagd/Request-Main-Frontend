@@ -8,7 +8,7 @@ const StatusHeader = ({ buttons, onFilterChange }) => {
   const [activePosition, setActivePosition] = useState(0);
   const { isRTL } = useLanguage();
   const handleButtonClick = (index) => {
-    setActivePosition(index * 65);
+    setActivePosition(index * 80);
     setSelectedIndex(index);
 
     // Call the onFilterChange function with the selected value
@@ -22,7 +22,7 @@ const StatusHeader = ({ buttons, onFilterChange }) => {
           {buttons.map((button, index) => (
             <button
               key={button.value}
-              className={`btn px-4 py-5 font-inter font-bold text-xs text-gray  md:w-16  ${
+              className={`btn px-4 py-5 font-inter font-bold text-xs text-gray  md:w-20  ${
                 selectedIndex === index ? `active_${button.value}` : ""
               }`}
               onClick={() => handleButtonClick(index)}

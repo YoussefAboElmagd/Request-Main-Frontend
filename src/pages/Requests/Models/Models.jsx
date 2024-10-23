@@ -139,7 +139,7 @@ const Models = () => {
               />
               <label
                 htmlFor="review"
-                className="text-purple font-medium text-base underline"
+                className="text-purple font-medium text-base underline select-none"
               >
                 Please review the following item(s) and return a copy with your
                 Action code

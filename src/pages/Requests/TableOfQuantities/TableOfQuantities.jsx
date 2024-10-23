@@ -12,9 +12,16 @@ import Button from "../../../Components/UI/Button/Button";
 import Select from "../../../Components/UI/Select/Select";
 import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-const TaskRow = ({ task, index, onRemove, onChange, units, UnitsLoading }) => {
+const TaskRow = ({
+  task,
+  index,
+  onRemove,
+  onChange,
+  units,
+  UnitsLoading,
+  errors,
+}) => {
   const handleChange = (field, value) => {
     onChange(index, field, value);
   };
@@ -23,6 +30,7 @@ const TaskRow = ({ task, index, onRemove, onChange, units, UnitsLoading }) => {
     const total = Number(price || 0) * Number(requiredQuantity || 0);
     handleChange("total", total);
   };
+
   return (
     <tr>
       <td className="w-1/3">
@@ -30,7 +38,9 @@ const TaskRow = ({ task, index, onRemove, onChange, units, UnitsLoading }) => {
           type="text"
           value={task.description}
           onChange={(e) => handleChange("description", e.target.value)}
-          className={`bg-white border border-gray mx-2 border-solid focus:border focus:border-gray focus:border-solid`}
+          className={`bg-white border mx-2 border-solid focus:border-gray focus:border focus:border-solid ${
+            errors[index]?.description ? "border border-red " : "border-gray"
+          }`}
         />
       </td>
       <td>
@@ -43,7 +53,9 @@ const TaskRow = ({ task, index, onRemove, onChange, units, UnitsLoading }) => {
             handleChange("price", value);
             calculateTotal(value, task.requiredQuantity);
           }}
-          className={`bg-white border border-gray mx-2 border-solid focus:border focus:border-gray focus:border-solid`}
+          className={`bg-white border mx-2 border-solid focus:border-gray focus:border focus:border-solid ${
+            errors[index]?.price ? "border border-red " : "border-gray"
+          }`}
         />
       </td>
       <td>
@@ -56,12 +68,14 @@ const TaskRow = ({ task, index, onRemove, onChange, units, UnitsLoading }) => {
             handleChange("requiredQuantity", value);
             calculateTotal(task.price, value);
           }}
-          className={`bg-white border border-gray mx-2 border-solid focus:border focus:border-gray focus:border-solid`}
+          className={`bg-white border mx-2 border-solid focus:border-gray focus:border focus:border-solid ${
+            errors[index]?.requiredQuantity ? "border border-red " : "border-gray"
+          }`}
         />
       </td>
       <td>
         <input
-          className={`bg-white border rounded-2xl p-2  border-gray mx-2 border-solid focus:border focus:border-gray focus:border-solid`}
+          className="bg-white border rounded-2xl p-2 border-gray mx-2"
           type="number"
           min={0}
           value={task.total}
@@ -78,7 +92,9 @@ const TaskRow = ({ task, index, onRemove, onChange, units, UnitsLoading }) => {
           disabled={UnitsLoading}
           value={task.unit || ""}
           onChange={(e) => handleChange("unit", e)}
-          className="bg-white mx-4"
+          className={`bg-white mx-4 ${
+            errors[index]?.unit ? "border-b border-red rounded-3xl" : ""
+          }`}
           loading={UnitsLoading}
         />
       </td>
@@ -95,10 +111,9 @@ const TableOfQuantities = () => {
   const [tasks, setTasks] = useState([]);
   const [units, setUnits] = useState([]);
   const [UnitsLoading, setUnitsLoading] = useState(false);
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState({});
   const location = useLocation();
   const { projectId } = location.state || {};
-  console.log(projectId);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -139,34 +154,30 @@ const TableOfQuantities = () => {
     );
   };
 
-  // update project
-  const handleUpdateProject = async () => {
-    try {
-      console.log("Project ID:", projectId);
-      const res = await updateProject(projectId, {
-        tableOfQuantities: true,
-      });
-      console.log("res from update project => ", res);
-    } catch (error) {
-      console.error("Failed to update tasks:", error);
-      toast.error(t("Failed to update tasks"));
-    }
+  const validateTasks = () => {
+    const newErrors = {};
+    tasks.forEach((task, index) => {
+      newErrors[index] = {};
+      if (!task.description.trim()) newErrors[index].description = true;
+      if (!task.price.trim()) newErrors[index].price = true;
+      if (!task.requiredQuantity.trim())
+        newErrors[index].requiredQuantity = true;
+      if (!task.unit) newErrors[index].unit = true;
+    });
+    setErrors(newErrors);
+    return Object.values(newErrors).every(
+      (error) => Object.keys(error).length === 0
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    for (const task of tasks) {
-      if (
-        !task.description.trim() ||
-        !task.price.trim() ||
-        !task.requiredQuantity.trim() ||
-        !task.unit
-      ) {
-        setErrors(t("Please fill all fields correctly."));
-        return;
-      }
+    if (!validateTasks()) {
+      toast.error(t("Please fill all fields correctly."));
+      return;
     }
+
     const tasksTableData = tasks.map((task) => ({
       ...task,
       project: projectId,
@@ -174,13 +185,9 @@ const TableOfQuantities = () => {
 
     try {
       const res = await addTasksTable(tasksTableData);
-      console.log(res);
-      toast.success(t("Tasks Added Success"));
-      handleUpdateProject();
+      toast.success(t("Tasks Added Successfully"));
       navigate("/Models", {
-        state: {
-          projectId,
-        },
+        state: { projectId },
         replace: true,
       });
     } catch (error) {
@@ -195,7 +202,7 @@ const TableOfQuantities = () => {
         <h5 className="font-bold text-base">Table of Quantities</h5>
         <button
           onClick={addNewTask}
-          className="font-bold text-lg text-purple underline underline-offset-1"
+          className="font-bold text-lg text-purple underline"
         >
           + Add New
         </button>
@@ -224,21 +231,21 @@ const TableOfQuantities = () => {
                   onChange={handleTaskChange}
                   units={units}
                   UnitsLoading={UnitsLoading}
+                  errors={errors}
                 />
               ))}
             </tbody>
           </table>
-          {errors && (
-            <p className="error-message text-center text-red">{errors}</p>
-          )}
-          <div className="btn flex items-center justify-center md:justify-end my-3">
-            <Button onClick={handleSubmit}>{t("save")}</Button>
+          <div className="btn flex items-center justify-center my-3">
+            <Button onClick={handleSubmit}>{t("Save")}</Button>
           </div>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center mt-10">
           <Empty paragraph={"You haven't posted any tasks yet"} />
-          <Link className="text-purple underline mt-4" to={"/Models"} >Skip This Request</Link>
+          <Link to="/Models" className="text-purple underline mt-4">
+            Skip This Request
+          </Link>
         </div>
       )}
     </div>

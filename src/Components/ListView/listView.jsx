@@ -21,14 +21,14 @@ const ListView = ({
       <div className="files flex items-center gap-3 cursor-pointer">
         <div className="pen">
           <span>
-            <FaPen className="text-gray w-4 h-4 cursor-pointer" />
+            <FaPen className="text-gray w-3 h-3 md:w-4 md:h-4 cursor-pointer" />
           </span>
         </div>
         <div className="files flex items-center gap-1">
           <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
             {filesLength}
           </span>
-          <FaFileLines className="text-purple-dark w-4 h-4" />
+          <FaFileLines className="text-purple-dark w-3 h-3 md:w-4 md:h-4" />
         </div>
         <div className="msg flex items-center gap-1">
           <span className="text-red font-inter font-extrabold text-sm leading-4">
@@ -42,7 +42,7 @@ const ListView = ({
       </div>
       <div className="chips flex items-center justify-start gap-2">
         <span
-          className={`${taskPriority} font-inter font-semibold text-xs text-center py-1 px-2 rounded-3xl`}
+          className={`${taskPriority} font-inter font-semibold text-xs text-center py-1 px-1 md:px-2 rounded-3xl`}
         >
           {taskPriority}
         </span>

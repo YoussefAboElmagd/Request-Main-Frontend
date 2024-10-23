@@ -17,6 +17,17 @@ const ProjectHistory = () => {
   const [Status, setStatus] = useState("all");
   const [viewMode, setViewMode] = useState("board");
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date
+      .toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+      })
+      .replace("/", "-")
+      .replace("/", "-");;
+  };
+
   const buttonData = [
     { label: t("All"), value: "all" },
     { label: t("Waiting"), value: "waiting" },
@@ -96,7 +107,7 @@ const ProjectHistory = () => {
         <div
           className={`content ${
             viewMode === "board"
-              ? "grid grid-cols-4 gap-2"
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2"
               : "flex flex-col gap-3"
           } mt-4`}
         >
@@ -139,14 +150,13 @@ const ProjectHistory = () => {
                   >
                     <BoardViewProject
                       ProgressValue={70}
-                      NameOfTask={"Project"}
-                      Tagname={"title"}
+                      NameOfTask={Project.name}
                       Status={Project.status}
                       avatars={avatars}
-                      filesLength={2}
-                      MsgLength={6}
-                      sDate={"10 jan"}
-                      eDate={"12  jan"}
+                      filesLength={Project.documentsCount}
+                      MsgLength={Project.notesCount}
+                      sDate={formatDate(Project.sDate)}
+                      eDate={formatDate(Project.dueDate)}
                       Submit={"Submitting"}
                     />
                   </Link>
@@ -167,12 +177,12 @@ const ProjectHistory = () => {
                   >
                     <ListView
                       ProgressValue={70}
-                      NameOfTask={"Project"}
-                      Tagname={"title"}
+                      NameOfTask={Project.name}
+                      Tagname={Project.projectPriority}
                       Status={Project.status}
                       avatars={avatars}
-                      filesLength={2}
-                      MsgLength={6}
+                      filesLength={Project.documentsCount}
+                      MsgLength={Project.notesCount}
                       Submit={"Submitting"}
                     />
                   </Link>

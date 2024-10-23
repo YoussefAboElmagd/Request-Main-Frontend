@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../../Components/UI/Button/Button";
 import General from "./General/General";
 import Company from "./company/Company";
@@ -11,6 +11,7 @@ import { addTag } from "../../Services/api";
 import { toast } from "react-toastify";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 //  check input
 export function CheckInput({ checked, onChange }) {
@@ -32,12 +33,29 @@ export function CheckInput({ checked, onChange }) {
 }
 
 
+// Debounce utility function
+function debounce(func, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
 const Setting = () => {
+  const location = useLocation()
   const user = useSelector((state) => state.auth.user);
   const [selectedTab, setSelectedTab] = useState(0);
   const [tags, setTags] = useState([]);
   const profileRef = useRef();
   const generalRef = useRef();
+
+   useEffect(() => {
+     if (location.state && location.state.tabIndex !== undefined) {
+       setSelectedTab(location.state.tabIndex); 
+     }
+   }, [location.state]);
+
   const saveGeneralChanges = () => {
     if (generalRef.current) {
       const settings = generalRef.current.handleSave();
@@ -92,6 +110,8 @@ const Setting = () => {
     }
   };
 
+    const debouncedSaveCreateTagChanges = debounce(saveCreateTagChanges, 1000);
+
   const handleTagsChange = (updatedTags) => {
     setTags(updatedTags);
   };
@@ -127,7 +147,7 @@ const Setting = () => {
       label: t("createTag"),
       value: "CreateTags",
       component: <CreateTag onTagsChange={handleTagsChange} />,
-      handleSave: saveCreateTagChanges,
+      handleSave: debouncedSaveCreateTagChanges,
     },
   ];
 
@@ -156,6 +176,7 @@ const Setting = () => {
           <SwitchTabs
             data={buttons.map((button) => button.label)}
             onTabChange={handleTabChange}
+            Tab={selectedTab}
           />
         </div>
         <div className="content mt-4">{buttons[selectedTab].component}</div>

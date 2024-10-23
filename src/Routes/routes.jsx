@@ -30,6 +30,7 @@ import Inbox from "../pages/Inbox/Inbox.jsx";
 import SeePlans from "../pages/Plans/SeePlans.jsx";
 import PlansInfo from "../pages/Plans/PlansInfo.jsx";
 import PlanDetails from "../pages/Plans/PlanDetails.jsx";
+import Payments from "../pages/Payments/Payments.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -79,6 +80,7 @@ const AppRoutes = () => {
       <Route path="/SeePlans" element={<SeePlans />} />
       <Route path="/PlansInfo" element={<PlansInfo />} />
       <Route path="/PlanDetails" element={<PlanDetails />} />
+      <Route path="/Payments" element={<Payments />} />
     </Routes>
   );
 };

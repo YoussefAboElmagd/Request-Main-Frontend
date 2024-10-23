@@ -4,6 +4,7 @@ import {
   MdDriveFolderUpload,
   MdInbox,
   MdKeyboardDoubleArrowLeft,
+  MdLogout,
   MdOutlinePayment,
 } from "react-icons/md";
 import { RiTeamFill } from "react-icons/ri";
@@ -117,6 +118,7 @@ const Sidebar = () => {
         >
           <Link
             to="/Settings"
+            state={{ tabIndex: 1 }}
             onClick={handleProfileClick}
             className="flex gap-2 items-center"
           >
@@ -178,12 +180,18 @@ const Sidebar = () => {
           ))}
           {/* Logout Button */}
           {user ? (
-            <Button
+            <button
               onClick={handleLogoutClick}
-              className={`mt-auto  mx-2 ${Open && "hidden"}`}
+              className={`text-sm font-semibold font-inter text-gray transition-custom duration-custom flex items-center gap-3 py-5 px-5   ${
+                Open && "item_sidebar_close pl-7"
+              }`}
             >
-              {t("logout")}
-            </Button>
+              <span>
+                {" "}
+                <MdLogout className="w-6 h-6" />
+              </span>
+              {!Open && <span>{t("logout")}</span>}
+            </button>
           ) : (
             <Button className="mt-auto w-full">
               <Link to="/SignUp/ChooseRole">Sign Up</Link>

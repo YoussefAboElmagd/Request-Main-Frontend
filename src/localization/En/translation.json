@@ -43,6 +43,8 @@
   "sDate": "start Date",
   "desc": "description",
   "PName": "Project Name",
+  "ProjectHistory": "Project History",
+
   "Home": "Home",
   "Projects": "Projects",
   "Inbox": "Inbox",
@@ -104,6 +106,6 @@
   "Previous tags": "Previous tags",
   "+ Add new tag": "+ Add new tag",
   "Password": "Password",
-  "Save Changes" : "Save Changes",
-  "add" : "+ Add Member"
+  "Save Changes": "Save Changes",
+  "add": "+ Add Member"
 }
