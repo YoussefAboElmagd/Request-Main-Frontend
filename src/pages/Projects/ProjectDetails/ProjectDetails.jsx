@@ -69,7 +69,10 @@ const ProjectDetails = () => {
             <h1 className="title font-inter font-bold text-3xl text-black m-2">
               {t("ProjectDetails")}
             </h1>
-            <Link to={`/Project/Tasks/${projectId}`}>
+            <Link
+              to={`/Project/Tasks/${projectId}`}
+              state={{ members: Project.members }}
+            >
               <button
                 className="bg-white  flex items-center gap-2"
                 style={{
@@ -118,7 +121,7 @@ const ProjectDetails = () => {
               </span>
             </div>
           </div>
-          
+
           <div className="team flex items-center justify-between my-2 mx-3">
             <h5 className="Team font-bold text-2xl  ">Team</h5>
             <div className="avatars flex items-center  -space-x-1">

@@ -446,3 +446,83 @@ export const EditSub = () => {
     </div>
   );
 };
+
+
+
+
+ {
+   /* <div className="grid grid-cols-4 gap-2">
+              <div className="price col-span-1">
+                <label
+                  htmlFor="requiredQuantity"
+                  className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
+                >
+                  Required Quantity
+                </label>
+                <input
+                  className="bg-white border border-purple border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4"
+                  type="number"
+                  min="0"
+                  id="requiredQuantity"
+                  name="requiredQuantity"
+                  placeholder="Required quantity"
+                  value={formData.requiredQuantity}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="Approved quantity col-span-1">
+                <label
+                  htmlFor="approvedQuantity"
+                  className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
+                >
+                  Approved Quantity
+                </label>
+                <input
+                  className="bg-white border border-purple border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4"
+                  type="number"
+                  min="0"
+                  id="approvedQuantity"
+                  name="approvedQuantity"
+                  placeholder="Approved quantity"
+                  value={formData.approvedQuantity}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="Executed quantity col-span-1">
+                <label
+                  htmlFor="executedQuantity"
+                  className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
+                >
+                  Executed Quantity
+                </label>
+                <input
+                  className="bg-white border border-purple border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4"
+                  type="number"
+                  min="0"
+                  id="executedQuantity"
+                  name="executedQuantity"
+                  placeholder="Executed quantity"
+                  value={formData.executedQuantity}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="Filtered quantity col-span-1">
+                <label
+                  htmlFor="filteredQuantity"
+                  className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
+                >
+                  Filtered Quantity
+                </label>
+                <input
+                  className="bg-white border border-purple border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4"
+                  type="number"
+                  min="0"
+                  id="filteredQuantity"
+                  name="filteredQuantity"
+                  placeholder="Filtered quantity"
+                  value={formData.filteredQuantity}
+                  onChange={handleChange}
+                />
+              </div>
+            </div> */
+ }

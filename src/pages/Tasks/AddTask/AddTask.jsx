@@ -3,43 +3,36 @@ import Input from "../../../Components/UI/Input/Input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Button from "../../../Components/UI/Button/Button";
 import { useEffect, useState } from "react";
-import {
-  addTask,
-  getAllConsultants,
-  getAllContractors,
-  getAllOwners,
-  getAllTagsByUser,
-} from "../../../Services/api";
+import { addTask, getAllTagsByUser, getAllUnits } from "../../../Services/api";
 import Select from "../../../Components/UI/Select/Select";
 import Loader from "../../../Components/Loader/Loader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Models from "../../../pages/Requests/Models/Models";
 
 const AddTask = () => {
   const { ProjectId } = useParams();
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, taskType } = location.state || {};
+  const { projectId, taskType, members } = location.state || {};
   console.log(location.state);
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [TaskType, setTaskType] = useState(taskType);
+  const [isSubtask, setIsSubtask] = useState(false);
   const [Name, setName] = useState("");
   const [Description, setDescription] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
-  const [SelectedStatus, setSelectedStatus] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
   const [tags, setTags] = useState([]);
-  const [selectedOwner, setSelectedOwner] = useState("");
-  const [selectedContractor, setSelectedContractor] = useState("");
-  const [selectedConsultant, setSelectedConsultant] = useState("");
-  const [Owners, setOwners] = useState([]);
-  const [OwnersLoading, setOwnersLoading] = useState(true);
-  const [Contractors, setContractors] = useState([]);
-  const [ContractorsLoading, setContractorsLoading] = useState(true);
-  const [Consultants, setConsultants] = useState([]);
-  const [ConsultantsLoading, setConsultantsLoading] = useState(true);
+  const [Price, setPrice] = useState(0);
+  const [Quantity, setQuantity] = useState(0);
+  const [Total, setTotal] = useState(0);
+  const [Units, setUnits] = useState([]);
+  const [selectedUnit, setSelectedUnit] = useState("");
+  const [UnitsLoading, setUnitsLoading] = useState(false);
+  const [Member, setMember] = useState(members);
+  const [SelectedMember, setSelectedMember] = useState("");
   const [tagsLoading, setTagsLoading] = useState(true);
   const [TaskId, setTaskId] = useState(false);
   const [sDate, setSDate] = useState({
@@ -55,53 +48,41 @@ const AddTask = () => {
     Description: false,
     sDate: false,
     eDate: false,
-    owner: false,
-    contractor: false,
-    consultant: false,
     priority: false,
-    status: false,
     tag: false,
+    price: false,
+    quantity: false,
+    unit: false,
+    member: false,
   });
+
+  useEffect(() => {
+    setIsSubtask(TaskType === "sub");
+  }, [TaskType]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ownersData = await getAllOwners();
-        setOwners(
-          ownersData.results.map((owner) => ({
-            value: owner._id,
-            label: owner.name,
-          }))
-        );
-        setOwnersLoading(false);
+        const [tagsData, UnitsData] = await Promise.all([
+          getAllTagsByUser(user._id),
+          getAllUnits(),
+        ]);
 
-        const contractorsData = await getAllContractors();
-        setContractors(
-          contractorsData.results.map((contractor) => ({
-            value: contractor._id,
-            label: contractor.name,
-          }))
-        );
-        setContractorsLoading(false);
-
-        const consultantsData = await getAllConsultants();
-        setConsultants(
-          consultantsData.results.map((consultant) => ({
-            value: consultant._id,
-            label: consultant.name,
-          }))
-        );
-        setConsultantsLoading(false);
-
-        const Tags = await getAllTagsByUser(user._id);
         setTags(
-          Tags.results.map((tag) => ({
+          tagsData.results.map((tag) => ({
             value: tag._id,
             label: tag.name,
             colorCode: tag.colorCode,
           }))
         );
         setTagsLoading(false);
+        setUnits(
+          UnitsData.results.map((unit) => ({
+            value: unit._id,
+            label: unit.name,
+          }))
+        );
+        setUnitsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -115,11 +96,6 @@ const AddTask = () => {
     { value: "low", label: t("low") },
     { value: "medium", label: t("medium") },
     { value: "high", label: t("high") },
-  ];
-  const statusOptions = [
-    { value: "completed", label: t("completed") },
-    { value: "working", label: t("working") },
-    { value: "waiting", label: t("waiting") },
   ];
 
   const formatDate = (date) => {
@@ -143,10 +119,6 @@ const AddTask = () => {
       endDate: new Date(),
     });
     setSelectedPriority("");
-    setSelectedOwner("");
-    setSelectedContractor("");
-    setSelectedConsultant("");
-    setSelectedStatus("");
     setSelectedTag("");
   };
 
@@ -160,12 +132,15 @@ const AddTask = () => {
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
       priority: !selectedPriority,
-      owner: !selectedOwner,
-      contractor: !selectedContractor,
-      consultant: !selectedConsultant,
       tag: !selectedTag,
     };
 
+    if (isSubtask) {
+      newFieldErrors.price = !Price || isNaN(Price);
+      newFieldErrors.quantity = !Quantity || isNaN(Quantity);
+      newFieldErrors.total = !Total || isNaN(Total);
+      newFieldErrors.unit = !selectedUnit;
+    }
     setFieldErrors(newFieldErrors);
 
     if (Object.values(newFieldErrors).some((hasError) => hasError)) {
@@ -183,22 +158,27 @@ const AddTask = () => {
         startDate: formattedSDate,
         project: ProjectId,
         dueDate: formattedEDate,
-        owner: selectedOwner,
-        contractor: selectedContractor,
-        consultant: selectedConsultant,
+
         taskPriority: selectedPriority,
-        taskStatus: SelectedStatus,
+        member: SelectedMember,
         createdBy: user._id,
-        tags: "66f5762ba0c219c81a79018a",
+        tags: selectedTag,
+        type: taskType,
       };
+      if (isSubtask) {
+        taskData.price = Price;
+        taskData.quantity = Quantity;
+        taskData.unit = selectedUnit;
+        taskData.total = Total;
+      }
 
       setLoading(true);
       console.log("task data =>  ", taskData);
       const res = await addTask(taskData);
-      setTaskId(res.addedTask._id);
+      setTaskId(res.addedTasks?._id);
       console.log(res);
       clearFormFields();
-      navigate(`/Project/Tasks/${ProjectId}`);
+      navigate(`/`);
     } catch (err) {
       setError({
         message: err.response ? err.response.data.message : err.message,
@@ -215,6 +195,11 @@ const AddTask = () => {
     setSelectedTag(selectedOptions || []);
   };
 
+  const calculateTotal = (Price, Quantity) => {
+    const Total = Number(Price || 0) * Number(Quantity || 0);
+    setTotal(Total);
+  };
+
   return (
     <div className="AddTask mx-1 relative">
       {Loading ? (
@@ -229,8 +214,8 @@ const AddTask = () => {
           <div className="wrapper bg-white rounded-3xl p-3 m-2 ">
             <form action="submit">
               <Input
-                label={t("PName")}
-                placeholder={"Project Name"}
+                label={t("TaskName")}
+                placeholder={"Task Name"}
                 className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid ${
                   fieldErrors.Name && "border-red"
                 }`}
@@ -341,7 +326,7 @@ const AddTask = () => {
                           />
                         </div>
                       ),
-                      value: tag._id,
+                      value: tag.value,
                     }))}
                     error={false}
                   />
@@ -349,59 +334,76 @@ const AddTask = () => {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <Select
-                  id="status"
-                  label={t("status")}
-                  InputClassName={`${
-                    fieldErrors.status ? "border  border-red rounded-2xl " : ""
+                  id=""
+                  label={t("Responsible Person")}
+                  InputClassName={` ${
+                    fieldErrors.unit && "border-red  border rounded-2xl"
                   }`}
-                  value={SelectedStatus}
-                  onChange={(e) => setSelectedStatus(e)}
-                  options={statusOptions}
+                  value={SelectedMember}
+                  onChange={(e) => setSelectedMember(e)}
+                  options={members.map((member) => ({
+                    value: member._id,
+                    label: member.name,
+                  }))}
                   error={false}
                 />
-                <Select
-                  id="owners"
-                  label={t("Owners")}
-                  InputClassName={`${
-                    fieldErrors.owner ? "border  border-red rounded-2xl " : ""
-                  }`}
-                  value={selectedOwner}
-                  onChange={(e) => setSelectedOwner(e)}
-                  options={Owners}
-                  loading={OwnersLoading}
-                  error={!!error}
-                />
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <Select
-                  id="contractors"
-                  label={t("Contractors")}
-                  InputClassName={`${
-                    fieldErrors.contractor
-                      ? "border  border-red rounded-2xl "
-                      : ""
-                  }`}
-                  value={selectedContractor}
-                  onChange={(e) => setSelectedContractor(e)}
-                  options={Contractors}
-                  loading={ContractorsLoading}
-                  error={!!error}
-                />
-                <Select
-                  id="consultants"
-                  label={t("Consultants")}
-                  InputClassName={`${
-                    fieldErrors.consultant
-                      ? "border  border-red rounded-2xl "
-                      : ""
-                  }`}
-                  value={selectedConsultant}
-                  onChange={(e) => setSelectedConsultant(e)}
-                  options={Consultants}
-                  loading={ConsultantsLoading}
-                  error={!!error}
-                />
-              </div>
+
+              {isSubtask && (
+                <div className="grid grid-cols-4 gap-2">
+                  <Input
+                    type="number"
+                    min={0}
+                    value={Price}
+                    label={"Price"}
+                    onChange={(e) => {
+                      const newPrice = e.target.value;
+                      setPrice(newPrice);
+                      calculateTotal(newPrice, Quantity);
+                    }}
+                    className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
+                  ${fieldErrors.price && "border-red"}
+                    `}
+                  />
+                  <Input
+                    type="number"
+                    min={0}
+                    label={"Quantity"}
+                    value={Quantity}
+                    onChange={(e) => {
+                      const newQuantity = e.target.value;
+                      setQuantity(newQuantity);
+                      calculateTotal(Price, newQuantity);
+                    }}
+                    className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
+                      ${fieldErrors.quantity && "border-red "}
+                    `}
+                  />
+                  <Input
+                    className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
+                  
+                    `}
+                    label={"Total"}
+                    type="number"
+                    min={0}
+                    value={Total}
+                    disabled
+                  />
+                  <Select
+                    options={Units}
+                    placeholder="Unit"
+                    disabled={UnitsLoading}
+                    label={"Unit"}
+                    value={selectedUnit}
+                    onChange={(e) => setSelectedUnit(e)}
+                    className={`bg-white mx-4`}
+                    InputClassName={` ${
+                      fieldErrors.unit && "border-red  border rounded-2xl"
+                    }`}
+                    loading={UnitsLoading}
+                  />
+                </div>
+              )}
 
               {error && (
                 <div className="text-red font-bold text-center p-2">

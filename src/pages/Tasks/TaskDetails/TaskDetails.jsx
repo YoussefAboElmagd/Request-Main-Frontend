@@ -79,13 +79,14 @@ const TaskDetails = () => {
         <div className="box relative flex justify-center items-center">
           <div className="analytics_box rounded-md shadow-sm p-8 flex flex-col gap-3 items-center">
             <span
+            
               className="font-inter font-semibold text-base text-center py-1 px-6 w-full rounded-2xl m-2"
               style={{
                 background: "#81D4C236",
                 color: "#34C759",
               }}
             >
-              Electricity
+              {Task?.tags?.name}
             </span>
             <div className="progress_wrapper rounded-2xl shadow-md p-8 relative">
               <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">

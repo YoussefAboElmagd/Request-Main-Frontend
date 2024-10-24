@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import { FaBars } from "react-icons/fa6";
 import { RiGalleryView2 } from "react-icons/ri";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusHeader from "../../../Components/StatusHeader/StatusHeader";
 import { IoAddOutline } from "react-icons/io5";
 import "./style.scss";
@@ -24,6 +24,10 @@ import Button from "../../../Components/UI/Button/Button";
 
 const TasksPerProject = () => {
   const { id } = useParams();
+  const location = useLocation()
+  const { members } = location.state || {};
+
+  
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [Status, setStatus] = useState("all");
@@ -163,24 +167,30 @@ const TasksPerProject = () => {
                 label={"Type"}
                 id={"type"}
                 options={[
-                  { label: t("Parent Task"), value: "ParentTask" },
-                  { label: t("Milestone"), value: "Milestone" },
-                  { label: t("Recurring Task"), value: "RecurringTask" },
-                  { label: t("One-time Task"), value: "OneTimeTask" },
+                  { label: t("Parent Task"), value: "parent" },
+                  { label: t("Sub Task"), value: "sub" },
+                  { label: t("Milestone"), value: "milestone" },
+                  { label: t("Recurring Task"), value: "recurring" },
+                  { label: t("One-time Task"), value: "oneTime" },
                 ]}
                 required
                 onChange={handleTaskTypeChange}
               />
             </DialogBody>
             <DialogFooter className="flex items-center justify-center mt-10">
-              <Button disabled={!selectedTaskType}>
+              {selectedTaskType && (
                 <Link
-                  to={`/AddTask/${id}`}
-                  state={{ ProjectId: id, taskType: selectedTaskType }}
+                  to={
+                    selectedTaskType === "parent"
+                      ? "/Requests/TableOfQuantities"
+                      : `/AddTask/${id}`
+                  }
+                  state={{ ProjectId: id, taskType: selectedTaskType, members }}
+                  disabled={!selectedTaskType}
                 >
-                  Add
+                  <Button>Add</Button>
                 </Link>
-              </Button>
+              )}
             </DialogFooter>
           </Dialog>
 
@@ -199,7 +209,7 @@ const TasksPerProject = () => {
                     <BoardView
                       ProgressValue={70}
                       NameOfTask={task.title}
-                      Tagname={task.title}
+                      Tagname={task?.tags?.name}
                       taskPriority={task.taskPriority}
                       status={task.taskStatus}
                       avatars={avatars}

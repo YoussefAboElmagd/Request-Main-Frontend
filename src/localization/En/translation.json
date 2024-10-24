@@ -43,6 +43,11 @@
   "sDate": "start Date",
   "desc": "description",
   "PName": "Project Name",
+
+  "Tasks": "Tasks",
+  "TaskName": "Task Name",
+  "TaskDescription": "Task Description",
+  "TaskDueDate": "Task Due Date",
   "ProjectHistory": "Project History",
 
   "Home": "Home",
