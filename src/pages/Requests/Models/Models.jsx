@@ -8,7 +8,7 @@ import Loader from "../../../Components/Loader/Loader";
 
 const Models = () => {
   const location = useLocation();
-  const { projectId } = location.state || {};
+  const { projectId, taskType, members } = location.state || {};
   const [isReviewed, setIsReviewed] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -112,7 +112,11 @@ const Models = () => {
                     ) : (
                       <Link
                         to={link.to}
-                        state={{ projectId }}
+                        state={
+                          link.to === "/Requests/TableOfQuantities"
+                            ? { projectId, members }
+                            : { projectId }
+                        }
                         className="font-medium text-base text-left"
                       >
                         {link.label}

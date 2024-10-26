@@ -699,3 +699,23 @@ export const deleteUserFromProject = async (token, project, userId) => {
     throw error;
   }
 };
+
+
+// get all  parent tasks
+
+export const getAllParentTasks = async ({userId, projectId}) => {
+  try {
+    const response = await axiosInstance.get(
+      `task/parentTasks/${userId}/${projectId}`
+    );
+
+    console.log("Response from parent tasks => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get parent tasks error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};

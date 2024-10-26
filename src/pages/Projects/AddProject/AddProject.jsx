@@ -111,10 +111,13 @@ const AddProject = () => {
       clearFormFields();
       const projectId = res.addedProject._id;
       console.log(projectId);
+      console.log(res.addedProject.members);
+      
 
       navigate("/Requests/TableOfQuantities", {
         state: {
           projectId,
+          members: res.addedProject.members,
         },
       });
     } catch (err) {

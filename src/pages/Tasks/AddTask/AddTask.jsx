@@ -3,7 +3,12 @@ import Input from "../../../Components/UI/Input/Input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Button from "../../../Components/UI/Button/Button";
 import { useEffect, useState } from "react";
-import { addTask, getAllTagsByUser, getAllUnits } from "../../../Services/api";
+import {
+  addTask,
+  getAllParentTasks,
+  getAllTagsByUser,
+  getAllUnits,
+} from "../../../Services/api";
 import Select from "../../../Components/UI/Select/Select";
 import Loader from "../../../Components/Loader/Loader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -33,6 +38,8 @@ const AddTask = () => {
   const [UnitsLoading, setUnitsLoading] = useState(false);
   const [Member, setMember] = useState(members);
   const [SelectedMember, setSelectedMember] = useState("");
+  const [ParentTasks, setParentTasks] = useState([]);
+  const [SelectedParentTask, setSelectedParentTask] = useState("");
   const [tagsLoading, setTagsLoading] = useState(true);
   const [TaskId, setTaskId] = useState(false);
   const [sDate, setSDate] = useState({
@@ -54,6 +61,7 @@ const AddTask = () => {
     quantity: false,
     unit: false,
     member: false,
+    parentTask : false,
   });
 
   useEffect(() => {
@@ -63,9 +71,10 @@ const AddTask = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [tagsData, UnitsData] = await Promise.all([
+        const [tagsData, UnitsData, parentTasks] = await Promise.all([
           getAllTagsByUser(user._id),
           getAllUnits(),
+          getAllParentTasks(user._id, projectId),
         ]);
 
         setTags(
@@ -83,6 +92,13 @@ const AddTask = () => {
           }))
         );
         setUnitsLoading(false);
+        setParentTasks(
+          parentTasks.results.map((task) => ({
+            value: task._id,
+            label: task.title,
+          }))
+        );
+        console.log(ParentTasks);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -164,12 +180,14 @@ const AddTask = () => {
         createdBy: user._id,
         tags: selectedTag,
         type: taskType,
+        parentTask: SelectedParentTask,
       };
       if (isSubtask) {
         taskData.price = Price;
         taskData.quantity = Quantity;
         taskData.unit = selectedUnit;
         taskData.total = Total;
+
       }
 
       setLoading(true);
@@ -347,6 +365,21 @@ const AddTask = () => {
                   }))}
                   error={false}
                 />
+                {isSubtask && (
+                  <Select
+                    id="ParentTasks"
+                    label={t("ParentTasks")}
+                    InputClassName={`${
+                      fieldErrors.parentTask
+                        ? "border  border-red rounded-2xl "
+                        : ""
+                    }`}
+                    value={SelectedParentTask}
+                    onChange={(e) => setSelectedParentTask(e)}
+                    options={ParentTasks}
+                    error={false}
+                  />
+                )}
               </div>
 
               {isSubtask && (

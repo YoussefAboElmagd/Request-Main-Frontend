@@ -13,7 +13,7 @@ export const AddNewTask = ({ newTask }) => {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { ProjectId, taskType, members } = location.state || {};
+  const { projectId, taskType, members } = location.state || {};
   console.log(location.state);
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -118,8 +118,10 @@ export const AddNewTask = ({ newTask }) => {
       startDate: new Date(),
       endDate: new Date(),
     });
-    setSelectedPriority("");
-    setSelectedTag("");
+
+    setPrice(0);
+    setQuantity(0);
+    setTotal(0);
   };
 
   const handleSubmit = async (e) => {
@@ -156,21 +158,22 @@ export const AddNewTask = ({ newTask }) => {
         title: Name,
         description: Description,
         startDate: formattedSDate,
-        project: ProjectId,
+        project: projectId,
         dueDate: formattedEDate,
         taskPriority: selectedPriority,
         member: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
-        type: taskType,
+        type: "parent",
         price: Price,
         quantity: Quantity,
         unit: selectedUnit,
         total: Total,
       };
+
       console.log(taskData);
-      
-      
+      await newTask(taskData);
+
       clearFormFields();
     } catch (err) {
       setError({
@@ -334,7 +337,7 @@ export const AddNewTask = ({ newTask }) => {
                 id=""
                 label={t("Responsible Person")}
                 InputClassName={` ${
-                  fieldErrors.unit && "border-red  border rounded-2xl"
+                  fieldErrors.member && "border-red  border rounded-2xl"
                 }`}
                 value={SelectedMember}
                 onChange={(e) => setSelectedMember(e)}

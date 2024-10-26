@@ -43,7 +43,7 @@
   "sDate": "start Date",
   "desc": "description",
   "PName": "Project Name",
-
+  "ParentTasks": "Parent Tasks",
   "Tasks": "Tasks",
   "TaskName": "Task Name",
   "TaskDescription": "Task Description",

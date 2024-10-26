@@ -185,7 +185,7 @@ const TasksPerProject = () => {
                       ? "/Requests/TableOfQuantities"
                       : `/AddTask/${id}`
                   }
-                  state={{ ProjectId: id, taskType: selectedTaskType, members }}
+                  state={{ projectId: id, taskType: selectedTaskType, members , fromAddTask:true}}
                   disabled={!selectedTaskType}
                 >
                   <Button>Add</Button>
