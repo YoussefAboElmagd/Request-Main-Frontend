@@ -5,11 +5,12 @@ import { FaFileLines } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
 import { t } from "i18next";
 
-const   BoardView = ({
+const BoardView = ({
   Tagname,
   NameOfTask,
   ProgressValue,
   taskPriority,
+  Tag,
   status,
   avatars = [],
   MsgLength,
@@ -20,9 +21,16 @@ const   BoardView = ({
   return (
     <div className="box bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
       <div className="tagName flex justify-center">
-        <span className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2">
-          {Tagname}
-        </span> 
+        {Tag && Tag !== null && (
+          <span className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
+          style={{
+            background: `${Tag.colorCode}40`,
+            color: Tag.colorCode,
+          }}
+          >
+            {Tagname}
+          </span>
+        )}
       </div>
       <div className="name flex justify-between items-center mx-2 my-3">
         <p className="font-inter font-medium text-xs leading-5">{NameOfTask}</p>

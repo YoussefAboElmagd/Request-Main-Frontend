@@ -129,8 +129,7 @@ const TasksPerProject = () => {
               : "flex flex-col gap-3"
           } mt-4`}
         >
-          {/*
-           */}
+        
           <button
             onClick={handleOpen}
             className={`AddTask box bg-white  ${
@@ -176,7 +175,7 @@ const TasksPerProject = () => {
                 required
                 onChange={handleTaskTypeChange}
               />
-            </DialogBody>
+            </DialogBody> 
             <DialogFooter className="flex items-center justify-center mt-10">
               {selectedTaskType && (
                 <Link
@@ -185,7 +184,7 @@ const TasksPerProject = () => {
                       ? "/Requests/TableOfQuantities"
                       : `/AddTask/${id}`
                   }
-                  state={{ projectId: id, taskType: selectedTaskType, members , fromAddTask:true}}
+                  state={{ projectId: id, taskType: selectedTaskType, members }}
                   disabled={!selectedTaskType}
                 >
                   <Button>Add</Button>
@@ -210,6 +209,7 @@ const TasksPerProject = () => {
                       ProgressValue={70}
                       NameOfTask={task.title}
                       Tagname={task?.tags?.name}
+                      Tag={task.tags}
                       taskPriority={task.taskPriority}
                       status={task.taskStatus}
                       avatars={avatars}

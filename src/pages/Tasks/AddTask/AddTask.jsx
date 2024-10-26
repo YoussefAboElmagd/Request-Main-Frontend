@@ -13,18 +13,23 @@ import Select from "../../../Components/UI/Select/Select";
 import Loader from "../../../Components/Loader/Loader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { CiSquarePlus } from "react-icons/ci";
+import { HiX } from "react-icons/hi";
 
 const AddTask = () => {
   const { ProjectId } = useParams();
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, taskType, members } = location.state || {};
+  const { projectId, taskType, members, ParentId } = location.state || {};
   console.log(location.state);
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
-  const [isSubtask, setIsSubtask] = useState(false);
+  const [isSubtask, setIsSubtask] = useState(taskType === "sub");
+  const [isRecurringTask, setIsRecurringTask] = useState(
+    taskType === "recurring"
+  );
   const [Name, setName] = useState("");
   const [Description, setDescription] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
@@ -50,6 +55,10 @@ const AddTask = () => {
     startDate: new Date(),
     endDate: new Date(),
   });
+  const [recurringDates, setRecurringDates] = useState([
+    { startDate: new Date(), endDate: new Date() },
+  ]);
+
   const [fieldErrors, setFieldErrors] = useState({
     Name: false,
     Description: false,
@@ -61,12 +70,8 @@ const AddTask = () => {
     quantity: false,
     unit: false,
     member: false,
-    parentTask : false,
+    parentTask: false,
   });
-
-  useEffect(() => {
-    setIsSubtask(TaskType === "sub");
-  }, [TaskType]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -180,14 +185,15 @@ const AddTask = () => {
         createdBy: user._id,
         tags: selectedTag,
         type: taskType,
-        parentTask: SelectedParentTask,
       };
       if (isSubtask) {
         taskData.price = Price;
         taskData.quantity = Quantity;
         taskData.unit = selectedUnit;
         taskData.total = Total;
-
+        taskData.parentTask =   ParentId? ParentId : SelectedParentTask;
+      
+      
       }
 
       setLoading(true);
@@ -218,6 +224,22 @@ const AddTask = () => {
     setTotal(Total);
   };
 
+  const handleAddDateField = () => {
+    setRecurringDates([
+      ...recurringDates,
+      { startDate: new Date(), endDate: new Date() },
+    ]);
+  };
+
+  const handleRemoveDateField = (index) => {
+    setRecurringDates((prevDates) => prevDates.filter((_, i) => i !== index));
+  };
+
+  const handleDateChange = (index, type, date) => {
+    const updatedDates = [...recurringDates];
+    updatedDates[index][type] = date;
+    setRecurringDates(updatedDates);
+  };
   return (
     <div className="AddTask mx-1 relative">
       {Loading ? (
@@ -264,53 +286,128 @@ const AddTask = () => {
                   } bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid`}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex flex-col my-2 col-span-1">
-                  <label
-                    htmlFor="sDate"
-                    className="flex items-center gap-2 font-jost text-base font-medium "
-                  >
-                    {t("sDate")}
-                  </label>
-                  <Datepicker
-                    useRange={false}
-                    asSingle={true}
-                    inputId="sDate"
-                    value={sDate}
-                    onChange={(date) => setSDate(date)}
-                    primaryColor={"purple"}
-                    popoverClassName="!bg-white !border-gray-300 !shadow-md"
-                    popoverDirection="up"
-                    toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-                    inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
-                      fieldErrors.sDate ? "border-red border" : ""
-                    }`}
-                  />
+              {isRecurringTask ? (
+                <>
+                  {recurringDates.map((date, index) => (
+                    <div
+                      key={index}
+                      className={`grid grid-cols-2  md:grid-cols-4 gap-2`}
+                    >
+                      <div className="flex flex-col my-2 col-span-2">
+                        <label
+                          htmlFor="sDate"
+                          className="flex items-center gap-2 font-jost text-base font-medium "
+                        >
+                          {t("sDate")}
+                        </label>
+                        <Datepicker
+                          useRange={false}
+                          asSingle={true}
+                          inputId="sDate"
+                          value={sDate}
+                          onChange={(date) => setSDate(date)}
+                          primaryColor={"purple"}
+                          popoverClassName="!bg-white !border-gray-300 !shadow-md"
+                          popoverDirection="up"
+                          toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                          inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
+                            fieldErrors.sDate ? "border-red border" : ""
+                          }`}
+                        />
+                      </div>
+                      <div className="flex  items-center gap-2 my-2 col-span-2">
+                        <div className="flex flex-col w-full">
+                          <label
+                            htmlFor="dDate"
+                            className="flex items-center gap-2 font-jost text-base font-medium "
+                          >
+                            {t("dDate")}
+                          </label>
+                          <Datepicker
+                            useRange={false}
+                            asSingle={true}
+                            primaryColor={"purple"}
+                            value={eDate}
+                            onChange={(date) => setEDate(date)}
+                            inputId="dDate"
+                            popoverClassName="!bg-white !border-gray-300 !shadow-md"
+                            popoverDirection="down"
+                            toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                            inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
+                              fieldErrors.eDate && "border-red border"
+                            }`}
+                          />
+                        </div>
+                        {/* {recurringDates.length > 0 && (
+                          <div className="flex items-center justify-center mt-2">
+                            <button
+                              className=""
+                              onClick={handleRemoveDateField(index)}
+                            >
+                              <HiX className="bg-yellow  text-white rounded-md w-8 h-8" />
+                            </button>
+                          </div>
+                        )} */}
+                        <div className=" flex items-center justify-center mt-2">
+                          <button className="" onClick={handleAddDateField}>
+                            <CiSquarePlus className="bg-yellow  text-white rounded-md w-8 h-8" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <div className={`grid grid-cols-2  md:grid-cols-4 gap-2`}>
+                  <div className="flex flex-col my-2 col-span-2">
+                    <label
+                      htmlFor="sDate"
+                      className="flex items-center gap-2 font-jost text-base font-medium "
+                    >
+                      {t("sDate")}
+                    </label>
+                    <Datepicker
+                      useRange={false}
+                      asSingle={true}
+                      inputId="sDate"
+                      value={sDate}
+                      onChange={(date) => setSDate(date)}
+                      primaryColor={"purple"}
+                      popoverClassName="!bg-white !border-gray-300 !shadow-md"
+                      popoverDirection="up"
+                      toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                      inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
+                        fieldErrors.sDate ? "border-red border" : ""
+                      }`}
+                    />
+                  </div>
+                  <div className="flex  items-center gap-2 my-2 col-span-2">
+                    <div className="flex flex-col w-full">
+                      <label
+                        htmlFor="dDate"
+                        className="flex items-center gap-2 font-jost text-base font-medium "
+                      >
+                        {t("dDate")}
+                      </label>
+                      <Datepicker
+                        useRange={false}
+                        asSingle={true}
+                        primaryColor={"purple"}
+                        value={eDate}
+                        onChange={(date) => setEDate(date)}
+                        inputId="dDate"
+                        popoverClassName="!bg-white !border-gray-300 !shadow-md"
+                        popoverDirection="down"
+                        toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                        inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
+                          fieldErrors.eDate && "border-red border"
+                        }`}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col my-2 col-span-1">
-                  <label
-                    htmlFor="dDate"
-                    className="flex items-center gap-2 font-jost text-base font-medium "
-                  >
-                    {t("dDate")}
-                  </label>
-                  <Datepicker
-                    useRange={false}
-                    asSingle={true}
-                    primaryColor={"purple"}
-                    value={eDate}
-                    onChange={(date) => setEDate(date)}
-                    inputId="dDate"
-                    popoverClassName="!bg-white !border-gray-300 !shadow-md"
-                    popoverDirection="down"
-                    toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-                    inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
-                      fieldErrors.eDate && "border-red border"
-                    }`}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <Select
                   id="priority"
                   label={t("Priority")}
@@ -350,7 +447,7 @@ const AddTask = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <Select
                   id=""
                   label={t("Responsible Person")}
@@ -365,7 +462,7 @@ const AddTask = () => {
                   }))}
                   error={false}
                 />
-                {isSubtask && (
+                {isSubtask && !ParentId && (
                   <Select
                     id="ParentTasks"
                     label={t("ParentTasks")}
@@ -443,9 +540,11 @@ const AddTask = () => {
                   {t(error.message)}
                 </div>
               )}
-              <div className="btn flex items-center justify-center md:justify-end my-3">
-                <Button onClick={handleSubmit}>{t("Next")}</Button>
-              </div>
+              {!isRecurringTask && (
+                <div className="btn flex items-center justify-center md:justify-end my-3">
+                  <Button onClick={handleSubmit}>{t("Next")}</Button>
+                </div>
+              )}
             </form>
           </div>
         </>

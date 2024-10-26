@@ -719,3 +719,21 @@ export const getAllParentTasks = async ({userId, projectId}) => {
     throw error;
   }
 };
+
+
+// get all sub Tasks by Parent Task
+
+export const getAllSubTasksByParentTask = async (parentTaskId) => {
+  try {
+    const response = await axiosInstance.get(`task/sub/${parentTaskId}`);
+
+    console.log("Response from sub tasks by parent task => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get sub tasks by parent task error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};

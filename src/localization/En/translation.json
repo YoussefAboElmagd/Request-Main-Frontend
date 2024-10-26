@@ -49,8 +49,9 @@
   "TaskDescription": "Task Description",
   "TaskDueDate": "Task Due Date",
   "ProjectHistory": "Project History",
-
-  "Home": "Home",
+  "AllSubTasks": "All Sub Tasks",
+  "Home": "Home",  
+  "AddSubTask": "Add Sub Task",  
   "Projects": "Projects",
   "Inbox": "Inbox",
   "Drive": "Drive Files",

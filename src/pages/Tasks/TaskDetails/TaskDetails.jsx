@@ -11,11 +11,17 @@ import { format } from "date-fns";
 import Loader from "../../../Components/Loader/Loader";
 import { getTaskDetails } from "../../../Services/api";
 import avatar from "../../../assets/images/avatar1.png";
+import Button from "../../../Components/UI/Button/Button";
 const TaskDetails = () => {
   const [loading, setLoading] = useState(false);
   const [Task, setTask] = useState({});
+  const [IsParent, setIsParent] = useState(false);
   const location = useLocation();
+
   const { taskId } = location.state || {};
+  useEffect(() => {
+    setIsParent(Task.type === "parent");
+  }, [Task.type]);
 
   useEffect(() => {
     const fetchTask = async () => {
@@ -78,16 +84,18 @@ const TaskDetails = () => {
       <div className="wrapper bg-white grid grid-cols-2 rounded-3xl m-2 ">
         <div className="box relative flex justify-center items-center">
           <div className="analytics_box rounded-md shadow-sm p-8 flex flex-col gap-3 items-center">
-            <span
-            
-              className="font-inter font-semibold text-base text-center py-1 px-6 w-full rounded-2xl m-2"
-              style={{
-                background: "#81D4C236",
-                color: "#34C759",
-              }}
-            >
-              {Task?.tags?.name}
-            </span>
+            {Task.tags && Task.tags !== null && (
+              <span
+                className="font-inter font-semibold text-base text-center py-1 px-6 w-full rounded-2xl m-2"
+                style={{
+                  background: `${Task.tags.colorCode}40`,
+                  color: Task.tags.colorCode,
+                }}
+              >
+                {Task.tags.name}
+              </span>
+            )}
+
             <div className="progress_wrapper rounded-2xl shadow-md p-8 relative">
               <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
                 Progress
@@ -241,6 +249,33 @@ const TaskDetails = () => {
               </span>
             </button>
           </div>
+          {IsParent && (
+            <div className="flex right-0 my-2 items-center gap-3 justify-end">
+              <Link
+                to={`/AddTask/${Task.project._id}`}
+                state={{
+                  projectId: Task.project._id,
+                  taskType: "sub",
+                  members: Task.assignees,
+                  ParentId: Task._id,
+                }}
+              >
+                <Button className={`w-fit px-7`}>{t("AddSubTask")}</Button>
+              </Link>
+              <Link to={`/SubTasks/${Task._id}`} 
+              state={{
+                taskId:Task._id
+              }}
+              >
+                <Button
+                  className={`w-fit px-7  border border-solid !border-purple !text-purple`}
+                  style={{ background: "white" }}
+                >
+                  All sub Tasks
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       <div className="desc ">

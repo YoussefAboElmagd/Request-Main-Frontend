@@ -31,6 +31,7 @@ import SeePlans from "../pages/Plans/SeePlans.jsx";
 import PlansInfo from "../pages/Plans/PlansInfo.jsx";
 import PlanDetails from "../pages/Plans/PlanDetails.jsx";
 import Payments from "../pages/Payments/Payments.jsx";
+import AllSubTasks from "../pages/Tasks/AllSub/AllSubTasks.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -52,6 +53,7 @@ const AppRoutes = () => {
       <Route path="/AddProject" element={<AddProject />} />
       <Route path="/AddTask/:ProjectId" element={<AddTask />} />
       <Route path="/Project/Tasks/:id" element={<TasksPerProject />} />
+      <Route path="/SubTasks/:id" element={<AllSubTasks />} />
       <Route path="/createTag" element={<CreateTag />} />
       <Route path="/ContactUs" element={<ContactUs />} />
       <Route path="/ContactUs" element={<ContactUs />} />

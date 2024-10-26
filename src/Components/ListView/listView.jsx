@@ -6,6 +6,7 @@ import { t } from "i18next";
 
 const ListView = ({
   Tagname,
+  Tag,
   NameOfTask,
   ProgressValue,
   taskPriority,
@@ -85,11 +86,20 @@ const ListView = ({
           size="sm"
         />
       </div>
-      <div className="tagName flex justify-center">
-        <span className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2">
-          {Tagname}
-        </span>
-      </div>
+      {Tag &&
+        Tag !== null &&
+        (
+          <div className="tagName flex justify-center">
+            <span className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
+            style={{
+              color: Tag.colorCode,
+              backgroundColor: `${Tag.colorCode}40`,
+            }}
+            >
+              {Tagname}
+            </span>
+          </div>
+        )}
     </div>
   );
 };
