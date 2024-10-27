@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { toast } from "react-toastify";
+import { t } from "i18next";
 
 const DriveFiles = () => {
   const [data, setData] = useState([]);
@@ -86,7 +87,7 @@ const DriveFiles = () => {
       ) : (
         <>
           <div className="header flex items-center justify-between">
-            <h1 className="font-bold text-xl md:text-3xl ">All Files</h1>
+            <h1 className="font-bold text-xl md:text-3xl ">{t("All Files")}</h1>
             <button className="bg-white p-2 rounded-lg">
               <span>
                 <IoFilter className="text-purple" />

@@ -156,7 +156,7 @@ const Inbox = () => {
         </div>
       );
     }
-    return (
+    return (  
       <div
         className={`message ${
           message.type === "send" ? "text-start" : "text-end"
@@ -219,7 +219,7 @@ const Inbox = () => {
           <AccordionGroup>
             <Accordion>
               <AccordionSummary className="p-2 m-2 shadow-lg rounded-3xl">
-                Project name
+                {t("Project Name")}
               </AccordionSummary>
               <AccordionDetails>
                 <div
@@ -275,10 +275,7 @@ const Inbox = () => {
           <Divider />
           <div className="chat_container overflow-y-scroll relative  max-h-[70vh] lg:h-[50vh] my-3">
             {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={` ${msg.type === "send" ? "" : ""}`}
-              >
+              <div key={msg.id} className={` ${msg.type === "send" ? "" : ""}`}>
                 {renderMessageContent(msg)}
               </div>
             ))}
