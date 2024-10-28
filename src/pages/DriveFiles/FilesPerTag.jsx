@@ -12,7 +12,7 @@ const FilesPerTag = () => {
   const { TagId } = location.state || {}; // Safely extract TagId
 
   useEffect(() => {
-    if (!TagId) return; // Avoid fetching if TagId is not available
+    if (!TagId) return;
 
     const fetchFiles = async () => {
       setLoading(true);
@@ -59,7 +59,7 @@ const FilesPerTag = () => {
           <div>
             {areAllTasksEmpty ? (
               <div className="empty-container flex items-center justify-center h-60">
-                <Empty paragraph="No documents available for this tag"  />
+                <Empty paragraph="No documents available for this tag" />
               </div>
             ) : (
               files.tasks?.map((task) => (
@@ -79,7 +79,7 @@ const FilesPerTag = () => {
                           style_color={{
                             color: files.tagColor || "#000000",
                           }}
-                          documentLink={doc.document}
+                          documentUrl={doc.document}
                         />
                       ))
                     : // Don't show anything if task has no documents, as this is handled globally
