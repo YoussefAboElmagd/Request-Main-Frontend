@@ -9,10 +9,15 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { toast } from "react-toastify";
 import { t } from "i18next";
+import { useSelector } from "react-redux";
 
 const DriveFiles = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const userId = user._id
+  console.log(userId);
+  
 
   const extractFileName = (url) => {
     if (typeof url === "string") {
@@ -28,8 +33,10 @@ const DriveFiles = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getAllDocs();
+        const data = await getAllDocs(userId);
         setData(data.results);
+        console.log(data);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

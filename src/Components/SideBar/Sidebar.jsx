@@ -143,7 +143,7 @@ const Sidebar = () => {
               <div className="flex flex-col">
                 <p className="name font-bold font-inter text-xs">{user.name}</p>
                 <p className="role font-bold font-inter text-xs text-gray">
-                  {user.role.name}
+                  {user?.role?.jobTitle}
                 </p>
               </div>
             )}
