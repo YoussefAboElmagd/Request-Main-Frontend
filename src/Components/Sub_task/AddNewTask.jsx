@@ -135,14 +135,18 @@ export const AddNewTask = ({ newTask }) => {
       eDate: !eDate.endDate,
       priority: !selectedPriority,
       tag: !selectedTag,
+      price : !Price || isNaN(Price),
+     quantity: !Quantity || isNaN(Quantity),
+      unit:!selectedUnit,
+   total : !Total || isNaN(Total),
     };
 
-    if (isSubtask) {
-      newFieldErrors.price = !Price || isNaN(Price);
-      newFieldErrors.quantity = !Quantity || isNaN(Quantity);
-      newFieldErrors.total = !Total || isNaN(Total);
-      newFieldErrors.unit = !selectedUnit;
-    }
+    // if (isSubtask ) {
+    //   newFieldErrors.price = !Price || isNaN(Price);
+    //   newFieldErrors.quantity = !Quantity || isNaN(Quantity);
+    //   newFieldErrors.total = !Total || isNaN(Total);
+    //   newFieldErrors.unit = !selectedUnit;
+    // }
     setFieldErrors(newFieldErrors);
 
     if (Object.values(newFieldErrors).some((hasError) => hasError)) {

@@ -1,7 +1,99 @@
 import { FcSimCardChip } from "react-icons/fc";
 import { RiMastercardFill } from "react-icons/ri";
 import { Progress } from "@material-tailwind/react";
+import Chart from "react-apexcharts";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { IoTrendingDownOutline, IoTrendingUpOutline } from "react-icons/io5";
+
 const PerformanceEvaluation = () => {
+  const ProjectsPerformanceOptions = {
+    series: [44, 55, 67],
+    chart: {
+      height: 50,
+      type: "radialBar",
+    },
+    plotOptions: {
+      radialBar: {
+        offsetY: 0,
+        startAngle: -180,
+        endAngle: 90,
+        hollow: {
+          margin: 5,
+          size: "50%",
+          background: "transparent",
+          image: undefined,
+        },
+        dataLabels: {
+          name: {
+            fontSize: "16px",
+          },
+          value: {
+            fontSize: "16px",
+          },
+          total: {
+            show: false,
+          },
+        },
+        rounded: true,
+      },
+    },
+    labels: ["Completed", "In-Progress", "Delayed"],
+    colors: ["#81D4C2", "#FFB926", "#FF5630"],
+  };
+
+   const weeklyActivityOptions = {
+     series: [
+       {
+         name: "Weekly Activity",
+         data: [44, 55, 41, 67, 22, 43, 21], // Adjusted data length to match categories
+       },
+     ],
+     chart: {
+       type: "bar",
+       zoom: {
+         enabled: false,
+       },
+     },
+     dataLabels: {
+       enabled: false,
+     },
+     stroke: {
+       curve: "smooth", // Smooth line curve
+       width: 2,
+     },
+     grid: {
+       row: {
+         colors: ["#fff", "#f2f2f2"], // Zebra colors for rows
+       },
+     },
+     xaxis: {
+       categories: [
+         "Day 1",
+         "Day 2",
+         "Day 3",
+         "Day 4",
+         "Day 5",
+         "Day 6",
+         "Day 7", // Updated categories for a week
+       ],
+       title: {
+         text: "Days",
+       },
+     },
+     yaxis: {
+       title: {
+         text: "Servings",
+       },
+       min: 0, // Minimum value for y-axis
+     },
+     fill: {
+       opacity: 1,
+     },
+     tooltip: {
+       shared: true,
+       intersect: false,
+     },
+   };
   return (
     <div className="PerformanceEvaluation p-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -133,9 +225,64 @@ const PerformanceEvaluation = () => {
             </tbody>
           </table>
         </div>
-        <div className="bg-white p-6 shadow-lg rounded-lg col-span-2">
-          <h3 className="font-semibold mb-4">Projects Performance</h3>
-       
+        <div className="bg-white p-4 shadow-lg rounded-lg col-span-2">
+          <h3 className="font-semibold mb-2">Projects Performance</h3>
+          <div className="flex flex-col">
+            <Chart
+              options={ProjectsPerformanceOptions}
+              series={ProjectsPerformanceOptions.series}
+              type="radialBar"
+              height={180}
+            />
+            <div className="flex items-center justify-center gap-5 mt-2">
+              <div className="Completed flex flex-col items-center">
+                <span>
+                  <IoMdCheckmarkCircleOutline
+                    className="w-5 h-5"
+                    style={{
+                      color: "#81D4C2",
+                    }}
+                  />
+                </span>
+                <span className="font-semibold text-lg">44%</span>
+                <span className="font-medium text-base">Completed</span>
+              </div>
+              <div className="In-Progress flex flex-col items-center">
+                <span>
+                  <IoTrendingUpOutline
+                    className="w-5 h-5"
+                    style={{
+                      color: "#FFB926",
+                    }}
+                  />
+                </span>
+                <span className="font-semibold text-lg">55%</span>
+                <span className="font-medium text-base">In-Progress</span>
+              </div>
+              <div className="Delayed flex flex-col items-center">
+                <span>
+                  <IoTrendingDownOutline
+                    className="w-5 h-5"
+                    style={{
+                      color: "#FF5630",
+                    }}
+                  />
+                </span>
+                <span className="font-semibold text-lg">67%</span>
+                <span className="font-medium text-base">Delayed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 my-3">
+        <div className="weeklyActivity">
+          <Chart
+            options={weeklyActivityOptions}
+            series={weeklyActivityOptions.series}
+            type="bar"
+            height={180}
+          />
         </div>
       </div>
     </div>
@@ -143,3 +290,4 @@ const PerformanceEvaluation = () => {
 };
 
 export default PerformanceEvaluation;
+
