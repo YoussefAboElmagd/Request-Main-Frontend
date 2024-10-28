@@ -592,7 +592,6 @@ export const getAllUnits = async () => {
 };
 
 //  get user-group
-
 export const getUserGroup = async (token) => {
   try {
     const response = await axiosInstance.get(`userGroup`, {
