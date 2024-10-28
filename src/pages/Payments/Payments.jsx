@@ -7,7 +7,7 @@ import { MdOutlineMoreHoriz } from "react-icons/md";
 import Input from "../../Components/UI/Input/Input";
 import "./style.scss";
 import Card from "react-credit-cards-2";
-import "react-credit-cards-2/es/styles-compiled.css";
+import "react-credit-cards-2/dist/es/styles-compiled.css";
 import {
   formatCreditCardNumber,
   formatCVC,
