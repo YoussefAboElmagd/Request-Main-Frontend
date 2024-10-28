@@ -32,6 +32,7 @@ import PlansInfo from "../pages/Plans/PlansInfo.jsx";
 import PlanDetails from "../pages/Plans/PlanDetails.jsx";
 import Payments from "../pages/Payments/Payments.jsx";
 import AllSubTasks from "../pages/Tasks/AllSub/AllSubTasks.jsx";
+import PerformanceEvaluation from "../pages/setting/Profile/PerformanceEvaluation.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -83,6 +84,10 @@ const AppRoutes = () => {
       <Route path="/PlansInfo" element={<PlansInfo />} />
       <Route path="/PlanDetails" element={<PlanDetails />} />
       <Route path="/Payments" element={<Payments />} />
+      <Route
+        path="/PerformanceEvaluation"
+        element={<PerformanceEvaluation />}
+      />
     </Routes>
   );
 };
