@@ -9,15 +9,16 @@ const FilesPerTag = () => {
   const [files, setFiles] = useState({});
   const [loading, setLoading] = useState(true);
   const location = useLocation();
-  const { TagId } = location.state || {}; // Safely extract TagId
-
+  const { TagId, projectId } = location.state || {}; 
+  console.log(location.state);
+  
   useEffect(() => {
     if (!TagId) return;
 
     const fetchFiles = async () => {
       setLoading(true);
       try {
-        const response = await getFilesPerTag(TagId);
+        const response = await getFilesPerTag(TagId, projectId);
         setFiles(response.results);
       } catch (error) {
         console.error("Error fetching Files:", error);

@@ -142,10 +142,10 @@ const Sidebar = () => {
             {!Open && (
               <div className="flex flex-col">
                 <p className="name font-bold font-inter text-xs">{user.name}</p>
-                {user.role || user.role !== null && (
-                <p className="role font-bold font-inter text-xs text-gray">
-                  {user?.role?.jobTitle}
-                </p>
+                {user?.role && user.role.jobTitle && (
+                  <p className="role font-bold font-inter text-xs text-gray">
+                    {user.role.jobTitle}
+                  </p>
                 )}
               </div>
             )}

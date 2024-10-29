@@ -10,6 +10,7 @@ import {
 import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
 import Button from "../../Components/UI/Button/Button";
 import { FaCheckCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 // Table data
 const tableData = [
@@ -137,12 +138,14 @@ const PlansInfo = () => {
                 <span className="text-base font-normal">/Month</span>
               )}
             </p>
-            <Button className={"mt-4 !px-24"}>Get started</Button>
+            <Link to={"/SeePlans"}>
+              <Button className={"mt-4 !px-24"}>Get started</Button>
+            </Link>
           </div>
         ))}
       </div>
 
-      <TableContainer  className="mt-8">
+      <TableContainer className="mt-8">
         <Table className="table w-full">
           <TableHead>
             <TableRow>

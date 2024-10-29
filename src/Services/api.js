@@ -454,9 +454,11 @@ export const getAllDocs = async ( userId ) => {
 
 //  get Files Per Tag
 
-export const getFilesPerTag = async (tagId) => {
+export const getFilesPerTag = async (tagId, projectId) => {
   try {
-    const response = await axiosInstance.get(`project/files/${tagId}`);
+    const response = await axiosInstance.get(
+      `project/files/${tagId}/${projectId}`
+    );
 
     console.log("Response from files per tag => ", response);
     return response.data;
@@ -612,7 +614,6 @@ export const getUserGroup = async (token) => {
 };
 
 //  get all vocations
-
 export const getAllVocations = async () => {
   try {
     const response = await axiosInstance.get(`vocation`);
@@ -693,13 +694,11 @@ export const deleteUserFromProject = async (token, project, userId) => {
 };
 
 // get all  parent tasks
-
-export const getAllParentTasks = async ({ userId, projectId }) => {
+export const getAllParentTasks = async ( userId, projectId ) => {
   try {
     const response = await axiosInstance.get(
       `task/parentTasks/${userId}/${projectId}`
     );
-
     console.log("Response from parent tasks => ", response);
     return response.data;
   } catch (error) {

@@ -97,6 +97,7 @@ export function Input({
   togglePasswordVisibility,
   autoComplete,
   hasError,
+  value
 }) {
   return (
     <div className="flex flex-col relative">
@@ -108,6 +109,7 @@ export function Input({
         onChange={onChange}
         placeholder={placeholder}
         autoComplete={autoComplete}
+        value={value}
         required={required}
         className={`rounded-lg input relative px-3 py-2 border-gray border placeholder:font-medium placeholder:text-base placeholder:text-gray focus:bg-white ${getErrorClass(
           hasError
@@ -161,7 +163,7 @@ const AddNewAccess = () => {
     Email: false,
     Password: false,
     Phone: false,
-    vocation:false,
+    vocation: false,
     project: false,
     access: false,
   });
@@ -193,7 +195,15 @@ const AddNewAccess = () => {
     const value = e.target.value;
     // Remove non-digit characters
     const numericValue = value.replace(/\D/g, "");
+    const codeWithoutPlus = countryCallingCode.replace("+", "");
 
+    // Prevent user from starting the input with the country calling code
+    if (value.startsWith(codeWithoutPlus)) {
+      setFieldErrors({
+        Phone: `Phone number cannot start with ${countryCallingCode}`,
+      });
+      return;
+    }
     // Validate phone number length (9 or 11 digits)
     if (numericValue.length <= 11) {
       setPhone(numericValue);
@@ -211,17 +221,17 @@ const AddNewAccess = () => {
     }
   };
 
+ const clearFields = () => {
+   setEmail("");
+   setName("");
+   setPassword("");
+   setPhone("");
+   setSelectedProject(null);
+   setSelectedVocation([]);
+   setSelectedAccess([]);
+   setFieldErrors({}); 
+ };
 
-
-  const clearFields = () => {
-    setEmail("");
-    setName("");
-    setPassword("");
-    setPhone("");
-    setSelectedProject(null);
-    setSelectedVocation(null);
-    setSelectedAccess([]);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -234,7 +244,7 @@ const AddNewAccess = () => {
       Phone: !Phone.trim(),
       Access: !selectedAccess,
       Projects: !selectedProject,
-      Vocations: !selectedVocation
+      Vocations: !selectedVocation,
     };
 
     setFieldErrors(newFieldErrors);
@@ -243,25 +253,24 @@ const AddNewAccess = () => {
       setFieldErrors({ message: "All fields are required." });
       return;
     }
-
-   
-
-    const payload = {
-      name: Name,
-      password: Password,
-      email: Email,
-      phone: Phone,
-      vocation: selectedVocation?.value,
-      access: selectedAccess?.value,
-      projects: selectedProject.map((p) => p.value),
-    };
-    console.log(payload);
     
-
+    const fullPhoneNum = `${countryCallingCode}${Phone}`
     try {
+      const payload = {
+        name: Name,
+        password: Password,
+        email: Email,
+        phone: fullPhoneNum,
+        vocation: selectedVocation?.value,
+        access: selectedAccess?.value,
+        projects: selectedProject.map((p) => p.value),
+        role: user.role._id,
+      };
+      console.log(payload);
+
       await updateTeam(token, user.team, payload);
-      toast.success("Member Added Successfully ");
       clearFields();
+      toast.success("Member Added Successfully ");
     } catch (error) {
       console.log(error);
       setFieldErrors(error);
@@ -294,8 +303,8 @@ const AddNewAccess = () => {
             placeholder="Email"
             autoComplete={"email"}
             onChange={(e) => setEmail(e.target.value)}
+            value={Email}
             hasError={fieldErrors.Email}
-           
             icon={<CiMail />}
           />
         </div>
@@ -308,6 +317,7 @@ const AddNewAccess = () => {
             autoComplete={"new-password"}
             onChange={(e) => setPassword(e.target.value)}
             required
+            value={Password}
             isPassword
             togglePasswordVisibility={togglePasswordVisibility}
           />
@@ -318,6 +328,7 @@ const AddNewAccess = () => {
             name="name"
             onChange={(e) => setName(e.target.value)}
             label="Name"
+            value={Name}
             placeholder="Name"
             required
             icon={<MdOutlinePerson />}
@@ -388,6 +399,7 @@ const AddNewAccess = () => {
             isLoading={loading}
             options={vocations.map((v) => ({ value: v._id, label: v.name }))}
             onChange={setSelectedVocation}
+            value={selectedVocation}
             styles={customStyles}
             components={{ MultiValue: AnimatedMultiValue }}
           />
@@ -405,6 +417,7 @@ const AddNewAccess = () => {
             id="access"
             isClearable
             isLoading={loading}
+            value={selectedAccess}
             options={accessGroups.map((a) => ({ value: a._id, label: a.name }))}
             onChange={setSelectedAccess}
             styles={customStyles}
@@ -426,6 +439,7 @@ const AddNewAccess = () => {
             isLoading={loading}
             options={projects.map((p) => ({ value: p._id, label: p.name }))}
             onChange={setSelectedProject}
+            value={selectedProject}
             styles={customStyles}
             components={{ MultiValue: AnimatedMultiValue }}
           />

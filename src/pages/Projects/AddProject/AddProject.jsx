@@ -79,6 +79,7 @@ const AddProject = () => {
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
       budget: !budget.toString().trim(),
+      priority:!priority,
     };
 
     setFieldErrors(newFieldErrors);
@@ -239,7 +240,7 @@ const AddProject = () => {
                       { value: "high", label: "High" },
                     ]}
                     className={`bg-white  ${
-                      fieldErrors.priority && "border-red"
+                      fieldErrors.priority && "border-b border-red  rounded-2xl"
                     }`}
                     value={priority}
                     onChange={(value) => setPriority(value)}
@@ -320,7 +321,7 @@ const AddProject = () => {
                   </span>
                 </button>
                 <div className="flex items-center justify-end mt-4">
-                  <Button>{t("invite")}</Button>
+                  <Button disabled={true}>{t("invite")}</Button>
                 </div>
               </DialogBody>
               <DialogFooter></DialogFooter>

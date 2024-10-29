@@ -122,7 +122,7 @@ const DriveFiles = () => {
                       </button>
                       <Link
                         to={`/DriveFiles/Tag/${tag.name}`}
-                        state={{ TagId: tag._id }}
+                        state={{ TagId: tag._id, projectId: Project._id }}
                         className="flex flex-col items-center w-full"
                       >
                         <span>

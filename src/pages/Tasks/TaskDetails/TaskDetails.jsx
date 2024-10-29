@@ -224,10 +224,11 @@ const TaskDetails = () => {
                     {assignee.name}
                   </span>
                 </div>
-
-                <span className="font-inter font-medium text-base">
-                  {assignee.role.name}
-                </span>
+                {assignee.role && (
+                  <span className="font-inter font-medium text-base">
+                    {assignee?.role?.name}
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -262,10 +263,11 @@ const TaskDetails = () => {
               >
                 <Button className={`w-fit px-7`}>{t("AddSubTask")}</Button>
               </Link>
-              <Link to={`/SubTasks/${Task._id}`} 
-              state={{
-                taskId:Task._id
-              }}
+              <Link
+                to={`/SubTasks/${Task._id}`}
+                state={{
+                  taskId: Task._id,
+                }}
               >
                 <Button
                   className={`w-fit px-7  border border-solid !border-purple !text-purple`}

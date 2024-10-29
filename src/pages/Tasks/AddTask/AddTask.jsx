@@ -23,6 +23,8 @@ const AddTask = () => {
   const location = useLocation();
   const { projectId, taskType, members, ParentId } = location.state || {};
   console.log(location.state);
+
+  
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
@@ -83,7 +85,7 @@ const AddTask = () => {
         ]);
 
         setTags(
-          tagsData.results.map((tag) => ({
+          tagsData?.results?.map((tag) => ({
             value: tag._id,
             label: tag.name,
             colorCode: tag.colorCode,
@@ -91,14 +93,14 @@ const AddTask = () => {
         );
         setTagsLoading(false);
         setUnits(
-          UnitsData.results.map((unit) => ({
+          UnitsData?.results.map((unit) => ({
             value: unit._id,
             label: unit.name,
           }))
         );
         setUnitsLoading(false);
         setParentTasks(
-          parentTasks.results.map((task) => ({
+          parentTasks?.results?.map((task) => ({
             value: task._id,
             label: task.title,
           }))
@@ -147,6 +149,7 @@ const AddTask = () => {
     e.preventDefault();
     setError(null);
 
+
     const newFieldErrors = {
       Name: !Name.trim(),
       Description: !Description.trim(),
@@ -179,9 +182,8 @@ const AddTask = () => {
         startDate: formattedSDate,
         project: ProjectId,
         dueDate: formattedEDate,
-
         taskPriority: selectedPriority,
-        member: SelectedMember,
+        assignees: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
         type: taskType,

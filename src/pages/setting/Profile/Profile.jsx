@@ -19,7 +19,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const [dob, setDob] = useState(user.dateOfBirth);
   const [Name, setName] = useState(user.name);
   const [Email, setEmail] = useState(user.email);
-  const [role, setRole] = useState(user.role.name);
+  const [role, setRole] = useState(user.role.jobTitle);
   const [tel, setTel] = useState(user.phone);
   const [profilePic, setProfilePic] = useState("");
   const [presentAddress, setPresentAddress] = useState(user.presentaddress);

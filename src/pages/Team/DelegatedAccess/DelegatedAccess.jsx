@@ -45,13 +45,7 @@ const DelegatedAccess = () => {
     if (selectedUserId && selectedProjectId) {
       setLoading(true);
       try {
-        console.log(
-          token,
-          "/             ",
-          selectedProjectId,
-          "/   ",
-          selectedUserId
-        );
+      
      
         
        const res = await deleteUserFromProject(
@@ -76,6 +70,7 @@ const DelegatedAccess = () => {
         );
 
         toast.success("User deleted successfully");
+        window.location.reload()
       } catch (error) {
         console.error("Error deleting user:", error);
         toast.error("Failed to delete user. Please try again.");
