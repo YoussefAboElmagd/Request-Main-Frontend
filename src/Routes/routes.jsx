@@ -33,6 +33,7 @@ import PlanDetails from "../pages/Plans/PlanDetails.jsx";
 import Payments from "../pages/Payments/Payments.jsx";
 import AllSubTasks from "../pages/Tasks/AllSub/AllSubTasks.jsx";
 import PerformanceEvaluation from "../pages/setting/Profile/PerformanceEvaluation.jsx";
+import ProjectTeam from "../pages/Projects/ProjectTeam/ProjectTeam.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -87,6 +88,10 @@ const AppRoutes = () => {
       <Route
         path="/PerformanceEvaluation"
         element={<PerformanceEvaluation />}
+      />
+      <Route
+        path="/ProjectTeam"
+        element={<ProjectTeam />}
       />
     </Routes>
   );

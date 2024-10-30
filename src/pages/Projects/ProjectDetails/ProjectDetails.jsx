@@ -124,26 +124,40 @@ const ProjectDetails = () => {
 
           <div className="team flex items-center justify-between my-2 mx-3">
             <h5 className="Team font-bold text-2xl  ">Team</h5>
-            <div className="avatars flex items-center  -space-x-1">
-              {Project.team && Project.team.members.length > 0 ? (
-                Project.team.members.map((member, index) => (
-                  <div
-                    key={index}
-                    className="avatar-container w-10 h-10 ring-2 ring-white inline-block rounded-full overflow-hidden"
-                    title={member.name}
-                  >
-                    <img
-                      src={member.profilePic || avatar}
-                      alt={`${member.name}'s avatar`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))
+            <div className="avatars flex items-center  -space-x-2">
+              {Project.members && Project.members.length > 0 ? (
+                <>
+                  {Project.members.length > 5 && (
+                    <span
+                      className="w-8 h-8 text-black font-semibold rounded-full flex items-center justify-center m-1 "
+                      title={`${Project.members.length - 5} more members`}
+                    >
+                      +{Project.members.length - 5}
+                    </span>
+                  )}
+                  {Project.members.slice(0, 5).map((member, index) => (
+                    <Link
+                      to="/ProjectTeam"
+                      state={{ projectId: Project._id }}
+                      key={index}
+                      className="avatar-container w-10 h-10 ring-2 ring-white inline-block rounded-full overflow-hidden"
+                      title={member.name}
+                    >
+                      <img
+                        src={member.profilePic || avatar}
+                        alt={`${member.name}'s avatar`}
+                        className="w-full h-full object-cover"
+                      />
+                    </Link>
+                  ))}
+                </>
               ) : (
                 <p className="mx-2">No Team Members</p>
               )}
-              <button
-                className="w-10 h-10 rounded-full  flex justify-center items-center"
+              <Link
+                to={"/ProjectTeam"}
+                state={{ projectId: Project._id }}
+                className="w-10 h-10 rounded-full  flex justify-center items-center "
                 style={{
                   background: "#444D61",
                 }}
@@ -151,7 +165,7 @@ const ProjectDetails = () => {
                 <span>
                   <IoAddOutline className="w-6 h-6 text-white" />
                 </span>
-              </button>
+              </Link>
             </div>
           </div>
           <div className="wrapper bg-white grid grid-cols-2 rounded-3xl m-2 ">

@@ -10,8 +10,10 @@ import { IoAddOutline } from "react-icons/io5";
 import Loader from "../../../Components/Loader/Loader";
 import avatar from "../../../assets/images/Avatar.jpg";
 import ListView from "../../../Components/ListView/listView";
+import { useSelector } from "react-redux";
 
 const ProjectHistory = () => {
+    const user = useSelector((state) => state.auth.user);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [Status, setStatus] = useState("all");
@@ -39,7 +41,7 @@ const ProjectHistory = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getProjectHistory(Status);
+        const data = await getProjectHistory(Status, user._id);
         setData(data.results);
         console.log("res with filter Status =", Status, "res => ", data);
       } catch (error) {

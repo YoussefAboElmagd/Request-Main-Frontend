@@ -4,10 +4,12 @@ import Sidebar from "../SideBar/Sidebar";
 import Header from "../Header/Header";
 import { ToastContainer } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
+import useAuthRedirect from "../../hooks/useAuthRedirect";
 
 
 const Layout = () => {
   const location = useLocation();
+    // useAuthRedirect();
   const options = {
     position: "bottom-right",
     autoClose: 5000,

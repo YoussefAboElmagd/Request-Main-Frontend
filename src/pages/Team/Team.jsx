@@ -1,12 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
 import AddNewAccess from "./AddAccess/AddNewAccess";
 import DelegatedAccess from "./DelegatedAccess/DelegatedAccess";
 import { t } from "i18next";
 import { BsMicrosoftTeams } from "react-icons/bs";
+import { getTeamCount } from "../../Services/api";
+import { useSelector } from "react-redux";
 
 const Team = () => {
+  const user = useSelector((state) => state.auth.user);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [teamCount, setTeamCount] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const data = await getTeamCount(user.team);
+          setTeamCount(data.results);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }, []);
 
   const buttons = [
     {
@@ -46,7 +65,7 @@ const Team = () => {
             >
               Total Team Members
             </p>
-            <span className="font-medium  text-base">12</span>
+            <span className="font-medium  text-base">{teamCount}</span>
           </div>
         </div>
         <div className="divider h-px w-full bg-gray my-2"></div>

@@ -10,7 +10,6 @@ const Models = () => {
   const location = useLocation();
   const { projectId, taskType, members } = location.state || {};
   const [isReviewed, setIsReviewed] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [links, setLinks] = useState([]);
   useEffect(() => {
@@ -102,7 +101,7 @@ const Models = () => {
                       name={link.label}
                       id={index}
                       checked={link.approved}
-                      onChange={() => handleApprovalChange(index)}
+                      onChange={() => handleReviewChange(index)}
                       className="appearance-none w-3 h-3 mt-2 mr-1 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
                     />
                     {link.approved ? (

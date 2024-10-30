@@ -94,6 +94,9 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
     handleUpdate,
   }));
 
+
+
+
   const nameParts = Name.split(" ");
   const firstNameInitial = nameParts[0] ? nameParts[0][0] : "";
   const lastNameInitial = nameParts[1] ? nameParts[1][0] : "";
@@ -195,7 +198,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 useRange={false}
                 asSingle={true}
                 value={dob}
-                placeholder={user.dateOfBirth}
+                placeholder={formatDate(user.dateOfBirth)}
                 primaryColor={"purple"}
                 popoverDirection="up"
                 toggleClassName="text-yellow absolute top-3 ltr:right-4 rtl:left-4"

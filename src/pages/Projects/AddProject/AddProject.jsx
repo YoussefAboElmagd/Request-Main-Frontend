@@ -78,10 +78,13 @@ const AddProject = () => {
       Description: !Description.trim(),
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
-      budget: !budget.toString().trim(),
+      budget: !budget.toString().trim() || budget < 10,
       priority:!priority,
     };
-
+    if(budget < 10 ) {
+      setError({ message: "budget must be less than or equal to 10" });
+      return;    
+    }
     setFieldErrors(newFieldErrors);
 
     // If any field has an error, set a general error message and exit
@@ -89,6 +92,7 @@ const AddProject = () => {
       setError({ message: "All fields are required." });
       return;
     }
+
 
     const formattedSDate = formatDate(sDate.startDate);
     const formattedEDate = formatDate(eDate.endDate);
@@ -256,7 +260,7 @@ const AddProject = () => {
                     type={"number"}
                     required={true}
                     id={"budget"}
-                    min="0"
+                    min="10"
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
                     autoFocus={true}
@@ -278,7 +282,7 @@ const AddProject = () => {
                 >
                   {t("invite")}
                 </button>
-                <Button onClick={handleSubmit}>{t("Pubic")}</Button>
+                <Button onClick={handleSubmit}>{t("Public")}</Button>
               </div>
             </form>
           </div>

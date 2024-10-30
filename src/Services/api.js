@@ -170,14 +170,17 @@ export const getAllProjectsForUser = async (userId, token) => {
 };
 
 // get Project history
-
-export const getProjectHistory = async (Status, token) => {
+// project/user/${userId}?status=${Status}
+export const getProjectHistory = async (Status, userId, token) => {
   try {
-    const response = await axiosInstance.get(`project?status=${Status}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.get(
+      `project/user/status/${userId}?status=${Status}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     console.log("Response from project history => ", response);
     return response.data;
@@ -721,6 +724,73 @@ export const getAllSubTasksByParentTask = async (parentTaskId) => {
   } catch (error) {
     console.error(
       "Get sub tasks by parent task error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+// get team count 
+
+export const getTeamCount = async (teamId) => {
+  try {
+    const response = await axiosInstance.get(`team/count/${teamId}`);
+
+    console.log("Response from team count => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get team count error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// get members by project
+
+export const getMembersByProject = async (projectId) => {
+  console.log("projectId from Api => ", projectId);
+  
+  try {
+    const response = await axiosInstance.get(`project/members/${projectId}`);
+    
+
+    console.log("Response from members by project => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get members by project error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+// add member for project
+
+export const addMemberForProject = async (projectId, MemberData, token) => {
+  console.log(projectId);
+  
+  try {
+    const response = await axiosInstance.put(
+      `project/member/${projectId}`,
+      MemberData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Response from add member for project => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Add member for project error: ",
       error.response?.data || error.message
     );
     throw error;

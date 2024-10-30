@@ -66,7 +66,7 @@ const Home = () => {
   const formatDate = (date) => format(new Date(date), "dd MMM");
 
   // Filter projects that have tasks more than 0
-  const filteredProjects = data.results.filter(
+  const filteredProjects = data.results?.filter(
     (project) => project.tasks && project.tasks.length > 0
   );
 

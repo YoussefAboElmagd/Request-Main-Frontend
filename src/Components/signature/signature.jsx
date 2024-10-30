@@ -113,8 +113,6 @@ export function SignatureBtn({ onSignatureChange }) {
     }
   };
 
-
-  
   const handleSaveSignature = () => {
     if (signaturePadRef.current) {
       const trimmedCanvas = signaturePadRef.current.getTrimmedCanvas();
@@ -253,7 +251,14 @@ export function SignatureBtn({ onSignatureChange }) {
             ref={signaturePadRef}
             penColor={color}
             backgroundColor="rgba(255,255,255,1)"
-            canvasProps={{ width: 580, height: 200 }}
+            canvasProps={{
+              style: {
+                // maxWidth: "650px",
+                width: "100%",
+                maxHeight: "350px",
+                height: "100%",
+              },
+            }}
             {...signatureOptions}
           />
         </DialogBody>
@@ -296,3 +301,6 @@ export function SignatureBtn({ onSignatureChange }) {
     </>
   );
 }
+
+
+//  start Date must be less than 1-10-2024 (start date in project )

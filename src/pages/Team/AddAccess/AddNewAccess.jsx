@@ -6,12 +6,13 @@ import { CiMail } from "react-icons/ci";
 import { t } from "i18next";
 import {
   getAllProjectsForUser,
+  getAllTagsByUser,
   getAllVocations,
   getUserGroup,
   updateTeam,
 } from "../../../Services/api";
 import { useSelector } from "react-redux";
-import Select, { components } from "react-select";
+import Select, { components, useStateManager } from "react-select";
 import { motion } from "framer-motion";
 import "../style.scss";
 import Button from "../../../Components/UI/Button/Button";
@@ -27,7 +28,6 @@ import {
   Button as Btn,
 } from "@material-tailwind/react";
 import Loader from "../../../Components/Loader/Loader";
-
 // Custom styles for react-select
 const customStyles = {
   control: (provided) => ({
@@ -38,19 +38,19 @@ const customStyles = {
     padding: "5px",
     minHeight: "42px",
     boxShadow: "none",
-    "&:hover": { borderColor: "var(--gray)" },
+    "&:hover": { borderColor: "var(--gray)", value: false },
   }),
   placeholder: (provided) => ({ ...provided, color: "#999" }),
   dropdownIndicator: (provided) => ({
     ...provided,
     color: "var(--gray)",
-    "&:hover": { color: "var(--gray)" },
+    "&:hover": { color: "var(--gray)", value: false },
   }),
   indicatorSeparator: () => ({ display: "none" }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isSelected ? "#CCABDA66" : "white",
-    color: state.isSelected ? "var(--purple)" : "var(--gray)",
+    backgroundColor: "white",
+    color: "var(--gray)",
     padding: "10px",
     borderRadius: "8px",
     cursor: "pointer",
@@ -82,6 +82,26 @@ const customStyles = {
     },
   }),
 };
+
+// const CustomOption = (props) => {
+//   return (
+//     <components.Option {...props}>
+//       <input
+//         type="checkbox"
+//         checked={props.isSelected}
+//         onChange={() => null}
+//         style={{ marginRight: 10 }}
+//         onClick={(e) => {
+//           e.stopPropagation(); // Prevent closing the select menu
+//           props.onRemove(props.data); // Remove option
+//         }}
+//         className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+//       />
+//       {props.label}
+//     </components.Option>
+//   );
+// };
+
 const getErrorClass = (hasError) =>
   hasError ? "border border-red border-solid" : "";
 // Reusable input component
@@ -97,7 +117,7 @@ export function Input({
   togglePasswordVisibility,
   autoComplete,
   hasError,
-  value
+  value,
 }) {
   return (
     <div className="flex flex-col relative">
@@ -145,19 +165,28 @@ const AddNewAccess = () => {
   const countries = useCountries().countries;
   const [countryIndex, setCountryIndex] = useState(230);
   const { name, flags, countryCallingCode } = countries[countryIndex];
-
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [projects, setProjects] = useState([]);
   const [vocations, setVocations] = useState([]);
-  const [accessGroups, setAccessGroups] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedVocation, setSelectedVocation] = useState([]);
-  const [selectedAccess, setSelectedAccess] = useState([]);
+  // const [selectedAccess, setSelectedAccess] = useState([]);
+  const [accessList, setAccessList] = useState({
+    delete: false,
+    create: false,
+    edit: false,
+    read: false,
+  });
   const [loading, setLoading] = useState(true);
   const [Email, setEmail] = useState("");
   const [Name, setName] = useState("");
   const [Password, setPassword] = useState("");
   const [Phone, setPhone] = useState("");
+  const [Tags, setTags] = useState([]);
+  const [SelectedTags, setSelectedTags] = useState([]);
+  const [isSelectOpen, setIsSelectOpen] = useState(true);
+  const [TagsLoading, setTagsLoading] = useState(true);
+  const [VocationLoading, setVocationLoading] = useState(true);
   const [fieldErrors, setFieldErrors] = useState({
     Name: false,
     Email: false,
@@ -166,22 +195,36 @@ const AddNewAccess = () => {
     vocation: false,
     project: false,
     access: false,
+    Tag: false,
   });
 
+  useEffect(() => {
+    console.log("Current access list:", accessList);
+  }, [accessList]);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [vocationResponse, accessResponse, projectsResponse] =
-          await Promise.all([
+        const [vocationResponse, projectsResponse, TagsRes] = await Promise.all(
+          [
             getAllVocations(),
-            getUserGroup(),
             getAllProjectsForUser(user._id, token),
-          ]);
+            getAllTagsByUser(user._id),
+          ]
+        );
 
         setVocations(vocationResponse.allVocations);
-        setAccessGroups(accessResponse.results);
+        setVocationLoading(false)
+
         setProjects(projectsResponse.results);
+        setTags(
+          TagsRes.results.map((tag) => ({
+            value: tag._id,
+            label: tag.name,
+            colorCode: tag.colorCode,
+          }))
+        );
+        setTagsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -221,17 +264,23 @@ const AddNewAccess = () => {
     }
   };
 
- const clearFields = () => {
-   setEmail("");
-   setName("");
-   setPassword("");
-   setPhone("");
-   setSelectedProject(null);
-   setSelectedVocation([]);
-   setSelectedAccess([]);
-   setFieldErrors({}); 
- };
-
+  const clearFields = () => {
+    setEmail("");
+    setName("");
+    setPassword("");
+    setPhone("");
+    setSelectedProject(null);
+    setSelectedVocation([]);
+     setSelectedTags([]);
+     accessList({
+       delete: false,
+       create: false,
+       edit: false,
+       read: false,
+     });
+    // setSelectedAccess([]);
+    setFieldErrors({});
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -242,9 +291,10 @@ const AddNewAccess = () => {
       Email: !Email.trim(),
       Password: !Password.trim(),
       Phone: !Phone.trim(),
-      Access: !selectedAccess,
+      Access: !accessList,
       Projects: !selectedProject,
       Vocations: !selectedVocation,
+      Tags: !SelectedTags,
     };
 
     setFieldErrors(newFieldErrors);
@@ -253,8 +303,7 @@ const AddNewAccess = () => {
       setFieldErrors({ message: "All fields are required." });
       return;
     }
-    
-    const fullPhoneNum = `${countryCallingCode}${Phone}`
+    const fullPhoneNum = `${countryCallingCode}${Phone}`;
     try {
       const payload = {
         name: Name,
@@ -262,9 +311,10 @@ const AddNewAccess = () => {
         email: Email,
         phone: fullPhoneNum,
         vocation: selectedVocation?.value,
-        access: selectedAccess?.value,
+        access: accessList,
         projects: selectedProject.map((p) => p.value),
         role: user.role._id,
+        tags: SelectedTags.map((t) => t.value),
       };
       console.log(payload);
 
@@ -277,8 +327,52 @@ const AddNewAccess = () => {
     }
   };
 
+  const accessOptions = [
+    { id: "read", label: "READ", value: false },
+    { id: "write", label: "WRITE", value: false },
+    { id: "create", label: "CREATE", value: false },
+    { id: "delete", label: "DELETE", value: false },
+  ];
+
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  //  const handleChange = (selected) => {
+  //    setSelectedAccess({
+  //      optionSelected: selected,
+  //    });
+  //  };
+
+  const changeDeleteValue = (value) => {
+    setAccessList((prev) => ({
+      ...prev,
+      delete: value,
+    }));
+  };
+
+  // Handler to change create permission
+  const changeCreateValue = (value) => {
+    setAccessList((prev) => ({
+      ...prev,
+      create: value,
+    }));
+  };
+
+  // Handler to change edit permission
+  const changeEditValue = (value) => {
+    setAccessList((prev) => ({
+      ...prev,
+      edit: value,
+    }));
+  };
+
+  // Handler to change read permission
+  const changeReadValue = (value) => {
+    setAccessList((prev) => ({
+      ...prev,
+      read: value,
+    }));
   };
 
   if (loading) {
@@ -396,7 +490,7 @@ const AddNewAccess = () => {
             placeholder="Select Vocation"
             id="vocation"
             isClearable
-            isLoading={loading}
+            isLoading={VocationLoading}
             options={vocations.map((v) => ({ value: v._id, label: v.name }))}
             onChange={setSelectedVocation}
             value={selectedVocation}
@@ -410,18 +504,18 @@ const AddNewAccess = () => {
             className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
             htmlFor="access"
           >
-            Access
+            Tags
           </label>
           <Select
-            placeholder="Select Access Group"
-            id="access"
+            placeholder="Select Tag"
+            id="Tags"
             isClearable
-            isLoading={loading}
-            value={selectedAccess}
-            options={accessGroups.map((a) => ({ value: a._id, label: a.name }))}
-            onChange={setSelectedAccess}
+            isLoading={TagsLoading}
+            value={SelectedTags}
+            options={Tags}
+            onChange={setSelectedTags}
             styles={customStyles}
-            components={{ MultiValue: AnimatedMultiValue }}
+            isMulti
           />
         </div>
         <div className="col-span-4">
@@ -443,6 +537,77 @@ const AddNewAccess = () => {
             styles={customStyles}
             components={{ MultiValue: AnimatedMultiValue }}
           />
+        </div>
+        <div className="col-span-4 flex items-center gap-5">
+          <label
+            className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
+            htmlFor="access"
+          >
+            Access
+          </label>
+          {/* 
+          <Select
+            options={accessOptions.map((option) => ({
+              value: option.id,
+              label: option.label,
+            }))}
+            value={setSelectedAccess.optionSelected}
+            isMulti
+            onChange={handleChange}
+            components={{ Option: CustomOption }}
+            styles={customStyles}
+            closeMenuOnSelect={false}
+            hideSelectedOptions={false}
+            classNamePrefix="select"
+          /> */}
+          <div className="read flex items-center gap-1 ">
+            <input
+              type="checkbox"
+              id="read"
+              checked={accessList.read}
+              onChange={(e) => changeReadValue(e.target.checked)}
+              className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+            />
+            <label htmlFor="read" className="font-medium text-base">
+              Read
+            </label>
+          </div>
+          <div className="Edit flex items-center gap-1">
+            <input
+              type="checkbox"
+              id="Edit"
+              checked={accessList.edit}
+              onChange={(e) => changeEditValue(e.target.checked)}
+              className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+            />
+            <label htmlFor="write" className="font-medium text-base">
+              Edit
+            </label>
+          </div>
+          <div className="create flex items-center gap-1">
+            <input
+              type="checkbox"
+              id="create"
+              checked={accessList.create}
+              onChange={(e) => changeCreateValue(e.target.checked)}
+              className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+            />
+            <label htmlFor="create" className="font-medium text-base">
+              Create
+            </label>
+          </div>
+          <div className="delete flex items-center gap-1">
+            <input
+              type="checkbox"
+              id="delete"
+              checked={accessList.delete}
+              onChange={(e) => changeDeleteValue(e.target.checked)}
+              className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+            />
+            <label htmlFor="delete" className="font-medium text-base">
+              Delete
+            </label>
+          </div>
         </div>
         <Link className="underline underline-offset-1 text-base text-cyan-500 mx-2">
           Advanced setting

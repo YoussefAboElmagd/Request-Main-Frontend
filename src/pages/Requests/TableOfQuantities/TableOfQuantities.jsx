@@ -26,7 +26,7 @@ const TaskRow = ({
   errors,
 }) => {
   const handleChange = (field, value) => {
-    onChange(index, field, value); 
+    onChange(index, field, value);
   };
 
   const calculateTotal = (price, requiredQuantity) => {
@@ -97,7 +97,7 @@ const TaskRow = ({
           disabled
         />
       </td> */}
-      <td className="flex  justify-center">
+      <td className="flex  justify-center items-center  mt-4">
         <button onClick={() => onRemove(index)}>
           <BiTrash className="text-red" size={20} />
         </button>
@@ -118,7 +118,7 @@ const TableOfQuantities = () => {
   const navigate = useNavigate();
 
   const handleNewTask = (task) => {
-    setTasks((prevTasks) => [...prevTasks, task]); 
+    setTasks((prevTasks) => [...prevTasks, task]);
   };
 
   // Handle task change for a specific row
@@ -133,31 +133,44 @@ const TableOfQuantities = () => {
     setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    await Promise.all(
-      tasks.map(async (task) => {
-        await addTask(task); 
-      })
-    );
-
-    toast.success(t("Tasks saved successfully!"));
-    console.log("All tasks saved:", tasks);
-
-    setTasks([]); 
-    if (!taskType) {
-      navigate("/Models", {
-        state: { projectId },
-        replace: true,
+  const handleUpdateProject = async () => {
+    try {
+      const res = await updateProject(projectId, {
+        tableOfQuantities: true,
       });
+      console.log("res from update project => ", res);
+    } catch (error) {
+      console.error("Failed to update tasks:", error);
+      toast.error(t("Failed to update tasks"));
     }
-  } catch (error) {
-    console.error("Failed to add tasks:", error);
-    toast.error(t("Failed to add tasks"));
-  }
-};
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await Promise.all(
+        tasks.map(async (task) => {
+          await addTask(task);
+        })
+      );
+
+      toast.success(t("Tasks saved successfully!"));
+      console.log("All tasks saved:", tasks);
+
+      setTasks([]);
+      if (!taskType) {
+        handleUpdateProject();
+        navigate("/Models", {
+          state: {
+            projectId,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Failed to add tasks:", error);
+      toast.error(t("Failed to add tasks"));
+    }
+  };
 
   return (
     <div className="TableOfQuantities">
@@ -204,7 +217,7 @@ const handleSubmit = async (e) => {
           {!taskType && (
             <Link
               to="/Models"
-              state={{projectId, taskType, members}}
+              state={{ projectId, taskType, members }}
               className="text-purple underline mt-4"
             >
               Skip This Request

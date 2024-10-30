@@ -138,7 +138,7 @@ const PlansInfo = () => {
                 <span className="text-base font-normal">/Month</span>
               )}
             </p>
-            <Link to={"/SeePlans"}>
+            <Link to={"/PlanDetails"}>
               <Button className={"mt-4 !px-24"}>Get started</Button>
             </Link>
           </div>

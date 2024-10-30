@@ -68,7 +68,7 @@ const BoardViewProject = ({
       <div className="flex items-center justify-between mx-2 my-3">
         {avatars && (
           <div className="members flex -space-x-2">
-            {avatars.map((avatar, index) => (
+            {avatars.slice(0, 5).map((avatar, index) => (
               <img
                 key={index}
                 src={avatar}
@@ -76,6 +76,11 @@ const BoardViewProject = ({
                 className="w-8 h-8 border-2 border-white rounded-full m-1"
               />
             ))}
+            {avatars.length > 5 && (
+              <span className="w-8 h-8  text-black font-semibold rounded-full flex items-center justify-center m-1">
+                +{avatars.length - 5}
+              </span>
+            )}
           </div>
         )}
         <div className="files flex items-center gap-3 cursor-pointer">
