@@ -85,7 +85,7 @@ const ProjectDetails = () => {
                   <BiTask className="w-8 h-8  text-red" />
                 </span>
                 <span className="underline underline-offset-2 font-jost text-base font-normal leading-6 ">
-                  view all tasks
+                  {t("view all tasks")}
                 </span>
               </button>
             </Link>
@@ -123,7 +123,7 @@ const ProjectDetails = () => {
           </div>
 
           <div className="team flex items-center justify-between my-2 mx-3">
-            <h5 className="Team font-bold text-2xl  ">Team</h5>
+            <h5 className="Team font-bold text-2xl  ">{t("Team")}</h5>
             <div className="avatars flex items-center  -space-x-2">
               {Project.members && Project.members.length > 0 ? (
                 <>
@@ -152,7 +152,7 @@ const ProjectDetails = () => {
                   ))}
                 </>
               ) : (
-                <p className="mx-2">No Team Members</p>
+                <p className="mx-2">{t("No Team Members")}</p>
               )}
               <Link
                 to={"/ProjectTeam"}
@@ -178,7 +178,7 @@ const ProjectDetails = () => {
                 <div className="progress_wrapper  flex items-center justify-between rounded-2xl shadow-md p-8 relative">
                   <div className="Progress">
                     <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
-                      Progress
+                      {t("Progress")}
                     </span>
                     <CircularProgress
                       className="!text-black font-poppins font-normal text-4xl"

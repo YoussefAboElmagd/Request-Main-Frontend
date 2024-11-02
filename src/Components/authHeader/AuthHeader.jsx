@@ -72,12 +72,12 @@ const AuthHeader = () => {
         </button>
       </div> */}
       <Link to="/LogIn/Mail">
-        <button className="py-1 px-10 bg-linear_1 rounded-3xl text-white m-2 font-semibold text-xl">
+        <button className="py-1 px-5 md:px-10 bg-linear_1 rounded-3xl text-white m-2 font-semibold md:text-xl text-base">
           {t("signIn")}
         </button>
       </Link>
       <Link to="/SignUp/ChooseRole">
-        <button className="py-1 px-10 bg-light border border-purple border-solid rounded-3xl text-purple m-2 font-semibold text-xl">
+        <button className="py-1 px-5 md:px-10 bg-light border border-purple border-solid rounded-3xl text-purple m-2 font-semibold md:text-xl text-base ">
           {t("Register")}
         </button>
       </Link>

@@ -196,7 +196,7 @@ const Sidebar = () => {
             </button>
           ) : (
             <Button className="mt-auto w-full">
-              <Link to="/SignUp/ChooseRole">Sign Up</Link>
+              <Link to="/SignUp/ChooseRole">{t("Sign Up")}</Link>
             </Button>
           )}
         </div>

@@ -6,40 +6,41 @@ import { FaCheck } from "react-icons/fa";
 import "./style.scss";
 import { Chip } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { t } from "i18next";
 const tiers = [
   {
     name: "Request",
     id: "normal",
     href: "#",
     priceMonthly: "$8",
-    description: "Best for personal use",
+    description: t("Best for personal use"),
     features: [
       {
-        feature: "14 day trial",
+        feature: t("14 day trial"),
         accepted: true,
       },
       {
-        feature: "2 projects",
+        feature: t("2 projects"),
         accepted: true,
       },
       {
-        feature: "Weekly report",
+        feature: t("Weekly report"),
         accepted: false,
       },
       {
-        feature: "certified extracts",
+        feature: t("certified extracts"),
         accepted: true,
       },
       {
-        feature: "3 accounts",
+        feature: t("3 accounts"),
         accepted: true,
       },
       {
-        feature: "15 Storage space",
+        feature: t("15 Storage space"),
         accepted: true,
       },
       {
-        feature: "Mobile App Integration",
+        feature: t("Mobile App Integration"),
         accepted: false,
       },
     ],
@@ -50,34 +51,34 @@ const tiers = [
     id: "Plus",
     href: "#",
     priceMonthly: "$16",
-    description: "Best for personal use",
+    description: t("Best for personal use"),
     features: [
       {
-        feature: "14 day trial",
+        feature: t("14 day trial"),
         accepted: true,
       },
       {
-        feature: "5 projects",
+        feature: t("5 projects"),
         accepted: true,
       },
       {
-        feature: "Weekly report",
+        feature: t("Weekly report"),
         accepted: true,
       },
       {
-        feature: "certified extracts",
+        feature: t("certified extracts"),
         accepted: false,
       },
       {
-        feature: "6 accounts",
+        feature: t("6 accounts"),
         accepted: true,
       },
       {
-        feature: "15 Storage space",
+        feature: t("15 Storage space"),
         accepted: true,
       },
       {
-        feature: "Mobile App Integration",
+        feature: t("Mobile App Integration"),
         accepted: true,
       },
     ],
@@ -88,34 +89,34 @@ const tiers = [
     id: "FullPlus",
     href: "#",
     priceMonthly: "$99",
-    description: "Best for personal use",
+    description: t("Best for personal use"),
     features: [
       {
-        feature: "14 day trial",
+        feature: t("14 day trial"),
         accepted: true,
       },
       {
-        feature: "10 projects",
+        feature: t("10 projects"),
         accepted: true,
       },
       {
-        feature: "Weekly report",
+        feature: t("Weekly report"),
         accepted: false,
       },
       {
-        feature: "certified extracts",
+        feature: t("certified extracts"),
         accepted: true,
       },
       {
-        feature: "9 accounts",
+        feature: t("9 accounts"),
         accepted: true,
       },
       {
-        feature: "15 Storage space",
+        feature: t("15 Storage space"),
         accepted: true,
       },
       {
-        feature: "Mobile App Integration",
+        feature: t("Mobile App Integration"),
         accepted: true,
       },
     ],
@@ -131,18 +132,18 @@ const SeePlans = () => {
   return (
     <div className="SeePlans flex flex-col items-center">
       <h1 className="text-3xl font-extrabold">
-        Streamline your teamwork. Start free.
+        {t("Streamline your teamwork. Start free.")}
       </h1>
       <p className="font-normal text-base my-3">
-        Choose the perfect plan for your business needs
+        {t("Choose the perfect plan for your business needs")}
       </p>
       <div className="my-3 relative tooltip-container w-[8em] h-10">
-        <div className="tooltip">
-          <span className="text-white">Save 20%</span>
+      <div className="tooltip">
+          <span className="text-white">{t("Save 20%")}</span>
         </div>
       </div>
       <SwitchTabs
-        data={["Yearly", "Monthly"]}
+        data={[t("Yearly"), t("Monthly")]}
         main_style={"bg-white"}
         activeTab_style={"!text-white"}
         movingBg_style={"bg-linear_1 "}
@@ -179,14 +180,14 @@ const SeePlans = () => {
                 >
                   {tier.priceMonthly}
                 </span>
-                <span className={classNames("text-base")}>/month</span>
+                <span className={classNames("text-base")}>/{t("month")}</span>
               </p>
               {tier.featured && (
                 <Chip
                   variant="soft"
                   size="small"
                   sx={{ ml: 2 }}
-                  value={"Most Popular"}
+                  value={t("Most Popular")}
                   className="bg-green !rounded-3xl "
                 />
               )}
@@ -222,7 +223,7 @@ const SeePlans = () => {
             </ul>
             <Link to={"/PlanDetails"}>
               <Button className={"mt-4 font-normal text-xs"}>
-                Get Started
+                {t("Get Started")}
               </Button>
             </Link>
           </div>
@@ -232,7 +233,7 @@ const SeePlans = () => {
         to={"/PlansInfo"}
         className="text-gold underline underline-offset-1"
       >
-        More Details
+        {t("More Details")}
       </Link>
     </div>
   );

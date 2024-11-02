@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../Components/UI/Button/Button";
 import SignUpImg from "../../../assets/images/SignUp.png";
 import Input from "../../../Components/UI/Input/Input";
-import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaEye, FaPhoneAlt, FaRegEyeSlash } from "react-icons/fa";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import Google from "../../../assets/images/Google.png";
 import Apple from "../../../assets/images/Apple.png";
@@ -339,9 +339,9 @@ const SignUp = () => {
                 <div className="box_Apple">
                   <img src={Apple} alt="Apple" width={23} height={28} />
                 </div>
-                <div className="box_Facebook">
-                  <img src={Facebook} alt="Facebook" width={23} height={28} />
-                </div>
+                <Link to={"/LogIn"} className="box_phone">
+                  <FaPhoneAlt className="text-purple" />
+                </Link>
               </div>
             </div>
           </div>

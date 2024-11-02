@@ -257,7 +257,7 @@ const AddTask = () => {
             <form action="submit">
               <Input
                 label={t("TaskName")}
-                placeholder={"Task Name"}
+                placeholder={t("TaskName")}
                 className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid ${
                   fieldErrors.Name && "border-red"
                 }`}
@@ -279,7 +279,7 @@ const AddTask = () => {
                 <textarea
                   name="description"
                   id="description"
-                  placeholder={t("Description")}
+                  placeholder= {t("desc")}
                   required={true}
                   value={Description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -451,7 +451,7 @@ const AddTask = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <Select
-                  id=""
+                  id="person"
                   label={t("Responsible Person")}
                   InputClassName={` ${
                     fieldErrors.unit && "border-red  border rounded-2xl"
@@ -487,7 +487,7 @@ const AddTask = () => {
                     type="number"
                     min={0}
                     value={Price}
-                    label={"Price"}
+                    label={t("Price")}
                     onChange={(e) => {
                       const newPrice = e.target.value;
                       setPrice(newPrice);
@@ -500,7 +500,7 @@ const AddTask = () => {
                   <Input
                     type="number"
                     min={0}
-                    label={"Quantity"}
+                    label={t("Quantity")}
                     value={Quantity}
                     onChange={(e) => {
                       const newQuantity = e.target.value;
@@ -515,7 +515,7 @@ const AddTask = () => {
                     className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
                   
                     `}
-                    label={"Total"}
+                    label={t("Total")}
                     type="number"
                     min={0}
                     value={Total}
@@ -523,7 +523,7 @@ const AddTask = () => {
                   />
                   <Select
                     options={Units}
-                    placeholder="Unit"
+                    placeholder={t("Unit")}
                     disabled={UnitsLoading}
                     label={"Unit"}
                     value={selectedUnit}

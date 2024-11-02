@@ -7,6 +7,15 @@ import { Link } from "react-router-dom";
 const Security = () => {
   const user = useSelector((state) => state.auth.user);
 
+   const formatDate = (date) => {
+     if (!date) return "";
+     const d = new Date(date);
+     const year = d.getFullYear();
+     const month = String(d.getMonth() + 1).padStart(2, "0");
+     const day = String(d.getDate()).padStart(2, "0");
+     return `${year}-${month}-${day}`;
+   };
+
   return (
     <div className="Security">
       <div className="email flex items-center  justify-between   m-2 mb-4 ">
@@ -31,7 +40,7 @@ const Security = () => {
       <div className="divider h-px w-full bg-gray my-2"></div>
       <div className="LastSignIn mx-2 mt-4 mb-8">
         <p>{t("Last Sign-in")}</p>
-        <span>{user.updatedAt}</span>
+        <span>{formatDate(user.updatedAt)}</span>
       </div>
     </div>
   );

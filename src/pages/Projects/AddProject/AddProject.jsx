@@ -156,7 +156,7 @@ const AddProject = () => {
             <form action="submit">
               <Input
                 label={t("PName")}
-                placeholder={"Project Name"}
+                placeholder={t("PName")}
                 className={`bg-white border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
                   fieldErrors.Name && "border-red"
                 }`}
@@ -178,7 +178,7 @@ const AddProject = () => {
                 <textarea
                   name="description"
                   id="description"
-                  placeholder={t("Description")}
+                  placeholder={t("desc")}
                   required={true}
                   value={Description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -236,24 +236,25 @@ const AddProject = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div className="flex flex-col my-2 col-span-1">
                   <Select
-                    label={t("priority")}
+                    label={t("Priority")}
                     isClearable
                     options={[
-                      { value: "low", label: "Low" },
-                      { value: "medium", label: "Medium" },
-                      { value: "high", label: "High" },
+                      { value: "low", label: t("Low") },
+                      { value: "medium", label: t("Medium") },
+                      { value: "high", label: t("High") },
                     ]}
                     className={`bg-white  ${
                       fieldErrors.priority && "border-b border-red  rounded-2xl"
                     }`}
                     value={priority}
+                    placeholder={t("Priority")}
                     onChange={(value) => setPriority(value)}
                   />
                 </div>
                 <div className="flex flex-col my-2 col-span-1">
                   <Input
                     label={t("budget")}
-                    placeholder={"budget"}
+                    placeholder={t("budget")}
                     className={`bg-white border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
                       fieldErrors.Name && "border-red"
                     }`}

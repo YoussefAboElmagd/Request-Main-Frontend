@@ -3,7 +3,6 @@
 .tooltip {
   position: absolute;
   top: 0;
-  left: -80%;
   padding: 0.3em 0.6em;
   opacity: 1;
   pointer-events: none;
@@ -12,6 +11,13 @@
   border-radius: 5px;
   width: 7em;
   text-align: center;
+}
+
+.tooltip:dir(ltr){
+    left: -80%;
+}
+.tooltip:dir(rtl){
+    left: 80%;
 }
 
 .tooltip::before {

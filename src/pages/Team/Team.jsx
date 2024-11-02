@@ -29,7 +29,7 @@ const Team = () => {
 
   const buttons = [
     {
-      label: t("+Add new access"),
+      label: t("Add new access"),
       value: "AddNewAccess",
       component: <AddNewAccess />,
     },
@@ -47,7 +47,7 @@ const Team = () => {
     <div className="Team ">
       <div className="header bg-white  rounded-3xl p-2">
         <div className="head  flex items-center  justify-between p-2">
-          <h5 className="font-semibold  text-base">Team</h5>
+          <h5 className="font-semibold  text-base">{t("Team")}</h5>
           <div className="TotalMembers flex items-center  gap-2">
             <span
               className="w-7 h-7 md:w-9 md:h-9  flex items-center  justify-center rounded-full"
@@ -63,19 +63,21 @@ const Team = () => {
                 color: "#696A6B",
               }}
             >
-              Total Team Members
+              {t("Total Team Members")}
             </p>
             <span className="font-medium  text-base">{teamCount}</span>
           </div>
         </div>
-        <div className="divider h-px w-full bg-gray my-2"></div>
+        <div className="divider h-px w-full bg-gray my-2" />
         <div className="switchTabs m-2   w-fit">
           <SwitchTabs
             data={buttons.map((button) => button.label)}
             onTabChange={handleTabChange}
           />
         </div>
-        <p className="font-medium  text-base m-3">You gave access to the following members</p>
+        <p className="font-medium  text-base m-3">
+          {t("You gave access to the following members")}
+        </p>
       </div>
       <div className="content mt-4">{buttons[selectedTab].component}</div>
     </div>

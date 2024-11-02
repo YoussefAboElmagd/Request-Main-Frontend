@@ -209,7 +209,7 @@ export const AddNewTask = ({ newTask }) => {
         onClick={handleOpen}
         className=" font-bold text-lg text-purple underline underline-offset-1"
       >
-        +add new
+        {t("+add new")}
       </button>
       <Dialog
         open={isOpen}
@@ -221,7 +221,7 @@ export const AddNewTask = ({ newTask }) => {
           <form action="submit">
             <Input
               label={t("TaskName")}
-              placeholder={"Task Name"}
+              placeholder={t("TaskName")}
               className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid ${
                 fieldErrors.Name && "border-red"
               }`}
@@ -243,7 +243,7 @@ export const AddNewTask = ({ newTask }) => {
               <textarea
                 name="description"
                 id="description"
-                placeholder={t("Description")}
+                placeholder={t("desc")}
                 required={true}
                 value={Description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -358,7 +358,7 @@ export const AddNewTask = ({ newTask }) => {
                 type="number"
                 min={0}
                 value={Price}
-                label={"Price"}
+                label={t("Price")}
                 onChange={(e) => {
                   const newPrice = e.target.value;
                   setPrice(newPrice);
@@ -371,7 +371,7 @@ export const AddNewTask = ({ newTask }) => {
               <Input
                 type="number"
                 min={0}
-                label={"Quantity"}
+                label={t("Quantity")}
                 value={Quantity}
                 onChange={(e) => {
                   const newQuantity = e.target.value;
@@ -386,7 +386,7 @@ export const AddNewTask = ({ newTask }) => {
                 className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
                   
                     `}
-                label={"Total"}
+                label={t("Total")}
                 type="number"
                 min={0}
                 value={Total}
@@ -394,9 +394,9 @@ export const AddNewTask = ({ newTask }) => {
               />
               <Select
                 options={Units}
-                placeholder="Unit"
+                placeholder={t("Unit")}
                 disabled={UnitsLoading}
-                label={"Unit"}
+                label={t("Unit")}
                 value={selectedUnit}
                 onChange={(e) => setSelectedUnit(e)}
                 className={`bg-white mx-4`}

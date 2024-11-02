@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../UI/Button/Button";
+import { t } from "i18next";
 
 const NotificationItem = ({
   icon,
@@ -24,10 +25,15 @@ const NotificationItem = ({
         <p className="text-xs text-gray-500">{timestamp}</p>
         {showButtons && (
           <div className="actions flex justify-end gap-2 space-x-2 mt-2">
-            <button className="text-red text-base font-medium" onClick={onCancel}>
-              Cancel
+            <button
+              className="text-red text-base font-medium"
+              onClick={onCancel}
+            >
+              {t("Cancel")}
             </button>
-            <Button onClick={onApprove} className={"px-5 !py-2"}>Approve</Button>
+            <Button onClick={onApprove} className={"px-5 !py-2"}>
+              {t("Approve")}
+            </Button>
           </div>
         )}
       </div>

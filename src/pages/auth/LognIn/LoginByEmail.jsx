@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Input from "../../../Components/UI/Input/Input";
 import { CiMail } from "react-icons/ci";
 import { MdLockOutline } from "react-icons/md";
-import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaEye, FaPhoneAlt, FaRegEyeSlash } from "react-icons/fa";
 import Google from "../../../assets/images/Google.png";
 import Apple from "../../../assets/images/Apple.png";
 import Facebook from "../../../assets/images/Facebook.png";
@@ -74,19 +74,19 @@ const handleSubmit = async (e) => {
       ) : (
         <>
           <AuthHeader />
-          <div className="Wrapper flex items-center justify-between ">
+          <div className="Wrapper flex flex-col md:flex-row items-center md:justify-between ">
             <div className="w-96 my-40">
-              <h3 className="font-workSans font-bold text-5xl">
+              <h3 className="font-workSans font-bold text-xl md:text-3xl lg:text-5xl">
                 {t("sign in To activate your business easily")}
               </h3>
-              <p className="font-jost font-medium text-2xl">
+              <p className="font-jost font-medium  text-lg md:text-xl lg:text-2xl">
                 {t("if you don’t have an account you can")}
                 <Link to="/sign-up" className="text-blue block">
                   {t("Register here!")}
                 </Link>
               </p>
             </div>
-            <div className="LogIn_Image flex justify-center ">
+            <div className="LogIn_Image md:flex justify-center hidden">
               <img
                 src={image}
                 alt="LogIn By Phone"
@@ -165,9 +165,9 @@ const handleSubmit = async (e) => {
                 <div className="box_Apple">
                   <img src={Apple} alt="Apple" width={23} height={28} />
                 </div>
-                <div className="box_Facebook">
-                  <img src={Facebook} alt="Facebook" width={23} height={28} />
-                </div>
+              <Link to={"/LogIn"} className="box_phone">
+                  <FaPhoneAlt className="text-purple" />
+                </Link>
               </div>
             </div>
           </div>

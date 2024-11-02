@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
+import { t } from "i18next";
 
 const DelegatedAccess = () => {
   const user = useSelector((state) => state.auth.user);
@@ -94,12 +95,12 @@ const DelegatedAccess = () => {
       <table className="w-full text-sm text-center text-gray-500 border-collapse">
         <thead className="text-xs font-bold text-gray-dark uppercase border-b-2 border-gray">
           <tr>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Vocation</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">Phone</th>
-            <th className="px-4 py-2">Access</th>
-            <th className="px-4 py-2">Action</th>
+            <th className="px-4 py-2">{t("Name")}</th>
+            <th className="px-4 py-2">{t("Vocation")}</th>
+            <th className="px-4 py-2">{t("Email")}</th>
+            <th className="px-4 py-2">{t("Phone number")}</th>
+            <th className="px-4 py-2">{t("Access")}</th>
+            <th className="px-4 py-2">{t("Actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -152,7 +153,7 @@ const DelegatedAccess = () => {
                       onClick={() => {
                         setSelectedUserId(member._id);
                         setSelectedProjectId(project.projectId);
-                      
+
                         handleOpen();
                       }}
                     >

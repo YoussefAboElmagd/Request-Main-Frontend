@@ -37,16 +37,15 @@ const Role = () => {
       setError("Please select a role.");
       return;
     }
-    console.log(selectedRoleId);
 
     // Navigate to SignUp page with the selected role ID
     navigate("/SignUp", { state: { roleId: selectedRoleId } });
   };
 
   return (
-    <div className="Role effect">
+    <div className="Role effect ">
       {isLoading ? (
-        <div className="loader flex justify-center items-center  m-auto">
+        <div className="loader flex justify-center items-center  m-auto ">
           <Loader />
         </div>
       ) : (
@@ -54,16 +53,16 @@ const Role = () => {
           <AuthHeader />
           <div className="Wrapper flex flex-col justify-center">
             <div className="flex items-start justify-center flex-col mt-16">
-              <h3 className="font-inter font-bold text-5xl leading-[50px] max-w-[745px] text-purple-dark">
+              <h3 className="font-inter font-bold text-xl md:text-3xl lg:text-5xl leading-[50px] max-w-[745px] text-purple-dark">
                 {t("What kind of customer are you?")}
               </h3>
-              <p className="font-inter font-light text-xl leading-8 max-w-[600px]">
+              <p className="font-inter font-light text-base md:text-lg lg:text-xl leading-8 max-w-[600px]">
                 {t(
                   "Select from the following options to be directed to the appropriate page"
                 )}
               </p>
             </div>
-            <div className="Buttons flex justify-center items-center gap-32 my-10">
+            <div className="Buttons flex flex-col md:flex-row justify-center items-center gap-10 md:gap-24 lg:gap-32 my-10">
               {roles.map((role) => (
                 <button
                   key={role._id}

@@ -105,14 +105,14 @@ const Header = () => {
                 isOpen
                   ? "opacity-100 visible translate-y-0"
                   : "opacity-0 invisible -translate-y-2"
-              } absolute ltr:right-3 top-12 rtl:left-3 w-[600px] h-[300px] overflow-y-scroll  border border-gray bg-white shadow-lg rounded-md p-2 mt-3 transition-all duration-300`}
+              } absolute ltr:right-3 top-12 rtl:left-3 w-[600px] h-[300px] overflow-y-scroll  border border-gray bg-white shadow-lg rounded-md p-2 mt-3 transition-all duration-300 z-50`}
             >
               <div className="flex justify-between items-center mx-2">
                 <span className="text-purple-dark text-base font-bold">
-                  New for you
+                  {t("New for you")}
                 </span>
                 <Link className="text-gray underline underline-offset-1 text-sm font-normal">
-                  Make All Read
+                  {t("Make All Read")}
                 </Link>
               </div>
 

@@ -135,10 +135,12 @@ export function Input({
           hasError
         )} ${className}`}
       />
-      <span className="absolute right-2 top-8 w-6 h-6 text-gray">{icon}</span>
+      <span className="absolute ltr:right-2 rtl:left-2 top-8 w-6 h-6 text-gray">
+        {icon}
+      </span>
       {isPassword && (
         <span
-          className="absolute right-2 top-7 w-6 h-6 text-gray cursor-pointer"
+          className="absolute ltr:right-2 rtl:left-2 top-7 w-6 h-6 text-gray cursor-pointer"
           onClick={togglePasswordVisibility}
         >
           {type === "password" ? <BsEyeSlash /> : <BsEye />}
@@ -393,8 +395,8 @@ const AddNewAccess = () => {
           <Input
             type="email"
             name="email"
-            label="Email"
-            placeholder="Email"
+            label={t("Email")}
+            placeholder={t("Email")}
             autoComplete={"email"}
             onChange={(e) => setEmail(e.target.value)}
             value={Email}
@@ -406,8 +408,8 @@ const AddNewAccess = () => {
           <Input
             type={isPasswordVisible ? "text" : "password"}
             name="password"
-            label="Password"
-            placeholder="Password"
+            label={t("Password")}
+            placeholder={t("Password")}
             autoComplete={"new-password"}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -421,21 +423,21 @@ const AddNewAccess = () => {
             type="text"
             name="name"
             onChange={(e) => setName(e.target.value)}
-            label="Name"
+            label={t("Name")}
             value={Name}
-            placeholder="Name"
+            placeholder={t("Name")}
             required
             icon={<MdOutlinePerson />}
           />
         </div>
-        <div className="col-span-4 md:col-span-2 relative flex mt-5  w-full">
+        <div className="col-span-4 md:col-span-2 relative flex mt-5  w-full ">
           <Menu placement="bottom-start">
             <MenuHandler>
               <Btn
                 ripple={false}
                 variant="text"
                 color="blue-gray"
-                className="flex h-10 items-center gap-2 rounded-r-none border border-r-0 border-gray border-solid pl-3"
+                className="flex h-10 items-center gap-2  ltr:rounded-r-none rtl:rounded-l-none border ltr:border-r-0 rtl:border-l-0 border-gray border-solid pl-3"
               >
                 <img
                   src={flags.svg}
@@ -470,7 +472,7 @@ const AddNewAccess = () => {
             value={Phone}
             onChange={handlePhoneChange}
             placeholder="Mobile Number"
-            className="rounded-l-none border border-solid !border-gray focus:!border-gray"
+            className="ltr:rounded-l-none rtl:rounded-r-none border border-solid !border-gray focus:!border-gray"
             labelProps={{
               className: "before:content-none after:content-none",
             }}
@@ -484,10 +486,10 @@ const AddNewAccess = () => {
             className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
             htmlFor="vocation"
           >
-            Vocation
+            {t("Vocation")}
           </label>
           <Select
-            placeholder="Select Vocation"
+            placeholder={t("Select Vocation")}
             id="vocation"
             isClearable
             isLoading={VocationLoading}
@@ -504,10 +506,10 @@ const AddNewAccess = () => {
             className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
             htmlFor="access"
           >
-            Tags
+            {t("Tags")}
           </label>
           <Select
-            placeholder="Select Tag"
+            placeholder={t("Select Tag")}
             id="Tags"
             isClearable
             isLoading={TagsLoading}
@@ -523,7 +525,7 @@ const AddNewAccess = () => {
             className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
             htmlFor="projects"
           >
-            Projects
+            {t("Projects")}
           </label>
           <Select
             placeholder="Select Projects"
@@ -543,7 +545,7 @@ const AddNewAccess = () => {
             className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
             htmlFor="access"
           >
-            Access
+            {t("Access")}
           </label>
           {/* 
           <Select
@@ -569,7 +571,7 @@ const AddNewAccess = () => {
               className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
             />
             <label htmlFor="read" className="font-medium text-base">
-              Read
+              {t("Read")}
             </label>
           </div>
           <div className="Edit flex items-center gap-1">
@@ -581,7 +583,7 @@ const AddNewAccess = () => {
               className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
             />
             <label htmlFor="write" className="font-medium text-base">
-              Edit
+              {t("Edit")}
             </label>
           </div>
           <div className="create flex items-center gap-1">
@@ -593,7 +595,7 @@ const AddNewAccess = () => {
               className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
             />
             <label htmlFor="create" className="font-medium text-base">
-              Create
+              {t("Create")}
             </label>
           </div>
           <div className="delete flex items-center gap-1">
@@ -605,12 +607,12 @@ const AddNewAccess = () => {
               className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
             />
             <label htmlFor="delete" className="font-medium text-base">
-              Delete
+              {t("Delete")}
             </label>
           </div>
         </div>
         <Link className="underline underline-offset-1 text-base text-cyan-500 mx-2">
-          Advanced setting
+          {t("Advanced setting")}
         </Link>
 
         {fieldErrors && (

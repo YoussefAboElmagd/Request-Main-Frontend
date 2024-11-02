@@ -11,26 +11,27 @@ import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
 import Button from "../../Components/UI/Button/Button";
 import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { t } from "i18next";
 
-// Table data
+
 const tableData = [
   {
-    section: "Task Management",
+    section: t("Task Management"),
     features: [
       {
-        name: "Customizable Workflows",
+        name: t("Customizable Workflows"),
         request: false,
         requestPlus: true,
         fullPlus: true,
       },
       {
-        name: "Project Planning",
+        name: t("Project Planning"),
         request: true,
         requestPlus: true,
         fullPlus: true,
       },
       {
-        name: "Time Line",
+        name: t("Time Line"),
         request: false,
         requestPlus: true,
         fullPlus: true,
@@ -38,51 +39,51 @@ const tableData = [
     ],
   },
   {
-    section: "Visualization",
+    section: t("Visualization"),
     features: [
       {
-        name: "Gantt Charts",
+        name: t("Gantt Charts"),
         request: false,
         requestPlus: true,
         fullPlus: true,
       },
       {
-        name: "Certified Extracts",
+        name: t("Certified Extracts"),
         request: false,
         requestPlus: false,
         fullPlus: true,
       },
       {
-        name: "Weekly Reports",
+        name: t("Weekly Reports"),
         request: false,
         requestPlus: true,
         fullPlus: true,
       },
       {
-        name: "Add team members",
-        request: "3 Accounts",
-        requestPlus: "6 Accounts",
-        fullPlus: "9 Accounts",
+        name: t("Add team members"),
+        request: t("3 accounts"),
+        requestPlus: t("6 accounts"),
+        fullPlus: t("9 accounts"),
       },
     ],
   },
   {
-    section: "Integrations",
+    section: t("Integrations"),
     features: [
       {
-        name: "Number of Projects",
+        name: t("Number of Projects"),
         request: 2,
         requestPlus: 5,
         fullPlus: 10,
       },
       {
-        name: "Mobile App Integration",
+        name: t("Mobile App Integration"),
         request: false,
         requestPlus: true,
         fullPlus: true,
       },
       {
-        name: "Storage Space (GB)",
+        name: t("Storage Space (GB)"),
         request: 15,
         requestPlus: 30,
         fullPlus: 100,
@@ -91,20 +92,23 @@ const tableData = [
   },
 ];
 
+
 const PlansInfo = () => {
   return (
     <div className="PlansInfo">
       <div className="header flex justify-between items-center mb-4">
         <div className="content">
-          <h2 className="font-bold text-xl">Feature Table</h2>
+          <h2 className="font-bold text-xl">{t("Feature Table")}</h2>
           <p className="text-base text-gray-500">
-            Choose the perfect plan for your business needs
+            {t("Choose the perfect plan for your business needs")}
           </p>
         </div>
         <div className="switch flex items-center gap-2">
-          <span className="text-purple-dark">Save 15% on yearly plan!</span>
+          <span className="text-purple-dark">
+            {t("Save 15% on yearly plan!")}
+          </span>
           <SwitchTabs
-            data={["Yearly", "Monthly"]}
+            data={[t("Yearly"), t("Monthly")]}
             main_style={"bg-white"}
             activeTab_style={"!text-white"}
             movingBg_style={"bg-linear_1"}
@@ -126,20 +130,22 @@ const PlansInfo = () => {
           >
             <h3 className="font-bold text-lg mb-2">{plan}</h3>
             <span className="text-gold font-bold text-sm mb-2">
-              14 day trial
+              {t("14 day trial")}
             </span>
             <p className="flex items-center gap-1">
               <span className="text-purple text-2xl font-bold">
                 {idx === 0 ? "8$" : idx === 1 ? "$16" : ""}
               </span>
               {idx === 2 ? (
-                <span className="text-purple text-2xl font-bold">Custom</span>
+                <span className="text-purple text-2xl font-bold">
+                  {t("Custom")}
+                </span>
               ) : (
-                <span className="text-base font-normal">/Month</span>
+                <span className="text-base font-normal">/{t("month")}</span>
               )}
             </p>
             <Link to={"/PlanDetails"}>
-              <Button className={"mt-4 !px-24"}>Get started</Button>
+              <Button className={"mt-4 !px-24"}>{t("Get started")}</Button>
             </Link>
           </div>
         ))}

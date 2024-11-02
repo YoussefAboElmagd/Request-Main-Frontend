@@ -21,6 +21,7 @@ import {
 import { TbTargetArrow } from "react-icons/tb";
 import Select from "../../../Components/UI/Select/Select";
 import Button from "../../../Components/UI/Button/Button";
+import { Trans } from "react-i18next";
 
 const TasksPerProject = () => {
   const { id } = useParams();
@@ -129,7 +130,6 @@ const TasksPerProject = () => {
               : "flex flex-col gap-3"
           } mt-4`}
         >
-        
           <button
             onClick={handleOpen}
             className={`AddTask box bg-white  ${
@@ -159,11 +159,13 @@ const TasksPerProject = () => {
             </DialogHeader>
             <DialogBody className="flex items-center flex-col">
               <span className="mx-auto text-center font-bold text-xl">
-                The type of task you want to <br /> create
+                <Trans i18nKey="The type of task you want to">
+                  The type of task you want to <br /> create
+                </Trans>{" "}
               </span>
               <Select
                 className={"w-3/4 my-4  "}
-                label={"Type"}
+                label={t("type")}
                 id={"type"}
                 options={[
                   { label: t("Parent Task"), value: "parent" },
@@ -175,7 +177,7 @@ const TasksPerProject = () => {
                 required
                 onChange={handleTaskTypeChange}
               />
-            </DialogBody> 
+            </DialogBody>
             <DialogFooter className="flex items-center justify-center mt-10">
               {selectedTaskType && (
                 <Link
@@ -187,7 +189,7 @@ const TasksPerProject = () => {
                   state={{ projectId: id, taskType: selectedTaskType, members }}
                   disabled={!selectedTaskType}
                 >
-                  <Button>Add</Button>
+                  <Button>{t("add")}</Button>
                 </Link>
               )}
             </DialogFooter>
@@ -213,8 +215,8 @@ const TasksPerProject = () => {
                       taskPriority={task.taskPriority}
                       status={task.taskStatus}
                       avatars={avatars}
-                      filesLength={2}
-                      MsgLength={6}
+                      filesLength={task?.documents.length}
+                      MsgLength={task?.notes.length}
                       sDate={formatDate(task.startDate)}
                       eDate={formatDate(task.dueDate)}
                     />
@@ -242,8 +244,8 @@ const TasksPerProject = () => {
                       taskPriority={task.taskPriority}
                       status={task.taskStatus}
                       avatars={avatars}
-                      filesLength={2}
-                      MsgLength={6}
+                      filesLength={task?.documents.length}
+                      MsgLength={task?.notes.length}
                       sDate={formatDate(task.startDate)}
                       eDate={formatDate(task.dueDate)}
                     />

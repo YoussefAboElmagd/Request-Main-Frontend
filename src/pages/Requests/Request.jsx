@@ -235,7 +235,7 @@ const RequestForm = ({
                   htmlFor="Ref"
                   className="font-bold text-base text-gray-dark"
                 >
-                  REF NO
+                  {t("REF NO")}
                 </label>
                 <input
                   type="text"
@@ -250,7 +250,7 @@ const RequestForm = ({
                   htmlFor="currentDay"
                   className="font-bold text-base text-gray-dark"
                 >
-                  Date
+                  {t("Date")}
                 </label>
                 <div className="inputs">
                   <input
@@ -285,10 +285,10 @@ const RequestForm = ({
                     htmlFor="ProjectName"
                     className="font-bold text-base text-gray-dark"
                   >
-                    Project Name
+                    {t("PName")}
                   </label>
                   <Select
-                    placeholder={"Project Name"}
+                    placeholder={t("PName")}
                     id={"name"}
                     isClearable
                     isLoading={loading}
@@ -304,7 +304,7 @@ const RequestForm = ({
               )}
               {showReasons && (
                 <CheckboxGroup
-                  label="Reason"
+                  label={t("Reason")}
                   options={Reasons?.map((item) => ({
                     id: item._id,
                     label: item.name,
@@ -316,7 +316,7 @@ const RequestForm = ({
               )}
               {showDiscipline && (
                 <CheckboxGroup
-                  label="Discipline"
+                  label={t("Discipline")}
                   options={disciplines.map((item) => ({
                     id: item._id,
                     label: item.name,
@@ -328,7 +328,7 @@ const RequestForm = ({
               )}
               {showActionCodes && (
                 <CheckboxGroup
-                  label="Action Code"
+                  label={t("Action Code")}
                   options={actionCodes.map((item) => ({
                     id: item._id,
                     label: item.name,
@@ -342,16 +342,16 @@ const RequestForm = ({
               <div className="comment flex flex-col my-6  ">
                 <label
                   htmlFor="comment"
-                  className="font-bold text-base text-gray-dark"
+                  className="font-bold text-base text-gray-dark flex justify-start"
                 >
-                  Comment
+                  {t("Comment")}
                 </label>
                 <input
                   type="text"
                   id="comment"
                   name="comment"
                   className="bg-white border border-gray rounded-2xl p-2"
-                  placeholder="Add Comment"
+                  placeholder={t("Comment")}
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                 />
@@ -360,7 +360,7 @@ const RequestForm = ({
                   className="text-purple underline underline-offset-1 text-end my-2 mx-1"
                   onClick={handleAddComment}
                 >
-                  +Add new
+                  {t("+add new")}
                 </button>
               </div>
 
@@ -426,8 +426,9 @@ const RequestForm = ({
                   htmlFor="review"
                   className="text-purple font-medium text-base underline select-none"
                 >
-                  Please review the following item(s) and return a copy with
-                  your Action code
+                  {t(
+                    "Please review the following item(s) and return a copy with your Action code"
+                  )}
                 </label>
               </div>
               {error && (
@@ -437,7 +438,7 @@ const RequestForm = ({
               )}
               <div className="send text-end mt-5">
                 <Button disabled={!isReviewed} type="submit">
-                  Send
+                  {t("Send")}
                 </Button>
               </div>
             </form>

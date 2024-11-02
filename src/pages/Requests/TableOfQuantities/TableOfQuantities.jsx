@@ -175,7 +175,7 @@ const TableOfQuantities = () => {
   return (
     <div className="TableOfQuantities">
       <div className="header bg-white p-4 rounded-l-3xl flex items-center justify-between">
-        <h5 className="font-bold text-base">Table of Quantities</h5>
+        <h5 className="font-bold text-base">{t("Table of Quantities")}</h5>
         <AddNewTask newTask={handleNewTask} />
       </div>
 
@@ -184,12 +184,12 @@ const TableOfQuantities = () => {
           <table>
             <thead>
               <tr>
-                <th>Item Description</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
+                <th>{t("desc")}</th>
+                <th>{t("Price")}</th>
+                <th>{t("Quantity")}</th>
+                <th>{t("Total")}</th>
                 {/* <th>Unit</th> */}
-                <th>Actions</th>
+                <th>{t("Actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -213,14 +213,14 @@ const TableOfQuantities = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center mt-10">
-          <Empty paragraph={"You haven't posted any tasks yet"} />
+          <Empty paragraph={t("You haven't posted any tasks yet")} />
           {!taskType && (
             <Link
               to="/Models"
               state={{ projectId, taskType, members }}
               className="text-purple underline mt-4"
             >
-              Skip This Request
+              {t("Skip This Request")}
             </Link>
           )}
         </div>

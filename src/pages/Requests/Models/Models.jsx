@@ -5,6 +5,7 @@ import Button from "../../../Components/UI/Button/Button";
 import { useEffect, useState } from "react";
 import { getProjectDetails } from "../../../Services/api";
 import Loader from "../../../Components/Loader/Loader";
+import { t } from "i18next";
 
 const Models = () => {
   const location = useLocation();
@@ -144,14 +145,15 @@ const Models = () => {
                 htmlFor="review"
                 className="text-purple font-medium text-base underline select-none"
               >
-                Please review the following item(s) and return a copy with your
-                Action code
+                {t(
+                  "Please review the following item(s) and return a copy with your Action code"
+                )}
               </label>
             </div>
             <div className="send text-end my-5 mx-3">
               <Link to={`/ProjectDetails/${projectId}`} state={{ projectId }}>
                 <Button type="submit" disabled={!isReviewed}>
-                  Send
+                  {t("Send")}
                 </Button>
               </Link>
             </div>
