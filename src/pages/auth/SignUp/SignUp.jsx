@@ -321,6 +321,7 @@ const SignUp = () => {
                 {error && (
                   <div className="error text-red mt-4 text-center">{error}</div>
                 )}
+
                 <Button
                   type="submit"
                   className="w-full h-12 text-white bg-primary mt-6"
@@ -328,6 +329,20 @@ const SignUp = () => {
                   {t("Register")}
                 </Button>
               </form>
+              <div className="my-2 flex items-center justify-center relative">
+                <span className="or">{t("or")}</span>
+              </div>
+              <div className="flex items-center justify-between mt-4 gap-4">
+                <div className="box_Google">
+                  <img src={Google} alt="Google" width={23} height={28} />
+                </div>
+                <div className="box_Apple">
+                  <img src={Apple} alt="Apple" width={23} height={28} />
+                </div>
+                <div className="box_Facebook">
+                  <img src={Facebook} alt="Facebook" width={23} height={28} />
+                </div>
+              </div>
             </div>
           </div>
         </>

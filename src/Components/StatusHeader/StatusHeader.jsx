@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./style.scss";
 import { useLanguage } from "../../context/LanguageContext";
 
-const StatusHeader = ({ buttons, onFilterChange }) => {
+const StatusHeader = ({ buttons, onFilterChange, className }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activePosition, setActivePosition] = useState(0);
   const { isRTL } = useLanguage();
@@ -16,7 +16,7 @@ const StatusHeader = ({ buttons, onFilterChange }) => {
   };
 
   return (
-    <div className="StatusHeader my-2 bg-light">
+    <div className={`StatusHeader my-2 bg-light ${className}`}>
       <div className="flex">
         <div className="BtnGroup">
           {buttons.map((button, index) => (

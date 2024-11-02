@@ -6,6 +6,11 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import NotificationItem from "../NotificationItem/NotificationItem";
+import { IoIosWarning } from "react-icons/io";
+import { TbRosetteDiscountCheck } from "react-icons/tb";
+import { PiHeadset } from "react-icons/pi";
 const Header = () => {
   const user = useSelector((state) => state.auth.user);
 
@@ -16,6 +21,48 @@ const Header = () => {
   const toggleNonfiction = () => {
     setIsOpen(!isOpen);
   };
+   const notifications = [
+     {
+       id: 1,
+       icon: <TbRosetteDiscountCheck className="Notification_success" />,
+       message:
+         "Your package has been successfully upgraded to the higher package",
+       timestamp: "12:21 PM 23-8-2024",
+       showButtons: false,
+     },
+     {
+       id: 2,
+       icon: <IoIosWarning className="Notification_warning" />,
+       message:
+         "You have reached the maximum limit for applying to projects...",
+       timestamp: "12:21 PM 23-8-2024",
+       showButtons: true,
+     },
+     {
+       id: 3,
+       icon: <PiHeadset className="Notification_3" />,
+       message: "Your complaint has been successfully submitted to support...",
+       timestamp: "12:21 PM 23-8-2024",
+       showButtons: false,
+     },
+     {
+       id: 4,
+       icon: <IoIosWarning className="Notification_warning" />,
+       message:
+         "You have reached the maximum limit for applying to projects...",
+       timestamp: "12:21 PM 23-8-2024",
+       showButtons: true,
+     },
+     {
+       id: 5,
+       icon: <TbRosetteDiscountCheck className="Notification_success" />,
+       message:
+         "Your package has been successfully upgraded to the higher package",
+       timestamp: "12:21 PM 23-8-2024",
+       showButtons: false,
+     },
+   ];
+
 
   useEffect(() => {
     const lang = i18n.language || "en";
@@ -47,31 +94,40 @@ const Header = () => {
           </span>
         </div>
         <div className="flex justify-between items-center">
-          {user.notifications && (
-            <div className="notifications">
-              <button onClick={toggleNonfiction}>
-                <MdNotificationsNone className=" w-[34px] h-[34px] text-gray relative" />
-                <span className="bg-red w-[10px] h-[10px]  absolute rounded-full  top-4 ltr:right-4 rtl:left-4 "></span>
-              </button>
-              <div
-                className={`notification-dropdown ${
-                  isOpen
-                    ? "opacity-100 visible translate-y-0"
-                    : "opacity-0 invisible -translate-y-2"
-                } absolute ltr:right-3 top-12 rtl:left-3 border border-gray bg-white shadow-lg rounded-md p-2 mt-3 transition-all duration-300`}
-              >
-                <div className="  text-gray px-2 py-1">
-                  <span>Notifications</span>
-                </div>
-                <div className="  text-gray px-2 py-1">
-                  <span>Notifications</span>
-                </div>
-                <div className="  text-gray px-2 py-1">
-                  <span>Notifications</span>
-                </div>
+          {/* {user.notifications && ( */}
+          <div className="notifications">
+            <button onClick={toggleNonfiction}>
+              <MdNotificationsNone className=" w-[34px] h-[34px] text-gray relative" />
+              <span className="bg-red w-[10px] h-[10px]  absolute rounded-full  top-4 ltr:right-4 rtl:left-4 "></span>
+            </button>
+            <div
+              className={`notification-dropdown ${
+                isOpen
+                  ? "opacity-100 visible translate-y-0"
+                  : "opacity-0 invisible -translate-y-2"
+              } absolute ltr:right-3 top-12 rtl:left-3 w-[600px] h-[300px] overflow-y-scroll  border border-gray bg-white shadow-lg rounded-md p-2 mt-3 transition-all duration-300`}
+            >
+              <div className="flex justify-between items-center mx-2">
+                <span className="text-purple-dark text-base font-bold">
+                  New for you
+                </span>
+                <Link className="text-gray underline underline-offset-1 text-sm font-normal">
+                  Make All Read
+                </Link>
               </div>
+
+              {notifications.map((notification) => (
+                <NotificationItem
+                  key={notification.id}
+                  icon={notification.icon}
+                  message={notification.message}
+                  timestamp={notification.timestamp}
+                  showButtons={notification.showButtons}
+                />
+              ))}
             </div>
-          )}
+          </div>
+          {/* )}  */}
         </div>
       </header>
     </div>

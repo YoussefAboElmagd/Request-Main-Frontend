@@ -34,6 +34,7 @@ import Payments from "../pages/Payments/Payments.jsx";
 import AllSubTasks from "../pages/Tasks/AllSub/AllSubTasks.jsx";
 import PerformanceEvaluation from "../pages/setting/Profile/PerformanceEvaluation.jsx";
 import ProjectTeam from "../pages/Projects/ProjectTeam/ProjectTeam.jsx";
+import Notifications from "../pages/Notifications/Notifications.jsx";
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -89,10 +90,8 @@ const AppRoutes = () => {
         path="/PerformanceEvaluation"
         element={<PerformanceEvaluation />}
       />
-      <Route
-        path="/ProjectTeam"
-        element={<ProjectTeam />}
-      />
+      <Route path="/ProjectTeam" element={<ProjectTeam />} />
+      <Route path="/Notifications" element={<Notifications />} />
     </Routes>
   );
 };
