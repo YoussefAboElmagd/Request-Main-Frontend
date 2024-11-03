@@ -274,7 +274,7 @@ const AddNewAccess = () => {
     setSelectedProject(null);
     setSelectedVocation([]);
      setSelectedTags([]);
-     accessList({
+     setAccessList({
        delete: false,
        create: false,
        edit: false,

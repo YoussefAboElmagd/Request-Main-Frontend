@@ -61,7 +61,9 @@ const CreateCompany = () => {
    
   // Form validation logic
   useEffect(() => {
-    const isValid = logo && stamp && signature && name;
+    const isValid = logo && stamp && signature && name.trim();
+    console.log(isValid);
+    
     setIsFormValid(isValid);
   }, [logo, stamp, signature, name]);
 

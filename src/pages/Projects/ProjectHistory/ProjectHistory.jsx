@@ -180,8 +180,8 @@ const ProjectHistory = () => {
                     <ListView
                       ProgressValue={70}
                       NameOfTask={Project.name}
-                      Tagname={Project.projectPriority}
-                      Status={Project.status}
+                      taskPriority={Project.projectPriority}
+                      status={Project.status}
                       avatars={avatars}
                       filesLength={Project.documentsCount}
                       MsgLength={Project.notesCount}

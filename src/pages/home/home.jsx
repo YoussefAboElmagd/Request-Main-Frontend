@@ -79,19 +79,19 @@ const Home = () => {
         </div>
       ) : (
         <>
-          <div className="header grid grid-cols-4 gap-2">
-            <div className="box col-span-3 bg-white rounded-3xl shadow-sm p-3 flex items-center justify-between mx-2  ">
+          <div className="header grid grid-cols-8 gap-2">
+            <div className="box col-span-8 md:col-span-5 lg:col-span-6 bg-white rounded-3xl shadow-sm p-3 flex items-center justify-between mx-2  ">
               <div className="content">
-                <h6 className="font-poppins font-normal text-xl text-gray m-2">
+                <h6 className="font-poppins font-normal text-lg md:text-xl text-gray m-2">
                   {t("WelcomeTo")}
                 </h6>
-                <h5 className="font-poppins font-semibold text-2xl text-purple-dark m-2">
+                <h5 className="font-poppins font-semibold text-lg md:text-xl lg:text-2xl text-purple-dark m-2">
                   {t("YourTaskManagementArea")}
                 </h5>
-                <p className="font-poppins font-light text-sm leading-5 m-2 text-gray-md">
+                <p className="font-poppins font-light text-xs md:text-sm leading-5 m-2 text-gray-md">
                   "{t("headerDesc")}"
                 </p>
-                <button className="mt-3 mx-2 text-white font-Poppins py-3 px-5 rounded-3xl capitalize border bg-linear_1 text-base font-medium text-left">
+                <button className="mt-3 mx-2 text-white font-Poppins py-3 px-5 rounded-3xl capitalize border bg-linear_1 text-sm md:text-base font-medium text-left">
                   {t("LearnMore")}
                 </button>
               </div>
@@ -104,9 +104,9 @@ const Home = () => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="col-span-8 md:col-span-3 lg:col-span-2 grid grid-cols-2 gap-3">
               <div className="col-span-1 flex flex-col justify-center items-center gap-5">
-                <div className="box bg-linear_2 w-[140px] h-[80px] rounded-3xl text-white flex items-center justify-center gap-1">
+                <div className="box bg-linear_2 w-full py-4 px-2 rounded-3xl text-white flex items-center justify-center gap-1">
                   <span className="icon bg-white w-8 h-8 rounded-full flex justify-center items-center">
                     <IoMdCheckmarkCircleOutline className="text-purple" />
                   </span>
@@ -117,7 +117,7 @@ const Home = () => {
                     <p className="text-xs leading-4">{t("totalTasks")}</p>
                   </div>
                 </div>
-                <div className="box bg-linear_4 w-[140px] h-[80px] rounded-3xl text-white flex items-center justify-center gap-1">
+                <div className="box bg-linear_4 w-full py-4 px-2 rounded-3xl text-white flex items-center justify-center gap-1">
                   <span className="icon bg-white w-8 h-8 rounded-full flex justify-center items-center">
                     <LuAlarmPlus className="text-red" />
                   </span>
@@ -129,8 +129,8 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-1 flex flex-col justify-center items-center gap-5">
-                <div className="box bg-linear_3 w-[140px] h-[80px] rounded-3xl text-white flex items-center justify-center gap-1">
+              <div className="col-span-1 flex flex-col justify-center items-center gap-3">
+                <div className="box bg-linear_3 w-full py-4 px-2 rounded-3xl text-white flex items-center justify-center gap-1">
                   <span className="icon bg-white w-8 h-8 rounded-full flex justify-center items-center">
                     <RiProgress4Line className="text-green" />
                   </span>
@@ -141,7 +141,7 @@ const Home = () => {
                     <p className="text-xs leading-4">{t("inProgress")}</p>
                   </div>
                 </div>
-                <div className="box bg-linear_5 w-[140px] h-[80px] rounded-3xl text-white flex items-center justify-center gap-1">
+                <div className="box bg-linear_5 w-full py-4 px-2 rounded-3xl text-white flex items-center justify-center gap-1">
                   <span className="icon bg-white w-8 h-8 rounded-full flex justify-center items-center">
                     <IoMdCheckmarkCircleOutline className="text-yellow" />
                   </span>
@@ -176,6 +176,7 @@ const Home = () => {
                 {t("listView")}
               </button>
             </div>
+
             {filteredProjects.length > 0 ? (
               filteredProjects.map((project) => {
                 return (
@@ -194,7 +195,7 @@ const Home = () => {
                       </div>
                     </Link>
                     {viewMode === "board" && (
-                      <div className="grid grid-cols-4 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
                         {project.tasks.map((task) => {
                           const avatars =
                             Array.isArray(task.assignees) &&

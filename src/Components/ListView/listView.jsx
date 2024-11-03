@@ -38,7 +38,7 @@ const ListView = ({
           <MdMessage className="text-yellow w-4 h-4" />
         </div>
       </div>
-      <div className="name flex justify-between items-center mx-2 my-3">
+      <div className="name flex justify-between items-center mx-1 md:mx-2 my-3">
         <p className="font-inter font-medium text-xs leading-5">{NameOfTask}</p>
       </div>
       <div className="chips flex items-center justify-start gap-2">
@@ -54,17 +54,22 @@ const ListView = ({
         </span>
       </div>
       <div className="members flex -space-x-2 mx-1">
-        {avatars.map((avatar, index) => (
+        {avatars.slice(0, 3).map((avatar, index) => (
           <img
             key={index}
             src={avatar}
             alt="avatar"
-            className="w-7 h-7 border-2 border-white rounded-full m-1 "
+            className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 border-2 border-white rounded-full m-1"
           />
         ))}
+        {avatars.length > 3 && (
+          <span className="w-8 h-8  text-black font-semibold rounded-full flex items-center justify-center m-1">
+            +{avatars.length - 3}
+          </span>
+        )}
       </div>
 
-      <div className="progress max-w-2xl w-full mx-1 my-3">
+      <div className="progress max-w-sm md:max-w-2xl w-full mx-1 my-3">
         <div className="mb-2 flex items-center justify-between gap-2">
           <p className="font-inter font-normal text-xs text-gray-dark">
             Progress
@@ -86,20 +91,19 @@ const ListView = ({
           size="sm"
         />
       </div>
-      {Tag &&
-        Tag !== null &&
-        (
-          <div className="tagName flex justify-center">
-            <span className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
+      {Tag && Tag !== null && (
+        <div className="tagName flex justify-center">
+          <span
+            className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
             style={{
               color: Tag.colorCode,
               backgroundColor: `${Tag.colorCode}40`,
             }}
-            >
-              {Tagname}
-            </span>
-          </div>
-        )}
+          >
+            {Tagname}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
