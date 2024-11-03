@@ -189,7 +189,7 @@ const TasksPerProject = () => {
                   state={{ projectId: id, taskType: selectedTaskType, members }}
                   disabled={!selectedTaskType}
                 >
-                  <Button>{t("add")}</Button>
+                  <Button>{t("AddTask")}</Button>
                 </Link>
               )}
             </DialogFooter>

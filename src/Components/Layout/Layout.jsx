@@ -1,10 +1,10 @@
 import { useLocation } from "react-router-dom";
-import AppRoutes from "../../Routes/routes";
 import Sidebar from "../SideBar/Sidebar";
 import Header from "../Header/Header";
 import { ToastContainer } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
+import AppRoutes from "../../Routes/AppRoutes";
 
 
 const Layout = () => {

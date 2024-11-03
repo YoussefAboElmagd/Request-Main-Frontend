@@ -149,7 +149,7 @@ const Company = () => {
         </div>
         {error && <div className="error text-red text-center">{error}</div>}
         <div className="flex items-center justify-end gap-2 m-2">
-          <Button onClick={handleSubmit} disabled={loading || !signature}>
+          <Button onClick={handleSubmit} disabled={loading}>
             {loading ? t("loading...") : t("save")}
           </Button>
         </div>

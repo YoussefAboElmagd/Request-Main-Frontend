@@ -246,6 +246,7 @@ const SignUp = () => {
                       country={country.value}
                       onChange={(value) => setPhone(value)}
                       value={phone}
+                      maxlength={11}
                       placeholder={"+96244679900"}
                       className="Input font-jost font-normal text-base py-2 !relative px-4 w-full"
                     />

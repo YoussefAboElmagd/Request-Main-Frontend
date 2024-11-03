@@ -68,6 +68,7 @@ const CreateCompany = () => {
   // handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     const trimmedName = name.trim()
     if (!trimmedName) {
       toast.error("Company name cannot be empty");

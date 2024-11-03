@@ -88,7 +88,7 @@ const handleSubmit = async (e) => {
             </div>
             <div className="LogIn_Image md:flex justify-center hidden">
               <img
-                src={image}
+                src={image} 
                 alt="LogIn By Phone"
                 width={500}
                 height={500}

@@ -22,7 +22,6 @@ const AddTask = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId, taskType, members, ParentId } = location.state || {};
-  console.log(location.state);
 
   
   const [Loading, setLoading] = useState(false);
@@ -194,8 +193,6 @@ const AddTask = () => {
         taskData.unit = selectedUnit;
         taskData.total = Total;
         taskData.parentTask =   ParentId? ParentId : SelectedParentTask;
-      
-      
       }
 
       setLoading(true);
