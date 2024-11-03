@@ -74,8 +74,15 @@ const TasksPerProject = () => {
     setSelectedTaskType(value);
   };
 
-  const formatDate = (date) => format(new Date(date), "dd MMM");
+  // const formatDate = (date) => format(new Date(date), "dd MMM");
 
+    const formatDate = (date) => {
+      if (!date) return "";
+      const d = new Date(date);
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${month}-${day}`;
+    };
   return (
     <div className="AllTasks">
       <h1 className="title font-inter font-bold text-3xl text-black m-2">
