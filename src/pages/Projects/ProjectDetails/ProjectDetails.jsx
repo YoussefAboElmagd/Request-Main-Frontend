@@ -56,6 +56,7 @@ const ProjectDetails = () => {
       return "Invalid Date";
     }
   };
+  
 
   return (
     <div className="ProjectDetails mx-1">

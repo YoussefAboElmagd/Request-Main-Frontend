@@ -163,7 +163,7 @@ const TaskDetails = () => {
             required={true}
             className="bg-white border border-purple border-solid"
             label={t("sDate")}
-            placeholder={formatDate(Task.startDate)}
+            placeholder={formatDate(Task.sDate)}
             inputIcons={{
               element: <MdCalendarToday />,
               type: "calendar",

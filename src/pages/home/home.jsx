@@ -63,16 +63,11 @@ const Home = () => {
     setViewMode(mode);
   };
 
-  // const formatDate = (date) => format(new Date(date), "dd MMM");
+ const formatDate = (date) => {
+   if (!date) return "";
+   return format(new Date(date), "dd MMM");
+ };  
   
-    const formatDate = (date) => {
-      if (!date) return "";
-      const d = new Date(date);
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${month}-${day}`;
-    };
-
   // Filter projects that have tasks more than 0
   const filteredProjects = data.results?.filter(
     (project) => project.tasks && project.tasks.length > 0
@@ -227,7 +222,7 @@ const Home = () => {
                                   avatars={avatars}
                                   filesLength={2}
                                   MsgLength={6}
-                                  sDate={formatDate(task.startDate)}
+                                  sDate={formatDate(task.sDate)}
                                   eDate={formatDate(task.dueDate)}
                                 />
                               </Link>

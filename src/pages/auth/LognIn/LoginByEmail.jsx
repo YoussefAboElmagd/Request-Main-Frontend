@@ -44,7 +44,6 @@ const handleSubmit = async (e) => {
     const result = await dispatch(
       signInThunk({ email: trimmedEmail, password: trimmedPassword })
     ).unwrap();
-    console.log("result :::: =>  ", result);
 
     const userData = result.userData;
     const token = result.token;
@@ -58,7 +57,7 @@ const handleSubmit = async (e) => {
       },
     });
   } catch (err) {
-    // Optionally handle errors here, e.g., showing another toast
+    console.error("Sign In failed:", err);
   } finally {
     setLoading(false);
   }
@@ -66,7 +65,7 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="LogIn h-screen relative  effect overflow-hidden ">
+    <div className="LogIn h-full relative  effect overflow-hidden ">
       {loading || isLoading ? (
         <div className="loader flex justify-center items-center  m-auto">
           <Loader />
@@ -74,12 +73,21 @@ const handleSubmit = async (e) => {
       ) : (
         <>
           <AuthHeader />
-          <div className="Wrapper flex flex-col md:flex-row items-center md:justify-between ">
-            <div className="w-96 my-40">
-              <h3 className="font-workSans font-bold text-xl md:text-3xl lg:text-5xl">
+          <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between ">
+            <div className="w-full  md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
+              <div className="image_phone md:hidden">
+                <img
+                  src={image}
+                  alt="LogIn By Phone"
+                  width={300}
+                  height={300}
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="font-workSans font-semibold text-purple text-center md:text-left md:text-gray-dark md:font-bold text-xl md:text-3xl lg:text-5xl">
                 {t("sign in To activate your business easily")}
               </h3>
-              <p className="font-jost font-medium  text-lg md:text-xl lg:text-2xl">
+              <p className="font-jost font-medium  hidden md:block md:text-xl lg:text-2xl">
                 {t("if you don’t have an account you can")}
                 <Link to="/sign-up" className="text-blue block">
                   {t("Register here!")}
@@ -88,14 +96,14 @@ const handleSubmit = async (e) => {
             </div>
             <div className="LogIn_Image md:flex justify-center hidden">
               <img
-                src={image} 
+                src={image}
                 alt="LogIn By Phone"
                 width={500}
                 height={500}
                 loading="lazy"
               />
             </div>
-            <div className="form flex flex-col mt-14 ">
+            <div className="form flex flex-col mt-14 z-40">
               <form onSubmit={handleSubmit}>
                 <div className="email">
                   <Input
@@ -165,10 +173,16 @@ const handleSubmit = async (e) => {
                 <div className="box_Apple">
                   <img src={Apple} alt="Apple" width={23} height={28} />
                 </div>
-              <Link to={"/LogIn"} className="box_phone">
+                <Link to={"/LogIn"} className="box_phone">
                   <FaPhoneAlt className="text-purple" />
                 </Link>
               </div>
+              <p className="font-jost font-medium  text-lg text-center block md:hidden">
+                {t("if you don’t have an account you can")}
+                <Link to="/sign-up" className="text-blue block">
+                  {t("Register here!")}
+                </Link>
+              </p>
             </div>
           </div>
         </>

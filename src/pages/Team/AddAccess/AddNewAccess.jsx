@@ -118,6 +118,9 @@ export function Input({
   autoComplete,
   hasError,
   value,
+  min,
+  max,
+  pattern,
 }) {
   return (
     <div className="flex flex-col relative">
@@ -130,7 +133,10 @@ export function Input({
         placeholder={placeholder}
         autoComplete={autoComplete}
         value={value}
+        minLength={min}
+        maxLength={max}
         required={required}
+        pattern={pattern}
         className={`rounded-lg input relative px-3 py-2 border-gray border placeholder:font-medium placeholder:text-base placeholder:text-gray focus:bg-white ${getErrorClass(
           hasError
         )} ${className}`}
@@ -393,11 +399,12 @@ const AddNewAccess = () => {
       >
         <div className="col-span-4 md:col-span-2">
           <Input
-            type="email"
+            type={"email"}
             name="email"
             label={t("Email")}
             placeholder={t("Email")}
             autoComplete={"email"}
+            pattern={"/^[^s@]+@[^s@]+.[^s@]+$/"}
             onChange={(e) => setEmail(e.target.value)}
             value={Email}
             hasError={fieldErrors.Email}
@@ -414,6 +421,7 @@ const AddNewAccess = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             value={Password}
+            min={8}
             isPassword
             togglePasswordVisibility={togglePasswordVisibility}
           />

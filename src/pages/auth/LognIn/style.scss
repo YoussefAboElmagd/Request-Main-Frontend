@@ -1,6 +1,5 @@
-
-body{
-    background-color: white!important;
+body {
+  background-color: white !important;
 }
 .effect {
   &::before,
@@ -22,5 +21,11 @@ body{
   &::before {
     background-image: url("../../../assets/images/effect.jpg");
     transform: translate(-30%, -10%);
+  }
+}
+
+@media (max-width: 1024px) {
+  .effect {
+    top: 10px;
   }
 }

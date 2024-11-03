@@ -29,7 +29,7 @@ const AuthHeader = () => {
     window.location.reload();
   };
   return (
-    <div className="top-0  flex items-center justify-end m-2 mx-5 rtl:inline-flex">
+    <div className="  flex items-center justify-end  mx-5 rtl:inline-flex">
       <div className="lang relative">
         <div
           className="lang_wrapper mx-2 flex gap-1 items-center cursor-pointer"

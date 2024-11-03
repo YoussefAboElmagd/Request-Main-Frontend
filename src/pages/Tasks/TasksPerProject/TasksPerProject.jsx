@@ -25,10 +25,9 @@ import { Trans } from "react-i18next";
 
 const TasksPerProject = () => {
   const { id } = useParams();
-  const location = useLocation()
+  const location = useLocation();
   const { members } = location.state || {};
 
-  
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [Status, setStatus] = useState("all");
@@ -74,15 +73,11 @@ const TasksPerProject = () => {
     setSelectedTaskType(value);
   };
 
-  // const formatDate = (date) => format(new Date(date), "dd MMM");
 
-    const formatDate = (date) => {
-      if (!date) return "";
-      const d = new Date(date);
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${month}-${day}`;
-    };
+ const formatDate = (date) => {
+   if (!date) return "";
+   return format(new Date(date), "dd MMM");
+ };
   return (
     <div className="AllTasks">
       <h1 className="title font-inter font-bold text-3xl text-black m-2">
@@ -224,7 +219,7 @@ const TasksPerProject = () => {
                       avatars={avatars}
                       filesLength={task?.documents.length}
                       MsgLength={task?.notes.length}
-                      sDate={formatDate(task.startDate)}
+                      sDate={formatDate(task.sDate)}
                       eDate={formatDate(task.dueDate)}
                     />
                   </Link>
@@ -253,7 +248,7 @@ const TasksPerProject = () => {
                       avatars={avatars}
                       filesLength={task?.documents.length}
                       MsgLength={task?.notes.length}
-                      sDate={formatDate(task.startDate)}
+                      sDate={formatDate(task.sDate)}
                       eDate={formatDate(task.dueDate)}
                     />
                   </Link>

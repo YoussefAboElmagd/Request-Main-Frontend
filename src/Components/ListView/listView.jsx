@@ -63,13 +63,13 @@ const ListView = ({
           />
         ))}
         {avatars.length > 3 && (
-          <span className="w-8 h-8  text-black font-semibold rounded-full flex items-center justify-center m-1">
+          <span className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8  text-black font-semibold rounded-full flex items-center justify-center m-1">
             +{avatars.length - 3}
           </span>
         )}
       </div>
 
-      <div className="progress max-w-sm md:max-w-2xl w-full mx-1 my-3">
+      <div className="progress hidden md:block md:max-w-sm lg:max-w-lg w-full mx-1 my-3">
         <div className="mb-2 flex items-center justify-between gap-2">
           <p className="font-inter font-normal text-xs text-gray-dark">
             Progress
