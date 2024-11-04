@@ -135,10 +135,10 @@ export const AddNewTask = ({ newTask }) => {
       eDate: !eDate.endDate,
       priority: !selectedPriority,
       tag: !selectedTag,
-      price : !Price || isNaN(Price),
-     quantity: !Quantity || isNaN(Quantity),
-      unit:!selectedUnit,
-   total : !Total || isNaN(Total),
+      price: !Price || isNaN(Price),
+      quantity: !Quantity || isNaN(Quantity),
+      unit: !selectedUnit,
+      total: !Total || isNaN(Total),
     };
 
     // if (isSubtask ) {
@@ -161,7 +161,7 @@ export const AddNewTask = ({ newTask }) => {
       const taskData = {
         title: Name,
         description: Description,
-        startDate: formattedSDate,
+        sDate: formattedSDate,
         project: projectId,
         dueDate: formattedEDate,
         taskPriority: selectedPriority,
@@ -180,9 +180,7 @@ export const AddNewTask = ({ newTask }) => {
 
       clearFormFields();
     } catch (err) {
-      setError({
-        message: err.response ? err.response.data.message : err.message,
-      });
+      setError(err.message);
       console.log(err);
       setLoading(false);
     } finally {
@@ -268,7 +266,7 @@ export const AddNewTask = ({ newTask }) => {
                   onChange={(date) => setSDate(date)}
                   primaryColor={"purple"}
                   popoverClassName="!bg-white !border-gray-300 !shadow-md"
-                  popoverDirection="up"
+                  popoverDirection="bottom"
                   toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
                   inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                     fieldErrors.sDate ? "border-red border" : ""
@@ -409,7 +407,7 @@ export const AddNewTask = ({ newTask }) => {
 
             {error && (
               <div className="text-red font-bold text-center p-2">
-                {t(error.message)}
+                {t(error)}
               </div>
             )}
             <div className="btn flex items-center justify-center md:justify-end my-3">

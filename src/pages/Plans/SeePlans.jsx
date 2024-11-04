@@ -131,14 +131,14 @@ function classNames(...classes) {
 const SeePlans = () => {
   return (
     <div className="SeePlans flex flex-col items-center">
-      <h1 className="text-3xl font-extrabold">
+      <h1 className="text-xl  md:text-2xl lg:text-3xl font-extrabold">
         {t("Streamline your teamwork. Start free.")}
       </h1>
-      <p className="font-normal text-base my-3">
+      <p className="font-normal text-sm md:text-base my-3">
         {t("Choose the perfect plan for your business needs")}
       </p>
       <div className="my-3 relative tooltip-container w-[8em] h-10">
-      <div className="tooltip">
+        <div className="tooltip">
           <span className="text-white">{t("Save 20%")}</span>
         </div>
       </div>
@@ -151,17 +151,17 @@ const SeePlans = () => {
         //   tab_moving={350}
       />
 
-      <div className=" flex flex-col md:flex-row items-center justify-center  gap-3 ">
+      <div className=" grid grid-cols-6 gap-3 ">
         {tiers.map((tier, tierIdx) => (
           <div
             key={tier.id}
             className={classNames(
-              "rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10 bg-white/60 border-t-4 ",
+              "rounded-3xl col-span-6 md:col-span-3 lg:col-span-2  p-8 ring-1 ring-gray-900/10 sm:p-10 bg-white/60 border-t-4 ",
               tierIdx === 0
-                ? "border-yellow mt-10"
+                ? "border-yellow h-[550px] mt-10"
                 : tierIdx === 1
-                ? "border-green "
-                : "border-purple-dark mt-10"
+                ? "border-green h-[580px] mt-5"
+                : "border-purple-dark h-[550px] mt-10"
             )}
           >
             <h3

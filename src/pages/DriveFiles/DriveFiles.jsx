@@ -116,7 +116,7 @@ const DriveFiles = () => {
                     >
                       <button
                         className="download absolute top-3 right-3"
-                        onClick={() => handleDownload(tag._id)} // Call handleDownload on click
+                        onClick={() => handleDownload(tag._id)} 
                       >
                         <HiOutlineDownload className="text-blue" />
                       </button>

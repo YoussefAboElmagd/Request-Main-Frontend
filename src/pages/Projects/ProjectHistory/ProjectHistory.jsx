@@ -156,7 +156,7 @@ const ProjectHistory = () => {
                       Status={Project.status}
                       avatars={avatars}
                       filesLength={Project.documentsCount}
-                      MsgLength={Project.notesCount}
+                      MsgLength={Project?.notes?.length}
                       sDate={formatDate(Project.sDate)}
                       eDate={formatDate(Project.dueDate)}
                       Submit={"Submitting"}
@@ -184,7 +184,7 @@ const ProjectHistory = () => {
                       status={Project.status}
                       avatars={avatars}
                       filesLength={Project.documentsCount}
-                      MsgLength={Project.notesCount}
+                      MsgLength={Project?.notes?.length}
                       Submit={"Submitting"}
                     />
                   </Link>

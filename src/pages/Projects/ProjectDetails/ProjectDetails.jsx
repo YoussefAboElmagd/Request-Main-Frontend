@@ -15,6 +15,7 @@ import { BiTask } from "react-icons/bi";
 import { Box } from "@mui/material";
 import avatar from "../../../assets/images/Avatar.jpg";
 import Loader from "../../../Components/Loader/Loader";
+import { AddNote } from "../../../Components/AddNote/AddNote";
 
 const ProjectDetails = () => {
   const [loading, setLoading] = useState(false);
@@ -44,18 +45,10 @@ const ProjectDetails = () => {
     fetchProject();
   }, [projectId]);
 
-  const formatDate = (date) => {
-    try {
-      const parsedDate = new Date(date);
-      if (isNaN(parsedDate.getTime())) {
-        throw new Error("Invalid date");
-      }
-      return format(parsedDate, "dd/MM/yyyy");
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "Invalid Date";
-    }
-  };
+ const formatDate = (date) => {
+   if (!date) return "";
+   return format(new Date(date), "dd MMM");
+ };
   
 
   return (
@@ -383,7 +376,7 @@ const ProjectDetails = () => {
                   required={true}
                   className="bg-white border border-purple border-solid "
                   label={t("owner")}
-                  placeholder={Project.owner.name}
+                  placeholder={Project?.owner?.name || "N/A"}
                 />
               )}
               {Project.contractor && (
@@ -393,7 +386,7 @@ const ProjectDetails = () => {
                   required={true}
                   className="bg-white border border-purple border-solid "
                   label={t("contractor")}
-                  placeholder={Project.contractor.name || "belal"}
+                  placeholder={Project?.contractor?.name || "N/A"}
                 />
               )}
               <Input
@@ -407,19 +400,12 @@ const ProjectDetails = () => {
               <div className="flex right-0 my-2 items-center justify-end">
                 <button className="files flex items-center gap-1 mx-1">
                   <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
-                    2
+                    {/* {Project?.documents} */}2
                   </span>
                   <FaFileLines className="text-purple-dark h-7 w-7 " />
                 </button>
+                <AddNote projectId={Project._id} Notes={Project.notes} />
 
-                <button className="addNote mx-1">
-                  <span>
-                    <FaCommentMedical
-                      className="h-7 w-7 "
-                      style={{ color: "#81D4C2" }}
-                    />
-                  </span>
-                </button>
                 <button className="print mx-1">
                   <span>
                     <IoPrint className="h-7 w-7 text-yellow" />

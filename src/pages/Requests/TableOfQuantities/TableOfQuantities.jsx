@@ -168,7 +168,7 @@ const TableOfQuantities = () => {
       }
     } catch (error) {
       console.error("Failed to add tasks:", error);
-      toast.error(t("Failed to add tasks"));
+      toast.error(t(`Failed to add tasks, ${error.message}`));
     }
   };
 

@@ -220,8 +220,8 @@ const Home = () => {
                                   taskPriority={task.taskPriority}
                                   status={task.taskStatus}
                                   avatars={avatars}
-                                  filesLength={2}
-                                  MsgLength={6}
+                                  filesLength={task?.documentsLength}
+                                  MsgLength={task?.notesLength}
                                   sDate={formatDate(task.sDate)}
                                   eDate={formatDate(task.dueDate)}
                                 />
@@ -254,8 +254,8 @@ const Home = () => {
                                   taskPriority={task.taskPriority}
                                   status={task.taskStatus}
                                   avatars={avatars}
-                                  filesLength={2}
-                                  MsgLength={6}
+                                  filesLength={task.documentsLength}
+                                  MsgLength={task.notesLength}
                                 />
                               </Link>
                             </div>
