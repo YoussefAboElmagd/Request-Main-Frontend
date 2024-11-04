@@ -320,6 +320,7 @@ const ProjectTeam = () => {
       await addMemberForProject(projectId, payload, token);
       clearFields();
       toast.success("Member Added Successfully ");
+       window.location.reload();
     } catch (error) {
       console.log(error);
       setFieldErrors(error);
