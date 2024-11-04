@@ -444,7 +444,7 @@ export const sendEmailContactUs = async (contactData, userId) => {
 };
 
 //  get all Docs
-export const getAllDocs = async ( userId ) => {
+export const getAllDocs = async (userId) => {
   try {
     const response = await axiosInstance.get(`project/user/files/${userId}`);
     console.log("Response from docs => ", response);
@@ -674,7 +674,6 @@ export const delegatedTeam = async (token, teamId) => {
 };
 
 //  delete user from  project  in delegated Team
-
 export const deleteUserFromProject = async (token, project, userId) => {
   try {
     const response = await axiosInstance.delete(`team/user/${userId}`, {
@@ -697,7 +696,7 @@ export const deleteUserFromProject = async (token, project, userId) => {
 };
 
 // get all  parent tasks
-export const getAllParentTasks = async ( userId, projectId ) => {
+export const getAllParentTasks = async (userId, projectId) => {
   try {
     const response = await axiosInstance.get(
       `task/parentTasks/${userId}/${projectId}`
@@ -730,8 +729,7 @@ export const getAllSubTasksByParentTask = async (parentTaskId) => {
   }
 };
 
-
-// get team count 
+// get team count
 
 export const getTeamCount = async (teamId) => {
   try {
@@ -752,10 +750,9 @@ export const getTeamCount = async (teamId) => {
 
 export const getMembersByProject = async (projectId) => {
   console.log("projectId from Api => ", projectId);
-  
+
   try {
     const response = await axiosInstance.get(`project/members/${projectId}`);
-    
 
     console.log("Response from members by project => ", response);
     return response.data;
@@ -768,12 +765,11 @@ export const getMembersByProject = async (projectId) => {
   }
 };
 
-
 // add member for project
 
 export const addMemberForProject = async (projectId, MemberData, token) => {
   console.log(projectId);
-  
+
   try {
     const response = await axiosInstance.put(
       `project/member/${projectId}`,
@@ -791,6 +787,32 @@ export const addMemberForProject = async (projectId, MemberData, token) => {
   } catch (error) {
     console.error(
       "Add member for project error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  delete member from project team
+
+export const deleteMemberFromProjectTeam = async ( projectId, Member) => {
+  console.log(Member, "-----", projectId);
+  try {
+    const response = await axiosInstance.put(
+      `project/pull/${projectId}`,
+      Member,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Response from delete member from project team => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Delete member from project team error: ",
       error.response?.data || error.message
     );
     throw error;

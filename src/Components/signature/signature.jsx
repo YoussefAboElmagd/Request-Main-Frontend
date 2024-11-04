@@ -253,24 +253,24 @@ export function SignatureBtn({ onSignatureChange }) {
             backgroundColor="rgba(255,255,255,1)"
             canvasProps={{
               style: {
-                // maxWidth: "650px",
                 width: "100%",
-                maxHeight: "350px",
+                maxWidth: "600px",
+                minHeight: "200px",
                 height: "100%",
               },
             }}
             {...signatureOptions}
           />
         </DialogBody>
-        <DialogFooter className="flex items-center justify-between gap-3">
+        <DialogFooter className="flex items-center justify-between gap-3 ">
           <button className="clear" onClick={handleClear}>
             <RiDeleteBinLine className="text-red w-5 h-5" />
           </button>
-          <div className="Select_color">
+          <div className="Select_color ">
             <SwatchComponent color={color} onChange={setColor} />
             <input type="hidden" name="color" value={color} />
           </div>
-          <div className="Select_font flex items-center gap-3 cursor-pointer">
+          <div className="Select_font flex items-center gap-2 md:gap-3 cursor-pointer">
             <button
               onClick={() => handleFontWeightChange("lighter")}
               className={`${activeWeight === "lighter" ? "text-purple" : ""}`}
@@ -297,10 +297,10 @@ export function SignatureBtn({ onSignatureChange }) {
             Save
           </button>
         </DialogFooter>
+        <span className="block md:hidden  text-sm text-center font-medium text-red m-2">
+          it`s recommended to use this feature while rotating your phone
+        </span>
       </Dialog>
     </>
   );
 }
-
-
-//  start Date must be less than 1-10-2024 (start date in project )

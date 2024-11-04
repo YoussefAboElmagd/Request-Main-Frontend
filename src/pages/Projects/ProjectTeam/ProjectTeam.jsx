@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BsEye, BsEyeSlash, BsMicrosoftTeams } from "react-icons/bs";
 import {
   addMemberForProject,
-  getAllProjectsForUser,
+  deleteMemberFromProjectTeam,
   getAllTagsByUser,
   getAllVocations,
   getMembersByProject,
@@ -27,7 +27,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import Select, { components, useStateManager } from "react-select";
+import Select, { components } from "react-select";
 import Button from "../../../Components/UI/Button/Button";
 import { t } from "i18next";
 import { motion } from "framer-motion";
@@ -158,7 +158,7 @@ const ProjectTeam = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   // const [projects, setProjects] = useState([]);
   const [vocations, setVocations] = useState([]);
-  const [VocationLoading, setVocationLoading] = useState(true)
+  const [VocationLoading, setVocationLoading] = useState(true);
   // const [selectedProject, setSelectedProject] = useState(null);
   const [selectedVocation, setSelectedVocation] = useState([]);
   // const [selectedAccess, setSelectedAccess] = useState([]);
@@ -171,6 +171,8 @@ const ProjectTeam = () => {
   // const [isSelectOpen, setIsSelectOpen] = useState(true);
   const [TagsLoading, setTagsLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [SelectedUserId, setSelectedUserId] = useState("");
+  // const [SelectedProjectId, setSelectedProjectId] = useState();
   const [fieldErrors, setFieldErrors] = useState({
     Name: false,
     Email: false,
@@ -210,7 +212,7 @@ const ProjectTeam = () => {
         ]);
 
         setVocations(vocationResponse.allVocations);
-        setVocationLoading(false)
+        setVocationLoading(false);
 
         // setProjects(projectsResponse.results);
         setTags(
@@ -267,19 +269,15 @@ const ProjectTeam = () => {
     setName("");
     setPassword("");
     setPhone("");
-    // setSelectedProject(null);
     setSelectedVocation([]);
-    setSelectedTags([])
-    accessList(
-      {
-        delete: false,
-        create: false,
-        edit: false,
-        read: false,
-      }
-    )
+    setSelectedTags([]);
+    setAccessList({
+      delete: false,
+      create: false,
+      edit: false,
+      read: false,
+    });
 
-    // setSelectedAccess([]);
     setFieldErrors({});
   };
 
@@ -328,17 +326,32 @@ const ProjectTeam = () => {
     }
   };
 
-  // const accessOptions = [
-  //   { id: "read", label: "READ", value: false },
-  //   { id: "write", label: "WRITE", value: false },
-  //   { id: "create", label: "CREATE", value: false },
-  //   { id: "delete", label: "DELETE", value: false },
-  // ];
-
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  const handleDelete = async () => {
+    setLoading(true);
+    try {
+      const Member = {
+        members: SelectedUserId,
+      };
+      const res = await deleteMemberFromProjectTeam(projectId, Member);
+      console.log("log from project team ", projectId, "/", Member);
+
+      console.log("res : ", res);
+
+      toast.success("User deleted successfully");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      toast.error("Failed to delete user. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+
+    handleOpen();
+  };
   //  const handleChange = (selected) => {
   //    setSelectedAccess({
   //      optionSelected: selected,
@@ -506,9 +519,8 @@ const ProjectTeam = () => {
                     <button
                       className="text-red"
                       onClick={() => {
-                        // setSelectedUserId(member._id);
-                        // setSelectedProjectId(project.projectId);
-                        // handleOpen();
+                        setSelectedUserId(member._id);
+                        handleOpen();
                       }}
                     >
                       <MdDelete className="w-5 h-5" />
@@ -550,10 +562,12 @@ const ProjectTeam = () => {
               </Typography>
             </DialogBody>
             <DialogFooter>
-              <Button variant="text" color="red" onClick={handleOpen}>
+              <Btn variant="text" color="red" onClick={handleOpen}>
                 Cancel
-              </Button>
-              <Button variant="gradient">Yes, delete</Button>
+              </Btn>
+              <Btn variant="gradient" onClick={handleDelete}>
+                Yes, delete
+              </Btn>
             </DialogFooter>
           </Dialog>
         </div>
@@ -787,13 +801,16 @@ const ProjectTeam = () => {
               </label>
             </div>
           </div>
-          <Link className="underline underline-offset-1 text-base text-cyan-500 mx-2">
+          {/* <Link className="underline underline-offset-1 text-base text-cyan-500 mx-2">
             Advanced setting
-          </Link>
+          </Link> */}
 
           {fieldErrors && (
-            <div className="text-red font-bold text-center p-2">
+            <div className="flex justify-center  items-center">
+
+            <span className="text-red font-bold text-center p-2">
               {t(fieldErrors.message)}
+            </span>
             </div>
           )}
           <div className="btn flex items-center justify-center md:justify-end col-span-4 mt-5">

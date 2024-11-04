@@ -176,7 +176,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="LogIn h-screen relative effect overflow-hidden">
+    <div className="LogIn h-full relative effect overflow-hidden">
       {isLoading ? (
         <div className="loader flex items-center justify-center m-auto">
           <Loader />
@@ -184,17 +184,26 @@ const SignUp = () => {
       ) : (
         <>
           <AuthHeader />
-          <div className="Wrapper flex items-center justify-between">
-            <div className="w-96 my-40">
-              <h3 className="font-workSans font-bold text-5xl">
+          <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="w-full  md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
+              <div className="image_phone md:hidden">
+                <img
+                  src={SignUpImg}
+                  alt="LogIn By Phone"
+                  width={300}
+                  height={300}
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="font-workSans font-semibold text-purple text-center md:text-left md:text-gray-dark md:font-bold text-xl md:text-3xl lg:text-5xl">
                 {t("sign up To activate your business easily")}
               </h3>
-              <p className="font-jost font-medium text-2xl">
+              <p className="font-jost font-medium hidden md:block md:text-xl lg:text-2xl">
                 {t("if you don’t have an account you can")}
                 <Link className="text-blue block">{t("sign in here!")}</Link>
               </p>
             </div>
-            <div className="LogIn_Image flex justify-center -z-10">
+            <div className="LogIn_Image md:flex justify-center hidden -z-10">
               <img
                 src={SignUpImg}
                 alt="SignUpImg"
@@ -325,7 +334,7 @@ const SignUp = () => {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 text-white bg-primary mt-6"
+                  className="mt-5 w-full  flex justify-center  items-center"
                 >
                   {t("Register")}
                 </Button>
@@ -344,6 +353,12 @@ const SignUp = () => {
                   <FaPhoneAlt className="text-purple" />
                 </Link>
               </div>
+              <p className="font-jost font-medium  text-lg text-center block md:hidden my-4">
+                {t("if you don’t have an account you can")}
+                <Link to="/sign-up" className="text-blue block">
+                  {t("Register here!")}
+                </Link>
+              </p>
             </div>
           </div>
         </>

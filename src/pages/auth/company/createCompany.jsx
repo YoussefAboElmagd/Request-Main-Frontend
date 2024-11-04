@@ -111,15 +111,15 @@ const CreateCompany = () => {
   };
 
   return (
-    <div className="CreateCompany h-screen relative effect_right overflow-hidden">
+    <div className="CreateCompany h-full relative effect_right ">
       <AuthHeader />
-      <div className="Wrapper flex items-center justify-between gap-2">
+      <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <form
-          className="form flex flex-col"
+          className="form flex flex-col "
           onSubmit={handleSubmit}
         >
           {/* Logo Input */}
-          <div className="addLogo w-[250px] m-auto shadow-sm rounded-3xl my-2">
+          <div className="addLogo w-[200px] lg:w-[250px] m-auto shadow-sm rounded-3xl my-2">
             <label
               htmlFor="logo"
               className="bg-white p-2 flex flex-col justify-center items-center rounded-3xl shadow-sm cursor-pointer"
@@ -128,7 +128,7 @@ const CreateCompany = () => {
                 <img
                   src={logoPreview}
                   alt="Logo Preview"
-                  className="w-24 h-24 object-cover rounded-full border border-solid border-purple"
+                  className="w-20 h-20 lg:w-24 lg:h-24 object-cover rounded-full border border-solid border-purple"
                 />
               ) : (
                 <div
@@ -137,7 +137,7 @@ const CreateCompany = () => {
                     background: "#CCABDA33",
                   }}
                 >
-                  <BiImageAdd className="text-purple w-12 h-12" />
+                  <BiImageAdd className="text-purple w-10 h-10  lg:w-12 lg:h-12" />
                 </div>
               )}
               <span className="font-workSans font-extrabold text-xl my-2 mx-4">
@@ -165,14 +165,14 @@ const CreateCompany = () => {
               onChange={(e) => setName(e.target.value)}
               label={"Company Name"}
               className={
-                "bg-white w-[500px] border border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 font-workSans font-bold text-base"
+                "bg-white  lg:w-[500px] border border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 py-3 font-workSans font-bold text-base"
               }
               label_class={"text-purple font-workSans font-bold text-base"}
             />
           </div>
 
           {/* Stamp Input */}
-          <div className="stamp w-[500px]">
+          <div className="stamp  lg:w-[500px]">
             <label
               htmlFor="stamp"
               className="box flex justify-start items-center bg-white py-1 px-6 gap-2 rounded-2xl m-2 shadow-mdc1"
@@ -231,11 +231,11 @@ const CreateCompany = () => {
         </form>
 
         {/* Right Side Info Section */}
-        <div className="w-[529px] my-40">
-          <h3 className="font-workSans font-bold text-5xl leading-[56px]">
+        <div className="w-full lg:w-[529px] mt-20 lg:my-40">
+          <h3 className="font-workSans  font-semibold text-purple text-center md:text-left md:text-gray-dark md:font-bold text-2xl lg:text-5xl ">
             You're just steps away from your screens
           </h3>
-          <p className="font-jost font-medium text-2xl text-gray">
+          <p className="font-jost font-medium text-center md:text-left text-xl  md:text-xl lg:text-2xl text-gray">
             Complete the following data to save time added each time
           </p>
         </div>

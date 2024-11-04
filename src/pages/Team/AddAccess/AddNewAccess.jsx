@@ -619,9 +619,9 @@ const AddNewAccess = () => {
             </label>
           </div>
         </div>
-        <Link className="underline underline-offset-1 text-base text-cyan-500 mx-2">
+        {/* <Link className="underline underline-offset-1 text-base text-cyan-500 mx-2">
           {t("Advanced setting")}
-        </Link>
+        </Link> */}
 
         {fieldErrors && (
           <div className="text-red font-bold text-center p-2">

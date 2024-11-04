@@ -46,9 +46,6 @@ const DelegatedAccess = () => {
     if (selectedUserId && selectedProjectId) {
       setLoading(true);
       try {
-      
-     
-        
        const res = await deleteUserFromProject(
          token,
          selectedProjectId,

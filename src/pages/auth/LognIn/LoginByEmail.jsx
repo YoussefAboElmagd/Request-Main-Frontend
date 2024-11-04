@@ -26,43 +26,42 @@ const LoginByMail = () => {
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
   console.log("Error object:", error);
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // Trim values from the input fields
-  const trimmedEmail = email.trim();
-  const trimmedPassword = password.trim();
+    // Trim values from the input fields
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
 
-  // Check if any trimmed field is empty
-  if (!trimmedEmail || !trimmedPassword) {
-    toast.error("Please fill in all fields."); 
-    return; // Exit the function if validation fails
-  }
+    // Check if any trimmed field is empty
+    if (!trimmedEmail || !trimmedPassword) {
+      toast.error("Please fill in all fields.");
+      return; // Exit the function if validation fails
+    }
 
-  setLoading(true);
-  try {
-    const result = await dispatch(
-      signInThunk({ email: trimmedEmail, password: trimmedPassword })
-    ).unwrap();
+    setLoading(true);
+    try {
+      const result = await dispatch(
+        signInThunk({ email: trimmedEmail, password: trimmedPassword })
+      ).unwrap();
 
-    const userData = result.userData;
-    const token = result.token;
+      const userData = result.userData;
+      const token = result.token;
 
-    navigate("/Otp", {
-      state: {
-        userData_login: userData,
-        token,
-        password_logIn: trimmedPassword,
-        email_logIn: trimmedEmail,
-      },
-    });
-  } catch (err) {
-    console.error("Sign In failed:", err);
-  } finally {
-    setLoading(false);
-  }
-};
-
+      navigate("/Otp", {
+        state: {
+          userData_login: userData,
+          token,
+          password_logIn: trimmedPassword,
+          email_logIn: trimmedEmail,
+        },
+      });
+    } catch (err) {
+      console.error("Sign In failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="LogIn h-full relative  effect overflow-hidden ">
@@ -152,7 +151,7 @@ const handleSubmit = async (e) => {
                 </Link>
 
                 <Button
-                  className="mt-5 w-full flex justify-center  items-center"
+                  className="mt-5 w-full  flex justify-center  items-center"
                   type="submit"
                 >
                   {t("signIn")}
@@ -177,7 +176,7 @@ const handleSubmit = async (e) => {
                   <FaPhoneAlt className="text-purple" />
                 </Link>
               </div>
-              <p className="font-jost font-medium  text-lg text-center block md:hidden">
+              <p className="font-jost font-medium  text-lg text-center block md:hidden my-4">
                 {t("if you don’t have an account you can")}
                 <Link to="/sign-up" className="text-blue block">
                   {t("Register here!")}
