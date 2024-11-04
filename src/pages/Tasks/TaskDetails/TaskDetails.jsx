@@ -236,7 +236,7 @@ const TaskDetails = () => {
           <div className="flex right-0 my-2 items-center justify-end">
             <button className="files flex items-center gap-1 mx-1">
               <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
-                {Task.documents.length}
+                {Task?.documents?.length}
               </span>
               <FaFileLines className="text-purple-dark h-7 w-7" />
             </button>
