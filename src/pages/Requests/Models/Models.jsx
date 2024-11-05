@@ -24,12 +24,12 @@ const Models = () => {
         // setProjectDetails(project);
         setLinks([
           {
-            label: "Approval of general documents",
+            label: t("Approval of general documents"),
             to: "/Requests/RequestForDocumentSubmittal",
             approved: project?.requestForDocumentSubmittalApproval,
           },
           {
-            label: "Approval of schemes",
+            label: t("Approval of schemes"),
             to: "/request/",
             approved: project?.approvalOfSchemes,
           },

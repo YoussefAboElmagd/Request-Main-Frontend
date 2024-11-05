@@ -2,7 +2,7 @@ import { t } from "i18next";
 import Input from "../../../Components/UI/Input/Input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Button from "../../../Components/UI/Button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addProject } from "../../../Services/api";
 import Loader from "../../../Components/Loader/Loader";
 import Select from "../../../Components/UI/Select/Select";
@@ -140,6 +140,20 @@ const AddProject = () => {
     const newInvite = {};
     setInvites((prevTasks) => [...prevTasks, newInvite]);
   };
+
+    useEffect(() => {
+      const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+          handleSubmit(e);
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }, []);
 
   return (
     <div className="AddProject mx-1">
