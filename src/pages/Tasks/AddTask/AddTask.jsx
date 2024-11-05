@@ -56,6 +56,7 @@ const AddTask = () => {
     startDate: new Date(),
     endDate: new Date(),
   });
+  
   const [recurringDates, setRecurringDates] = useState([
     { startDate: new Date(), endDate: new Date() },
   ]);
@@ -186,6 +187,7 @@ const AddTask = () => {
         createdBy: user._id,
         tags: selectedTag,
         type: taskType,
+
       };
       if (isSubtask) {
         taskData.price = Price;
@@ -276,7 +278,7 @@ const AddTask = () => {
                 <textarea
                   name="description"
                   id="description"
-                  placeholder= {t("desc")}
+                  placeholder={t("desc")}
                   required={true}
                   value={Description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -418,6 +420,7 @@ const AddTask = () => {
                   value={selectedPriority}
                   onChange={(e) => setSelectedPriority(e)}
                   options={priorityOptions}
+                  placeholder={t("Priority")}
                   error={false}
                 />
                 <div className="Tags">
@@ -443,6 +446,7 @@ const AddTask = () => {
                       value: tag.value,
                     }))}
                     error={false}
+                    placeholder={t("tag")}
                   />
                 </div>
               </div>
@@ -451,7 +455,7 @@ const AddTask = () => {
                   id="person"
                   label={t("Responsible Person")}
                   InputClassName={` ${
-                    fieldErrors.unit && "border-red  border rounded-2xl"
+                    fieldErrors.member && "border-red  border rounded-2xl"
                   }`}
                   value={SelectedMember}
                   onChange={(e) => setSelectedMember(e)}
@@ -460,6 +464,7 @@ const AddTask = () => {
                     label: member.name,
                   }))}
                   error={false}
+                  placeholder={t("Responsible Person")}
                 />
                 {isSubtask && !ParentId && (
                   <Select

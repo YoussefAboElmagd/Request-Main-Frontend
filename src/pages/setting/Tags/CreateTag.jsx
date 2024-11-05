@@ -132,9 +132,7 @@ const CreateTag = ({ onTagsChange }) => {
         </div>
       ) : (
         <div className="wrapper bg-white rounded-3xl p-3 m-2">
-          <h6 className="font-semibold text-sm leading-4">
-            {t("tags")}
-          </h6>
+          <h6 className="font-semibold text-sm leading-4">{t("Tags")}</h6>
           {tags.length > 0 ? (
             <div className="PreviousTags grid grid-cols-6 gap-2 bg-white rounded-3xl p-4 shadow-lg">
               {tags.map((tag, index) => (
@@ -152,7 +150,6 @@ const CreateTag = ({ onTagsChange }) => {
                       className="absolute rounded-full bg-white w-6 -top-3 right-2"
                       onClick={() => handleDeleteTag(tag)}
                       style={{
-                      
                         color: tag.colorCode,
                       }}
                     >
@@ -166,7 +163,7 @@ const CreateTag = ({ onTagsChange }) => {
             </div>
           ) : (
             <div className="text-center text-sm leading-4 text-gray-600">
-              {t("No previous tags")}
+              {t("No Previous tags")}
             </div>
           )}
 

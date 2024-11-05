@@ -536,7 +536,7 @@ const AddNewAccess = () => {
             {t("Projects")}
           </label>
           <Select
-            placeholder="Select Projects"
+            placeholder={t("Select Project")}
             id="projects"
             isMulti
             isClearable

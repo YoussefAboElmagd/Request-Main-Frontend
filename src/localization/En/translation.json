@@ -240,6 +240,8 @@
   "Tags": "Tags",
   "Select Tag": "Select Tag",
   "Select Vocation": "Select Vocation",
+  "Select Project": "Select Project",
+  "Select type of Task": "Select type of Task",
   "Edit": "Edit",
   "Read": "Read",
   "Create": "Create",
@@ -254,5 +256,6 @@
   "Request": "Request",
   "RequestPlus": "Request Plus",
   "RequestPlusFull": "Request Plus Full",
-  "Type something": "Type something ..."
+  "Type something": "Type something ...",
+  "No Previous tags": "No Previous tags"
 }

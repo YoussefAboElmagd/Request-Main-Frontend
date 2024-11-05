@@ -306,6 +306,7 @@ export const AddNewTask = ({ newTask, task }) => {
                 value={selectedPriority}
                 onChange={(e) => setSelectedPriority(e)}
                 options={priorityOptions}
+                placeholder={t("Priority")}
                 error={false}
               />
               <div className="Tags">
@@ -331,6 +332,7 @@ export const AddNewTask = ({ newTask, task }) => {
                     value: tag.value,
                   }))}
                   error={false}
+                  placeholder={t("tag")}
                 />
               </div>
             </div>
@@ -347,6 +349,7 @@ export const AddNewTask = ({ newTask, task }) => {
                   value: member._id,
                   label: member.name,
                 }))}
+                placeholder={t("Responsible Person")}
                 error={false}
               />
             </div>

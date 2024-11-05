@@ -10,29 +10,37 @@ import Button from "../UI/Button/Button";
 import { BiEdit } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
 
-export const EditSub = ( {task}) => {
+export const EditTask = ({ task, onUpdateTask }) => {
   console.log(task);
-  const location =  useLocation()
-    const {  members } = location.state || {};
+  const location = useLocation();
+  const { members } = location.state || {};
 
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
   const [isOpen, setIsOpen] = useState(false);
   const [Tags, setTags] = useState([]);
+  const [units, setUnits] = useState([]);
+  const [TagLoading, setTagLoading] = useState(true);
+  const [unitsLoading, setUnitsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [Total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     taskName: task.title,
     description: task.description,
-    sDate: task.sDate,
-    eDate: task.dueDate,
+    sDate: { startDate: task.sDate, endDate: task.sDate },
+    eDate: { startDate: task.dueDate, endDate: task.dueDate },
     priority: task.taskPriority,
     tag: task.tags,
     assignees: task.member,
     price: task.price,
     quantity: task.quantity,
-    total: 0,
+    total: task.price * task.quantity,
     unit: task.unit,
   });
+  console.log("form data :",  formData);
+  
+
   const [fieldErrors, setFieldErrors] = useState({});
 
   const formatDate = (date) => {
@@ -44,41 +52,37 @@ export const EditSub = ( {task}) => {
     return `${year}-${month}-${day}`;
   };
 
-
-
   const handleOpen = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-     try {
-       const [tagsData, UnitsData] = await Promise.all([
-         getAllTagsByUser(user._id),
-         getAllUnits(),
-       ]);
+      try {
+        const [tagsData, UnitsData] = await Promise.all([
+          getAllTagsByUser(user._id),
+          getAllUnits(),
+        ]);
 
-       setTags(
-         tagsData?.results?.map((tag) => ({
-           value: tag._id,
-           label: tag.name,
-           colorCode: tag.colorCode,
-         }))
-       );
-       setTagsLoading(false);
-       setUnits(
-         UnitsData?.results.map((unit) => ({
-           value: unit._id,
-           label: unit.name,
-         }))
-       );
-       setUnitsLoading(false);
-     
-       
-     } catch (error) {
-       console.error("Error fetching data:", error);
-     } finally {
-       setLoading(false);
-     }
+        setTags(
+          tagsData?.results?.map((tag) => ({
+            value: tag._id,
+            label: tag.name,
+            colorCode: tag.colorCode,
+          }))
+        );
+        setTagLoading(false);
+        setUnits(
+          UnitsData?.results.map((unit) => ({
+            value: unit._id,
+            label: unit.name,
+          }))
+        );
+        setUnitsLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchData();
   }, [userId]);
@@ -113,7 +117,7 @@ export const EditSub = ( {task}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
+    setFieldErrors({})
 
     // Validate each field and set errors
     const newFieldErrors = {
@@ -123,13 +127,14 @@ export const EditSub = ( {task}) => {
       eDate: !formData.eDate?.endDate,
       priority: !formData.priority,
       tag: !formData.tag,
-      assignees: !formData.assignees,
-      requiredQuantity: formData.requiredQuantity < 0,
-      approvedQuantity: formData.approvedQuantity < 0,
-      executedQuantity: formData.executedQuantity < 0,
-      filteredQuantity: formData.filteredQuantity < 0,
+      member: !formData.assignees,
+      // requiredQuantity: formData.requiredQuantity < 0,
+      // approvedQuantity: formData.approvedQuantity < 0,
+      // executedQuantity: formData.executedQuantity < 0,
+      // filteredQuantity: formData.filteredQuantity < 0,
       price: formData.price <= 0,
       quantity: formData.quantity <= 0,
+      unit:!formData.unit,
     };
 
     setFieldErrors(newFieldErrors);
@@ -140,11 +145,10 @@ export const EditSub = ( {task}) => {
       return;
     }
 
-    const formattedSDate = formatDate(sDate.startDate);
-    const formattedEDate = formatDate(eDate.endDate);
+    const formattedSDate = formatDate(formData.sDate.startDate);
+    const formattedEDate = formatDate(formData.eDate.endDate);
 
     try {
-      // Update task data in the database
       const updatedTask = {
         title: formData.taskName,
         description: formData.description,
@@ -152,17 +156,21 @@ export const EditSub = ( {task}) => {
         dueDate: formattedEDate,
         taskPriority: formData.priority,
         tags: formData.tag,
-        member: members.map((member) => member._id),
+        member: formData.member,
         price: formData.price,
         quantity: formData.quantity,
         total: formData.price * formData.quantity,
         unit: task.unit,
       };
-      // Update task in the database
-   
-    
+      console.log(updatedTask);
+      
+      onUpdateTask(updatedTask);
+
+      setIsOpen(false)
     } catch (err) {
+      console.log(err);
     } finally {
+      setLoading(false);
     }
   };
   return (
@@ -182,13 +190,13 @@ export const EditSub = ( {task}) => {
         <DialogBody>
           <form onSubmit={handleSubmit}>
             <Input
-              label="Task Name"
+              label={t("TaskName")}
               className={`bg-white border ${
                 fieldErrors.taskName ? "border-red" : "border-purple"
               } border-solid focus:border focus:border-gray focus:border-solid`}
               autoFocus
               id="name"
-              placeholder="Task Name"
+              placeholder={t("TaskName")}
               type="text"
               name="taskName"
               value={formData.taskName}
@@ -199,7 +207,7 @@ export const EditSub = ( {task}) => {
                 htmlFor="desc"
                 className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
               >
-                Description
+                {t("desc")}
               </label>
               <textarea
                 className={`bg-white border ${
@@ -209,7 +217,7 @@ export const EditSub = ( {task}) => {
                 name="description"
                 rows={4}
                 cols={40}
-                placeholder="Details about the task that the consultant wants to tell to both the contractor and the property owner"
+                placeholder={t("desc")}
                 value={formData.description}
                 onChange={handleChange}
               />
@@ -220,7 +228,7 @@ export const EditSub = ( {task}) => {
                   htmlFor="sDate"
                   className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
                 >
-                  Start Date
+                  {t("sDate")}
                 </label>
                 <Datepicker
                   useRange={false}
@@ -242,7 +250,7 @@ export const EditSub = ( {task}) => {
                   htmlFor="eDate"
                   className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
                 >
-                  Due Date
+                  {t("dDate")}
                 </label>
                 <Datepicker
                   useRange={false}
@@ -261,50 +269,55 @@ export const EditSub = ( {task}) => {
             <div className="date grid grid-cols-2 gap-3">
               <div className="priority">
                 <Select
-                  label="Priority"
+                  label={t("Priority")}
                   value={formData.priority}
+                  InputClassName={`${
+                    fieldErrors.priority
+                      ? "border  border-red rounded-2xl "
+                      : ""
+                  }`}
                   onChange={(value) => handleSelectChange("priority", value)}
                   options={[
                     { label: "Low", value: "low" },
                     { label: "Medium", value: "medium" },
                     { label: "High", value: "high" },
                   ]}
+                  placeholder={t("Priority")}
                 />
               </div>
               <div className="Tags">
                 <Select
-                  label="Tag"
+                  label={t("tag")}
                   id="tag"
                   isMulti={false}
                   value={formData.tag}
+                  loading={TagLoading}
+                  InputClassName={`${
+                    fieldErrors.tag ? "border  border-red rounded-2xl " : ""
+                  }`}
                   onChange={(value) => handleSelectChange("tag", value)}
-                  options={Tags.map((tag) => ({
-                    label: (
-                      <div className="flex items-center justify-between">
-                        <span className="text">{tag.name}</span>
-                        <span
-                          className="w-4 h-4 ml-2 rounded-full"
-                          style={{ backgroundColor: tag.colorCode }}
-                        />
-                      </div>
-                    ),
-                    value: tag._id,
-                  }))}
+                  options={Tags}
+                  placeholder={t("tag")}
                 />
               </div>
             </div>
             <div className="date grid grid-cols-2 gap-3">
               <div className="assignees col-span-1">
                 <Select
-                  label="Responsible Person"
+                  label={t("Responsible Person")}
                   id="assignees"
                   isMulti={false}
                   value={formData.assignees}
+                  InputClassName={` ${
+                    fieldErrors.member && "border-red  border rounded-2xl"
+                  }`}
                   onChange={(value) => handleSelectChange("assignees", value)}
                   options={members.map((member) => ({
                     value: member._id,
                     label: member.name,
                   }))}
+                  placeholder={t("Responsible Person")}
+                  error={false}
                 />
               </div>
             </div>
@@ -389,7 +402,7 @@ export const EditSub = ( {task}) => {
                   htmlFor="price"
                   className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
                 >
-                  Price
+                  {t("Price")}
                 </label>
                 <input
                   className="bg-white border border-purple border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4 "
@@ -397,7 +410,7 @@ export const EditSub = ( {task}) => {
                   min="0"
                   id="price"
                   name="price"
-                  placeholder="Price"
+                  placeholder={t("Price")}
                   value={formData.price}
                   onChange={handleChange}
                 />
@@ -407,7 +420,7 @@ export const EditSub = ( {task}) => {
                   htmlFor="quantity"
                   className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
                 >
-                  Quantity
+                  {t("Quantity")}
                 </label>
                 <input
                   className="bg-white border border-purple border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4 "
@@ -415,7 +428,8 @@ export const EditSub = ( {task}) => {
                   min="0"
                   id="quantity"
                   name="quantity"
-                  placeholder="quantity"
+                  placeholder={t("Quantity")}
+                  a
                   value={formData.quantity}
                   onChange={handleChange}
                 />
@@ -425,7 +439,7 @@ export const EditSub = ( {task}) => {
                   htmlFor="Total"
                   className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
                 >
-                  Total
+                  {t("Total")}
                 </label>
                 <input
                   className="bg-white border border-purple border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4 "
@@ -433,7 +447,7 @@ export const EditSub = ( {task}) => {
                   min="0"
                   id="Total"
                   name="Total"
-                  placeholder="Total"
+                  placeholder={t("Total")}
                   value={formData.total}
                   disabled
                   onChange={handleChange}
@@ -444,23 +458,29 @@ export const EditSub = ( {task}) => {
                   htmlFor="unit"
                   className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
                 >
-                  Unit
+                  {t("Unit")}
                 </label>
                 <Select
                   type="number"
                   min="0"
                   id="unit"
                   name="unit"
-                  placeholder="unit"
+                  placeholder={t("Unit")}
                   value={formData.unit}
+                  loading={unitsLoading}
+                  InputClassName={` ${
+                    fieldErrors.unit && "border-red  border rounded-2xl"
+                  }`}
                   onChange={(value) => handleSelectChange("unit", value)}
-                  options={[
-                    { label: "Kg", value: "kg" },
-                    { label: "L", value: "l" },
-                  ]}
+                  options={units}
                 />
               </div>
             </div>
+            {error && (
+              <div className="text-red font-bold text-center p-2">
+                {error.message}
+              </div>
+            )}
             <div className="btn flex items-center justify-center md:justify-end my-3">
               <Button type="submit">{t("Save")}</Button>
             </div>
@@ -471,11 +491,8 @@ export const EditSub = ( {task}) => {
   );
 };
 
-
-
-
- {
-   /* <div className="grid grid-cols-4 gap-2">
+// {
+  /* <div className="grid grid-cols-4 gap-2">
               <div className="price col-span-1">
                 <label
                   htmlFor="requiredQuantity"
@@ -549,4 +566,4 @@ export const EditSub = ( {task}) => {
                 />
               </div>
             </div> */
- }
+// }

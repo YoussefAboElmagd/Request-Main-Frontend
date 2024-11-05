@@ -178,6 +178,7 @@ const TasksPerProject = () => {
                 ]}
                 required
                 onChange={handleTaskTypeChange}
+                placeholder={t("Select type of Task")}
               />
             </DialogBody>
             <DialogFooter className="flex items-center justify-center mt-10">

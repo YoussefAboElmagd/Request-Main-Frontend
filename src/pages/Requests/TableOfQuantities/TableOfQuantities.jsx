@@ -13,9 +13,8 @@ import Button from "../../../Components/UI/Button/Button";
 import Select from "../../../Components/UI/Select/Select";
 import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AddNewTask } from "../../../Components/Sub_task/AddNewTask";
-import { MdEdit } from "react-icons/md";
-import { EditSub } from "../../../Components/Sub_task/EditSub";
+import { AddNewTask } from "../../../Components/Parent_task/AddNewTask";
+import { EditTask } from "../../../Components/Parent_task/EditTask";
 
 // TaskRow Component
 const TaskRow = ({
@@ -23,6 +22,7 @@ const TaskRow = ({
   index,
   onRemove,
   onChange,
+  onUpdateTask,
   units,
   UnitsLoading,
   errors,
@@ -103,7 +103,10 @@ const TaskRow = ({
         {/* <button >
           <MdEdit className="text-blue" size={20} />
         </button> */}
-        <EditSub task={task} />
+        <EditTask
+          task={task}
+          onUpdateTask={(updatedTask) => onUpdateTask(updatedTask, index)}
+        />
         <button onClick={() => onRemove(index)}>
           <BiTrash className="text-red" size={20} />
         </button>
@@ -137,6 +140,13 @@ const TableOfQuantities = () => {
   // Handle task removal
   const handleTaskRemove = (index) => {
     setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+  };
+
+  // Handle task update
+  const handleUpdateTask = (updatedTask, index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index] = { ...updatedTasks[index], ...updatedTask };
+    setTasks(updatedTasks);
   };
 
   const handleUpdateProject = async () => {
@@ -206,6 +216,7 @@ const TableOfQuantities = () => {
                   index={index}
                   onChange={handleTaskChange}
                   onRemove={handleTaskRemove}
+                  onUpdateTask={handleUpdateTask}
                   units={units}
                   UnitsLoading={UnitsLoading}
                   errors={errors}
