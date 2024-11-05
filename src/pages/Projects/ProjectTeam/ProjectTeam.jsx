@@ -121,10 +121,12 @@ export function Input({
           hasError
         )} ${className}`}
       />
-      <span className="absolute right-2 top-8 w-6 h-6 text-gray">{icon}</span>
+      <span className="absolute ltr:right-2 rtl:left-2 top-8 w-4 h-4 text-gray">
+        {icon}
+      </span>
       {isPassword && (
         <span
-          className="absolute right-2 top-7 w-6 h-6 text-gray cursor-pointer"
+          className="absolute ltr:right-2 rtl:left-2 top-7 w-4 h-4 text-gray cursor-pointer"
           onClick={togglePasswordVisibility}
         >
           {type === "password" ? <BsEyeSlash /> : <BsEye />}
@@ -407,7 +409,7 @@ const ProjectTeam = () => {
     <div className="ProjectTeam">
       <div className="header bg-white rounded-3xl p-2">
         <div className="head flex items-center justify-between p-2">
-          <h5 className="font-semibold text-base">Team</h5>
+          <h5 className="font-semibold text-base">{t("Team")}</h5>
           <div className="TotalMembers flex items-center gap-2">
             <span
               className="w-7 h-7 md:w-9 md:h-9 flex items-center justify-center rounded-full"
@@ -419,7 +421,7 @@ const ProjectTeam = () => {
               className="font-medium md:font-semibold text-base md:text-lg"
               style={{ color: "#696A6B" }}
             >
-              Total Team Members
+              {t("Total Team Members")}
             </p>
             <span className="font-medium text-base">{count}</span>
           </div>
@@ -429,7 +431,7 @@ const ProjectTeam = () => {
       <div className="admins grid grid-cols-3 gap-3 my-3">
         {(owner || owner !== null) && (
           <div className="admin">
-            <h4 className="m-1 font-medium text-sm">Owner</h4>
+            <h4 className="m-1 font-medium text-sm">{t("owner")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
               <ProfileAvatar name={owner.name} profilePic={owner.profilePic} />
               <div className="flex flex-col">
@@ -443,7 +445,7 @@ const ProjectTeam = () => {
         )}
         {consultant && (
           <div className="consultant">
-            <h4 className="m-1 font-medium text-sm">consultant</h4>
+            <h4 className="m-1 font-medium text-sm">{t("consultant")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
               <ProfileAvatar
                 name={consultant.name}
@@ -460,7 +462,7 @@ const ProjectTeam = () => {
         )}
         {(contractor || contractor !== null) && (
           <div className="contractor">
-            <h4 className="m-1 font-medium text-sm">contractor</h4>
+            <h4 className="m-1 font-medium text-sm">{t("contractor")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
               <ProfileAvatar
                 name={contractor.name}
@@ -481,12 +483,12 @@ const ProjectTeam = () => {
         <table className="w-full text-sm text-center text-gray-500 border-collapse">
           <thead className="text-xs font-bold text-gray-dark uppercase border-b-2 border-gray">
             <tr>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Vocation</th>
-              <th className="px-4 py-2">Email</th>
-              <th className="px-4 py-2">Phone</th>
-              <th className="px-4 py-2">Access</th>
-              <th className="px-4 py-2">Action</th>
+              <th className="px-4 py-2">{t("Name")}</th>
+              <th className="px-4 py-2">{t("Vocation")}</th>
+              <th className="px-4 py-2">{t("Email")}</th>
+              <th className="px-4 py-2">{t("Phone number")}</th>
+              <th className="px-4 py-2">{t("Access")}</th>
+              <th className="px-4 py-2">{t("Actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -532,7 +534,7 @@ const ProjectTeam = () => {
             ) : (
               <tr>
                 <td colSpan="6" className="py-4 text-gray-400">
-                  No members found.
+                  {t("No Team Members")}
                 </td>
               </tr>
             )}
@@ -583,8 +585,8 @@ const ProjectTeam = () => {
             <Input
               type={"email"}
               name="email"
-              label="Email"
-              placeholder="Email"
+              label={t("Email")}
+              placeholder={t("Email")}
               autoComplete={"email"}
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               onChange={(e) => setEmail(e.target.value)}
@@ -597,8 +599,8 @@ const ProjectTeam = () => {
             <Input
               type={isPasswordVisible ? "text" : "password"}
               name="password"
-              label="Password"
-              placeholder="Password"
+              label={t("Password")}
+              placeholder={t("Password")}
               autoComplete={"new-password"}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -612,9 +614,9 @@ const ProjectTeam = () => {
               type="text"
               name="name"
               onChange={(e) => setName(e.target.value)}
-              label="Name"
+              label={t("Name")}
               value={Name}
-              placeholder="Name"
+              placeholder={t("Name")}
               required
               icon={<MdOutlinePerson />}
             />
@@ -626,7 +628,7 @@ const ProjectTeam = () => {
                   ripple={false}
                   variant="text"
                   color="blue-gray"
-                  className="flex h-10 items-center gap-2 rounded-r-none border border-r-0 border-gray border-solid pl-3"
+                  className="flex h-10 items-center gap-2  ltr:rounded-r-none rtl:rounded-l-none border ltr:border-r-0 rtl:border-l-0 border-gray border-solid pl-3"
                 >
                   <img
                     src={flags.svg}
@@ -662,7 +664,7 @@ const ProjectTeam = () => {
               value={Phone}
               onChange={handlePhoneChange}
               placeholder="Mobile Number"
-              className="rounded-l-none border border-solid !border-gray focus:!border-gray"
+              className="ltr:rounded-l-none rtl:rounded-r-none border border-solid !border-gray focus:!border-gray"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
@@ -676,10 +678,10 @@ const ProjectTeam = () => {
               className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
               htmlFor="vocation"
             >
-              Vocation
+              {t("Vocation")}
             </label>
             <Select
-              placeholder="Select Vocation"
+              placeholder={t("Select Vocation")}
               id="vocation"
               isClearable
               isLoading={loading}
@@ -696,10 +698,10 @@ const ProjectTeam = () => {
               className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
               htmlFor="access"
             >
-              Tags
+              {t("Tags")}
             </label>
             <Select
-              placeholder="Select Tag"
+              placeholder={t("Select Tag")}
               id="Tags"
               isClearable
               isLoading={TagsLoading}
@@ -736,7 +738,7 @@ const ProjectTeam = () => {
               className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
               htmlFor="access"
             >
-              Access
+              {t("Access")}
             </label>
             {/* 
           <Select
@@ -759,10 +761,10 @@ const ProjectTeam = () => {
                 id="read"
                 checked={accessList.read}
                 onChange={(e) => changeReadValue(e.target.checked)}
-                className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="read" className="font-medium text-base">
-                Read
+                {t("Read")}
               </label>
             </div>
             <div className="Edit flex items-center gap-1">
@@ -771,10 +773,10 @@ const ProjectTeam = () => {
                 id="Edit"
                 checked={accessList.edit}
                 onChange={(e) => changeEditValue(e.target.checked)}
-                className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="write" className="font-medium text-base">
-                Edit
+                {t("Edit")}
               </label>
             </div>
             <div className="create flex items-center gap-1">
@@ -783,10 +785,10 @@ const ProjectTeam = () => {
                 id="create"
                 checked={accessList.create}
                 onChange={(e) => changeCreateValue(e.target.checked)}
-                className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="create" className="font-medium text-base">
-                Create
+                {t("Create")}
               </label>
             </div>
             <div className="delete flex items-center gap-1">
@@ -795,10 +797,10 @@ const ProjectTeam = () => {
                 id="delete"
                 checked={accessList.delete}
                 onChange={(e) => changeDeleteValue(e.target.checked)}
-                className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="delete" className="font-medium text-base">
-                Delete
+                {t("Delete")}
               </label>
             </div>
           </div>
@@ -808,10 +810,9 @@ const ProjectTeam = () => {
 
           {fieldErrors && (
             <div className="flex justify-center  items-center">
-
-            <span className="text-red font-bold text-center p-2">
-              {t(fieldErrors.message)}
-            </span>
+              <span className="text-red font-bold text-center p-2">
+                {t(fieldErrors.message)}
+              </span>
             </div>
           )}
           <div className="btn flex items-center justify-center md:justify-end col-span-4 mt-5">

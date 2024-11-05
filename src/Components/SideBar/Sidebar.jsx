@@ -127,7 +127,7 @@ const Sidebar = () => {
                 <img
                   src={user.profilePic}
                   alt="avatar"
-                  className="rounded-full  w-24 h-24 object-contain relative border border-solid  border-gray p-2"
+                  className="rounded-full  w-12 h-12 object-contain relative border border-solid  border-gray p-2"
                 />
               ) : (
                 <>

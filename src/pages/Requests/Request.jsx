@@ -20,7 +20,7 @@ import { t } from "i18next";
 
 const RequestForm = ({
   ReqTitle,
-  showProjectName,
+  // showProjectName,
   showDiscipline,
   showActionCodes,
   showReasons,
@@ -45,7 +45,6 @@ const RequestForm = ({
   const [commentInput, setCommentInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // Get the current date
   const currentDate = new Date();
   const currentDay = currentDate.getDate();
   const currentMonth = currentDate.getMonth() + 1;
@@ -84,7 +83,6 @@ const RequestForm = ({
 
   const handleUpdateProject = async () => {
     try {
-  
       console.log("ApproveTitle :", ApproveTitle);
 
       const res = await updateProject(projectId, {
@@ -99,11 +97,7 @@ const RequestForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    if (
-      !selectedActionCodes.length ||
-      !selectedDisciplines.length ||
-      !selectedProject
-    ) {
+    if (!selectedActionCodes.length || !selectedDisciplines.length) {
       setError("All fields are required");
       return;
     }
@@ -113,7 +107,7 @@ const RequestForm = ({
       actionCode: selectedActionCodes,
       discipline: selectedDisciplines,
 
-      project: selectedProject.value,
+      project: projectId,
       comment: comments.map((comment) => comment.text),
       date: new Date().toLocaleDateString(),
       createdBy: user._id,
@@ -279,7 +273,7 @@ const RequestForm = ({
                   />
                 </div>
               </div>
-              {showProjectName && (
+              {/* {showProjectName && (
                 <div className="ProjectName flex items-center gap-2 my-6">
                   <label
                     htmlFor="ProjectName"
@@ -301,7 +295,7 @@ const RequestForm = ({
                     styles={customStyles}
                   />
                 </div>
-              )}
+              )} */}
               {showReasons && (
                 <CheckboxGroup
                   label={t("Reason")}

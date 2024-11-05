@@ -86,13 +86,13 @@ const BoardViewProject = ({
         <div className="files flex items-center gap-3 cursor-pointer">
           <div className="files flex items-center gap-1">
             <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
-              {filesLength}
+              {filesLength || 0}
             </span>
             <FaFileLines className="text-purple-dark w-4 h-4" />
           </div>
           <div className="msg flex items-center gap-1">
             <span className="text-red font-inter font-extrabold text-sm leading-4">
-              {MsgLength}
+              {MsgLength || 0}
             </span>
             <MdMessage className="text-yellow w-4 h-4" />
           </div>

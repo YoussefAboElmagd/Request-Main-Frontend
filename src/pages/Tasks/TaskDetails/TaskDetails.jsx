@@ -12,6 +12,7 @@ import Loader from "../../../Components/Loader/Loader";
 import { getTaskDetails } from "../../../Services/api";
 import avatar from "../../../assets/images/avatar1.png";
 import Button from "../../../Components/UI/Button/Button";
+import { AddNote } from "../../../Components/AddNote/AddNote";
 const TaskDetails = () => {
   const [loading, setLoading] = useState(false);
   const [Task, setTask] = useState({});
@@ -39,19 +40,13 @@ const TaskDetails = () => {
     fetchTask();
   }, [taskId]);
 
-  const formatDate = (date) => {
-    try {
-      const parsedDate = new Date(date);
-      if (isNaN(parsedDate.getTime())) {
-        throw new Error("Invalid date");
-      }
-      return format(parsedDate, "dd/MM/yyyy");
-    } catch (error) {
-      console.error("Error formatting date:", error);
-      return "Invalid Date";
-    }
-  };
 
+  
+ const formatDate = (date) => {
+   if (!date) return "";
+   return format(new Date(date), "dd/MM/yyyy");
+ };  
+  
   if (loading) {
     return (
       <div className="loader flex items-center justify-center m-auto">
@@ -241,14 +236,7 @@ const TaskDetails = () => {
               <FaFileLines className="text-purple-dark h-7 w-7" />
             </button>
 
-            <button className="addNote mx-1">
-              <span>
-                <FaCommentMedical
-                  className="h-7 w-7"
-                  style={{ color: "#81D4C2" }}
-                />
-              </span>
-            </button>
+            <AddNote taskId={Task._id} Notes={Task.notes} />
           </div>
           {IsParent && (
             <div className="flex right-0 my-2 items-center gap-3 justify-end">

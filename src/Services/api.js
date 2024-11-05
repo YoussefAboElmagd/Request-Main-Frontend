@@ -818,3 +818,23 @@ export const deleteMemberFromProjectTeam = async ( projectId, Member) => {
     throw error;
   }
 };
+
+
+// update task 
+
+export const updateTask = async (token, taskId, taskData) => {
+  try {
+    const response = await axiosInstance.put(`task/${taskId}`, taskData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from update task => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Update task error: ", error.response?.data || error.message);
+    throw error;
+  }
+};

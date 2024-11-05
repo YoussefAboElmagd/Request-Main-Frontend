@@ -126,7 +126,7 @@ const Home = () => {
                   </span>
                   <div className="flex flex-col font-poppins font-normal">
                     <span className="text-xl leading-6">
-                      {analysis.DelayedTasks || 0}
+                      {analysis.delayedTasks || 0}
                     </span>
                     <p className="text-xs leading-4">{t("delayed")}</p>
                   </div>

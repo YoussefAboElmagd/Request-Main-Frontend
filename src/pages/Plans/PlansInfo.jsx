@@ -155,13 +155,15 @@ const PlansInfo = () => {
         <Table className="table w-full">
           <TableHead>
             <TableRow>
-              <TableCell className="font-bold ">Feature</TableCell>
-              <TableCell className="font-bold text-center ">Request</TableCell>
-              <TableCell className="font-bold text-center">
-                Request Plus
+              <TableCell className="font-bold ">{t("Feature")}</TableCell>
+              <TableCell className="font-bold text-center ">
+                {t("Request")}
               </TableCell>
               <TableCell className="font-bold text-center">
-                Request Full Plus
+                {t("RequestPlus")}
+              </TableCell>
+              <TableCell className="font-bold text-center">
+                {t("RequestPlusFull")}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -169,17 +171,19 @@ const PlansInfo = () => {
           <TableBody>
             {tableData.map((section, secIdx) => (
               <>
-                <TableRow key={`section-${secIdx}`}>
+                <TableRow key={`section-${secIdx}`} >
                   <TableCell
                     colSpan={4}
-                    className="p-3 font-semibold text-lg bg-gray-200"
+                    className="p-3 font-semibold text-lg bg-gray-200 "
                   >
                     {section.section}
                   </TableCell>
                 </TableRow>
                 {section.features.map((feature, featureIndex) => (
                   <TableRow key={`feature-${featureIndex}`}>
-                    <TableCell className="border-b border-gray-300 p-2">
+                    <TableCell
+                      className={`border-b border-gray-300 p-2 `}
+                    >
                       {feature.name}
                     </TableCell>
                     <TableCell className="border-b border-gray-300 p-2 text-center">

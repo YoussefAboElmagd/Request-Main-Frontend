@@ -24,6 +24,7 @@
   "Select from the following options to be directed to the appropriate page": "اختر من الخيارات التالية للانتقال إلى الصفحة المناسبة",
   "Next": "التالي",
   "owner": "المالك",
+  "Feature": "الميزه",
   "consultant": "استشاري",
   "contractor": "مقاول",
   "Profile": "الملف الشخصي",
@@ -258,5 +259,9 @@
   "Total Team Members": "إجمالي أعضاء الفريق",
   "You gave access to the following members": "لقد منحت حق الوصول للأعضاء التاليين",
   "Advanced setting": "الإعدادات المتقدمة",
-  "Sign Up": "إنشاء حساب"
+  "Sign Up": "إنشاء حساب",
+  "Request": "ريكويست",
+  "RequestPlus": "ريكويست بلس",
+  "RequestPlusFull": "ريكويست بلس  الكامل",
+  "Type something": "اكتب شيئًا"
 }

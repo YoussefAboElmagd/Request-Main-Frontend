@@ -14,6 +14,8 @@ import Select from "../../../Components/UI/Select/Select";
 import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AddNewTask } from "../../../Components/Sub_task/AddNewTask";
+import { MdEdit } from "react-icons/md";
+import { EditSub } from "../../../Components/Sub_task/EditSub";
 
 // TaskRow Component
 const TaskRow = ({
@@ -97,7 +99,11 @@ const TaskRow = ({
           disabled
         />
       </td> */}
-      <td className="flex  justify-center items-center  mt-4">
+      <td className="flex  justify-center items-center gap-3  mt-4">
+        {/* <button >
+          <MdEdit className="text-blue" size={20} />
+        </button> */}
+        <EditSub task={task} />
         <button onClick={() => onRemove(index)}>
           <BiTrash className="text-red" size={20} />
         </button>

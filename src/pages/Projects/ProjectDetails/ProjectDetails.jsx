@@ -312,14 +312,14 @@ const ProjectDetails = () => {
                 </div>
                 <div className="Badges flex items-center  justify-around gap-2">
                   <span
-                    className={`working w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
+                    className={`${Project.status} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
                   >
-                    Work on it
+                    {Project.status}
                   </span>
                   <span
-                    className={`high w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
+                    className={`${Project.projectPriority} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
                   >
-                    High
+                    {Project.projectPriority}
                   </span>
                 </div>
                 {Project.tags && Project.tags.length > 0 && (
@@ -400,7 +400,7 @@ const ProjectDetails = () => {
               <div className="flex right-0 my-2 items-center justify-end">
                 <button className="files flex items-center gap-1 mx-1">
                   <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
-                    {/* {Project?.documents} */}2
+                    {Project?.documentsLength || 0}
                   </span>
                   <FaFileLines className="text-purple-dark h-7 w-7 " />
                 </button>

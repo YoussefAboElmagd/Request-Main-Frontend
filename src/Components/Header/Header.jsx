@@ -111,7 +111,10 @@ const Header = () => {
                 <span className="text-purple-dark text-base font-bold">
                   {t("New for you")}
                 </span>
-                <Link className="text-gray underline underline-offset-1 text-sm font-normal">
+                <Link
+                  to="/Notifications"
+                  className="text-gray underline underline-offset-1 text-sm font-normal"
+                >
                   {t("Make All Read")}
                 </Link>
               </div>

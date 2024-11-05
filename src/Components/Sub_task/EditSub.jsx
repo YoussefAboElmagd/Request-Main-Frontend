@@ -3,34 +3,35 @@ import { useEffect, useState } from "react";
 import Input from "../UI/Input/Input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Select from "../UI/Select/Select";
-import { getAllTagsByUser } from "../../Services/api";
+import { getAllTagsByUser, getAllUnits } from "../../Services/api";
 import { useSelector } from "react-redux";
 import { t } from "i18next";
 import Button from "../UI/Button/Button";
 import { BiEdit } from "react-icons/bi";
+import { useLocation } from "react-router-dom";
 
-export const EditSub = () => {
+export const EditSub = ( {task}) => {
+  console.log(task);
+  const location =  useLocation()
+    const {  members } = location.state || {};
+
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
   const [isOpen, setIsOpen] = useState(false);
   const [Tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    taskName: "",
-    description: "",
-    sDate: null,
-    eDate: null,
-    priority: "",
-    tag: "",
-    assignees: "",
-    price: 0,
-    quantity: 0,
-    requiredQuantity: 0,
-    approvedQuantity: 0,
-    executedQuantity: 0,
-    filteredQuantity: 0,
+    taskName: task.title,
+    description: task.description,
+    sDate: task.sDate,
+    eDate: task.dueDate,
+    priority: task.taskPriority,
+    tag: task.tags,
+    assignees: task.member,
+    price: task.price,
+    quantity: task.quantity,
     total: 0,
-    unit: "kg",
+    unit: task.unit,
   });
   const [fieldErrors, setFieldErrors] = useState({});
 
@@ -43,27 +44,41 @@ export const EditSub = () => {
     return `${year}-${month}-${day}`;
   };
 
-  const clearFormFields = () => {
-    setName("");
-    setDescription("");
-    setSDate(null);
-    setEDate(null);
-    // setBudget("");
-  };
+
 
   const handleOpen = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      try {
-        const data = await getAllTagsByUser(userId);
-        setTags(data.results);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+     try {
+       const [tagsData, UnitsData] = await Promise.all([
+         getAllTagsByUser(user._id),
+         getAllUnits(),
+       ]);
+
+       setTags(
+         tagsData?.results?.map((tag) => ({
+           value: tag._id,
+           label: tag.name,
+           colorCode: tag.colorCode,
+         }))
+       );
+       setTagsLoading(false);
+       setUnits(
+         UnitsData?.results.map((unit) => ({
+           value: unit._id,
+           label: unit.name,
+         }))
+       );
+       setUnitsLoading(false);
+     
+       
+     } catch (error) {
+       console.error("Error fetching data:", error);
+     } finally {
+       setLoading(false);
+     }
     };
     fetchData();
   }, [userId]);
@@ -129,6 +144,23 @@ export const EditSub = () => {
     const formattedEDate = formatDate(eDate.endDate);
 
     try {
+      // Update task data in the database
+      const updatedTask = {
+        title: formData.taskName,
+        description: formData.description,
+        sDate: formattedSDate,
+        dueDate: formattedEDate,
+        taskPriority: formData.priority,
+        tags: formData.tag,
+        member: members.map((member) => member._id),
+        price: formData.price,
+        quantity: formData.quantity,
+        total: formData.price * formData.quantity,
+        unit: task.unit,
+      };
+      // Update task in the database
+   
+    
     } catch (err) {
     } finally {
     }
@@ -267,24 +299,16 @@ export const EditSub = () => {
                   label="Responsible Person"
                   id="assignees"
                   isMulti={false}
-                  value={formData.tag}
+                  value={formData.assignees}
                   onChange={(value) => handleSelectChange("assignees", value)}
-                  options={Tags.map((tag) => ({
-                    label: (
-                      <div className="flex items-center justify-between">
-                        <span className="text">{tag.name}</span>
-                        <span
-                          className="w-4 h-4 ml-2 rounded-full"
-                          style={{ backgroundColor: tag.colorCode }}
-                        />
-                      </div>
-                    ),
-                    value: tag._id,
+                  options={members.map((member) => ({
+                    value: member._id,
+                    label: member.name,
                   }))}
                 />
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-2">
+            {/* <div className="grid grid-cols-4 gap-2">
               <div className="price col-span-1">
                 <label
                   htmlFor="requiredQuantity"
@@ -357,7 +381,7 @@ export const EditSub = () => {
                   onChange={handleChange}
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="grid grid-cols-4 gap-2">
               <div className="price col-span-1">
@@ -438,7 +462,7 @@ export const EditSub = () => {
               </div>
             </div>
             <div className="btn flex items-center justify-center md:justify-end my-3">
-              <Button type="submit">{t("confirm")}</Button>
+              <Button type="submit">{t("Save")}</Button>
             </div>
           </form>
         </DialogBody>

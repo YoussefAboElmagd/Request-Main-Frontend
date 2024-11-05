@@ -152,13 +152,13 @@ const ProjectHistory = () => {
                   >
                     <BoardViewProject
                       ProgressValue={70}
-                      NameOfTask={Project.name}
-                      Status={Project.status}
+                      NameOfTask={Project?.name}
+                      Status={Project?.status}
                       avatars={avatars}
-                      filesLength={Project.documentsCount}
+                      filesLength={Project?.documentsLength}
                       MsgLength={Project?.notes?.length}
-                      sDate={formatDate(Project.sDate)}
-                      eDate={formatDate(Project.dueDate)}
+                      sDate={formatDate(Project?.sDate)}
+                      eDate={formatDate(Project?.dueDate)}
                       Submit={"Submitting"}
                     />
                   </Link>
@@ -183,7 +183,7 @@ const ProjectHistory = () => {
                       taskPriority={Project.projectPriority}
                       status={Project.status}
                       avatars={avatars}
-                      filesLength={Project.documentsCount}
+                      filesLength={Project?.documentsLength}
                       MsgLength={Project?.notes?.length}
                       Submit={"Submitting"}
                     />

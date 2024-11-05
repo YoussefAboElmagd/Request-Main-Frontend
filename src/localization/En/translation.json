@@ -53,6 +53,7 @@
   "Home": "Home",
   "AddSubTask": "Add Sub Task",
   "Projects": "Projects",
+  "Feature": "Feature",
   "Inbox": "Inbox",
   "Drive": "Drive Files",
   "SeePlan": "See Plans",
@@ -249,5 +250,9 @@
   "Total Team Members": "Total Team Members",
   "You gave access to the following members": "You gave access to the following members",
   "Advanced setting": "Advanced setting",
-  "Sign Up": "Sign Up"
+  "Sign Up": "Sign Up",
+  "Request": "Request",
+  "RequestPlus": "Request Plus",
+  "RequestPlusFull": "Request Plus Full",
+  "Type something": "Type something ..."
 }

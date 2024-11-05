@@ -13,13 +13,15 @@ const Models = () => {
   const [isReviewed, setIsReviewed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [links, setLinks] = useState([]);
+    const [projectDetails, setProjectDetails] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const data = await getProjectDetails(projectId);
         const project = data.results;
-
+        // setProjectDetails(project);
         setLinks([
           {
             label: "Approval of general documents",
