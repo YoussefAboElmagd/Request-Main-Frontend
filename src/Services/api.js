@@ -853,3 +853,26 @@ export const updateTask = async (token, taskId, taskData) => {
     throw error;
   }
 };
+
+
+
+//  get notification counts 
+
+export const getNotificationCounts = async (token, userId) => {
+  try {
+    const response = await axiosInstance.get(`project/counts/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from notification counts => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get notification counts error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};

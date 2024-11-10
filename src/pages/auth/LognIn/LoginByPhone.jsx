@@ -14,6 +14,7 @@ import { FiPhone } from "react-icons/fi";
 // import countries from "react-select-country-list";
 import { useDispatch, useSelector } from "react-redux";
 import { TelPhone } from "../../../Components/UI/telInput/telInput";
+import LandingHeader from "../../../Components/landingHeader/landingHeader";
 
 const LoginByPhone = () => {
   const [loading, setLoading] = useState(false);
@@ -45,7 +46,7 @@ const LoginByPhone = () => {
         </div>
       ) : (
         <>
-          <AuthHeader />
+          <LandingHeader />
           <div className="Wrapper flex items-center justify-between">
             <div className="w-96 my-40 ">
               <h3 className="font-workSans  font-bold text-5xl">

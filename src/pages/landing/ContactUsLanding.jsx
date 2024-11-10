@@ -174,7 +174,7 @@ const ContactUsLanding = () => {
               htmlFor="phone"
               className="flex items-center gap-2 font-jost text-base font-medium "
             >
-              {t("phone")}
+              {t("Phone number")}
             </label>
             <div className=" flex relative">
               <Menu placement="bottom-start">
@@ -220,7 +220,7 @@ const ContactUsLanding = () => {
                 type="tel"
                 value={Phone}
                 onChange={handlePhoneChange}
-                placeholder="Mobile Number"
+                placeholder={t("Phone number")}
                 className="ltr:rounded-l-none rtl:rounded-r-none border border-solid !border-gray focus:!border-gray"
                 labelProps={{
                   className: "before:content-none after:content-none",

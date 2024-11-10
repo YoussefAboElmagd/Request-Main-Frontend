@@ -16,6 +16,7 @@ import Apple from "../../../assets/images/Apple.png";
 import Facebook from "../../../assets/images/Facebook.png";
 import { signInThunk } from "../../../redux/services/authServices";
 import { toast } from "react-toastify";
+import LandingHeader from "../../../Components/landingHeader/landingHeader";
 
 const LoginByMail = () => {
   const [loading, setLoading] = useState(false);
@@ -71,7 +72,7 @@ const LoginByMail = () => {
         </div>
       ) : (
         <>
-          <AuthHeader />
+          <LandingHeader />
           <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between ">
             <div className="w-full  md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
               <div className="image_phone md:hidden">

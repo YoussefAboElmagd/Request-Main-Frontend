@@ -6,6 +6,7 @@ import Button from "../../../Components/UI/Button/Button";
 import "./style.scss";
 import { useSelector } from "react-redux";
 import Loader from "../../../Components/Loader/Loader";
+import LandingHeader from "../../../Components/landingHeader/landingHeader";
 
 const Role = () => {
   const [selectedRoleId, setSelectedRoleId] = useState("");
@@ -58,7 +59,7 @@ const Role = () => {
         </div>
       ) : (
         <>
-          <AuthHeader />
+          <LandingHeader />
           <div className="Wrapper flex flex-col justify-center">
             <div className="flex items-start justify-center flex-col mt-16">
               <h3 className="font-inter font-bold text-xl md:text-3xl lg:text-5xl leading-[50px] max-w-[745px] text-purple-dark">

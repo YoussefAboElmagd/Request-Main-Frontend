@@ -42,7 +42,7 @@ const Main = () => {
      }, 4000);
    };
   return (
-    <div className="Main relative h-[90vh] overflow-hidden  transition-all duration-500 ">
+    <div className="Main relative h-[90vh] overflow-hidden   ">
       <div className="absolute top-16 right-16">
         <span className="halfCircleEffect"></span>
       </div>
@@ -69,12 +69,12 @@ const Main = () => {
               ? t("landingMessage.message6")
               : ""}{" "}
           </p>
-          <button className="py-2 px-4 bg-white text-purple rounded-lg my-2">
+          <button className="py-2 px-4 bg-white text-purple rounded-lg my-2 transition-all">
             {t("landingMessage.Btn")}
           </button>
         </div>
       </div>
-      <div className="landingImage1 absolute right-52 top-36 ">
+      <div className="landingImage1 absolute right-52 top-36 transition-all">
         <img
           src={
             Mode === "Mode1"
@@ -89,9 +89,10 @@ const Main = () => {
           width={450}
           height={450}
           loading="lazy"
+          className="transition-all"
         />
       </div>
-      <div className="landingImage2 absolute -right-24 bottom-12 rotate-45  p-2 ">
+      <div className="landingImage2 absolute -right-24 bottom-12 rotate-45  p-2 transition-all">
         <img
           src={
             Mode === "Mode1"
@@ -105,7 +106,7 @@ const Main = () => {
           alt="Landing Main Image"
           width={200}
           height={200}
-          className="rounded-xl shadow-md "
+          className="rounded-xl shadow-md transition-all"
           loading="lazy"
         />
       </div>
@@ -123,14 +124,14 @@ const Main = () => {
           alt="Landing Main Image"
           width={200}
           height={200}
-          className="rounded-xl shadow-md "
+          className="rounded-xl shadow-md transition-all"
           loading="lazy"
         />
       </div>
       <div
         className={`box1 landing_box ${
           Mode === "Mode1" ? "active" : ""
-        } bottom-28 left-32`}
+        } bottom-28 left-32 transition-all`}
         onMouseEnter={() => handleMouseEnter("Mode1")}
         onMouseLeave={handleMouseLeave}
       >
@@ -139,7 +140,7 @@ const Main = () => {
       <div
         className={`box2 landing_box ${
           Mode === "Mode2" ? "active" : ""
-        } bottom-24 left-96`}
+        } bottom-24 left-96 transition-all`}
         onMouseEnter={() => handleMouseEnter("Mode2")}
         onMouseLeave={handleMouseLeave}
       >
@@ -148,7 +149,7 @@ const Main = () => {
       <div
         className={`box3 landing_box ${
           Mode === "Mode3" ? "active" : ""
-        } bottom-10 left-[600px]`}
+        } bottom-10 left-[600px] transition-all`}
         onMouseEnter={() => handleMouseEnter("Mode3")}
         onMouseLeave={handleMouseLeave}
       >

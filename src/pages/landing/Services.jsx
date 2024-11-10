@@ -63,7 +63,7 @@ const Services = () => {
           className="h-[70vh] w-3/4 object-cover  absolute ltr:right-0  rtl:left-0 rtl:scale-x-[-1]"
           loading="lazy"
         />
-        <div className="box absolute rtl:rounded-r-xl ltr:rounded-l-xl bg-linear_1 p-4 h-[15vh] grid grid-cols-3 items-center gap-2 text-white w-4/5 rtl:left-0 ltr:right-0 bottom-4">
+        <div className="box_services absolute rtl:rounded-r-xl ltr:rounded-l-xl bg-linear_1 p-4 h-[15vh] grid grid-cols-3 items-center gap-2 text-white w-4/5 rtl:left-0 ltr:right-0 bottom-4">
           <div className="col-span-1 flex flex-col">
             <span className="font-bold text-2xl">900+</span>
             <span className="font-medium text-base ">{t("happyClient")}</span>

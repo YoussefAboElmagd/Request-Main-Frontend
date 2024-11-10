@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MdDriveFolderUpload,
   MdInbox,
@@ -17,31 +17,62 @@ import Button from "../UI/Button/Button";
 import { handleLogout } from "../../redux/services/authServices";
 import avatar from "../../assets/images/Avatar.jpg";
 import { t } from "i18next";
+import { getNotificationCounts } from "../../Services/api";
+import { Dialog, DialogBody, DialogFooter, DialogHeader , 
+  Button as Btn
+} from "@material-tailwind/react";
 
 const Sidebar = () => {
   const [Open, setOpen] = useState(false);
+  const [OpenDialog, setOpenDialog] = useState(false);
   const [isProfileActive, setIsProfileActive] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [NotificationCounts, setNotificationCounts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  const token = useSelector((state) => state.auth.token);
+  console.log("NotificationCounts", NotificationCounts);
 
   const [notifications, setNotifications] = useState({
-    Home: 2,
-    Projects: 2,
+    Home: NotificationCounts.home,
+    Projects: NotificationCounts.projects,
     Inbox: 0,
     Drive: 0,
-    Plan: 1,
+    Plan: 0,
     Team: 0,
     Settings: 0,
   });
+  console.log(notifications);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const handleOpenDialog = () => setOpenDialog(!OpenDialog);
 
   const handleLogoutClick = () => {
     dispatch(handleLogout());
     navigate("/LogIn/Mail");
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await getNotificationCounts(token, user._id);
+        setNotificationCounts(data);
+        setNotifications((prevNotifications) => ({
+          ...prevNotifications,
+          Home: data.home || 0,
+          Projects: data.projects || 0,
+        }));
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
   const items = [
     {
       title: t("Home"),
@@ -183,13 +214,12 @@ const Sidebar = () => {
           {/* Logout Button */}
           {user ? (
             <button
-              onClick={handleLogoutClick}
+              onClick={handleOpenDialog}
               className={`text-sm font-semibold font-inter text-gray transition-custom duration-custom flex items-center gap-3 py-5 px-5   ${
                 Open && "item_sidebar_close pl-7"
               }`}
             >
               <span>
-                {" "}
                 <MdLogout className="w-6 h-6" />
               </span>
               {!Open && <span>{t("logout")}</span>}
@@ -199,6 +229,30 @@ const Sidebar = () => {
               <Link to="/SignUp/ChooseRole">{t("Sign Up")}</Link>
             </Button>
           )}
+          <Dialog open={OpenDialog} handler={handleOpenDialog}>
+            <DialogHeader className="font-semibold text-lg">{t("Are you sure you want to logout?")}</DialogHeader>
+            <DialogBody className="text-base text-gray font-normal">
+              <p>
+                {t(
+                  "If you log out, you will need to log in again to access the system."
+                )}
+              </p>
+              <p>{t("Do you want to proceed with logging out?")}</p>
+            </DialogBody>
+            <DialogFooter>
+              <Btn
+                variant="text"
+                color="red"
+                onClick={handleOpenDialog}
+                className="mr-1"
+              >
+                <span>{t("Cancel")}</span>
+              </Btn>
+              <button className="px-4 py-2 bg-linear_1 text-white rounded-xl font-semibold text-base" onClick={handleLogoutClick}>
+                <span>{t("Confirm")}</span>
+              </button>
+            </DialogFooter>
+          </Dialog>
         </div>
       </div>
     </div>

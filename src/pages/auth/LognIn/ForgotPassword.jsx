@@ -8,6 +8,7 @@ import { t } from "i18next";
 import forgot from "../../../assets/images/forgot.png";
 import { forgetPassword, updateUser } from "../../../Services/api";
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import LandingHeader from "../../../Components/landingHeader/landingHeader";
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,7 @@ const ForgotPassword = () => {
         </div>
       ) : (
         <>
-          <AuthHeader />
+          <LandingHeader />
           <div className="Wrapper flex items-center justify-between">
             <div className="w-96 my-40">
               {forget_id ? (
@@ -123,7 +124,7 @@ const ForgotPassword = () => {
                 ) : (
                   <div className="email">
                     <Input
-                      placeholder={t("Enter Email")}
+                      placeholder={t("enter email")}
                       type="email"
                       id="email"
                       autoComplete="email"
@@ -140,7 +141,7 @@ const ForgotPassword = () => {
                   type="submit"
                   disabled={loading}
                 >
-                  {t("Submit")}
+                  {t("Send")}
                 </Button>
                 {error && (
                   <div className="text-center">

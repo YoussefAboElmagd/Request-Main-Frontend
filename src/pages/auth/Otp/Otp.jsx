@@ -18,6 +18,7 @@ import {
 } from "../../../redux/services/authServices";
 import { useDispatch } from "react-redux";
 import { forgetPassword, resendVerificationCode } from "../../../Services/api";
+import LandingHeader from "../../../Components/landingHeader/landingHeader";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
@@ -195,7 +196,7 @@ const Otp = () => {
         </div>
       ) : (
         <>
-          <AuthHeader />
+          <LandingHeader />
           <div className="Wrapper flex items-center justify-between">
             <div className="w-96 my-40">
               <h3 className="font-workSans font-bold text-5xl">

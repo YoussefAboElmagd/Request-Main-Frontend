@@ -78,7 +78,7 @@ const AuthHeader = () => {
       </Link>
       <Link to="/SignUp/ChooseRole">
         <button className="py-1 px-5 md:px-10 bg-light border border-purple border-solid rounded-3xl text-purple m-2 font-semibold md:text-xl text-base ">
-          {t("Register")}
+          {t("Sign Up")}
         </button>
       </Link>
     </div>

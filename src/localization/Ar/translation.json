@@ -146,6 +146,7 @@
   "Expiration Date": "تاريخ انتهاء الصلاحية",
   "Make this my default payment method": "اجعل هذه وسيلة الدفع الافتراضية لدي",
   "Confirm and pay": "تأكيد والدفع",
+  "Confirm": "تأكيد",
   "pay": "الدفع",
   "Apple Pay": "أبل باي",
   "Google Pay": "جوجل باي",
@@ -310,5 +311,8 @@
   "successPartner": "شريك النجاح",
   "message": "رساله",
   "Get in touch": "تواصل معنا",
-  "We are here for you! How can we help?": "نحن هنا من أجلك! كيف يمكننا مساعدتك؟"
+  "We are here for you! How can we help?": "نحن هنا من أجلك! كيف يمكننا مساعدتك؟",
+  "Are you sure you want to logout?": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "Do you want to proceed with logging out?": "هل تريد المتابعة بتسجيل الخروج؟",
+  "If you log out, you will need to log in again to access the system.": "إذا قمت بتسجيل الخروج، ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى النظام."
 }

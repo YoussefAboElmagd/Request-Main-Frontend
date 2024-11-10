@@ -27,6 +27,7 @@ import { FiPhone } from "react-icons/fi";
 import { MdLockOutline } from "react-icons/md";
 import { handleSignUp } from "../../../redux/services/authServices";
 import { toast } from "react-toastify";
+import LandingHeader from "../../../Components/landingHeader/landingHeader";
 const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -183,7 +184,7 @@ const SignUp = () => {
         </div>
       ) : (
         <>
-          <AuthHeader />
+          <LandingHeader />
           <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="w-full  md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
               <div className="image_phone md:hidden">

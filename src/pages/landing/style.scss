@@ -2,9 +2,7 @@ body {
   background-color: #f2f2f7 !important;
 }
 
-main {
-  padding: 0 !important;
-}
+
 
 .halfCircleEffect {
   border-radius: 700px / 350px;
@@ -99,6 +97,28 @@ main {
   opacity: 0.2;
 
 }
+
+/* General transition for all elements */
+.transition-all {
+  transition: all 0.5s ease-in-out;
+}
+
+/* Specific transitions for images */
+.landingImage1, .landingImage2, .landingImage3 {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.landing_box {
+   transform: scale(0.9); 
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.landing_box.active {
+  transform: scale(1); 
+  opacity: 1;
+}
+
+
 
 
 /* // Fade and scale animation for images and text */

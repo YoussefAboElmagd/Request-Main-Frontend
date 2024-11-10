@@ -13,6 +13,7 @@ import Loader from "../../../Components/Loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { uploadCompanyFiles } from "../../../Services/api";
 import { toast } from "react-toastify";
+import LandingHeader from "../../../Components/landingHeader/landingHeader";
 
 const CreateCompany = () => {
   const user = useSelector((state) => state.auth.user);
@@ -112,7 +113,7 @@ const CreateCompany = () => {
 
   return (
     <div className="CreateCompany h-full relative effect_right ">
-      <AuthHeader />
+      <LandingHeader />
       <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <form className="form flex flex-col " onSubmit={handleSubmit}>
           {/* Logo Input */}
