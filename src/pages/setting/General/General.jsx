@@ -13,11 +13,11 @@ import { updateUserPreferences } from "../../../redux/slices/authSlice";
 
 function Wrapper({ head, paragraph, checked, onToggle }) {
   return (
-    <div className="flex items-center justify-between my-3">
+    <div className="flex items-center justify-between my-3 gap-3">
       <div className="flex flex-col mx-2">
-        <h6 className="font-medium text-base leading-5">{head}</h6>
+        <h6 className="font-normal lg:font-medium text-sm lg:text-base leading-5">{head}</h6>
         <p
-          className="font-normal text-sm leading-5"
+          className="font-light lg:font-normal tex-xs lg:text-sm leading-5 max-w-[320px] lg:max-w-[600px]"
           style={{ color: "#9095A1" }}
         >
           {paragraph}
@@ -113,7 +113,7 @@ const General = forwardRef((props, ref) => {
         checked={renewalChecked}
         onToggle={() => setRenewalChecked(!renewalChecked)}
       />
-      <div className="msg shadow-md flex items-center justify-between rounded-2xl mt-10">
+      <div className="msg shadow-md flex flex-col  lg:flex-row items-center lg:justify-between rounded-2xl mt-10">
         <div className="content flex flex-col p-4">
           <h6
             className="font-normal text-xl leading-5 my-1"
@@ -121,11 +121,11 @@ const General = forwardRef((props, ref) => {
           >
             {t("Contact us")}
           </h6>
-          <h5 className="font-semibold text-2xl text-purple my-1">
+          <h5 className="font-semibold text-lg md:tex-xl lg:text-2xl text-purple my-1">
             {t("We are waiting for you")}
           </h5>
           <p
-            className="font-light text-sm leading-5 max-w-[620px] my-1"
+            className="font-light text-xs md:text-sm leading-5 max-w-[620px] my-1"
             style={{ color: "#5E5E5E" }}
           >
             {t(
@@ -133,7 +133,9 @@ const General = forwardRef((props, ref) => {
             )}
           </p>
           <Link to={"/ContactUs"}>
-            <Button className={"w-fit mt-2"}>{t("Contact us")}</Button>
+            <Button className={"px-8 md:px-12 lg:px-14 mt-2"}>
+              {t("Contact us")}
+            </Button>
           </Link>
         </div>
         <div className="image">

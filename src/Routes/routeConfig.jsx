@@ -34,9 +34,11 @@ import PerformanceEvaluation from "../pages/setting/Profile/PerformanceEvaluatio
 import ProjectTeam from "../pages/Projects/ProjectTeam/ProjectTeam.jsx";
 import Notifications from "../pages/Notifications/Notifications.jsx";
 import LoginByPhone from "../pages/auth/LognIn/LoginByPhone.jsx";
+import Landing from "../pages/landing/landing.jsx";
 
 // Define public routes
 export const publicRoutes = [
+  { path: "/landing/*", component: <Landing /> },
   { path: "/LogIn", component: <LoginByPhone /> },
   { path: "/LogIn/Mail", component: <LoginByMail /> },
   { path: "/forgotPassword", component: <ForgotPassword /> },

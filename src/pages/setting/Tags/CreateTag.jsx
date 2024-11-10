@@ -64,9 +64,11 @@ function SwatchComponent({ color, onChange }) {
       ]}
       color={color}
       rectProps={{
-        style: { width: 40, height: 40, borderRadius: "50%" },
+        style: { minWidth: "40px", minHeight: "40px" ,borderRadius: "50%" },
         children: <Point checked={true} />,
+        className: "col-span-1 "
       }}
+      className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8"
       onChange={(hsvColor) => onChange(hsvaToHex(hsvColor))}
     />
   );
@@ -134,7 +136,7 @@ const CreateTag = ({ onTagsChange }) => {
         <div className="wrapper bg-white rounded-3xl p-3 m-2">
           <h6 className="font-semibold text-sm leading-4">{t("Tags")}</h6>
           {tags.length > 0 ? (
-            <div className="PreviousTags grid grid-cols-6 gap-2 bg-white rounded-3xl p-4 shadow-lg">
+            <div className="PreviousTags grid grid-cols-2 md:grid-col-4 lg:grid-cols-6 gap-2 bg-white rounded-3xl p-4 shadow-lg">
               {tags.map((tag, index) => (
                 <div
                   key={index}
@@ -171,7 +173,7 @@ const CreateTag = ({ onTagsChange }) => {
             {t("+ Add new tag")}
           </h6>
 
-          <form onSubmit={handleAddTag} className="py-5 px-8">
+          <form onSubmit={handleAddTag} className="py-5 px-3 lg:px-8">
             <Input
               label={t("TName")}
               placeholder={t("TName")}
@@ -183,7 +185,7 @@ const CreateTag = ({ onTagsChange }) => {
               value={newTagName}
               onChange={(e) => setNewTagName(e.target.value)}
             />
-            <div className="mt-4">
+            <div className="mt-4 ">
               <SwatchComponent color={color} onChange={setColor} />
             </div>
 

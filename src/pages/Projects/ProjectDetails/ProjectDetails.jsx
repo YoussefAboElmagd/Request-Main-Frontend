@@ -16,8 +16,11 @@ import { Box } from "@mui/material";
 import avatar from "../../../assets/images/Avatar.jpg";
 import Loader from "../../../Components/Loader/Loader";
 import { AddNote } from "../../../Components/AddNote/AddNote";
+import { useSelector } from "react-redux";
 
 const ProjectDetails = () => {
+  const user = useSelector((state) => state.auth.user);
+
   const [loading, setLoading] = useState(false);
   const [Project, setProject] = useState({});
   const [Owner, setOwner] = useState({});
@@ -45,11 +48,10 @@ const ProjectDetails = () => {
     fetchProject();
   }, [projectId]);
 
- const formatDate = (date) => {
-   if (!date) return "";
-   return format(new Date(date), "dd MMM");
- };
-  
+  const formatDate = (date) => {
+    if (!date) return "";
+    return format(new Date(date), "dd MMM");
+  };
 
   return (
     <div className="ProjectDetails mx-1">
@@ -84,36 +86,41 @@ const ProjectDetails = () => {
               </button>
             </Link>
           </div>
-          <div className="boxes grid grid-cols-3 gap-2 m-2 p-2">
-            <div className="desc col-span-1 ">
-              {/* <p className="font-inter font-bold text-base leading-5  m-2">
-            Description
-          </p> */}
+          <div className="boxes grid grid-cols-1 lg:grid-cols-3 gap-2 m-2 p-2">
+            <div
+              className={`desc  ${
+                user.plan.name === "RequestPlus" ? "col-span-1" : "col-span-3"
+              } `}
+            >
               <div className="desc_content bg-purple text-white py-9 px-6 rounded-3xl  h-[140px] text-center">
                 <p className="font-inter font-normal text-sm leading-6  ">
                   {Project.description}
                 </p>
               </div>
             </div>
-            <div className="fullBudget  col-span-1  h-[140px]  relative w-full  bg-white  p-6 rounded-3xl">
-              <p
-                className="font-inter font-bold text-2xl absolute top-4 ltr:left-4  rtl:right-4 col-span-1"
-                style={{ color: "#81D4C2" }}
-              >
-                {t("fullBudget")}
-              </p>
-              <span className="font-inter font-bold text-xl absolute bottom-4 ltr:right-4  rtl:left-4 col-span-1">
-                {Project.budget}
-              </span>
-            </div>
-            <div className="Remaining col-span-1 h-[140px]  bg-white relative w-full   p-6 rounded-3xl">
-              <p className="font-inter font-bold text-2xl text-purple absolute top-4 ltr:left-4  rtl:right-4 ">
-                {t("Remaining")}
-              </p>
-              <span className="font-inter font-bold text-xl absolute bottom-4 ltr:right-4  rtl:left-4">
-                {Project.remaining}
-              </span>
-            </div>
+            {user.plan.name === "RequestPlus" && (
+              <>
+                <div className="fullBudget  col-span-1  h-[140px]  relative w-full  bg-white  p-6 rounded-3xl">
+                  <p
+                    className="font-inter font-bold text-2xl absolute top-4 ltr:left-4  rtl:right-4 col-span-1"
+                    style={{ color: "#81D4C2" }}
+                  >
+                    {t("fullBudget")}
+                  </p>
+                  <span className="font-inter font-bold text-xl absolute bottom-4 ltr:right-4  rtl:left-4 col-span-1">
+                    {Project.budget}
+                  </span>
+                </div>
+                <div className="Remaining col-span-1 h-[140px]  bg-white relative w-full   p-6 rounded-3xl">
+                  <p className="font-inter font-bold text-2xl text-purple absolute top-4 ltr:left-4  rtl:right-4 ">
+                    {t("Remaining")}
+                  </p>
+                  <span className="font-inter font-bold text-xl absolute bottom-4 ltr:right-4  rtl:left-4">
+                    {Project.remaining}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="team flex items-center justify-between my-2 mx-3">
@@ -163,44 +170,50 @@ const ProjectDetails = () => {
             </div>
           </div>
           <div className="wrapper bg-white grid grid-cols-2 rounded-3xl m-2 ">
-            <div className="box relative flex flex-col ">
+            <div className="box col-span-2 lg:col-span-1 relative flex flex-col ">
               <div className="head flex items-center  justify-between  my-3 mx-4">
                 <h5 className="font-bold  text-2xl ">{Project.name}</h5>
                 <p className="font-semibold  text-sm">{"Architecture"}</p>
               </div>
-              <div className="analytics_box rounded-md shadow-md p-8 flex flex-col gap-3  mt-4 mb-4 mx-4 ">
-                <div className="progress_wrapper  flex items-center justify-between rounded-2xl shadow-md p-8 relative">
-                  <div className="Progress">
-                    <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
-                      {t("Progress")}
-                    </span>
-                    <CircularProgress
-                      className="!text-black font-poppins font-normal text-4xl"
-                      determinate
-                      sx={{
-                        "--CircularProgress-size": "180px",
-                        "--CircularProgress-trackThickness": "30px",
-                        "--CircularProgress-progressThickness": "30px",
-                        "--CircularProgress-animationDuration": "1s",
-                        "--CircularProgress-trackColor": "#F5F5F5",
-                        "--CircularProgress-progressColor": "var(--purple)",
-                        "--CircularProgress-trackShadowColor":
-                          "rgba(0, 0, 0, 0.12)",
-                        "--CircularProgress-progressShadowColor":
-                          "rgba(0, 0, 0, 0.12)",
-                        "--CircularProgress-trackBorderRadius": "50%",
-                        "--CircularProgress-progressBorderRadius": "50%",
-                        "--CircularProgress-trackShadowBlur": "10px",
-                        "--CircularProgress-progressShadowBlur": "10px",
-                        "--CircularProgress-progressShadowOffset": "0px 2px",
-                      }}
-                      value={70}
-                      variant="solid"
-                    >
-                      70%
-                    </CircularProgress>
-                  </div>
 
+              <div className="analytics_box rounded-md shadow-md p-8 flex flex-col gap-3  mt-4 mb-4 mx-4 ">
+                <div
+                  className={`progress_wrapper  flex flex-col lg:flex-row items-center ${
+                    user.plan.name === "RequestPlus" ? "lg:justify-between" : "lg:justify-center"
+                  }   gap-2 rounded-2xl shadow-md p-8 relative`}
+                >
+                  {user.plan.name === "RequestPlus" && (
+                    <div className="Progress">
+                      <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
+                        {t("Progress")}
+                      </span>
+                      <CircularProgress
+                        className="!text-black font-poppins font-normal text-4xl"
+                        determinate
+                        sx={{
+                          "--CircularProgress-size": "180px",
+                          "--CircularProgress-trackThickness": "30px",
+                          "--CircularProgress-progressThickness": "30px",
+                          "--CircularProgress-animationDuration": "1s",
+                          "--CircularProgress-trackColor": "#F5F5F5",
+                          "--CircularProgress-progressColor": "var(--purple)",
+                          "--CircularProgress-trackShadowColor":
+                            "rgba(0, 0, 0, 0.12)",
+                          "--CircularProgress-progressShadowColor":
+                            "rgba(0, 0, 0, 0.12)",
+                          "--CircularProgress-trackBorderRadius": "50%",
+                          "--CircularProgress-progressBorderRadius": "50%",
+                          "--CircularProgress-trackShadowBlur": "10px",
+                          "--CircularProgress-progressShadowBlur": "10px",
+                          "--CircularProgress-progressShadowOffset": "0px 2px",
+                        }}
+                        value={70}
+                        variant="solid"
+                      >
+                        70%
+                      </CircularProgress>
+                    </div>
+                  )}
                   <div className="tags relative">
                     <span className="absolute -top-5 font-inter font-extrabold text-xs leading-4 my-1 ">
                       tags
@@ -310,6 +323,7 @@ const ProjectDetails = () => {
                     </Box>
                   </div>
                 </div>
+
                 <div className="Badges flex items-center  justify-around gap-2">
                   <span
                     className={`${Project.status} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
@@ -344,7 +358,7 @@ const ProjectDetails = () => {
                 )}
               </div>
             </div>
-            <div className="form m-3 mr-24 ">
+            <div className="form m-3 col-span-2 lg:col-span-1 lg:mr-24 ">
               <Input
                 disabled
                 required={true}
@@ -395,7 +409,7 @@ const ProjectDetails = () => {
                 required={true}
                 className="bg-white border border-purple border-solid "
                 label={t("location")}
-                placeholder={"location"}
+                placeholder={t("location")}
               />
               <div className="flex right-0 my-2 items-center justify-end">
                 <button className="files flex items-center gap-1 mx-1">
@@ -405,7 +419,6 @@ const ProjectDetails = () => {
                   <FaFileLines className="text-purple-dark h-7 w-7 " />
                 </button>
                 <AddNote projectId={Project._id} Notes={Project.notes} />
-
                 <button className="print mx-1">
                   <span>
                     <IoPrint className="h-7 w-7 text-yellow" />

@@ -475,6 +475,7 @@ const AddTask = () => {
                         ? "border  border-red rounded-2xl "
                         : ""
                     }`}
+                    placeholder={t("ParentTasks")}
                     value={SelectedParentTask}
                     onChange={(e) => setSelectedParentTask(e)}
                     options={ParentTasks}

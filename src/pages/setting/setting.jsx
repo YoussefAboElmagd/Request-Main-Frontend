@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { FaBars } from "react-icons/fa";
+import { Drawer } from "@material-tailwind/react";
 
 //  check input
 export function CheckInput({ checked, onChange }) {
@@ -32,7 +34,6 @@ export function CheckInput({ checked, onChange }) {
   );
 }
 
-
 // Debounce utility function
 function debounce(func, delay) {
   let timer;
@@ -43,18 +44,22 @@ function debounce(func, delay) {
 }
 
 const Setting = () => {
-  const location = useLocation()
+  const location = useLocation();
   const user = useSelector((state) => state.auth.user);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [open, setOpen] = useState(false);
   const [tags, setTags] = useState([]);
   const profileRef = useRef();
   const generalRef = useRef();
 
-   useEffect(() => {
-     if (location.state && location.state.tabIndex !== undefined) {
-       setSelectedTab(location.state.tabIndex); 
-     }
-   }, [location.state]);
+  const openDrawer = () => setOpen(true);
+  const closeDrawer = () => setOpen(false);
+
+  useEffect(() => {
+    if (location.state && location.state.tabIndex !== undefined) {
+      setSelectedTab(location.state.tabIndex);
+    }
+  }, [location.state]);
 
   const saveGeneralChanges = () => {
     if (generalRef.current) {
@@ -92,7 +97,7 @@ const Setting = () => {
           console.log("Sending tag to API:", tag);
           const response = await addTag(tag, user._id);
           console.log(`Tag added successfully:`, response);
-         
+
           return response;
         } catch (error) {
           console.error(`Error adding tag: ${tag.name}`, error);
@@ -101,7 +106,7 @@ const Setting = () => {
       });
 
       const results = await Promise.all(savePromises);
-      window.location.reload()
+      window.location.reload();
       toast.success("tags created Successfully");
 
       console.log("All tags saved successfully:", results);
@@ -110,7 +115,7 @@ const Setting = () => {
     }
   };
 
-    const debouncedSaveCreateTagChanges = debounce(saveCreateTagChanges, 1000);
+  const debouncedSaveCreateTagChanges = debounce(saveCreateTagChanges, 1000);
 
   const handleTagsChange = (updatedTags) => {
     setTags(updatedTags);
@@ -162,7 +167,7 @@ const Setting = () => {
           <p className="font-semibold text-base">
             {buttons[selectedTab].label}
           </p>
-          <div className="saveChanges">
+          <div className="saveChanges hidden lg:block">
             <Button
               className={"!px-12 font-medium"}
               onClick={handleSaveChanges}
@@ -170,9 +175,38 @@ const Setting = () => {
               {t("Save Changes")}
             </Button>
           </div>
+          <div className="mobile_menu block lg:hidden">
+            <button onClick={openDrawer}>
+              <span>
+                <FaBars className="text-purple w-5 h-5" />
+              </span>
+            </button>
+            <Drawer open={open} onClose={closeDrawer} className="p-4">
+              <h2 className="text-xl font-semibold text-purple">
+                {t("Settings")}
+              </h2>
+              <div className="divider h-px w-full bg-gray my-2"></div>
+              <div className="flex flex-col justify-start items-start gap-3">
+                {buttons.map((button) => (
+                  <button
+                    className={`text-gray hover:text-purple my-2  font-medium ${
+                      button.value === buttons[selectedTab].value
+                        ? "text-purple"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      handleTabChange(button, buttons.indexOf(button))
+                    }
+                  >
+                    {button.label}
+                  </button>
+                ))}
+              </div>
+            </Drawer>
+          </div>
         </div>
         <div className="divider h-px w-full bg-gray my-2"></div>
-        <div className="switchTabs my-2">
+        <div className="switchTabs my-2 hidden lg:block">
           <SwitchTabs
             data={buttons.map((button) => button.label)}
             onTabChange={handleTabChange}
@@ -180,6 +214,11 @@ const Setting = () => {
           />
         </div>
         <div className="content mt-4">{buttons[selectedTab].component}</div>
+      </div>
+      <div className="saveChanges_mobile  lg:hidden   flex items-center justify-center my-3">
+        <Button className={"font-medium"} onClick={handleSaveChanges}>
+          {t("Save Changes")}
+        </Button>
       </div>
     </div>
   );

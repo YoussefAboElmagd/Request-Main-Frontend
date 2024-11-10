@@ -16,9 +16,17 @@ const Role = () => {
 
   // Static roles
   const roles = [
-    { _id: "66d33a4b4ad80e468f231f83", name: "owner" },
-    { _id: "66d33ec44ad80e468f231f91", name: "contractor" },
-    { _id: "66d33e7a4ad80e468f231f8d", name: "consultant" },
+    { _id: "66d33a4b4ad80e468f231f83", name: "owner", label: t("owner") },
+    {
+      _id: "66d33ec44ad80e468f231f91",
+      name: "contractor",
+      label: t("contractor"),
+    },
+    {
+      _id: "66d33e7a4ad80e468f231f8d",
+      name: "consultant",
+      label: t("consultant"),
+    },
   ];
 
   const handleRoleSelect = (roleId) => {
@@ -72,7 +80,7 @@ const Role = () => {
                   onClick={() => handleRoleSelect(role._id)}
                   disabled={selectedRoleId && selectedRoleId !== role._id}
                 >
-                  {role.name}
+                  {role.label}
                 </button>
               ))}
             </div>

@@ -113,7 +113,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
     <div className="Profile ">
       <div className="wrapper bg-white rounded-xl p-4 m-2">
         <div className="flex flex-col">
-          <div className="avatar  my-2 relative ">
+          <div className="avatar  my-2 col-span-2 relative ">
             {preview ? (
               <img
                 src={preview}
@@ -143,10 +143,10 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
         </div>
         <div className="flex gap-4">
           <form
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full"
             onSubmit={handleUpdate}
           >
-            <div className="flex flex-col my-2 md:col-span-2">
+            <div className="flex flex-col my-2 col-span-2 ">
               <UiInput
                 type="text"
                 id="name"
@@ -156,7 +156,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 placeholder="Full Name"
               />
             </div>
-            <div className="flex flex-col my-2 md:col-span-2">
+            <div className="flex flex-col my-2 col-span-2 ">
               <UiInput
                 type="email"
                 id="email"
@@ -167,7 +167,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 placeholder="email@example.com"
               />
             </div>
-            <div className="flex flex-col my-2">
+            <div className="flex flex-col my-2 col-span-2">
               <UiInput
                 type="text"
                 label={t("role")}
@@ -177,7 +177,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 placeholder={role}
               />
             </div>
-            <div className="flex flex-col my-2">
+            <div className="flex flex-col my-2 col-span-2">
               <UiInput
                 type="tel"
                 id="phoneNumber"
@@ -187,7 +187,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 placeholder="+0753235789"
               />
             </div>
-            <div className="flex flex-col my-2">
+            <div className="flex flex-col my-2 col-span-2">
               <label
                 htmlFor="dob"
                 className="text-sm font-medium text-gray-700 flex justify-start"
@@ -206,7 +206,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 onChange={(e) => setDob(e)}
               />
             </div>
-            <div className="flex flex-col my-2">
+            <div className="flex flex-col my-2 col-span-2">
               <UiInput
                 type="text"
                 id="address"
@@ -216,7 +216,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 placeholder="San Jose, California, USA"
               />
             </div>
-            <div className="flex flex-col my-2">
+            <div className="flex flex-col my-2 col-span-2">
               <UiInput
                 type="text"
                 id="city"
@@ -226,7 +226,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 placeholder="City"
               />
             </div>
-            <div className="flex flex-col my-2">
+            <div className="flex flex-col my-2 col-span-2">
               <UiInput
                 type="text"
                 label={t("Country")}

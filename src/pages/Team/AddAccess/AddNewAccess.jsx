@@ -629,7 +629,7 @@ const AddNewAccess = () => {
           </div>
         )}
         <div className="btn flex items-center justify-center md:justify-end col-span-4 mt-5">
-          <Button onClick={handleSubmit}>{t("add")}</Button>
+          <Button onClick={handleSubmit} className={"px-0 text-sm"}>{t("add")}</Button>
         </div>
       </form>
     </div>

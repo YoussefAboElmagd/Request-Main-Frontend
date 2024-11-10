@@ -58,7 +58,7 @@ const Team = () => {
               <BsMicrosoftTeams className="text-purple-dark" />
             </span>
             <p
-              className="font-medium md:font-semibold  text-base md:text-lg "
+              className="font-medium md:font-semibold  text-base md:text-lg  "
               style={{
                 color: "#696A6B",
               }}

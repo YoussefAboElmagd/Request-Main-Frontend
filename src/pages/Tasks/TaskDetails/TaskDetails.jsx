@@ -64,7 +64,9 @@ const TaskDetails = () => {
           {Task.title}
         </h1>
         <div className="sData">
-          <span className="text-purple text-sm font-medium">task started:</span>
+          <span className="text-purple text-sm font-medium">
+            {t("task started:")}
+          </span>
           <span
             className="text-sm  font-semibold mx-1"
             style={{
@@ -77,7 +79,7 @@ const TaskDetails = () => {
       </div>
 
       <div className="wrapper bg-white grid grid-cols-2 rounded-3xl m-2 ">
-        <div className="box relative flex justify-center items-center">
+        <div className="box relative col-span-2 lg:col-span-1 flex justify-center items-center">
           <div className="analytics_box rounded-md shadow-sm p-8 flex flex-col gap-3 items-center">
             {Task.tags && Task.tags !== null && (
               <span
@@ -144,7 +146,7 @@ const TaskDetails = () => {
             </div>
           </div>
         </div>
-        <div className="form m-3 mr-24">
+        <div className="form m-3 col-span-2 lg:col-span-1 lg:mr-24">
           <Input
             type={"name"}
             required={true}

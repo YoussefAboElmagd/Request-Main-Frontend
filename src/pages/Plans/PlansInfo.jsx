@@ -94,6 +94,7 @@ const tableData = [
 
 
 const PlansInfo = () => {
+
   return (
     <div className="PlansInfo">
       <div className="header flex justify-between items-center mb-4">
@@ -151,81 +152,72 @@ const PlansInfo = () => {
         ))}
       </div>
 
-      <TableContainer className="mt-8">
-        <Table className="table w-full">
-          <TableHead>
-            <TableRow>
-              <TableCell className="font-bold ">{t("Feature")}</TableCell>
-              <TableCell className="font-bold text-center ">
-                {t("Request")}
-              </TableCell>
-              <TableCell className="font-bold text-center">
-                {t("RequestPlus")}
-              </TableCell>
-              <TableCell className="font-bold text-center">
-                {t("RequestPlusFull")}
-              </TableCell>
-            </TableRow>
-          </TableHead>
+      <table className={`table w-full mt-8`}>
+        <thead>
+          <tr>
+            <th className="font-bold "></th>
+            <th className="font-bold  text-start">{t("Request")}</th>
+            <th className="font-bold text-start">{t("RequestPlus")}</th>
+            <th className="font-bold text-start">{t("RequestPlusFull")}</th>
+          </tr>
+        </thead>
 
-          <TableBody>
-            {tableData.map((section, secIdx) => (
-              <>
-                <TableRow key={`section-${secIdx}`} >
-                  <TableCell
-                    colSpan={4}
-                    className="p-3 font-semibold text-lg bg-gray-200 "
-                  >
-                    {section.section}
-                  </TableCell>
-                </TableRow>
-                {section.features.map((feature, featureIndex) => (
-                  <TableRow key={`feature-${featureIndex}`}>
-                    <TableCell
-                      className={`border-b border-gray-300 p-2 `}
-                    >
-                      {feature.name}
-                    </TableCell>
-                    <TableCell className="border-b border-gray-300 p-2 text-center">
-                      {typeof feature.request === "boolean" ? (
-                        feature.request ? (
-                          <FaCheckCircle className="text-green w-5 h-5" />
-                        ) : (
-                          "-"
-                        )
+        <tbody>
+          {tableData.map((section, secIdx) => (
+            <>
+              <tr key={`section-${secIdx}`}>
+                <td
+                  colSpan={4}
+                  className="p-3 font-semibold text-lg bg-gray-200 "
+                >
+                  {section.section}
+                </td>
+              </tr>
+              {section.features.map((feature, featureIndex) => (
+                <tr key={`feature-${featureIndex}`}>
+                  <td className={`border-b border-gray-300 p-2 `}>
+                    {feature.name}
+                  </td>
+                  <td className="border-b border-gray-300 p-2   ">
+                    {typeof feature.request === "boolean" ? (
+                      feature.request ? (
+                        <FaCheckCircle className="text-green w-5 h-5" />
                       ) : (
-                        feature.request
-                      )}
-                    </TableCell>
-                    <TableCell className="border-b border-gray-300 p-2 text-center">
-                      {typeof feature.requestPlus === "boolean" ? (
-                        feature.requestPlus ? (
-                          <FaCheckCircle className="text-green w-5 h-5" />
-                        ) : (
-                          "-"
-                        )
+                        "-"
+                      )
+                    ) : (
+              
+                      feature.request
+                    )}
+                  </td>
+                  <td className="border-b border-gray-300 p-2 ">
+                    {typeof feature.requestPlus === "boolean" ? (
+                      feature.requestPlus ? (
+                        <FaCheckCircle className="text-green w-5 h-5" />
                       ) : (
-                        feature.requestPlus
-                      )}
-                    </TableCell>
-                    <TableCell className="border-b border-gray-300 p-2 text-center">
-                      {typeof feature.fullPlus === "boolean" ? (
-                        feature.fullPlus ? (
-                          <FaCheckCircle className="text-green w-5 h-5" />
-                        ) : (
-                          "-"
-                        )
+                        "-"
+                      )
+                    ) : (
+                      feature.requestPlus
+                    )}
+                  </td>
+                  <td className="border-b border-gray-300 ">
+                    {typeof feature.fullPlus === "boolean" ? (
+                      feature.fullPlus ? (
+                        <FaCheckCircle className="text-green w-5 h-5" />
                       ) : (
-                        feature.fullPlus
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                        "-"
+                      )
+                    ) : (
+                      feature.fullPlus
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -15,13 +15,18 @@ const SwitchTabs = ({
   const [activePosition, setActivePosition] = useState(0);
   const { isRTL } = useLanguage();
 
-   useEffect(() => {
-    setSelectedTab(Tab); 
-     setActivePosition(Tab * 220);
-   }, [Tab]);
+  useEffect(() => {
+    setSelectedTab(Tab);
+    updateActivePosition(Tab);
+  }, [Tab]);
+
+  const updateActivePosition = (index) => {
+    const tabWidth = document.querySelector(".tabItem")?.offsetWidth || 200;
+    setActivePosition(index * tabWidth);
+  };
 
   const activeTab = (tab, index) => {
-    setActivePosition(index * 220);
+    updateActivePosition(index);
     setTimeout(() => {
       setSelectedTab(index);
     }, 300);
@@ -29,14 +34,14 @@ const SwitchTabs = ({
   };
 
   return (
-    <div className={`switchingTabs  ${main_style} p-1`}>
-      <div className="tabItems gap-5 flex items-center relative ">
+    <div className={`switchingTabs ${main_style} p-1`}>
+      <div className="tabItems  flex items-center relative">
         {data.map((tab, index) => (
           <span
             key={index}
             className={`tabItem ${tab_style} py-1 text-center rounded-md my-1 cursor-pointer ${
               selectedTab === index ? `activeTabItem ${activeTab_style}` : ""
-            } `}
+            }`}
             onClick={() => activeTab(tab, index)}
           >
             {tab}
@@ -44,8 +49,8 @@ const SwitchTabs = ({
         ))}
         <span
           className={`movingBg ${movingBg_style}`}
-
           style={{
+            width: `calc(100% / ${data.length})`,
             ...(isRTL
               ? { right: `${activePosition}px` }
               : { left: `${activePosition}px` }),

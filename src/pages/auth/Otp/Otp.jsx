@@ -199,10 +199,10 @@ const Otp = () => {
           <div className="Wrapper flex items-center justify-between">
             <div className="w-96 my-40">
               <h3 className="font-workSans font-bold text-5xl">
-                {t("Sign in to activate your business easily")}
+                {t("sign in To activate your business easily")}
               </h3>
               <p className="font-jost font-medium text-2xl">
-                {t("If you don’t have an account you can")}
+                {t("if you don’t have an account you can")}
                 <Link className="text-blue block" to="/register">
                   {t("Register here!")}
                 </Link>
@@ -220,7 +220,7 @@ const Otp = () => {
             <div className="form flex flex-col items-center">
               <div className="Otp_text font-workSans font-normal text-xl text-center">
                 <p>
-                  {t(`An OTP message containing your code has been sent to `)}
+                  {t(`An OTP Message containing your code has been sent to`)}
                 </p>
                 <span className="text-red d-block">
                   {phone
@@ -274,11 +274,11 @@ const Otp = () => {
                   canResend && "text-red"
                 }`}
               >
-                {t("Resend OTP")}
+                {t("ResendOtp")}
               </button>
 
               <Button className={"mt-5"} onClick={handleSubmit}>
-                {t("Verify")}
+                {t("verify")}
               </Button>
               {error && (
                 <div className="text-center text-red mt-4">

@@ -114,10 +114,7 @@ const CreateCompany = () => {
     <div className="CreateCompany h-full relative effect_right ">
       <AuthHeader />
       <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-        <form
-          className="form flex flex-col "
-          onSubmit={handleSubmit}
-        >
+        <form className="form flex flex-col " onSubmit={handleSubmit}>
           {/* Logo Input */}
           <div className="addLogo w-[200px] lg:w-[250px] m-auto shadow-sm rounded-3xl my-2">
             <label
@@ -163,7 +160,7 @@ const CreateCompany = () => {
               placeholder={t("CompanyName")}
               required={true}
               onChange={(e) => setName(e.target.value)}
-              label={"Company Name"}
+              label={t("CompanyName")}
               className={
                 "bg-white  lg:w-[500px] border border-solid border-purple focus:border focus:border-solid focus:border-purple px-6 py-3 font-workSans font-bold text-base"
               }
@@ -218,7 +215,7 @@ const CreateCompany = () => {
           <div className="btn flex items-center justify-center md:justify-end my-3 mx-1 !px-0">
             <Button
               type="submit"
-              disabled={!isFormValid}  
+              disabled={!isFormValid}
               className={`${
                 !isFormValid
                   ? "bg-gray-400 text-white cursor-not-allowed"
@@ -233,10 +230,10 @@ const CreateCompany = () => {
         {/* Right Side Info Section */}
         <div className="w-full lg:w-[529px] mt-20 lg:my-40">
           <h3 className="font-workSans  font-semibold text-purple text-center md:text-left md:text-gray-dark md:font-bold text-2xl lg:text-5xl ">
-            You're just steps away from your screens
+            {t("You're just steps away from your screens")}
           </h3>
           <p className="font-jost font-medium text-center md:text-left text-xl  md:text-xl lg:text-2xl text-gray">
-            Complete the following data to save time added each time
+            {t("Complete the following data to save time added each time")}
           </p>
         </div>
       </div>

@@ -59,7 +59,7 @@ if (trimmedMessage === "" ) {
   }
     return (
       <div className="ContactUs ">
-        <div className="msg shadow-md bg-white flex items-center justify-between rounded-2xl ">
+        <div className="msg shadow-md bg-white flex flex-col  lg:flex-row items-center lg:justify-between rounded-2xl ">
           <div className="content flex flex-col p-4">
             <h6
               className="font-normal text-xl leading-5 my-1"
@@ -67,11 +67,11 @@ if (trimmedMessage === "" ) {
             >
               {t("Contact us")}
             </h6>
-            <h5 className="font-semibold text-2xl text-purple my-1">
+            <h5 className="font-semibold text-lg md:tex-xl lg:text-2xl text-purple my-1">
               {t("We are waiting for you")}
             </h5>
             <p
-              className="font-light text-sm leading-5 max-w-[620px] my-1"
+              className="font-light text-xs md:text-sm leading-5 max-w-[620px] my-1"
               style={{ color: "#5E5E5E" }}
             >
               {t(

@@ -19,28 +19,35 @@ const Security = () => {
   return (
     <div className="Security">
       <div className="email flex items-center  justify-between   m-2 mb-4 ">
-        <p>{t("Sign-in Email")}</p>
-        <span>{user.email}</span>
+        <p className="text-xs md:text-sm lg:text-base">{t("Sign-in Email")}</p>
+        <span className="text-xs md:text-sm lg:text-base">{user.email}</span>
       </div>
       <div className="changePassword flex items-center  justify-between   m-2 mt-8">
-        <p>{t("Password")}</p>
-        <Link to={"/forgotPassword"}>
+        <p className="text-xs md:text-sm lg:text-base">{t("Password")}</p>
+        <Link
+          to={"/forgotPassword"}
+          className="text-xs md:text-sm lg:text-base"
+        >
           <button className="btn  text-gold">{t("Change password")}</button>
         </Link>
       </div>
       <div className="divider h-px w-full bg-gray my-2"></div>
       <div className="twoFactor flex items-center  justify-between   mx-2 mt-4 mb-8">
-        <p>{t("2-FA authentication")}</p>
+        <p className="text-xs md:text-sm lg:text-base">
+          {t("2-FA authentication")}
+        </p>
         <CheckInput />
       </div>
       <div className="Phone flex items-center  justify-between   mx-2 mt-8 mb-2">
-        <p>{t("Phone number")}</p>
-        <span>{user.phone}</span>
+        <p className="text-xs md:text-sm lg:text-base"> {t("Phone number")}</p>
+        <span className="text-xs md:text-sm lg:text-base">{user.phone}</span>
       </div>
       <div className="divider h-px w-full bg-gray my-2"></div>
       <div className="LastSignIn mx-2 mt-4 mb-8">
-        <p>{t("Last Sign-in")}</p>
-        <span>{formatDate(user.updatedAt)}</span>
+        <p className="text-xs md:text-sm lg:text-base">{t("Last Sign-in")}</p>
+        <span className="text-xs md:text-sm lg:text-base">
+          {formatDate(user.updatedAt)}
+        </span>
       </div>
     </div>
   );

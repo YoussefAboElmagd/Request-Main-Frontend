@@ -227,6 +227,7 @@ const ProjectTeam = () => {
         setTagsLoading(false);
 
         setMembersData(MembersRes);
+        console.log(membersData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -322,7 +323,7 @@ const ProjectTeam = () => {
       await addMemberForProject(projectId, payload, token);
       clearFields();
       toast.success("Member Added Successfully ");
-       window.location.reload();
+      window.location.reload();
     } catch (error) {
       console.log(error);
       setFieldErrors(error);
@@ -402,7 +403,14 @@ const ProjectTeam = () => {
 
   if (loading) return <p>Loading...</p>;
 
-  const { admins = {}, members = [], count = 0 } = membersData || {};
+  const {
+    admins = {},
+    groupedMembers = [],
+    ownerTeam = [],
+    consultantTeam = [],
+    constractorTeam = [],
+    count = 0,
+  } = membersData || {};
   const { owner, consultant, contractor } = admins;
 
   return (
@@ -428,7 +436,7 @@ const ProjectTeam = () => {
         </div>
       </div>
 
-      <div className="admins grid grid-cols-3 gap-3 my-3">
+      <div className="admins grid grid-cols-1 lg:grid-cols-3 gap-3 my-3">
         {(owner || owner !== null) && (
           <div className="admin">
             <h4 className="m-1 font-medium text-sm">{t("owner")}</h4>
@@ -437,7 +445,7 @@ const ProjectTeam = () => {
               <div className="flex flex-col">
                 <span className=" text-sm font-medium">{owner.name}</span>
                 <span className="text-blue text-sm font-medium">
-                  Owner Team
+                  {t("ownerTeam")}
                 </span>
               </div>
             </div>
@@ -454,7 +462,7 @@ const ProjectTeam = () => {
               <div className="flex flex-col">
                 <span className=" text-sm font-medium">{consultant.name}</span>
                 <span className="text-blue text-sm font-medium">
-                  consultant Team
+                  {t("consultantTeam")}
                 </span>
               </div>
             </div>
@@ -471,7 +479,7 @@ const ProjectTeam = () => {
               <div className="flex flex-col">
                 <span className=" text-sm font-medium">{contractor.name}</span>
                 <span className="text-blue text-sm font-medium">
-                  contractor Team
+                  {t("contractorTeam")}
                 </span>
               </div>
             </div>
@@ -479,7 +487,7 @@ const ProjectTeam = () => {
         )}
       </div>
 
-      <div className="DelegatedAccess bg-white rounded-3xl m-2 p-4">
+      <div className="DelegatedAccess bg-white rounded-3xl m-2 p-4 hidden lg:block">
         <table className="w-full text-sm text-center text-gray-500 border-collapse">
           <thead className="text-xs font-bold text-gray-dark uppercase border-b-2 border-gray">
             <tr>
@@ -492,9 +500,10 @@ const ProjectTeam = () => {
             </tr>
           </thead>
           <tbody>
-            {members.length > 0 ? (
-              members.map((member) => (
-                <tr key={member._id}>
+            {ownerTeam.map((member) => (   
+              <>
+                <h4 className="text-blue my-1"> {t("ownerTeam")}</h4>
+                <tr key={member._id} className="shadow-md p-1 rounded-lg">
                   <td className="text-left py-2 px-4 font-medium text-gray-dark">
                     {member.name}
                   </td>
@@ -530,14 +539,101 @@ const ProjectTeam = () => {
                     </button>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6" className="py-4 text-gray-400">
-                  {t("No Team Members")}
-                </td>
-              </tr>
-            )}
+              </>
+            ))}
+            {consultantTeam.map((member) => (
+              <>
+                <h4 className="text-blue my-1">{t("consultantTeam")}</h4>
+                <tr key={member._id} className="shadow-md p-1 rounded-lg">
+                  <td className="text-left py-2 px-4 font-medium text-gray-dark">
+                    {member.name}
+                  </td>
+                  <td className="px-4 py-2">
+                    {member.vocation ? member.vocation.name : "N/A"}
+                  </td>
+                  <td
+                    className="px-4 py-2 "
+                    style={{
+                      color: "#5BA6FF",
+                    }}
+                  >
+                    {member.email}
+                  </td>
+                  <td
+                    className="px-4 py-2 text-green"
+                    style={{
+                      color: "#34C759",
+                    }}
+                  >
+                    {member.phone}
+                  </td>
+                  <td className="px-4 py-2">{member.access}</td>
+                  <td className="px-4 py-2 flex justify-center gap-3">
+                    <button
+                      className="text-red"
+                      onClick={() => {
+                        setSelectedUserId(member._id);
+                        handleOpen();
+                      }}
+                    >
+                      <MdDelete className="w-5 h-5" />
+                    </button>
+                  </td>
+                </tr>
+              </>
+            ))}
+            {constractorTeam.map((member) => (
+              <>
+                <h4 className="text-blue my-1">{t("contractorTeam")}</h4>
+
+                <tr key={member._id} className="shadow-md p-1 rounded-lg">
+                  <td className="text-left py-2 px-4 font-medium text-gray-dark">
+                    {member.name}
+                  </td>
+                  <td className="px-4 py-2">
+                    {member.vocation ? member.vocation.name : "N/A"}
+                  </td>
+                  <td
+                    className="px-4 py-2 "
+                    style={{
+                      color: "#5BA6FF",
+                    }}
+                  >
+                    {member.email}
+                  </td>
+                  <td
+                    className="px-4 py-2 text-green"
+                    style={{
+                      color: "#34C759",
+                    }}
+                  >
+                    {member.phone}
+                  </td>
+                  <td className="px-4 py-2">{member.access}</td>
+                  <td className="px-4 py-2 flex justify-center gap-3">
+                    <button
+                      className="text-red"
+                      onClick={() => {
+                        setSelectedUserId(member._id);
+                        handleOpen();
+                      }}
+                    >
+                      <MdDelete className="w-5 h-5" />
+                    </button>
+                  </td>
+                </tr>
+              </>
+            ))}
+
+            {ownerTeam.length === 0 &&
+              constractorTeam.length === 0 &&
+              consultantTeam.length === 0 && (
+                <tr>
+                  <td colSpan="6" className="py-4 text-gray-400">
+                    {t("No Team Members")}
+                  </td>
+                </tr>
+              )}
           </tbody>
         </table>
         <div className="delete">
@@ -575,13 +671,63 @@ const ProjectTeam = () => {
           </Dialog>
         </div>
       </div>
+      {/* DelegatedAccess mobile view */}
+      <div className="DelegatedAccess bg-white rounded-3xl m-2 p-4 block lg:hidden">
+        {groupedMembers.map((member) => (
+          <div
+            key={member._id}
+            className=" relative rounded-xl shadow-md p-4 my-2 bg-white flex justify-between items-center gap-2"
+          >
+            <div className="absolute top-4 right-4 flex gap-2">
+              <button
+                className="text-red"
+                onClick={() => {
+                  setSelectedUserId(member._id);
+                  setSelectedProjectId(project.projectId);
 
+                  handleOpen();
+                }}
+              >
+                <MdDelete className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex flex-col gap-3">
+              <ProfileAvatar
+                name={member.name}
+                profilePic={member.profilePic}
+              />
+
+              <span className="tet-base font-medium">{member.name}</span>
+              <span className="tet-base font-medium">
+                {member.vocation ? member.vocation.name : "N/A"}
+              </span>
+              <span
+                className="tet-base font-medium"
+                style={{
+                  color: "#5BA6FF",
+                }}
+              >
+                {member.email}
+              </span>
+              <span
+                className="tet-base font-medium"
+                style={{
+                  color: "#34C759",
+                }}
+              >
+                {member.phone}
+              </span>
+              <span>{member.access}</span>
+            </div>{" "}
+          </div>
+        ))}
+      </div>
       <div className="AddNewAccess bg-white rounded-3xl m-2 p-4">
         <form
           onSubmit={handleSubmit}
           className="form grid grid-cols-4 gap-2 max-w-5xl"
         >
-          <div className="col-span-4 md:col-span-2">
+          <div className="col-span-4 lg:col-span-2">
             <Input
               type={"email"}
               name="email"
@@ -595,7 +741,7 @@ const ProjectTeam = () => {
               icon={<CiMail />}
             />
           </div>
-          <div className="col-span-4 md:col-span-2">
+          <div className="col-span-4 lg:col-span-2">
             <Input
               type={isPasswordVisible ? "text" : "password"}
               name="password"
@@ -609,7 +755,7 @@ const ProjectTeam = () => {
               togglePasswordVisibility={togglePasswordVisibility}
             />
           </div>
-          <div className="col-span-4 md:col-span-2 ">
+          <div className="col-span-4 lg:col-span-2 ">
             <Input
               type="text"
               name="name"
@@ -621,7 +767,7 @@ const ProjectTeam = () => {
               icon={<MdOutlinePerson />}
             />
           </div>
-          <div className="col-span-4 md:col-span-2 relative flex mt-5  w-full">
+          <div className="col-span-4 lg:col-span-2 relative flex mt-5  w-full">
             <Menu placement="bottom-start">
               <MenuHandler>
                 <Btn
@@ -761,7 +907,7 @@ const ProjectTeam = () => {
                 id="read"
                 checked={accessList.read}
                 onChange={(e) => changeReadValue(e.target.checked)}
-                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-3 h-3  lg:w-4 lg:h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="read" className="font-medium text-base">
                 {t("Read")}
@@ -773,7 +919,7 @@ const ProjectTeam = () => {
                 id="Edit"
                 checked={accessList.edit}
                 onChange={(e) => changeEditValue(e.target.checked)}
-                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-3 h-3  lg:w-4 lg:h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="write" className="font-medium text-base">
                 {t("Edit")}
@@ -785,7 +931,7 @@ const ProjectTeam = () => {
                 id="create"
                 checked={accessList.create}
                 onChange={(e) => changeCreateValue(e.target.checked)}
-                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-3 h-3  lg:w-4 lg:h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="create" className="font-medium text-base">
                 {t("Create")}
@@ -797,7 +943,7 @@ const ProjectTeam = () => {
                 id="delete"
                 checked={accessList.delete}
                 onChange={(e) => changeDeleteValue(e.target.checked)}
-                className="appearance-none w-4 h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
+                className="appearance-none w-3 h-3  lg:w-4 lg:h-4 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
               />
               <label htmlFor="delete" className="font-medium text-base">
                 {t("Delete")}
@@ -816,7 +962,12 @@ const ProjectTeam = () => {
             </div>
           )}
           <div className="btn flex items-center justify-center md:justify-end col-span-4 mt-5">
-            <Button onClick={handleSubmit}>{t("add")}</Button>
+            <Button
+              onClick={handleSubmit}
+              className={"px-0  text-sm lg:text-base"}
+            >
+              {t("add")}
+            </Button>
           </div>
         </form>
       </div>

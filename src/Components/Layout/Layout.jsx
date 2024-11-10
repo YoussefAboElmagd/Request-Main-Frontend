@@ -27,6 +27,13 @@ const Layout = () => {
     "/SignUp/ChooseRole",
     "/SignUp/createCompany",
     "/forgotPassword",
+    "/landing",
+    "/landing/services",
+    "/landing/ContactUs",
+    "/landing/seePlans",
+    // "/landing/plansDetails",
+    "/landing/PlansInfo",
+    "/landing/*",
   ];
 
   const showSidebar = !noSidebarRoutes.includes(location.pathname);

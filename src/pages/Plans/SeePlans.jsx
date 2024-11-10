@@ -131,7 +131,7 @@ function classNames(...classes) {
 const SeePlans = () => {
   return (
     <div className="SeePlans flex flex-col items-center">
-      <h1 className="text-xl  md:text-2xl lg:text-3xl font-extrabold">
+      <h1 className="text-xl  md:text-2xl ltr:lg:text-3xl rtl:lg:text-4xl font-extrabold">
         {t("Streamline your teamwork. Start free.")}
       </h1>
       <p className="font-normal text-sm md:text-base my-3">
@@ -222,7 +222,7 @@ const SeePlans = () => {
               ))}
             </ul>
             <Link to={"/PlanDetails"}>
-              <Button className={"mt-4 font-normal text-xs"}>
+              <Button className={"mt-4 font-normal text-xs px-0  lg:px-8"}>
                 {t("Get Started")}
               </Button>
             </Link>

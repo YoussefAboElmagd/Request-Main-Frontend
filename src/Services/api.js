@@ -443,6 +443,21 @@ export const sendEmailContactUs = async (contactData, userId) => {
   }
 };
 
+export const sendEmailGetInTouch = async (contactData) => {
+  try {
+    const response = await axiosInstance.post(`users/getInTouch/`, contactData);
+
+    console.log("Response from send email contact us => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Send email contact us error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
 //  get all Docs
 export const getAllDocs = async (userId) => {
   try {

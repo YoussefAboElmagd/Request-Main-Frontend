@@ -85,18 +85,18 @@ const Company = () => {
 
   return (
     <div className="Company">
-      <div className="wrapper bg-white rounded-xl p-4 m-2">
+      <div className="wrapper bg-white rounded-xl p-2 m-2">
         <div className="flex flex-col">
-          <div className="logo my-2 mx-4 relative">
+          <div className="logo my-2 mx-2 lg:mx-4 relative">
             <img
               src={preview}
               alt={user.companyName}
-              className="rounded-full w-24 h-24 object-contain border border-gray p-2"
+              className="rounded-full w-20 h-20 lg:w-24 lg:h-24  object-contain border border-gray p-2"
             />
             <button
               onClick={() => document.getElementById("fileInput").click()}
-              className="absolute h-10 rounded-b-full flex items-center justify-center ltr:left-0 rtl:right-0 bottom-px cursor-pointer"
-              style={{ background: "#9E9E9E", width: "95px" }}
+              className="absolute w-20 lg:w-24 h-10 rounded-b-full flex items-center justify-center ltr:left-0 rtl:right-0 bottom-px cursor-pointer"
+              style={{ background: "#9E9E9E" }}
               aria-label="Upload Company Logo"
             >
               <CiCamera className="text-white w-5 h-5" />
@@ -104,7 +104,7 @@ const Company = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <div className="companyName mx-4 my-2">
+          <div className="companyName mx-1 lg:mx-4 my-2">
             <Input
               type="text"
               id="companyName"
@@ -123,7 +123,7 @@ const Company = () => {
               className="box flex justify-start items-center bg-white py-1 px-6 gap-2 rounded-2xl m-2 shadow-mdc1 shadow-lg"
             >
               <div
-                className="icon_wrapper rounded-2xl p-5 my-2 mx-4"
+                className="icon_wrapper rounded-2xl p-5 my-2 mx-1 lg:mx-4"
                 style={{ background: "#CCABDA33" }}
               >
                 <LiaStampSolid className="text-purple w-6 h-6" />
@@ -131,7 +131,7 @@ const Company = () => {
               <img
                 src={stampPreview}
                 alt="Stamp Preview"
-                className="w-[66px] h-[62px] object-cover rounded-lg"
+                className="w-[50px] h-[50px] lg:w-[66px] lg:h-[62px] object-cover rounded-lg"
               />
             </label>
             <input
