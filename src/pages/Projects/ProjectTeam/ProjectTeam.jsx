@@ -500,9 +500,12 @@ const ProjectTeam = () => {
             </tr>
           </thead>
           <tbody>
-            {ownerTeam.map((member) => (   
+            {ownerTeam.length > 0 && (
+              <h4 className="text-blue my-1"> {t("ownerTeam")}</h4>
+            )}
+
+            {ownerTeam.map((member) => (
               <>
-                <h4 className="text-blue my-1"> {t("ownerTeam")}</h4>
                 <tr key={member._id} className="shadow-md p-1 rounded-lg">
                   <td className="text-left py-2 px-4 font-medium text-gray-dark">
                     {member.name}
@@ -541,9 +544,12 @@ const ProjectTeam = () => {
                 </tr>
               </>
             ))}
+            {consultantTeam.length > 0 && (
+              <h4 className="text-blue my-1">{t("consultantTeam")}</h4>
+            )}
+
             {consultantTeam.map((member) => (
               <>
-                <h4 className="text-blue my-1">{t("consultantTeam")}</h4>
                 <tr key={member._id} className="shadow-md p-1 rounded-lg">
                   <td className="text-left py-2 px-4 font-medium text-gray-dark">
                     {member.name}
@@ -582,10 +588,11 @@ const ProjectTeam = () => {
                 </tr>
               </>
             ))}
+            {constractorTeam.length > 0 && (
+              <h4 className="text-blue my-1">{t("contractorTeam")}</h4>
+            )}
             {constractorTeam.map((member) => (
               <>
-                <h4 className="text-blue my-1">{t("contractorTeam")}</h4>
-
                 <tr key={member._id} className="shadow-md p-1 rounded-lg">
                   <td className="text-left py-2 px-4 font-medium text-gray-dark">
                     {member.name}
