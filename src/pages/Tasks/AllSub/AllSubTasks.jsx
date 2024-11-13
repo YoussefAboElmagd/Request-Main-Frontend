@@ -36,8 +36,10 @@ const AllSubTasks = () => {
     fetchData();
   }, []);
 
-    const formatDate = (date) => format(new Date(date), "dd MMM");
-
+ const formatDate = (date) => {
+   if (!date) return "";
+   return format(new Date(date), "dd MMM");
+ };  
   return (
     <div className="AllSubTasks">
       <h1 className="title font-inter font-bold text-3xl text-black m-2">
@@ -129,8 +131,8 @@ const AllSubTasks = () => {
                     avatars={avatars}
                     filesLength={2}
                     MsgLength={6}
-                    sDate={formatDate(task.startDate)}
-                    eDate={formatDate(task.dueDate)}
+                    sDate={formatDate(task?.sDate)}
+                    eDate={formatDate(task?.dueDate)}
                   />
                 </Link>
               </div>
@@ -159,7 +161,7 @@ const AllSubTasks = () => {
                     avatars={avatars}
                     filesLength={2}
                     MsgLength={6}
-                    sDate={formatDate(task.startDate)}
+                    sDate={formatDate(task.sDate)}
                     eDate={formatDate(task.dueDate)}
                   />
                 </Link>
