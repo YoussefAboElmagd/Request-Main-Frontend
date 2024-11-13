@@ -90,6 +90,7 @@
   "Waiting": "في الانتظار",
   "Ended": "مكتمل",
   "TName": "اسم العلامة",
+
   "createTag": "إنشاء علامة",
   "AddLogo": "إضافة شعار",
   "CompanyName": "اسم الشركة",
@@ -321,5 +322,11 @@
   "You will receive a code in your email that must be entered to reset your password": "ستتلقى رمزًا في بريدك الإلكتروني يجب إدخاله لإعادة تعيين كلمة المرور",
   "Tasksetter": "محدد المهام",
   "view all history": "عرض كل التاريخ",
-  "TaskHistory": "سجل المهام"
+  "TaskHistory": "سجل المهام",
+  "invoiced quantity": "الكمية المفوترة",
+  "Approved quantity": "الكمية المعتمدة",
+  "Executed quantity": "الكمية المنفذة",
+  "CreateTask": "إنشاء مهمة",
+  "UpdateTask": "تحديث مهمة",
+  "GeneralChange": "تغيير عام"
 }

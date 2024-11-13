@@ -170,7 +170,6 @@ export const getAllProjectsForUser = async (userId, token) => {
 };
 
 // get Project history
-// project/user/${userId}?status=${Status}
 export const getProjectHistory = async (Status, userId, token) => {
   try {
     const response = await axiosInstance.get(
@@ -837,14 +836,18 @@ export const deleteMemberFromProjectTeam = async ( projectId, Member) => {
 
 // update task 
 
-export const updateTask = async (token, taskId, taskData) => {
+export const updateTask = async (token, taskId, userId, taskData) => {
   try {
-    const response = await axiosInstance.put(`task/${taskId}`, taskData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axiosInstance.put(
+      `task/${taskId}?id=${userId}`,
+      taskData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log("Response from update task => ", response);
     return response.data;
@@ -871,6 +874,27 @@ export const getNotificationCounts = async (token, userId) => {
   } catch (error) {
     console.error(
       "Get notification counts error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// get task history
+
+export const getTaskHistory = async (token, taskId) => {
+  try {
+    const response = await axiosInstance.get(`taskLog/task/${taskId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from task history => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get task history error: ",
       error.response?.data || error.message
     );
     throw error;

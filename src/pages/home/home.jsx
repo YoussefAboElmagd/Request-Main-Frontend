@@ -180,6 +180,7 @@ const Home = () => {
               </button>
             </div>
 
+
             {filteredProjects.length > 0 ? (
               filteredProjects.map((project) => {
                 return (
@@ -221,7 +222,7 @@ const Home = () => {
                                   status={task.taskStatus}
                                   avatars={avatars}
                                   parentTask={task.parentTask}
-                                  taskType={task.taskType}
+                                  taskType={task.type}
                                   filesLength={task?.documentsLength}
                                   MsgLength={task?.notesLength}
                                   sDate={formatDate(task.sDate)}

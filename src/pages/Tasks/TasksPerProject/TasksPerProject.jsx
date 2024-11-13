@@ -32,6 +32,8 @@ const TasksPerProject = () => {
   const [loading, setLoading] = useState(false);
   const [Status, setStatus] = useState("all");
   const [viewMode, setViewMode] = useState("board");
+  const [progress, setProgress] = useState(0);
+
   const [open, setOpen] = useState(false);
   const [selectedTaskType, setSelectedTaskType] = useState("");
   const navigate = useNavigate();
@@ -45,13 +47,28 @@ const TasksPerProject = () => {
     { label: t("Delayed"), value: "delayed" },
   ];
 
+ const calculateProgress = (task) => {
+   if (task?.executedQuantity && task?.requiredQuantity) {
+     return Math.min(
+       100,
+       (task.executedQuantity / task.requiredQuantity) * 100
+     );
+   }
+   return 0;
+ };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const data = await getAllTasksPerProject(id, Status);
-        setData(data.results);
-        console.log(data);
+       const tasksWithProgress = data.results.map((task) => ({
+         ...task,
+         progress: calculateProgress(task),
+       }));
+       console.log(tasksWithProgress);
+       
+       setData(tasksWithProgress);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -73,11 +90,20 @@ const TasksPerProject = () => {
     setSelectedTaskType(value);
   };
 
+  const task = data.map((task) => (
+    task
+  ))
 
- const formatDate = (date) => {
-   if (!date) return "";
-   return format(new Date(date), "dd MMM");
- };
+
+
+
+  useEffect(() => {
+    calculateProgress();
+  }, [task.executedQuantity, task.requiredQuantity]);
+  const formatDate = (date) => {
+    if (!date) return "";
+    return format(new Date(date), "dd MMM");
+  };
   return (
     <div className="AllTasks">
       <h1 className="title font-inter font-bold text-3xl text-black m-2">
@@ -170,7 +196,7 @@ const TasksPerProject = () => {
                 label={t("type")}
                 id={"type"}
                 options={[
-                  { label: t("Parent Task"), value: "parent" },
+                  { label: t("Table of Quantities"), value: "parent" },
                   { label: t("Sub Task"), value: "sub" },
                   { label: t("Milestone"), value: "milestone" },
                   { label: t("Recurring Task"), value: "recurring" },
@@ -211,8 +237,8 @@ const TasksPerProject = () => {
                     state={{ taskId: task._id }}
                   >
                     <BoardView
-                      ProgressValue={70}
-                      NameOfTask={task.title}
+                     ProgressValue={task.progress} 
+                     NameOfTask={task.title}
                       Tagname={task?.tags?.name}
                       Tag={task.tags}
                       taskPriority={task.taskPriority}
@@ -243,11 +269,12 @@ const TasksPerProject = () => {
                     state={{ taskId: task._id }}
                   >
                     <ListView
-                      ProgressValue={70}
+                      ProgressValue={task.progress}
                       NameOfTask={task.title}
                       Tagname={task.title}
                       taskPriority={task.taskPriority}
                       status={task.taskStatus}
+                      taskType={task.type}
                       avatars={avatars}
                       filesLength={task?.documents.length}
                       MsgLength={task?.notes.length}

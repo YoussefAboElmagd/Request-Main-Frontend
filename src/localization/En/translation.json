@@ -158,7 +158,7 @@
   "Skip This Request": "Skip This Request",
   "Responsible Person": "Responsible Person",
   "Price": "Price",
-  "Quantity": "Quantity",
+  "Quantity": "Required Quantity",
   "Total": "Total",
   "Unit": "Unit",
   "You haven't posted any tasks yet": "You haven't posted any tasks yet",
@@ -311,5 +311,11 @@
   "You will receive a code in your email that must be entered to reset your password": "You will receive a code in your email that must be entered to reset your password",
   "Tasksetter": "Task Setter",
   "view all history": "view all history",
-  "TaskHistory": "Task History"
+  "TaskHistory": "Task History",
+  "invoiced quantity": "invoiced quantity",
+  "Approved quantity": "Approved quantity",
+  "Executed quantity": "Executed quantity",
+  "CreateTask": "Create Task",
+  "UpdateTask": "Update Task",
+  "GeneralChange": "General Change"
 }

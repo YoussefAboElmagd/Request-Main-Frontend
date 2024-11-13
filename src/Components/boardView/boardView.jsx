@@ -21,7 +21,7 @@ const BoardView = ({
   eDate,
 }) => {
   return (
-    <div className="box bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
+    <div className="box bg-white rounded-lg shadow-sm p-2 flex flex-col  col-span-1">
       <div className="tagName flex justify-center">
         {Tag && Tag !== null && (
           <span
@@ -41,29 +41,36 @@ const BoardView = ({
           <FaPen className="text-gray w-4 h-4 cursor-pointer" />
         </span>
       </div>
-      <div className="progress w-full mx-2 my-3">
-        <div className="mb-2 flex items-center justify-between gap-4">
-          <p className="font-inter font-normal text-xs text-gray-dark">
-            Progress
-          </p>
-          <span className="font-inter font-normal text-xs text-gray-dark px-2">
-            {ProgressValue} %
-          </span>
+      {taskType === "toq" && (
+        <div className="progress w-full mx-2 my-3">
+          <div className="mb-2 flex items-center justify-between gap-4">
+            <p className="font-inter font-normal text-xs text-gray-dark">
+              Progress
+            </p>
+            <span className="font-inter font-normal text-xs text-gray-dark px-2">
+              {ProgressValue} %
+            </span>
+          </div>
+          <Progress
+            value={ProgressValue}
+            color="purple"
+            trackColor="gray"
+            barProps={{
+              style: {
+                height: "5px",
+                backgroundColor: "purple",
+              },
+            }}
+            size="sm"
+          />
         </div>
-        <Progress
-          value={ProgressValue}
-          color="purple"
-          trackColor="gray"
-          barProps={{
-            style: {
-              height: "5px",
-              backgroundColor: "purple",
-            },
-          }}
-          size="sm"
-        />
-      </div>
-      <div className="chips flex items-center justify-start gap-2">
+      )}
+
+      <div
+        className={`chips flex items-center justify-start gap-2 ${
+          taskType !== "toq" ? "mt-10" : ""
+        }`}
+      >
         <span
           className={`${taskType} capitalize font-inter font-semibold text-xs text-center py-1 px-2 rounded-3xl`}
         >
@@ -84,7 +91,9 @@ const BoardView = ({
           {status}
         </span>
       </div>
-      <div className="flex items-center justify-between mx-2 my-3">
+      <div className={`flex items-center justify-between mx-2 my-3 ${
+            taskType !== "toq" ? "mt-6" : ""
+          }`}>
         <div className="members flex -space-x-2">
           {avatars.map((avatar, index) => (
             <img
@@ -95,7 +104,9 @@ const BoardView = ({
             />
           ))}
         </div>
-        <div className="files flex items-center gap-3 cursor-pointer">
+        <div
+          className={`files flex items-center gap-3 cursor-pointer `}
+        >
           <div className="files flex items-center gap-1">
             <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
               {filesLength}

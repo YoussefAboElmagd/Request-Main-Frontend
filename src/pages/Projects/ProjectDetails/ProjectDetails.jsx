@@ -179,7 +179,9 @@ const ProjectDetails = () => {
               <div className="analytics_box rounded-md shadow-md p-8 flex flex-col gap-3  mt-4 mb-4 mx-4 ">
                 <div
                   className={`progress_wrapper  flex flex-col lg:flex-row items-center ${
-                    user.plan.name === "RequestPlus" ? "lg:justify-between" : "lg:justify-center"
+                    user.plan.name === "RequestPlus"
+                      ? "lg:justify-between"
+                      : "lg:justify-center"
                   }   gap-2 rounded-2xl shadow-md p-8 relative`}
                 >
                   {user.plan.name === "RequestPlus" && (
@@ -207,10 +209,10 @@ const ProjectDetails = () => {
                           "--CircularProgress-progressShadowBlur": "10px",
                           "--CircularProgress-progressShadowOffset": "0px 2px",
                         }}
-                        value={70}
+                        value={Project.progress}
                         variant="solid"
                       >
-                        70%
+                        {Project.progress}%
                       </CircularProgress>
                     </div>
                   )}

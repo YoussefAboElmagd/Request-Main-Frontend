@@ -10,6 +10,7 @@ const ListView = ({
   NameOfTask,
   ProgressValue,
   taskPriority,
+  taskType,
   status,
   avatars = [],
   MsgLength,
@@ -68,29 +69,30 @@ const ListView = ({
           </span>
         )}
       </div>
-
-      <div className="progress hidden md:block md:max-w-sm lg:max-w-lg w-full mx-1 my-3">
-        <div className="mb-2 flex items-center justify-between gap-2">
-          <p className="font-inter font-normal text-xs text-gray-dark">
-            Progress
-          </p>
-          <span className="font-inter font-normal text-xs text-gray-dark px-2">
-            {ProgressValue} %
-          </span>
+      {taskType === "toq" && (
+        <div className="progress hidden md:block md:max-w-sm lg:max-w-lg w-full mx-1 my-3">
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <p className="font-inter font-normal text-xs text-gray-dark">
+              Progress
+            </p>
+            <span className="font-inter font-normal text-xs text-gray-dark px-2">
+              {ProgressValue} %
+            </span>
+          </div>
+          <Progress
+            value={ProgressValue}
+            color="purple"
+            trackColor="gray"
+            barProps={{
+              style: {
+                height: "5px",
+                backgroundColor: "purple",
+              },
+            }}
+            size="sm"
+          />
         </div>
-        <Progress
-          value={ProgressValue}
-          color="purple"
-          trackColor="gray"
-          barProps={{
-            style: {
-              height: "5px",
-              backgroundColor: "purple",
-            },
-          }}
-          size="sm"
-        />
-      </div>
+      )}
       {Tag && Tag !== null && (
         <div className="tagName flex justify-center">
           <span

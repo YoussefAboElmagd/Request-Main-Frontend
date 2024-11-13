@@ -151,7 +151,7 @@ const ProjectHistory = () => {
                     state={{ projectId: Project._id }}
                   >
                     <BoardViewProject
-                      ProgressValue={70}
+                      ProgressValue={Project?.progress}
                       NameOfTask={Project?.name}
                       Status={Project?.status}
                       avatars={avatars}
@@ -178,10 +178,10 @@ const ProjectHistory = () => {
                     state={{ projectId: Project._id }}
                   >
                     <ListView
-                      ProgressValue={70}
-                      NameOfTask={Project.name}
-                      taskPriority={Project.projectPriority}
-                      status={Project.status}
+                      ProgressValue={Project?.progress}
+                      NameOfTask={Project?.name}
+                      taskPriority={Project?.projectPriority}
+                      status={Project?.status}
                       avatars={avatars}
                       filesLength={Project?.documentsLength}
                       MsgLength={Project?.notes?.length}

@@ -20,17 +20,13 @@ export const HistoryItem = ({
         <div className="flex-1">
           <h3 className="text-lg font-medium">{title}</h3>
         </div>
-        <div className="icon ">
-          <span>
-            <FaXmark className="w-4 h-4" />
-          </span>
-        </div>
+       
       </div>
-      <div className="content flex-1">
+      <div className="content flex-1 my-1">
         <p className="text-sm">{message}</p>
       </div>
       <div className="flex justify-between items-center">
-        <p className="text-xs text-gray-500">{timestamp}</p>
+        <p className="text-xs text-gray">{timestamp}</p>
         {showButtons && (
           <div className="actions flex justify-end gap-2 space-x-2 mt-2">
             <button

@@ -3,25 +3,29 @@ import React, { useEffect, useState } from "react";
 import Input from "../../../Components/UI/Input/Input";
 import { MdCalendarToday, MdEditSquare } from "react-icons/md";
 import { FaFileLines } from "react-icons/fa6";
-import { IoPrint } from "react-icons/io5";
-import { FaCommentMedical } from "react-icons/fa6";
 import { CircularProgress } from "@mui/joy";
 import { Link, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import Loader from "../../../Components/Loader/Loader";
-import { getTaskDetails } from "../../../Services/api";
+import { getAllUnits, getTaskDetails, updateTask } from "../../../Services/api";
 import avatar from "../../../assets/images/avatar1.png";
 import Button from "../../../Components/UI/Button/Button";
 import { AddNote } from "../../../Components/AddNote/AddNote";
-import Select from "../../../Components/UI/Select/Select";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const TaskDetails = () => {
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
+  const location = useLocation();
+  const { taskId } = location.state || {};
   const [loading, setLoading] = useState(false);
   const [Task, setTask] = useState({});
+  const [initialTask, setInitialTask] = useState({});
+
   const [IsToq, setIsToq] = useState(false);
   const [progress, setProgress] = useState(0);
-  const location = useLocation();
+  const [isEditing, setIsEditing] = useState(false);
 
-  const { taskId } = location.state || {};
   useEffect(() => {
     setIsToq(Task.type === "toq");
   }, [Task.type]);
@@ -30,10 +34,9 @@ const TaskDetails = () => {
     const fetchTask = async () => {
       setLoading(true);
       try {
-        const response = await getTaskDetails(taskId);
-        setTask(response.results);
-        // calculateProgress(response.results);
-        console.log(response);
+        const [taskData] = await Promise.all([getTaskDetails(taskId)]);
+        setTask(taskData.results);
+        setInitialTask(taskData.results);
       } catch (error) {
         console.error("Error fetching Task:", error);
       } finally {
@@ -42,6 +45,58 @@ const TaskDetails = () => {
     };
     fetchTask();
   }, [taskId]);
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const getUpdatedFields = () => {
+    const updatedFields = {};
+
+    // Compare each field in Task with the initialTask to detect changes
+    if (Task.executedQuantity !== initialTask.executedQuantity) {
+      updatedFields.executedQuantity = Task.executedQuantity;
+    }
+    if (Task.invoicedQuantity !== initialTask.invoicedQuantity) {
+      updatedFields.invoicedQuantity = Task.invoicedQuantity;
+    }
+    if (Task.approvedQuantity !== initialTask.approvedQuantity) {
+      updatedFields.approvedQuantity = Task.approvedQuantity;
+    }
+    if (progress !== initialTask.progress) {
+      updatedFields.progress = progress;
+    }
+
+    return updatedFields;
+  };
+
+  const handleSave = async () => {
+    try {
+      const updatedFields = getUpdatedFields();
+      console.log("updatedFields", updatedFields);
+
+      const res = await updateTask(token, taskId, user._id, updatedFields);
+
+      setIsEditing(false);
+      console.log("res from update task => ", res);
+      toast.success("Task Updated successfully");
+      const updatedTask = await getTaskDetails(taskId);
+      setTask(updatedTask.results);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const handleInputChange = (e, field) => {
+    const value =
+      field === "invoicedQuantity" ||
+      field === "executedQuantity" ||
+      field === "approvedQuantity"
+        ? Number(e.target.value)
+        : e.target.value;
+
+    setTask({ ...Task, [field]: value });
+  };
 
   const calculateProgress = (task) => {
     if (Task.executedQuantity && Task.requiredQuantity) {
@@ -97,6 +152,9 @@ const TaskDetails = () => {
         </div>
         <Link
           to={`/TaskHistory/${Task._id}`}
+          state={{
+            taskId: Task._id,
+          }}
           className="underline underline-offset-1  text-gray "
         >
           {t("view all history")}
@@ -178,7 +236,7 @@ const TaskDetails = () => {
             type={"name"}
             required={true}
             className="bg-white border border-purple border-solid"
-            label={t("PName")}
+            label={t("TaskName")}
             placeholder={Task.title}
             disabled
           />
@@ -258,7 +316,7 @@ const TaskDetails = () => {
           )}
 
           <div className="flex right-0 my-2 items-center justify-end">
-            <button>
+            <button onClick={handleEditToggle}>
               <MdEditSquare className="text-purple h-7 w-7" />
             </button>
             <button className="files flex items-center gap-1 mx-1">
@@ -270,33 +328,40 @@ const TaskDetails = () => {
 
             <AddNote taskId={Task._id} Notes={Task.notes} />
           </div>
-          {IsToq && Task.parentTask === null && (
-            <div className="flex right-0 my-2 items-center gap-3 justify-end">
-              <Link
-                to={`/AddTask/${Task.project._id}`}
-                state={{
-                  projectId: Task.project._id,
-                  taskType: "sub",
-                  members: Task.assignees,
-                  ParentId: Task._id,
-                }}
-              >
-                <Button className={`w-fit px-7`}>{t("AddSubTask")}</Button>
-              </Link>
-              <Link
-                to={`/SubTasks/${Task._id}`}
-                state={{
-                  taskId: Task._id,
-                }}
-              >
-                <Button
-                  className={`w-fit px-7  border border-solid !border-purple !text-purple`}
-                  style={{ background: "white" }}
-                >
-                  All sub Tasks
-                </Button>
-              </Link>
+          {/* {IsToq && Task.parentTask === null && ( */}
+          {isEditing ? (
+            <div className="btn flex items-center justify-center md:justify-end my-3">
+              <Button onClick={handleSave}>{t("save")}</Button>
             </div>
+          ) : (
+            Task.parentTask === null && (
+              <div className="flex right-0 my-2 items-center gap-3 justify-end">
+                <Link
+                  to={`/AddTask/${Task.project._id}`}
+                  state={{
+                    projectId: Task.project._id,
+                    taskType: "sub",
+                    members: Task.assignees,
+                    ParentId: Task._id,
+                  }}
+                >
+                  <Button className="w-fit px-7">{t("AddSubTask")}</Button>
+                </Link>
+                <Link
+                  to={`/SubTasks/${Task._id}`}
+                  state={{
+                    taskId: Task._id,
+                  }}
+                >
+                  <Button
+                    className="w-fit px-7 border border-solid !border-purple !text-purple"
+                    style={{ background: "white" }}
+                  >
+                    {t("AllSubTasks")}
+                  </Button>
+                </Link>
+              </div>
+            )
           )}
         </div>
         {IsToq && (
@@ -342,32 +407,39 @@ const TaskDetails = () => {
             <Input
               type="number"
               min={0}
-              label={t("Approved quantity")}
-              value={Task.approvedQuantity}
-              disabled
-              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
-            />
-            <Input
-              type="number"
-              min={0}
+              max={Task.requiredQuantity}
               label={t("Executed quantity")}
               value={Task.executedQuantity}
-              disabled
+              disabled={!(isEditing && user.role.jobTitle === "contractor")}
+              onChange={(e) => handleInputChange(e, "executedQuantity")}
               className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
             />
             <Input
               type="number"
               min={0}
+              max={Task.requiredQuantity}
+              label={t("Approved quantity")}
+              value={Task.approvedQuantity}
+              onChange={(e) => handleInputChange(e, "approvedQuantity")}
+              disabled={!(isEditing && user.role.jobTitle === "consultant")}
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
+            />
+
+            <Input
+              type="number"
+              min={0}
+              max={Task.requiredQuantity}
               label={t("invoiced quantity")}
               value={Task.invoicedQuantity}
-              disabled
+              disabled={!(isEditing && user.role.jobTitle === "owner")}
+              onChange={(e) => handleInputChange(e, "invoicedQuantity")}
               className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
             />
           </div>
         )}
       </div>
-      <div className="desc ">
-        <h6 className="title m-2  ">{t("desc")}</h6>
+      <div className="desc">
+        <h6 className="title m-2 ">{t("desc")}</h6>
         <div className="bg-white rounded-3xl m-2">
           <div
             className="content px-4 py-4 font-normal text-base "
