@@ -27,7 +27,7 @@ const AddTask = () => {
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
-  const [isSubtask, setIsSubtask] = useState(taskType === "sub");
+  const [isSubtask, setIsSubtask] = useState(taskType === "sub" );
   const [isRecurringTask, setIsRecurringTask] = useState(
     taskType === "recurring"
   );
@@ -186,15 +186,14 @@ const AddTask = () => {
         assignees: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
-        type: taskType,
-
+        type: isSubtask ? "toq" : taskType,
       };
       if (isSubtask) {
         taskData.price = Price;
-        taskData.quantity = Quantity;
+        taskData.requiredQuantity = Quantity;
         taskData.unit = selectedUnit;
         taskData.total = Total;
-        taskData.parentTask =   ParentId? ParentId : SelectedParentTask;
+        taskData.parentTask =   ParentId ? ParentId : SelectedParentTask;
       }
 
       setLoading(true);
@@ -206,9 +205,10 @@ const AddTask = () => {
       navigate(`/`);
     } catch (err) {
       setError({
-        message: err.response ? err.response.data.message : err.message,
+        message: err.response ? err.response.data.message : err.message ,
       });
-      console.log(err);
+
+      console.log(err.err);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -559,3 +559,6 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
+
+

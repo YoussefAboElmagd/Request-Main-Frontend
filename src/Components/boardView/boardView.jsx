@@ -10,6 +10,8 @@ const BoardView = ({
   NameOfTask,
   ProgressValue,
   taskPriority,
+  parentTask,
+  taskType,
   Tag,
   status,
   avatars = [],
@@ -22,11 +24,12 @@ const BoardView = ({
     <div className="box bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
       <div className="tagName flex justify-center">
         {Tag && Tag !== null && (
-          <span className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
-          style={{
-            background: `${Tag.colorCode}40`,
-            color: Tag.colorCode,
-          }}
+          <span
+            className="Tag px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2"
+            style={{
+              background: `${Tag.colorCode}40`,
+              color: Tag.colorCode,
+            }}
           >
             {Tagname}
           </span>
@@ -61,6 +64,15 @@ const BoardView = ({
         />
       </div>
       <div className="chips flex items-center justify-start gap-2">
+        <span
+          className={`${taskType} capitalize font-inter font-semibold text-xs text-center py-1 px-2 rounded-3xl`}
+        >
+          {taskType === "toq" && parentTask === null
+            ? "Parent"
+            : taskType === "toq" && parentTask !== null
+            ? "sub"
+            : taskType}
+        </span>
         <span
           className={`${taskPriority} font-inter font-semibold text-xs text-center py-1 px-2 rounded-3xl`}
         >

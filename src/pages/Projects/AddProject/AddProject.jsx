@@ -9,13 +9,7 @@ import Select from "../../../Components/UI/Select/Select";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import {
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-} from "@material-tailwind/react";
-import { CiLink, CiSquarePlus } from "react-icons/ci";
+
 
 const AddProject = () => {
   const user = useSelector((state) => state.auth.user);
@@ -27,9 +21,6 @@ const AddProject = () => {
   const [Description, setDescription] = useState("");
   const [budget, setBudget] = useState("");
   const [priority, setPriority] = useState("");
-  const [Type, setType] = useState("");
-  const [InvitationMail, setInvitationMail] = useState("");
-  const [Invites, setInvites] = useState([]);
   const [sDate, setSDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -72,27 +63,25 @@ const AddProject = () => {
     e.preventDefault();
     setError(null);
 
-    // Validate each field and set errors
     const newFieldErrors = {
       Name: !Name.trim(),
       Description: !Description.trim(),
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
       budget: !budget.toString().trim() || budget < 10,
-      priority:!priority,
+      priority: !priority,
     };
-    if(budget < 10 ) {
-      setError({ message: "budget must be less than or equal to 10" });
-      return;    
+
+    if (budget < 10) {
+      setError({ message: "budget must be greater than or equal to 10" });
+      return null; // Return null if validation fails
     }
     setFieldErrors(newFieldErrors);
 
-    // If any field has an error, set a general error message and exit
     if (Object.values(newFieldErrors).some((hasError) => hasError)) {
       setError({ message: "All fields are required." });
-      return;
+      return null; // Return null if validation fails
     }
-
 
     const formattedSDate = formatDate(sDate.startDate);
     const formattedEDate = formatDate(eDate.endDate);
@@ -111,49 +100,69 @@ const AddProject = () => {
       setLoading(true);
       console.log("Project data =>  ", projectData);
       const res = await addProject(token, projectData);
-      console.log(res);
       toast.success("Project Added Successfully");
       clearFormFields();
-      const projectId = res.addedProject._id;
-      console.log(projectId);
-      console.log(res.addedProject.members);
-      
 
-      navigate("/Requests/TableOfQuantities", {
-        state: {
-          projectId,
-          members: res.addedProject.members,
-        },
-      });
+      setLoading(false);
+      return {
+        projectId: res.addedProject._id,
+        members: res.addedProject.members,
+      };
     } catch (err) {
       setError({
         message: err.response ? err.response.data.message : err.message,
       });
       console.log(err);
       setLoading(false);
+      return null; 
     } finally {
       setLoading(false);
     }
   };
 
-  const addNewInvite = () => {
-    const newInvite = {};
-    setInvites((prevTasks) => [...prevTasks, newInvite]);
+  const handlePublic = async (e) => {
+    e.preventDefault();
+
+    const result = await handleSubmit(e);
+    if (result) {
+      navigate("/Requests/TableOfQuantities", {
+        state: {
+          projectId: result.projectId,
+          members: result.members,
+        },
+      });
+    }
   };
 
-    useEffect(() => {
-      const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-          handleSubmit(e);
-        }
-      };
+  const handleInvite = async (e) => {
+    e.preventDefault();
 
-      window.addEventListener("keydown", handleKeyDown);
+    const result = await handleSubmit(e);
+    if (result) {
+      navigate("/AddProject/Invite", {
+        state: {
+          projectId: result.projectId,
+        },
+      });
+    }
+  };
 
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-      };
-    }, []);
+
+
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        handleSubmit(e);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="AddProject mx-1">
@@ -293,58 +302,13 @@ const AddProject = () => {
                   className={
                     "bg-white text-purple border border-purple border-solid font-jost py-3 px-32 rounded-xl capitalize   opacity-100  disabled:opacity-50 text-base font-medium text-left"
                   }
-                  onClick={handleOpen}
+                  onClick={handleInvite}
                 >
                   {t("invite")}
                 </button>
-                <Button onClick={handleSubmit}>{t("Public")}</Button>
+                <Button onClick={handlePublic}>{t("Public")}</Button>
               </div>
             </form>
-          </div>
-          <div className="invite_popup">
-            <Dialog open={open} handler={handleOpen}>
-              <DialogBody>
-                <div className="flex items-center  gap-3 ">
-                  <Input
-                    className="bg-white border border-purple border-solid focus:border-solid focus:border focus:border-purple w-96"
-                    label={t("invite")}
-                    placeholder={"Email Address"}
-                    type={"email"}
-                    required={true}
-                    autoFocus={true}
-                    onChange={(e) => setInvitationMail(e.target.value)}
-                  />
-                  <Select
-                    label={t("type")}
-                    options={[
-                      { value: "owner", label: "Owner" },
-                      { value: "consultant", label: "Consultant" },
-                      { value: "contractor", label: "Contractor" },
-                    ]}
-                    value={Type}
-                    onChange={(value) => setType(value)}
-                  />
-                  {/* add new invitation  */}
-                  <button onClick={addNewInvite}>
-                    <span className="text-white">
-                      <CiSquarePlus className="w-10 h-10  bg-yellow text-white rounded-lg mt-4" />
-                    </span>
-                  </button>
-                </div>
-                <button className="copy text-purple-dark flex items-center gap-2 cursor-pointer mx-2">
-                  <span>
-                    <CiLink className="w-4 h-4" />
-                  </span>
-                  <span className="underline underline-offset-1">
-                    Copy link
-                  </span>
-                </button>
-                <div className="flex items-center justify-end mt-4">
-                  <Button disabled={true}>{t("invite")}</Button>
-                </div>
-              </DialogBody>
-              <DialogFooter></DialogFooter>
-            </Dialog>
           </div>
         </>
       )}
@@ -353,3 +317,6 @@ const AddProject = () => {
 };
 
 export default AddProject;
+
+
+

@@ -26,6 +26,9 @@ import {
   Typography,
   DialogBody,
   DialogFooter,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
 } from "@material-tailwind/react";
 import Select, { components } from "react-select";
 import Button from "../../../Components/UI/Button/Button";
@@ -173,6 +176,7 @@ const ProjectTeam = () => {
   // const [isSelectOpen, setIsSelectOpen] = useState(true);
   const [TagsLoading, setTagsLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [openAcc, setOpenAcc] = useState(false);
   const [SelectedUserId, setSelectedUserId] = useState("");
   // const [SelectedProjectId, setSelectedProjectId] = useState();
   const [fieldErrors, setFieldErrors] = useState({
@@ -192,7 +196,10 @@ const ProjectTeam = () => {
     read: false,
   });
   const handleOpen = () => setOpen(!open);
-
+  // const handleOpenAccordion = () => setOpenAcc(!openAcc);
+  const handleOpenAccordion = (idx) => {
+    setOpenAcc((prevOpen) => (prevOpen === idx ? null : idx));
+  };
   useEffect(() => {
     console.log("Current access list:", accessList);
   }, [accessList]);
@@ -451,7 +458,8 @@ const ProjectTeam = () => {
             </div>
           </div>
         )}
-        {consultant && (
+
+        {(consultant || consultant !== null) && (
           <div className="consultant">
             <h4 className="m-1 font-medium text-sm">{t("consultant")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
@@ -506,7 +514,7 @@ const ProjectTeam = () => {
 
             {ownerTeam.map((member) => (
               <>
-                <tr key={member._id} className="shadow-md p-1 rounded-lg">
+                <tr key={member._id} className="shadow-md p-2 rounded-lg">
                   <td className="text-left py-2 px-4 font-medium text-gray-dark">
                     {member.name}
                   </td>
@@ -547,10 +555,9 @@ const ProjectTeam = () => {
             {consultantTeam.length > 0 && (
               <h4 className="text-blue my-1">{t("consultantTeam")}</h4>
             )}
-
             {consultantTeam.map((member) => (
               <>
-                <tr key={member._id} className="shadow-md p-1 rounded-lg">
+                <tr key={member._id} className="shadow-md p-2 rounded-lg">
                   <td className="text-left py-2 px-4 font-medium text-gray-dark">
                     {member.name}
                   </td>
@@ -593,7 +600,7 @@ const ProjectTeam = () => {
             )}
             {constractorTeam.map((member) => (
               <>
-                <tr key={member._id} className="shadow-md p-1 rounded-lg">
+                <tr key={member._id} className="shadow-md p-2 rounded-lg">
                   <td className="text-left py-2 px-4 font-medium text-gray-dark">
                     {member.name}
                   </td>
@@ -679,56 +686,64 @@ const ProjectTeam = () => {
         </div>
       </div>
       {/* DelegatedAccess mobile view */}
-      <div className="DelegatedAccess bg-white rounded-3xl m-2 p-4 block lg:hidden">
-        {groupedMembers.map((member) => (
-          <div
-            key={member._id}
-            className=" relative rounded-xl shadow-md p-4 my-2 bg-white flex justify-between items-center gap-2"
+      {/* <div className="DelegatedAccess block lg:hidden">
+        <Accordion key={idx} open={openAcc === idx}>
+          <AccordionHeader
+            className="p-3 rounded-3xl text-gray my-2 shadow-md bg-white"
+            onClick={() => handleOpenAccordion(idx)}
           >
-            <div className="absolute top-4 right-4 flex gap-2">
-              <button
-                className="text-red"
-                onClick={() => {
-                  setSelectedUserId(member._id);
-                  setSelectedProjectId(project.projectId);
+            <h4 className="text-blue my-1"> {t("ownerTeam")}</h4>
+          </AccordionHeader>
+          <AccordionBody open={openAcc === idx}>
+            {ownerTeam.map((member) => (
+              <div
+                key={member._id}
+                className="flex flex-col relative rounded-xl shadow-md p-4 my-2 bg-white"
+              >
+                <div className="absolute top-4 right-4 flex gap-2">
+                  <button
+                    className="text-red"
+                    onClick={() => {
+                      setSelectedUserId(member._id);
+                      handleOpen();
+                    }}
+                  >
+                    <MdDelete className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <ProfileAvatar
+                    name={member.name}
+                    profilePic={member.profilePic}
+                  />
+                  <span className="text-base font-medium">{member.name}</span>
+                  <span className="text-base font-medium">
+                    {member.vocation ? member.vocation.name : "N/A"}
+                  </span>
+                  <span
+                    className="text-base font-medium"
+                    style={{
+                      color: "#5BA6FF",
+                    }}
+                  >
+                    {member.email}
+                  </span>
+                  <span
+                    className="text-base font-medium"
+                    style={{
+                      color: "#34C759",
+                    }}
+                  >
+                    {member.phone}
+                  </span>
+                  <span>{member.access}</span>
+                </div>
+              </div>
+            ))}
+          </AccordionBody>
+        </Accordion>
+      </div> */}
 
-                  handleOpen();
-                }}
-              >
-                <MdDelete className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="flex flex-col gap-3">
-              <ProfileAvatar
-                name={member.name}
-                profilePic={member.profilePic}
-              />
-
-              <span className="tet-base font-medium">{member.name}</span>
-              <span className="tet-base font-medium">
-                {member.vocation ? member.vocation.name : "N/A"}
-              </span>
-              <span
-                className="tet-base font-medium"
-                style={{
-                  color: "#5BA6FF",
-                }}
-              >
-                {member.email}
-              </span>
-              <span
-                className="tet-base font-medium"
-                style={{
-                  color: "#34C759",
-                }}
-              >
-                {member.phone}
-              </span>
-              <span>{member.access}</span>
-            </div>{" "}
-          </div>
-        ))}
-      </div>
       <div className="AddNewAccess bg-white rounded-3xl m-2 p-4">
         <form
           onSubmit={handleSubmit}
@@ -866,26 +881,6 @@ const ProjectTeam = () => {
             />
           </div>
 
-          {/* <div className="col-span-4">
-            <label
-              className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
-              htmlFor="projects"
-            >
-              Projects
-            </label>
-            <Select
-              placeholder="Select Projects"
-              id="projects"
-              isMulti
-              isClearable
-              isLoading={loading}
-              options={projects.map((p) => ({ value: p._id, label: p.name }))}
-              onChange={setSelectedProject}
-              value={selectedProject}
-              styles={customStyles}
-              components={{ MultiValue: AnimatedMultiValue }}
-            />
-          </div> */}
           <div className="col-span-4 flex items-center gap-5">
             <label
               className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
@@ -893,21 +888,7 @@ const ProjectTeam = () => {
             >
               {t("Access")}
             </label>
-            {/* 
-          <Select
-            options={accessOptions.map((option) => ({
-              value: option.id,
-              label: option.label,
-            }))}
-            value={setSelectedAccess.optionSelected}
-            isMulti
-            onChange={handleChange}
-            components={{ Option: CustomOption }}
-            styles={customStyles}
-            closeMenuOnSelect={false}
-            hideSelectedOptions={false}
-            classNamePrefix="select"
-          /> */}
+
             <div className="read flex items-center gap-1 ">
               <input
                 type="checkbox"
@@ -983,63 +964,3 @@ const ProjectTeam = () => {
 };
 
 export default ProjectTeam;
-
-//  {
-//    Team.map((project) => (
-//      <>
-//        <tr key={project.projectId}>
-//          <td
-//            colSpan="6"
-//            className="text-left py-3 px-4 font-medium text-gray-dark"
-//          >
-//            {project.projectName}
-//          </td>
-//        </tr>
-
-//        {project.members.map((member) => (
-//          <tr
-//            key={member._id} // Use a unique identifier for keys
-//            className="bg-white shadow-lg rounded-3xl my-1 border-b last:border-none"
-//          >
-//            <td className="px-4 py-2 flex items-center gap-3">
-//              <ProfileAvatar name={member.name} profilePic={member.profilePic} />
-//              <span>{member.name}</span>
-//            </td>
-//            <td className="px-4 py-2">
-//              {member.vocation ? member.vocation.name : "N/A"}
-//            </td>
-//            <td
-//              className="px-4 py-2 "
-//              style={{
-//                color: "#5BA6FF",
-//              }}
-//            >
-//              {member.email}
-//            </td>
-//            <td
-//              className="px-4 py-2 text-green"
-//              style={{
-//                color: "#34C759",
-//              }}
-//            >
-//              {member.phone}
-//            </td>
-//            <td className="px-4 py-2">{member.access}</td>
-//            <td className="px-4 py-2 flex justify-center gap-3">
-//              <button
-//                className="text-red"
-//                onClick={() => {
-//                  setSelectedUserId(member._id);
-//                  setSelectedProjectId(project.projectId);
-
-//                  handleOpen();
-//                }}
-//              >
-//                <MdDelete className="w-5 h-5" />
-//              </button>
-//            </td>
-//          </tr>
-//        ))}
-//      </>
-//    ));
-//  }

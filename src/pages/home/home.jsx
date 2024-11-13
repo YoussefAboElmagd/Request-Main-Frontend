@@ -220,6 +220,8 @@ const Home = () => {
                                   taskPriority={task.taskPriority}
                                   status={task.taskStatus}
                                   avatars={avatars}
+                                  parentTask={task.parentTask}
+                                  taskType={task.taskType}
                                   filesLength={task?.documentsLength}
                                   MsgLength={task?.notesLength}
                                   sDate={formatDate(task.sDate)}
@@ -269,7 +271,7 @@ const Home = () => {
             ) : (
               <div className="empty flex items-center justify-center mt-20">
                 <Empty
-                  paragraph={" You're just steps away from your screens"}
+                  paragraph={t("You're just steps away from your screens")}
                 />
               </div>
             )}

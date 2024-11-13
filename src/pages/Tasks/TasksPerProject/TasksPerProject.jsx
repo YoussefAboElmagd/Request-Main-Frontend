@@ -217,6 +217,8 @@ const TasksPerProject = () => {
                       Tag={task.tags}
                       taskPriority={task.taskPriority}
                       status={task.taskStatus}
+                      parentTask={task.parentTask}
+                      taskType={task.type}
                       avatars={avatars}
                       filesLength={task?.documents.length}
                       MsgLength={task?.notes.length}

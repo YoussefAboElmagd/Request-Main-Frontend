@@ -35,6 +35,8 @@ import ProjectTeam from "../pages/Projects/ProjectTeam/ProjectTeam.jsx";
 import Notifications from "../pages/Notifications/Notifications.jsx";
 import LoginByPhone from "../pages/auth/LognIn/LoginByPhone.jsx";
 import Landing from "../pages/landing/landing.jsx";
+import Invite from "../pages/Projects/AddProject/Invite.jsx";
+import TaskHistory from "../pages/Tasks/TaskHistory/TaskHistory.jsx";
 
 // Define public routes
 export const publicRoutes = [
@@ -57,7 +59,9 @@ export const protectedRoutes = [
   { path: "/ProjectDetails/:id", component: <ProjectDetails /> },
   { path: "/Projects", component: <ProjectHistory /> },
   { path: "/TaskDetails/:id", component: <TaskDetails /> },
+  { path: "/TaskHistory/:id", component: <TaskHistory /> },
   { path: "/AddProject", component: <AddProject /> },
+  { path: "/AddProject/Invite", component: <Invite /> },
   { path: "/AddTask/:ProjectId", component: <AddTask /> },
   { path: "/Project/Tasks/:id", component: <TasksPerProject /> },
   { path: "/SubTasks/:id", component: <AllSubTasks /> },

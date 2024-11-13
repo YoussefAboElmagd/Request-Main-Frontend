@@ -111,6 +111,14 @@ const CreateCompany = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center  justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <div className="CreateCompany h-full relative effect_right ">
       <LandingHeader />

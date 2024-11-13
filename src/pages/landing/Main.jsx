@@ -10,6 +10,7 @@ import box2 from "../../assets/images/box2.png";
 import box3 from "../../assets/images/box3.png";
 import { useEffect, useRef, useState } from "react";
 import { t } from "i18next";
+import { Link } from "react-router-dom";
 const Main = () => {
   const [Mode, setMode] = useState("Mode1");
   
@@ -19,7 +20,7 @@ const Main = () => {
 
   useEffect(() => {
     const modes = ["Mode1", "Mode2", "Mode3"];
-    let currentIndex = 0;
+    let currentIndex = 0; 
 
     intervalRef.current = setInterval(() => {
       currentIndex = (currentIndex + 1) % modes.length;
@@ -69,9 +70,12 @@ const Main = () => {
               ? t("landingMessage.message6")
               : ""}{" "}
           </p>
-          <button className="py-2 px-4 bg-white text-purple rounded-lg my-2 transition-all">
-            {t("landingMessage.Btn")}
-          </button>
+
+          <Link to={"/landing/seePlans"}>
+            <button className="py-2 px-4 bg-white text-purple rounded-lg my-2 transition-all">
+              {t("landingMessage.Btn")}
+            </button>
+          </Link>
         </div>
       </div>
       <div className="landingImage1 absolute right-52 top-36 transition-all">
@@ -88,7 +92,7 @@ const Main = () => {
           alt="Landing Main Image"
           width={450}
           height={450}
-          loading="lazy"
+          // loading="lazy"
           className="transition-all"
         />
       </div>
@@ -107,7 +111,7 @@ const Main = () => {
           width={200}
           height={200}
           className="rounded-xl shadow-md transition-all"
-          loading="lazy"
+          // loading="lazy"
         />
       </div>
       <div className="landingImage3 absolute right-[500px] -top-28  rotate-45 -z-10  p-2 ">
@@ -125,7 +129,7 @@ const Main = () => {
           width={200}
           height={200}
           className="rounded-xl shadow-md transition-all"
-          loading="lazy"
+          // loading="lazy"
         />
       </div>
       <div

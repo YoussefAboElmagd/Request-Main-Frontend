@@ -238,27 +238,29 @@ const Otp = () => {
                     : ""}
                 </span>
               </div>
-              <OTPInput
-                value={otp}
-                onChange={setOtp}
-                numInputs={4}
-                shouldAutoFocus={true}
-                required
-                renderSeparator={<span> </span>}
-                renderInput={(props) => <input {...props} />}
-                inputStyle={{
-                  width: "48px",
-                  height: "62px",
-                  fontSize: "36px",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  lineHeight: "46px",
-                  border: "1px solid var(--purple)",
-                  borderRadius: "8px",
-                  padding: "0 10px",
-                  margin: "30px 10px",
-                }}
-              />
+              <div  dir="ltr">
+                <OTPInput
+                  value={otp}
+                  onChange={setOtp}
+                  numInputs={4}
+                  shouldAutoFocus={true}
+                  required
+                  renderSeparator={<span> </span>}
+                  renderInput={(props) => <input {...props} />}
+                  inputStyle={{
+                    width: "48px",
+                    height: "62px",
+                    fontSize: "36px",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    lineHeight: "46px",
+                    border: "1px solid var(--purple)",
+                    borderRadius: "8px",
+                    padding: "0 10px",
+                    margin: "30px 10px",
+                  }}
+                />
+              </div>
               <p>
                 {t("Code Sent. Resend Code in")}
                 <span className="text-red">

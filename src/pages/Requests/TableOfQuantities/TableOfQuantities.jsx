@@ -169,11 +169,10 @@ const TableOfQuantities = () => {
           await addTask(task);
         })
       );
-
       toast.success(t("Tasks saved successfully!"));
       console.log("All tasks saved:", tasks);
-
       setTasks([]);
+       navigate(`/`);
       if (!taskType) {
         handleUpdateProject();
         navigate("/Models", {

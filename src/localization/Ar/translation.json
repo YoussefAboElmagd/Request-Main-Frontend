@@ -5,6 +5,7 @@
   "verify": "تحقق",
   "sendOtp": "إرسال OTP",
   "ResendOtp": "إرسال رساله التحقق مره اخري",
+  "Reset Your Password": "اعاده انشاء كلمة المرور",
   "An OTP Message containing your code has been sent to": "تم إرسال رسالة OTP تحتوي على الرمز الخاص بك إلى",
   "Code Sent. Resend Code in": "تم إرسال الرمز. إعادة إرسال الرمز في",
   "sign in To activate your business easily": "تسجيل الدخول لتفعيل عملك بسهولة",
@@ -314,5 +315,11 @@
   "We are here for you! How can we help?": "نحن هنا من أجلك! كيف يمكننا مساعدتك؟",
   "Are you sure you want to logout?": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
   "Do you want to proceed with logging out?": "هل تريد المتابعة بتسجيل الخروج؟",
-  "If you log out, you will need to log in again to access the system.": "إذا قمت بتسجيل الخروج، ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى النظام."
+  "If you log out, you will need to log in again to access the system.": "إذا قمت بتسجيل الخروج، ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى النظام.",
+  "Enter your new password below to complete the reset": "أدخل كلمة المرور الجديدة أدناه لإكمال إعادة التعيين",
+  "Enter your email to reset the password": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+  "You will receive a code in your email that must be entered to reset your password": "ستتلقى رمزًا في بريدك الإلكتروني يجب إدخاله لإعادة تعيين كلمة المرور",
+  "Tasksetter": "محدد المهام",
+  "view all history": "عرض كل التاريخ",
+  "TaskHistory": "سجل المهام"
 }

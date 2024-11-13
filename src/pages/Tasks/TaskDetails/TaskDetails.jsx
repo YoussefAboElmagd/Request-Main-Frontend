@@ -1,7 +1,7 @@
 import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import Input from "../../../Components/UI/Input/Input";
-import { MdCalendarToday } from "react-icons/md";
+import { MdCalendarToday, MdEditSquare } from "react-icons/md";
 import { FaFileLines } from "react-icons/fa6";
 import { IoPrint } from "react-icons/io5";
 import { FaCommentMedical } from "react-icons/fa6";
@@ -13,15 +13,17 @@ import { getTaskDetails } from "../../../Services/api";
 import avatar from "../../../assets/images/avatar1.png";
 import Button from "../../../Components/UI/Button/Button";
 import { AddNote } from "../../../Components/AddNote/AddNote";
+import Select from "../../../Components/UI/Select/Select";
 const TaskDetails = () => {
   const [loading, setLoading] = useState(false);
   const [Task, setTask] = useState({});
-  const [IsParent, setIsParent] = useState(false);
+  const [IsToq, setIsToq] = useState(false);
+  const [progress, setProgress] = useState(0);
   const location = useLocation();
 
   const { taskId } = location.state || {};
   useEffect(() => {
-    setIsParent(Task.type === "parent");
+    setIsToq(Task.type === "toq");
   }, [Task.type]);
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const TaskDetails = () => {
       try {
         const response = await getTaskDetails(taskId);
         setTask(response.results);
+        // calculateProgress(response.results);
         console.log(response);
       } catch (error) {
         console.error("Error fetching Task:", error);
@@ -40,13 +43,27 @@ const TaskDetails = () => {
     fetchTask();
   }, [taskId]);
 
+  const calculateProgress = (task) => {
+    if (Task.executedQuantity && Task.requiredQuantity) {
+      const progressValue = Math.min(
+        100,
+        (Task.executedQuantity / Task.requiredQuantity) * 100
+      );
+      setProgress(progressValue);
+    } else {
+      setProgress(0);
+    }
+  };
 
-  
- const formatDate = (date) => {
-   if (!date) return "";
-   return format(new Date(date), "dd/MM/yyyy");
- };  
-  
+  useEffect(() => {
+    calculateProgress();
+  }, [Task.executedQuantity, Task.requiredQuantity]);
+
+  const formatDate = (date) => {
+    if (!date) return "";
+    return format(new Date(date), "dd/MM/yyyy");
+  };
+
   if (loading) {
     return (
       <div className="loader flex items-center justify-center m-auto">
@@ -59,23 +76,31 @@ const TaskDetails = () => {
 
   return (
     <div className="TaskDetails mx-1">
-      <div className="header m-2">
-        <h1 className="title font-inter font-bold text-3xl text-black ">
-          {Task.title}
-        </h1>
-        <div className="sData">
-          <span className="text-purple text-sm font-medium">
-            {t("task started:")}
-          </span>
-          <span
-            className="text-sm  font-semibold mx-1"
-            style={{
-              color: "#A9B1BF",
-            }}
-          >
-            {formatDate(Task.sDate)}
-          </span>
+      <div className="header m-2 flex justify-between items-center">
+        <div className="">
+          <h1 className="title font-inter font-bold text-3xl text-black ">
+            {Task.title}
+          </h1>
+          <div className="sData">
+            <span className="text-purple text-sm font-medium">
+              {t("task started:")}
+            </span>
+            <span
+              className="text-sm  font-semibold mx-1"
+              style={{
+                color: "#A9B1BF",
+              }}
+            >
+              {formatDate(Task.sDate)}
+            </span>
+          </div>
         </div>
+        <Link
+          to={`/TaskHistory/${Task._id}`}
+          className="underline underline-offset-1  text-gray "
+        >
+          {t("view all history")}
+        </Link>
       </div>
 
       <div className="wrapper bg-white grid grid-cols-2 rounded-3xl m-2 ">
@@ -92,36 +117,38 @@ const TaskDetails = () => {
                 {Task.tags.name}
               </span>
             )}
-
-            <div className="progress_wrapper rounded-2xl shadow-md p-8 relative">
-              <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
-                Progress
-              </span>
-              <CircularProgress
-                className="!text-black font-poppins font-normal text-4xl"
-                determinate
-                sx={{
-                  "--CircularProgress-size": "180px",
-                  "--CircularProgress-trackThickness": "30px",
-                  "--CircularProgress-progressThickness": "30px",
-                  "--CircularProgress-animationDuration": "1s",
-                  "--CircularProgress-trackColor": "#F5F5F5",
-                  "--CircularProgress-progressColor": "var(--purple)",
-                  "--CircularProgress-trackShadowColor": "rgba(0, 0, 0, 0.12)",
-                  "--CircularProgress-progressShadowColor":
-                    "rgba(0, 0, 0, 0.12)",
-                  "--CircularProgress-trackBorderRadius": "50%",
-                  "--CircularProgress-progressBorderRadius": "50%",
-                  "--CircularProgress-trackShadowBlur": "10px",
-                  "--CircularProgress-progressShadowBlur": "10px",
-                  "--CircularProgress-progressShadowOffset": "0px 2px",
-                }}
-                value={70}
-                variant="solid"
-              >
-                70%
-              </CircularProgress>
-            </div>
+            {IsToq && (
+              <div className="progress_wrapper rounded-2xl shadow-md p-8 relative">
+                <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
+                  Progress
+                </span>
+                <CircularProgress
+                  className="!text-black font-poppins font-normal text-4xl"
+                  determinate
+                  sx={{
+                    "--CircularProgress-size": "180px",
+                    "--CircularProgress-trackThickness": "30px",
+                    "--CircularProgress-progressThickness": "30px",
+                    "--CircularProgress-animationDuration": "1s",
+                    "--CircularProgress-trackColor": "#F5F5F5",
+                    "--CircularProgress-progressColor": "var(--purple)",
+                    "--CircularProgress-trackShadowColor":
+                      "rgba(0, 0, 0, 0.12)",
+                    "--CircularProgress-progressShadowColor":
+                      "rgba(0, 0, 0, 0.12)",
+                    "--CircularProgress-trackBorderRadius": "50%",
+                    "--CircularProgress-progressBorderRadius": "50%",
+                    "--CircularProgress-trackShadowBlur": "10px",
+                    "--CircularProgress-progressShadowBlur": "10px",
+                    "--CircularProgress-progressShadowOffset": "0px 2px",
+                  }}
+                  value={progress}
+                  variant="solid"
+                >
+                  {`${Math.round(progress)}%`}
+                </CircularProgress>
+              </div>
+            )}
             <div className="status_wrapper flex flex-col">
               <span
                 className="Tag px-14 py-2 w-full  rounded-3xl font-inter font-semibold text-sm mt-2"
@@ -231,6 +258,9 @@ const TaskDetails = () => {
           )}
 
           <div className="flex right-0 my-2 items-center justify-end">
+            <button>
+              <MdEditSquare className="text-purple h-7 w-7" />
+            </button>
             <button className="files flex items-center gap-1 mx-1">
               <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
                 {Task?.documents?.length}
@@ -240,7 +270,7 @@ const TaskDetails = () => {
 
             <AddNote taskId={Task._id} Notes={Task.notes} />
           </div>
-          {IsParent && (
+          {IsToq && Task.parentTask === null && (
             <div className="flex right-0 my-2 items-center gap-3 justify-end">
               <Link
                 to={`/AddTask/${Task.project._id}`}
@@ -269,6 +299,72 @@ const TaskDetails = () => {
             </div>
           )}
         </div>
+        {IsToq && (
+          <div className="grid col-span-2 grid-cols-4 gap-3 m-2">
+            <Input
+              type="number"
+              min={0}
+              value={Task.price}
+              disabled
+              label={t("Price")}
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
+                    `}
+            />
+            <Input
+              type="number"
+              min={0}
+              label={t("Quantity")}
+              value={Task.requiredQuantity}
+              disabled
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
+            />
+            <Input
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
+              label={t("Total")}
+              type="number"
+              min={0}
+              value={Task.total}
+              disabled
+            />
+            {/* <Select
+              placeholder={t("Unit")}
+              label={t("Unit")}
+              value={Task.unit.name}
+              className={`bg-white mx-4`}
+            /> */}
+            <Input
+              type="text"
+              label={t("Unit")}
+              value={Task.unit.name}
+              disabled
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
+            />
+            <Input
+              type="number"
+              min={0}
+              label={t("Approved quantity")}
+              value={Task.approvedQuantity}
+              disabled
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
+            />
+            <Input
+              type="number"
+              min={0}
+              label={t("Executed quantity")}
+              value={Task.executedQuantity}
+              disabled
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
+            />
+            <Input
+              type="number"
+              min={0}
+              label={t("invoiced quantity")}
+              value={Task.invoicedQuantity}
+              disabled
+              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
+            />
+          </div>
+        )}
       </div>
       <div className="desc ">
         <h6 className="title m-2  ">{t("desc")}</h6>

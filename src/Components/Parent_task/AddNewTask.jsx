@@ -14,7 +14,7 @@ export const AddNewTask = ({ newTask, task }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId, taskType, members } = location.state || {};
-  console.log(location.state);
+  // console.log(location.state);
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
@@ -165,17 +165,17 @@ export const AddNewTask = ({ newTask, task }) => {
         project: projectId,
         dueDate: formattedEDate,
         taskPriority: selectedPriority,
-        member: SelectedMember,
+        assignees: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
-        type: "parent",
+        type: "toq",
         price: Price,
-        quantity: Quantity,
+        requiredQuantity: Quantity,
         unit: selectedUnit,
         total: Total,
       };
 
-      console.log(taskData);
+      console.log("taskData" ,  taskData);
       await newTask(taskData);
 
       clearFormFields();
@@ -192,7 +192,7 @@ export const AddNewTask = ({ newTask, task }) => {
     if (isOpen) clearFormFields();
   };
   const handleTagChange = (selectedOptions) => {
-    console.log("Selected options:", selectedOptions);
+    // console.log("Selected options:", selectedOptions);
     setSelectedTag(selectedOptions || []);
   };
 
