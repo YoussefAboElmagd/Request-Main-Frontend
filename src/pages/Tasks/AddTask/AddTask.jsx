@@ -21,8 +21,8 @@ const AddTask = () => {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, taskType, members, ParentId } = location.state || {};
-
+  const { projectId, taskType, members, ParentId, fromToq } =
+    location.state || {};
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
@@ -157,7 +157,7 @@ const AddTask = () => {
       tag: !selectedTag,
     };
 
-    if (isSubtask) {
+    if (isSubtask && fromToq === true) {
       newFieldErrors.price = !Price || isNaN(Price);
       newFieldErrors.quantity = !Quantity || isNaN(Quantity);
       newFieldErrors.total = !Total || isNaN(Total);
@@ -187,11 +187,13 @@ const AddTask = () => {
         type: isSubtask ? "toq" : taskType,
       };
       if (isSubtask) {
+        taskData.parentTask = ParentId ? ParentId : SelectedParentTask;
+      }
+      if (isSubtask && fromToq) {
         taskData.price = Price;
         taskData.requiredQuantity = Quantity;
         taskData.unit = selectedUnit;
         taskData.total = Total;
-        taskData.parentTask = ParentId ? ParentId : SelectedParentTask;
       }
 
       setLoading(true);
@@ -472,7 +474,7 @@ const AddTask = () => {
                 )}
               </div>
 
-              {isSubtask && (
+              {isSubtask && fromToq === true && (
                 <div className="grid grid-cols-4 gap-2">
                   <Input
                     type="number"

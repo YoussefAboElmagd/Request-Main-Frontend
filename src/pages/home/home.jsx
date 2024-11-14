@@ -29,7 +29,7 @@ const Home = () => {
   const [analysis, setAnalysis] = useState({});
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("board");
-
+     
   useEffect(() => {
     const fetchAnalysis = async () => {
       try {

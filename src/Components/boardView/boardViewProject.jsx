@@ -4,7 +4,39 @@ import { FaPen } from "react-icons/fa";
 import { FaFileLines } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
 import { t } from "i18next";
+import { useMemo } from "react";
 
+const getStatusDisplay = (status) => {
+  switch (status) {
+    case "waiting":
+      return "Waiting for Review";
+    case "working":
+      return "Working on It";
+    default:
+      return status;
+  }
+};
+
+const AvatarList = memo(({ avatars }) => {
+  const displayedAvatars = useMemo(() => avatars.slice(0, 5), [avatars]);
+  return (
+    <div className="members flex -space-x-2">
+      {displayedAvatars.map((avatar, index) => (
+        <img
+          key={index}
+          src={avatar}
+          alt="avatar"
+          className="w-8 h-8 border-2 border-white rounded-full m-1"
+        />
+      ))}
+      {avatars.length > 5 && (
+        <span className="w-8 h-8 text-black font-semibold rounded-full flex items-center justify-center m-1">
+          +{avatars.length - 5}
+        </span>
+      )}
+    </div>
+  );
+});
 const BoardViewProject = ({
   NameOfTask,
   ProgressValue,
@@ -18,23 +50,18 @@ const BoardViewProject = ({
   onApprove,
   onCancel,
 }) => {
-  const getStatusDisplay = (status) => {
-    switch (status) {
-      case "waiting":
-        return "Waiting for Review";
-      case "working":
-        return "Working on It";
-      default:
-        return status;
-    }
-  };
+  // Memoized callbacks to avoid re-creation on each render
+  // const memoizedOnApprove = useCallback(onApprove, [onApprove]);
+  // const memoizedOnCancel = useCallback(onCancel, [onCancel]);
+  const statusDisplay = useMemo(() => getStatusDisplay(Status), [Status]);
+
   return (
     <div className="box h-full bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
       <div className="tagName flex justify-center">
         <span
           className={`${Status} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
         >
-          {getStatusDisplay(Status)}
+          {statusDisplay}
         </span>
       </div>
       <div className="name flex justify-between items-center mx-2 my-3">
@@ -66,23 +93,7 @@ const BoardViewProject = ({
         />
       </div>
       <div className="flex items-center justify-between mx-2 my-3">
-        {avatars && (
-          <div className="members flex -space-x-2">
-            {avatars.slice(0, 5).map((avatar, index) => (
-              <img
-                key={index}
-                src={avatar}
-                alt="avatar"
-                className="w-8 h-8 border-2 border-white rounded-full m-1"
-              />
-            ))}
-            {avatars.length > 5 && (
-              <span className="w-8 h-8  text-black font-semibold rounded-full flex items-center justify-center m-1">
-                +{avatars.length - 5}
-              </span>
-            )}
-          </div>
-        )}
+        {avatars && <AvatarList avatars={avatars} />}
         <div className="files flex items-center gap-3 cursor-pointer">
           <div className="files flex items-center gap-1">
             <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">

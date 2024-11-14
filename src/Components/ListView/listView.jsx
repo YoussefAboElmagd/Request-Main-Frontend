@@ -3,7 +3,28 @@ import { FaPen } from "react-icons/fa";
 import { FaFileLines } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
 import { t } from "i18next";
+import { useMemo } from "react";
 
+const AvatarList = memo(({ avatars }) => {
+  const displayedAvatars = useMemo(() => avatars.slice(0, 3), [avatars]);
+  return (
+    <div className="members flex -space-x-2">
+      {displayedAvatars.map((avatar, index) => (
+        <img
+          key={index}
+          src={avatar}
+          alt="avatar"
+          className="w-8 h-8 border-2 border-white rounded-full m-1"
+        />
+      ))}
+      {avatars.length > 5 && (
+        <span className="w-8 h-8 text-black font-semibold rounded-full flex items-center justify-center m-1">
+          +{avatars.length - 3}
+        </span>
+      )}
+    </div>
+  );
+});
 const ListView = ({
   Tagname,
   Tag,
@@ -55,19 +76,7 @@ const ListView = ({
         </span>
       </div>
       <div className="members flex -space-x-2 mx-1">
-        {avatars.slice(0, 3).map((avatar, index) => (
-          <img
-            key={index}
-            src={avatar}
-            alt="avatar"
-            className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 border-2 border-white rounded-full m-1"
-          />
-        ))}
-        {avatars.length > 3 && (
-          <span className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8  text-black font-semibold rounded-full flex items-center justify-center m-1">
-            +{avatars.length - 3}
-          </span>
-        )}
+        {avatars && <AvatarList avatars={avatars} />}
       </div>
       {taskType === "toq" && (
         <div className="progress hidden md:block md:max-w-sm lg:max-w-lg w-full mx-1 my-3">

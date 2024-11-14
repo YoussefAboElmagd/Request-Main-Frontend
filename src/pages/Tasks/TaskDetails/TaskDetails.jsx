@@ -336,17 +336,34 @@ const TaskDetails = () => {
           ) : (
             Task.parentTask === null && (
               <div className="flex right-0 my-2 items-center gap-3 justify-end">
-                <Link
-                  to={`/AddTask/${Task.project._id}`}
-                  state={{
-                    projectId: Task.project._id,
-                    taskType: "sub",
-                    members: Task.assignees,
-                    ParentId: Task._id,
-                  }}
-                >
-                  <Button className="w-fit px-7">{t("AddSubTask")}</Button>
-                </Link>
+                {Task.parentTask === null && IsToq ? (
+                  <Link
+                    to={`/AddTask/${Task.project._id}`}
+                    state={{
+                      projectId: Task.project._id,
+                      taskType: "sub",
+                      members: Task.assignees,
+                      ParentId: Task._id,
+
+                      fromToq: true,
+                    }}
+                  >
+                    <Button className="w-fit px-7">{t("AddSubTask")}</Button>
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/AddTask/${Task.project._id}`}
+                    state={{
+                      projectId: Task.project._id,
+                      taskType: "sub",
+                      members: Task.assignees,
+                      ParentId: Task._id,
+                      fromToq: false,
+                    }}
+                  >
+                    <Button className="w-fit px-7">{t("AddSubTask")}</Button>
+                  </Link>
+                )}
                 <Link
                   to={`/SubTasks/${Task._id}`}
                   state={{
@@ -364,12 +381,14 @@ const TaskDetails = () => {
             )
           )}
         </div>
+
+        {/*  parentTask.type === parent (task.parentTask.parentTask === null) && IsToq */}
         {IsToq && (
           <div className="grid col-span-2 grid-cols-4 gap-3 m-2">
             <Input
               type="number"
               min={0}
-              value={Task.price}
+              value={Task?.price}
               disabled
               label={t("Price")}
               className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
@@ -379,7 +398,7 @@ const TaskDetails = () => {
               type="number"
               min={0}
               label={t("Quantity")}
-              value={Task.requiredQuantity}
+              value={Task?.requiredQuantity}
               disabled
               className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
             />
@@ -388,7 +407,7 @@ const TaskDetails = () => {
               label={t("Total")}
               type="number"
               min={0}
-              value={Task.total}
+              value={Task?.total}
               disabled
             />
             {/* <Select
@@ -400,7 +419,7 @@ const TaskDetails = () => {
             <Input
               type="text"
               label={t("Unit")}
-              value={Task.unit.name}
+              value={Task?.unit?.name}
               disabled
               className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid`}
             />

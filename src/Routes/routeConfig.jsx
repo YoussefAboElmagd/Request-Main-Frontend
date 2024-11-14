@@ -37,6 +37,7 @@ import LoginByPhone from "../pages/auth/LognIn/LoginByPhone.jsx";
 import Landing from "../pages/landing/landing.jsx";
 import Invite from "../pages/Projects/AddProject/Invite.jsx";
 import TaskHistory from "../pages/Tasks/TaskHistory/TaskHistory.jsx";
+import ViewRequest from "../pages/Requests/ViewRequest.jsx";
 
 // Define public routes
 export const publicRoutes = [
@@ -81,6 +82,7 @@ export const protectedRoutes = [
     component: <RequestForInspection />,
   },
   { path: "/Requests/TableOfQuantities", component: <TableOfQuantities /> },
+  { path: "/ViewRequest", component: <ViewRequest /> },
   { path: "/Team", component: <Team /> },
   { path: "/SeePlans", component: <SeePlans /> },
   { path: "/PlansInfo", component: <PlansInfo /> },
