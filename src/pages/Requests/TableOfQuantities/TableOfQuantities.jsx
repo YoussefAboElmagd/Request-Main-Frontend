@@ -63,7 +63,7 @@ const TaskRow = ({
         <Input
           type="number"
           min={0}
-          value={task.quantity}
+          value={task.requiredQuantity}
           onChange={(e) => {
             const value = e.target.value;
             handleChange("requiredQuantity", value);
@@ -122,7 +122,7 @@ const TableOfQuantities = () => {
   const [UnitsLoading, setUnitsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const location = useLocation();
-  const { projectId, taskType, members } = location.state || {};
+  const { projectId, taskType, members, projectName } = location.state || {};
   console.log(location.state);
   const navigate = useNavigate();
 
@@ -169,7 +169,7 @@ const TableOfQuantities = () => {
           await addTask(task);
         })
       );
-      toast.success(t("Tasks saved successfully!"));
+      toast.success(t("toast.TaskSavedSuccess"));
       console.log("All tasks saved:", tasks);
       setTasks([]);
        navigate(`/`);
@@ -178,6 +178,7 @@ const TableOfQuantities = () => {
         navigate("/Models", {
           state: {
             projectId,
+            projectName,
           },
         });
       }
@@ -233,7 +234,7 @@ const TableOfQuantities = () => {
           {!taskType && (
             <Link
               to="/Models"
-              state={{ projectId, taskType, members }}
+              state={{ projectId, taskType, members, projectName }}
               className="text-purple underline mt-4"
             >
               {t("Skip This Request")}

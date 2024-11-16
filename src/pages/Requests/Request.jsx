@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import Button from "../../Components/UI/Button/Button";
 import Loader from "../../Components/Loader/Loader";
 import CheckboxGroup from "../../Components/UI/CheckboxGroup/CheckboxGroup";
-import { MdDelete, MdOutlineEdit } from "react-icons/md";
-import Select from "react-select";
-import { FaSave } from "react-icons/fa";
+import avatar  from "../../assets/images/avatar1.png"
+import signature  from "../../assets/images/signature.png"
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
@@ -30,7 +29,9 @@ const RequestForm = ({
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId } = location.state || {};
+  const { projectId, projectName } = location.state || {};
+  console.log(location.state);
+  
   const [actionCodes, setActionCodes] = useState([]);
   const [disciplines, setDisciplines] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -118,7 +119,7 @@ const RequestForm = ({
     console.log("Request Data:", requestData);
     try {
       await sendRequest(token, requestData);
-      toast.success("Request sent successfully ");
+      toast.success(t("toast.ReqSentSuccess"));
       resetForm();
       handleUpdateProject();
       navigate("/Models", {
@@ -224,55 +225,87 @@ const RequestForm = ({
           </div>
           <div className="content bg-white p-4 rounded-3xl my-6 ">
             <form onSubmit={handleSubmit}>
-              <div className="Ref flex items-center gap-2 my-6">
-                <label
-                  htmlFor="Ref"
-                  className="font-bold text-base text-gray-dark"
-                >
-                  {t("REF NO")}
-                </label>
-                <input
-                  type="text"
-                  id="Ref"
-                  placeholder="ref no"
-                  onChange={(e) => setRefNO(e.target.value)}
-                  className="bg-white border border-gray rounded-lg p-1 max-w-52"
-                />
-              </div>
-              <div className="Date flex items-center gap-2 my-6 ">
-                <label
-                  htmlFor="currentDay"
-                  className="font-bold text-base text-gray-dark"
-                >
-                  {t("Date")}
-                </label>
-                <div className="inputs">
-                  <input
-                    type="text"
-                    id="currentDay"
-                    name="Date"
-                    value={`${currentDay}`}
-                    className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
-                    disabled
-                  />
-                  <input
-                    type="text"
-                    id="currentMonth"
-                    name="Date"
-                    value={`${currentMonth}`}
-                    className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
-                    disabled
-                  />
-                  <input
-                    type="text"
-                    id="currentYear"
-                    name="Date"
-                    value={`${currentYear}`}
-                    className="bg-white border border-gray rounded-2xl max-w-16 font-medium text-center mx-1 "
-                    disabled
-                  />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col items-center gap-3">
+                    <img
+                      src={avatar}
+                      alt="consultant avatar"
+                      className="w-20 h-20 rounded-full  border  border-red border-solid"
+                    />
+                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                      consultant name
+                    </span>
+                  </div>
+                  {/* <div className="flex flex-col items-center gap-3">
+                    <img
+                      src={avatar}
+                      alt="consultant avatar"
+                      className="w-20 h-20 rounded-full  border  border-red border-solid"
+                    />
+                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                      Contractor name
+                    </span>
+                  </div> */}
+                </div>
+                <div className="flex flex-col ">
+                  <div className="Ref flex items-center gap-2 my-6">
+                    <label
+                      htmlFor="Ref"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      {t("REF NO")}
+                    </label>
+                    <input
+                      type="text"
+                      id="Ref"
+                      placeholder="ref no"
+                      onChange={(e) => setRefNO(e.target.value)}
+                      className="bg-white border border-gray rounded-lg p-1 max-w-52"
+                    />
+                  </div>
+                  <div className="Date flex items-center gap-2 my-6 ">
+                    <label
+                      htmlFor="currentDay"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      {t("Date")}
+                    </label>
+                    <div className="inputs">
+                      <input
+                        type="text"
+                        id="currentDay"
+                        name="Date"
+                        value={`${currentDay}`}
+                        className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
+                        disabled
+                      />
+                      <input
+                        type="text"
+                        id="currentMonth"
+                        name="Date"
+                        value={`${currentMonth}`}
+                        className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
+                        disabled
+                      />
+                      <input
+                        type="text"
+                        id="currentYear"
+                        name="Date"
+                        value={`${currentYear}`}
+                        className="bg-white border border-gray rounded-2xl max-w-16 font-medium text-center mx-1 "
+                        disabled
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
+              <hr className="bg-gray my-4" />
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-lg">{t("PName")} : </h3>
+                <span className="text-sm  font-bold">{projectName}</span>
+              </div>
+              <hr className="bg-gray my-4" />
               {/* {showProjectName && (
                 <div className="ProjectName flex items-center gap-2 my-6">
                   <label
@@ -333,7 +366,7 @@ const RequestForm = ({
                 />
               )}
 
-              <div className="comment flex flex-col my-6  ">
+              {/* <div className="comment flex flex-col my-6  ">
                 <label
                   htmlFor="comment"
                   className="font-bold text-base text-gray-dark flex justify-start"
@@ -356,8 +389,8 @@ const RequestForm = ({
                 >
                   {t("+add new")}
                 </button>
-              </div>
-
+              </div> */}
+              {/* 
               <div className="comments-container my-6 ">
                 {comments.map((comment, index) => (
                   <div
@@ -406,7 +439,7 @@ const RequestForm = ({
                     </div>
                   </div>
                 ))}
-              </div>
+              </div> */}
 
               <div className="review flex items-center gap-2 m-2">
                 <input

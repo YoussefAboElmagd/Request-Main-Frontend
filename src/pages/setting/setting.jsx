@@ -65,7 +65,7 @@ const Setting = () => {
     if (generalRef.current) {
       const settings = generalRef.current.handleSave();
       console.log("General Settings Saved:", settings);
-      toast.success("General settings saved successfully!");
+      toast.success(t("toast.GeneralSettingSuccess"));
     }
   };
 
@@ -107,7 +107,7 @@ const Setting = () => {
 
       const results = await Promise.all(savePromises);
       window.location.reload();
-      toast.success("tags created Successfully");
+      toast.success(t("toast.TagsCreatedSuccess"));
 
       console.log("All tags saved successfully:", results);
     } catch (error) {

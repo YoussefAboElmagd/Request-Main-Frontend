@@ -97,7 +97,7 @@ const CreateCompany = () => {
       const updatedUser = { ...user, ...res.updates };
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setLoading(false);
-      toast.success("User created successfully");
+      toast.success(t("toast.userCreatedSuccessfully"));
       clearFields();
       navigate("/");
       window.location.reload();

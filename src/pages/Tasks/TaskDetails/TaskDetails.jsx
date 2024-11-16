@@ -21,7 +21,6 @@ const TaskDetails = () => {
   const [loading, setLoading] = useState(false);
   const [Task, setTask] = useState({});
   const [initialTask, setInitialTask] = useState({});
-
   const [IsToq, setIsToq] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -79,7 +78,7 @@ const TaskDetails = () => {
 
       setIsEditing(false);
       console.log("res from update task => ", res);
-      toast.success("Task Updated successfully");
+      toast.success(t("toast.TaskSavedSuccess"));
       const updatedTask = await getTaskDetails(taskId);
       setTask(updatedTask.results);
     } catch (error) {
@@ -336,34 +335,19 @@ const TaskDetails = () => {
           ) : (
             Task.parentTask === null && (
               <div className="flex right-0 my-2 items-center gap-3 justify-end">
-                {Task.parentTask === null && IsToq ? (
-                  <Link
-                    to={`/AddTask/${Task.project._id}`}
-                    state={{
-                      projectId: Task.project._id,
-                      taskType: "sub",
-                      members: Task.assignees,
-                      ParentId: Task._id,
+                <Link
+                  to={`/AddTask/${Task.project._id}`}
+                  state={{
+                    projectId: Task.project._id,
+                    taskType: Task.type,
+                    members: Task.assignees,
+                    ParentId: Task._id,
+                    subTask:true
+                  }}
+                >
+                  <Button className="w-fit px-7">{t("AddSubTask")}</Button>
+                </Link>
 
-                      fromToq: true,
-                    }}
-                  >
-                    <Button className="w-fit px-7">{t("AddSubTask")}</Button>
-                  </Link>
-                ) : (
-                  <Link
-                    to={`/AddTask/${Task.project._id}`}
-                    state={{
-                      projectId: Task.project._id,
-                      taskType: "sub",
-                      members: Task.assignees,
-                      ParentId: Task._id,
-                      fromToq: false,
-                    }}
-                  >
-                    <Button className="w-fit px-7">{t("AddSubTask")}</Button>
-                  </Link>
-                )}
                 <Link
                   to={`/SubTasks/${Task._id}`}
                   state={{
@@ -383,7 +367,7 @@ const TaskDetails = () => {
         </div>
 
         {/*  parentTask.type === parent (task.parentTask.parentTask === null) && IsToq */}
-        {IsToq && (
+        {IsToq &&  (
           <div className="grid col-span-2 grid-cols-4 gap-3 m-2">
             <Input
               type="number"

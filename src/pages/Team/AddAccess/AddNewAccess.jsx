@@ -328,7 +328,7 @@ const AddNewAccess = () => {
 
       await updateTeam(token, user.team, payload);
       clearFields();
-      toast.success("Member Added Successfully ");
+      toast.success(t("toast.MemberAdded"));
     } catch (error) {
       console.log(error);
       setFieldErrors(error);

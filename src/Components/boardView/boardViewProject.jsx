@@ -4,7 +4,7 @@ import { FaPen } from "react-icons/fa";
 import { FaFileLines } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
 import { t } from "i18next";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 const getStatusDisplay = (status) => {
   switch (status) {
@@ -67,7 +67,7 @@ const BoardViewProject = ({
       <div className="name flex justify-between items-center mx-2 my-3">
         <p className="font-inter font-medium text-xs leading-5">{NameOfTask}</p>
         <span>
-          <FaPen className="text-gray w-4 h-4 cursor-pointer" />
+          <FaPen className="text-gray w-4 h-4 cursor-pointer" />  
         </span>
       </div>
       <div className="progress w-full mx-2 my-3">
@@ -76,7 +76,7 @@ const BoardViewProject = ({
             Progress
           </p>
           <span className="font-inter font-normal text-xs text-gray-dark px-2">
-            {ProgressValue} %
+            {Math.round(ProgressValue)}%
           </span>
         </div>
         <Progress

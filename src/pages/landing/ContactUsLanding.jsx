@@ -121,7 +121,7 @@ const ContactUsLanding = () => {
       
       const res = await sendEmailGetInTouch(formattedData);
       console.log(res);
-      toast.success("Message sent successfully");
+    toast.success(t("toast.MsgSentSuccess"));
       clearFields();
       setLoading(false);
     } catch (err) {

@@ -317,5 +317,18 @@
   "Executed quantity": "Executed quantity",
   "CreateTask": "Create Task",
   "UpdateTask": "Update Task",
-  "GeneralChange": "General Change"
+  "GeneralChange": "General Change",
+  "toast": {
+    "userCreatedSuccessfully": "User created successfully",
+    "userDeletedSuccessfully": "User deleted successfully",
+    "userUpdatedSuccessfully": "User updated successfully",
+    "MsgSentSuccess": "Message sent successfully",
+    "MemberAdded": "Member Added Successfully",
+    "ProjectSuccess": "Project Added Successfully",
+    "ReqSentSuccess": "Request sent successfully",
+    "TaskSavedSuccess": "Task Updated successfully",
+    "GeneralSettingSuccess": "General settings saved successfully!",
+    "ProfileChangesSuccess": "Profile changes saved successfully!",
+    "TagsCreatedSuccess": "tags created Successfully"
+  }
 }

@@ -3,7 +3,7 @@ import { FaPen } from "react-icons/fa";
 import { FaFileLines } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
 import { t } from "i18next";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 
 const AvatarList = memo(({ avatars }) => {
   const displayedAvatars = useMemo(() => avatars.slice(0, 3), [avatars]);

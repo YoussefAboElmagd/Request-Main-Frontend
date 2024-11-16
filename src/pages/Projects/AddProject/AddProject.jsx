@@ -100,12 +100,12 @@ const AddProject = () => {
       setLoading(true);
       console.log("Project data =>  ", projectData);
       const res = await addProject(token, projectData);
-      toast.success("Project Added Successfully");
+      toast.success(t("toast.ProjectSuccess"));
       clearFormFields();
-
       setLoading(false);
       return {
         projectId: res.addedProject._id,
+        projectName: res.addedProject.name,
         members: res.addedProject.members,
       };
     } catch (err) {
@@ -128,6 +128,7 @@ const AddProject = () => {
       navigate("/Requests/TableOfQuantities", {
         state: {
           projectId: result.projectId,
+          projectName: result.projectName,
           members: result.members,
         },
       });

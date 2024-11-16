@@ -74,7 +74,7 @@ const DelegatedAccess = () => {
           })
         );
 
-        toast.success("User deleted successfully");
+        toast.success(t("toast.userDeletedSuccessfully"));
         window.location.reload();
       } catch (error) {
         console.error("Error deleting user:", error);

@@ -212,7 +212,7 @@ const ProjectDetails = () => {
                         value={Project.progress}
                         variant="solid"
                       >
-                        {Project.progress}%
+                        {Math.round(Project.progress)}%
                       </CircularProgress>
                     </div>
                   )}

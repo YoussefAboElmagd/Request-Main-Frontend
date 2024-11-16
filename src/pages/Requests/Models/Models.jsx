@@ -9,7 +9,9 @@ import { t } from "i18next";
 
 const Models = () => {
   const location = useLocation();
-  const { projectId, taskType, members } = location.state || {};
+  const { projectId, taskType, members, projectName } = location.state || {};
+  console.log(location.state);
+  
   const [isReviewed, setIsReviewed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [links, setLinks] = useState([]);
@@ -116,8 +118,8 @@ const Models = () => {
                         to={link.to}
                         state={
                           link.to === "/Requests/TableOfQuantities"
-                            ? { projectId, members }
-                            : { projectId }
+                            ? { projectId, members, projectName }
+                            : { projectId, projectName }
                         }
                         className="font-medium text-base text-left"
                       >

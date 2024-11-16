@@ -72,7 +72,7 @@ const Company = () => {
       localStorage.setItem("user", JSON.stringify(updatedUser));
       console.log("User saved to local storage successfully");
 
-      toast.success("User updated successfully");
+      toast.success(t("toast.userUpdatedSuccessfully"));
       setError(null);
     } catch (err) {
       console.error("Update user failed:", err);

@@ -192,12 +192,12 @@ const TasksPerProject = () => {
                 </Trans>{" "}
               </span>
               <Select
-                className={"w-3/4 my-4  "}
+                className={"w-3/4 my-4 "}
                 label={t("type")}
                 id={"type"}
                 options={[
                   { label: t("Table of Quantities"), value: "parent" },
-                  { label: t("Sub Task"), value: "sub" },
+                  // { label: t("Sub Task"), value: "sub" },
                   { label: t("Milestone"), value: "milestone" },
                   { label: t("Recurring Task"), value: "recurring" },
                   { label: t("One-time Task"), value: "oneTime" },

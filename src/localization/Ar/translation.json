@@ -328,5 +328,19 @@
   "Executed quantity": "الكمية المنفذة",
   "CreateTask": "إنشاء مهمة",
   "UpdateTask": "تحديث مهمة",
-  "GeneralChange": "تغيير عام"
+  "GeneralChange": "تغيير عام",
+
+  "toast": {
+    "userCreatedSuccessfully": "تم إنشاء المستخدم بنجاح",
+    "userDeletedSuccessfully": "تم حذف المستخدم بنجاح",
+    "userUpdatedSuccessfully": "تم تحديث المستخدم بنجاح",
+    "MsgSentSuccess": "تم إرسال الرسالة بنجاح",
+    "MemberAdded": "تم إضافة العضو بنجاح",
+    "ProjectSuccess": "تم إضافة المشروع بنجاح",
+    "ReqSentSuccess": "تم إرسال الطلب بنجاح",
+    "TaskSavedSuccess": "تم تحديث المهمة بنجاح",
+    "GeneralSettingSuccess": "تم حفظ الإعدادات العامة بنجاح!",
+    "ProfileChangesSuccess": "تم حفظ تغييرات الملف الشخصي بنجاح!",
+    "TagsCreatedSuccess": "تم إنشاء العلامات بنجاح"
+  }
 }

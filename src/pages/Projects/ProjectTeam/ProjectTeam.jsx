@@ -329,7 +329,7 @@ const ProjectTeam = () => {
 
       await addMemberForProject(projectId, payload, token);
       clearFields();
-      toast.success("Member Added Successfully ");
+      toast.success(t("toast.MemberAdded"));
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -352,7 +352,7 @@ const ProjectTeam = () => {
 
       console.log("res : ", res);
 
-      toast.success("User deleted successfully");
+      toast.success(t("toast.userDeletedSuccessfully"));
       window.location.reload();
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -444,13 +444,13 @@ const ProjectTeam = () => {
       </div>
 
       <div className="admins grid grid-cols-1 lg:grid-cols-3 gap-3 my-3">
-        {(owner || owner !== null) && (
+        {(owner || owner !== null ) && (
           <div className="admin">
             <h4 className="m-1 font-medium text-sm">{t("owner")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
-              <ProfileAvatar name={owner.name} profilePic={owner.profilePic} />
+              <ProfileAvatar name={owner?.name} profilePic={owner?.profilePic} />
               <div className="flex flex-col">
-                <span className=" text-sm font-medium">{owner.name}</span>
+                <span className=" text-sm font-medium">{owner?.name}</span>
                 <span className="text-blue text-sm font-medium">
                   {t("ownerTeam")}
                 </span>
@@ -458,17 +458,16 @@ const ProjectTeam = () => {
             </div>
           </div>
         )}
-
-        {(consultant || consultant !== null) && (
+        {(consultant || consultant !== null ) && (
           <div className="consultant">
             <h4 className="m-1 font-medium text-sm">{t("consultant")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
               <ProfileAvatar
-                name={consultant.name}
-                profilePic={consultant.profilePic}
+                name={consultant?.name}
+                profilePic={consultant?.profilePic}
               />
               <div className="flex flex-col">
-                <span className=" text-sm font-medium">{consultant.name}</span>
+                <span className=" text-sm font-medium">{consultant?.name}</span>
                 <span className="text-blue text-sm font-medium">
                   {t("consultantTeam")}
                 </span>
@@ -481,11 +480,11 @@ const ProjectTeam = () => {
             <h4 className="m-1 font-medium text-sm">{t("contractor")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
               <ProfileAvatar
-                name={contractor.name}
-                profilePic={contractor.profilePic}
+                name={contractor?.name}
+                profilePic={contractor?.profilePic}
               />
               <div className="flex flex-col">
-                <span className=" text-sm font-medium">{contractor.name}</span>
+                <span className=" text-sm font-medium">{contractor?.name}</span>
                 <span className="text-blue text-sm font-medium">
                   {t("contractorTeam")}
                 </span>
@@ -685,6 +684,7 @@ const ProjectTeam = () => {
           </Dialog>
         </div>
       </div>
+      
       {/* DelegatedAccess mobile view */}
       {/* <div className="DelegatedAccess block lg:hidden">
         <Accordion key={idx} open={openAcc === idx}>

@@ -75,7 +75,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
 
     dispatch(updateAction)
       .then(() => {
-        toast.success("Profile changes saved successfully!");
+        toast.success(t("toast.ProfileChangesSuccess"));
         setIsUpdating(false);
         setLoading(false);
 

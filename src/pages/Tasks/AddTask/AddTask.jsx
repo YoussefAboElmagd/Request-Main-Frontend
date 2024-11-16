@@ -21,12 +21,14 @@ const AddTask = () => {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, taskType, members, ParentId, fromToq } =
+  const { projectId, taskType, members, ParentId,  subTask } =
     location.state || {};
+    console.log(location.state);
+    
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
-  const [isSubtask, setIsSubtask] = useState(taskType === "sub");
+  const [isSubtask, setIsSubtask] = useState(subTask === true);
   const [isRecurringTask, setIsRecurringTask] = useState(
     taskType === "recurring"
   );
@@ -157,9 +159,9 @@ const AddTask = () => {
       tag: !selectedTag,
     };
 
-    if (isSubtask && fromToq === true) {
+    if (isSubtask ) {
       newFieldErrors.price = !Price || isNaN(Price);
-      newFieldErrors.quantity = !Quantity || isNaN(Quantity);
+      newFieldErrors.requiredQuantity = !Quantity || isNaN(Quantity);
       newFieldErrors.total = !Total || isNaN(Total);
       newFieldErrors.unit = !selectedUnit;
     }
@@ -184,12 +186,11 @@ const AddTask = () => {
         assignees: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
-        type: isSubtask ? "toq" : taskType,
+        type:  taskType,
       };
+     
       if (isSubtask) {
         taskData.parentTask = ParentId ? ParentId : SelectedParentTask;
-      }
-      if (isSubtask && fromToq) {
         taskData.price = Price;
         taskData.requiredQuantity = Quantity;
         taskData.unit = selectedUnit;
@@ -474,7 +475,7 @@ const AddTask = () => {
                 )}
               </div>
 
-              {isSubtask && fromToq === true && (
+              {(isSubtask && taskType === "toq") && (
                 <div className="grid grid-cols-4 gap-2">
                   <Input
                     type="number"
@@ -501,7 +502,7 @@ const AddTask = () => {
                       calculateTotal(Price, newQuantity);
                     }}
                     className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid
-                      ${fieldErrors.quantity && "border-red "}
+                      ${fieldErrors.requiredQuantity && "border-red "}
                     `}
                   />
                   <Input
