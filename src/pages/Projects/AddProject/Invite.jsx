@@ -4,9 +4,21 @@ import Select from "../../../Components/UI/Select/Select";
 import { CiSquarePlus, CiSquareRemove } from "react-icons/ci";
 import Button from "../../../Components/UI/Button/Button";
 import { useState } from "react";
+import { sendInvite } from "../../../Services/api";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Invite = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
   const [invites, setInvites] = useState([{ email: "", type: "" }]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const { projectId, projectName } = location.state || {};
+  const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
   const roles = [
     { _id: "66d33a4b4ad80e468f231f83", name: "owner", label: t("owner") },
@@ -21,36 +33,80 @@ const Invite = () => {
       label: t("consultant"),
     },
   ];
-  // Function to add a new invite with default email and type
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    for (const invite of invites) {
+      if (!invite.email.trim()) {
+        setError(t("Email can not be empty"));
+        return;
+      }
+      if (!emailPattern.test(invite.email.trim())) {
+        setError(t("This Email is not valid"));
+        return;
+      }
+      if (!invite.type) {
+        setError(t("role required"));
+        return;
+      }
+    }
+
+    try {
+      const payload = invites.map(({ email, type }) => ({
+        email: email.trim(),
+        role: type,
+        project: projectId,
+        createdBy: user._id,
+      }));
+      console.log(payload);
+
+      await sendInvite(token, payload);
+
+      setInvites([{ email: "", type: null }]);
+      navigate("/Models", {
+        state: {
+          projectId,
+          projectName,
+        },
+      });
+      setLoading(false);
+    } catch (err) {
+      console.error("Error in adding new invite", err);
+      setError(err.message || "An error occurred");
+      setLoading(false);
+    }
+  };
+
   const addNewInvite = () => {
     const newInvite = { email: "", type: "" };
     setInvites((prevInvites) => [...prevInvites, newInvite]);
   };
 
-  // Function to handle email and type changes for each invite
   const handleInviteChange = (index, field, value) => {
     const updatedInvites = invites.map((invite, i) =>
-      i === index ? { ...invite, [field]: value } : invite
+      i === index ? { ...invite, [field]: value.trim() } : invite
     );
     setInvites(updatedInvites);
   };
 
-  // Function to remove an invite by index
   const removeInvite = (index) => {
     setInvites(invites.filter((_, i) => i !== index));
   };
 
   return (
     <div className="Invite mx-1">
-      <h1 className="title font-inter font-bold text-3xl text-black m-2 rtl:hidden">
+      <h1 className="title font-inter font-bold text-3xl text-black m-2">
         {t("invite")}
       </h1>
       <div className="wrapper bg-white rounded-3xl p-3 m-2">
-        <form className="">
+        <form>
           {invites.map((invite, index) => (
             <div
               key={index}
-              className="invite-item  grid grid-cols-3 lg:grid-cols-6 gap-3 mb-2"
+              className="invite-item grid grid-cols-3 lg:grid-cols-6 gap-3 mb-2"
             >
               <div className="col-span-3">
                 <Input
@@ -58,6 +114,7 @@ const Invite = () => {
                   label={t("invite")}
                   placeholder={t("Email")}
                   type={"email"}
+                  autoComplete="email"
                   required
                   value={invite.email}
                   onChange={(e) =>
@@ -79,8 +136,16 @@ const Invite = () => {
               </div>
               <div className="col-span-1 flex items-center gap-2 mt-3">
                 {index === 0 && (
-                  <button type="button" onClick={addNewInvite}>
-                    <CiSquarePlus className="w-10 h-10 bg-yellow text-white rounded-lg" />
+                  <button
+                    type="button"
+                    disabled={invites.length === 5}
+                    onClick={addNewInvite}
+                  >
+                    <CiSquarePlus
+                      className={`w-10 h-10 bg-yellow ${
+                        invites.length === 5 ? "opacity-45 " : ""
+                      }  text-white rounded-lg`}
+                    />
                   </button>
                 )}
                 {index > 0 && (
@@ -91,8 +156,11 @@ const Invite = () => {
               </div>
             </div>
           ))}
+          {error && <p className="error text-red text-center">{error}</p>}
           <div className="col-span-6 flex justify-end mt-4">
-            <Button>{t("invite")}</Button>
+            <Button onClick={handleSubmit} >
+              {t("invite")}
+            </Button>
           </div>
         </form>
       </div>

@@ -21,10 +21,10 @@ const AddTask = () => {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, taskType, members, ParentId,  subTask } =
+  const { projectId, taskType, members, ParentId, subTask } =
     location.state || {};
-    console.log(location.state);
-    
+  console.log(location.state);
+
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
@@ -159,7 +159,7 @@ const AddTask = () => {
       tag: !selectedTag,
     };
 
-    if (isSubtask ) {
+    if (isSubtask && taskType === "toq") {
       newFieldErrors.price = !Price || isNaN(Price);
       newFieldErrors.requiredQuantity = !Quantity || isNaN(Quantity);
       newFieldErrors.total = !Total || isNaN(Total);
@@ -186,11 +186,11 @@ const AddTask = () => {
         assignees: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
-        type:  taskType,
+        type: taskType,
+        parentTask: ParentId ? ParentId : SelectedParentTask,
       };
-     
-      if (isSubtask) {
-        taskData.parentTask = ParentId ? ParentId : SelectedParentTask;
+
+      if (isSubtask && taskType === "toq") {
         taskData.price = Price;
         taskData.requiredQuantity = Quantity;
         taskData.unit = selectedUnit;
@@ -475,7 +475,7 @@ const AddTask = () => {
                 )}
               </div>
 
-              {(isSubtask && taskType === "toq") && (
+              {isSubtask && taskType === "toq" && (
                 <div className="grid grid-cols-4 gap-2">
                   <Input
                     type="number"

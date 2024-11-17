@@ -12,7 +12,8 @@ import ListView from "../../../Components/ListView/listView";
 
 const AllSubTasks = () => {
   const location = useLocation();
-  const { taskId } = location.state || {};
+  const { taskId, projectId, members } = location.state || {};
+  console.log(location.state);
   const [viewMode, setViewMode] = useState("board");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -93,10 +94,14 @@ const AllSubTasks = () => {
               ? "flex items-center justify-center text-2xl"
               : "flex flex-col p-5 justify-center gap-4 items-center col-span-1 h-[286px]"
           } box bg-white   rounded-md shadow-sm p-5 `}
-          to={`/AddTask/`}
-          //   state={{
-          //     taskId,
-          //   }}
+          // to={`/AddTask/${Task.project._id}`}
+          // state={{
+          //   projectId: Task.project._id,
+          //   taskType: Task.type,
+          //   members: Task.assignees,
+          //   ParentId: Task._id,
+          //   subTask: true,
+          // }}
         >
           <span>
             <IoAddOutline className="w-12 h-12 text-purple" />

@@ -124,7 +124,7 @@ const BoardViewProject = ({
           </span>
         </div>
       </div>
-      {Status === "waiting" && (
+      {/* {Status === "waiting" && (
         <div className="buttons mx-2 my-3 flex justify-around gap-2 ">
           <button
             onClick={onCancel}
@@ -139,7 +139,7 @@ const BoardViewProject = ({
             {t("Approve")}
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

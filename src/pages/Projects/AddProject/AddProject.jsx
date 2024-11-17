@@ -143,6 +143,7 @@ const AddProject = () => {
       navigate("/AddProject/Invite", {
         state: {
           projectId: result.projectId,
+          projectName: result.projectName,
         },
       });
     }

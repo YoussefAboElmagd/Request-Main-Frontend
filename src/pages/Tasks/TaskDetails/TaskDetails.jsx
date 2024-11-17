@@ -342,7 +342,7 @@ const TaskDetails = () => {
                     taskType: Task.type,
                     members: Task.assignees,
                     ParentId: Task._id,
-                    subTask:true
+                    subTask: true,
                   }}
                 >
                   <Button className="w-fit px-7">{t("AddSubTask")}</Button>
@@ -351,6 +351,10 @@ const TaskDetails = () => {
                 <Link
                   to={`/SubTasks/${Task._id}`}
                   state={{
+                    projectId: Task.project._id,
+                    taskType: Task.type,
+                    members: Task.assignees,
+                    ParentId: Task._id,
                     taskId: Task._id,
                   }}
                 >
@@ -367,7 +371,7 @@ const TaskDetails = () => {
         </div>
 
         {/*  parentTask.type === parent (task.parentTask.parentTask === null) && IsToq */}
-        {IsToq &&  (
+        {IsToq && (
           <div className="grid col-span-2 grid-cols-4 gap-3 m-2">
             <Input
               type="number"

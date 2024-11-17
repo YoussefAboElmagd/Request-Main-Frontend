@@ -38,6 +38,7 @@ import Landing from "../pages/landing/landing.jsx";
 import Invite from "../pages/Projects/AddProject/Invite.jsx";
 import TaskHistory from "../pages/Tasks/TaskHistory/TaskHistory.jsx";
 import ViewRequest from "../pages/Requests/ViewRequest.jsx";
+import Invitation from "../pages/Projects/AddProject/Invitaion.jsx";
 
 // Define public routes
 export const publicRoutes = [
@@ -63,6 +64,7 @@ export const protectedRoutes = [
   { path: "/TaskHistory/:id", component: <TaskHistory /> },
   { path: "/AddProject", component: <AddProject /> },
   { path: "/AddProject/Invite", component: <Invite /> },
+  { path: "/Invitation", component: <Invitation /> },
   { path: "/AddTask/:ProjectId", component: <AddTask /> },
   { path: "/Project/Tasks/:id", component: <TasksPerProject /> },
   { path: "/SubTasks/:id", component: <AllSubTasks /> },
@@ -82,6 +84,7 @@ export const protectedRoutes = [
     component: <RequestForInspection />,
   },
   { path: "/Requests/TableOfQuantities", component: <TableOfQuantities /> },
+
   { path: "/ViewRequest", component: <ViewRequest /> },
   { path: "/Team", component: <Team /> },
   { path: "/SeePlans", component: <SeePlans /> },

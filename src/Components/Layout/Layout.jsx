@@ -34,6 +34,7 @@ const Layout = () => {
     // "/landing/plansDetails",
     "/landing/PlansInfo",
     "/landing/*",
+    "/Invitation",
   ];
 
 

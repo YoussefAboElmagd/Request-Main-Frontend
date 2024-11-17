@@ -900,3 +900,25 @@ export const getTaskHistory = async (token, taskId) => {
     throw error;
   }
 };
+
+
+
+//  send invite 
+export const sendInvite = async (token, invitationData) => {
+  try {
+    const response = await axiosInstance.post(`users/invite`,
+      invitationData, 
+      {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response from send invite => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Send invite error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
