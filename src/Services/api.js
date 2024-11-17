@@ -809,7 +809,7 @@ export const addMemberForProject = async (projectId, MemberData, token) => {
 
 //  delete member from project team
 
-export const deleteMemberFromProjectTeam = async ( projectId, Member) => {
+export const deleteMemberFromProjectTeam = async (projectId, Member) => {
   console.log(Member, "-----", projectId);
   try {
     const response = await axiosInstance.put(
@@ -833,8 +833,7 @@ export const deleteMemberFromProjectTeam = async ( projectId, Member) => {
   }
 };
 
-
-// update task 
+// update task
 
 export const updateTask = async (token, taskId, userId, taskData) => {
   try {
@@ -857,9 +856,7 @@ export const updateTask = async (token, taskId, userId, taskData) => {
   }
 };
 
-
-
-//  get notification counts 
+//  get notification counts
 
 export const getNotificationCounts = async (token, userId) => {
   try {
@@ -901,14 +898,10 @@ export const getTaskHistory = async (token, taskId) => {
   }
 };
 
-
-
-//  send invite 
+//  send invite
 export const sendInvite = async (token, invitationData) => {
   try {
-    const response = await axiosInstance.post(`users/invite`,
-      invitationData, 
-      {
+    const response = await axiosInstance.post(`users/invite`, invitationData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -919,6 +912,51 @@ export const sendInvite = async (token, invitationData) => {
     return response.data;
   } catch (error) {
     console.error("Send invite error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// get data for invite
+export const getDataForInvite = async (token, invitationId, userId) => {
+  try {    
+    const response = await axiosInstance.get(
+      `users/invite/${userId}?id=${invitationId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Response from get data for invite => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get data for invite error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+//   approve invite 
+export const approveInvite = async (token, inviteId) => {
+  try {
+    const response = await axiosInstance.put(
+      `users/invite/${inviteId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Response from approve invite => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Approve invite error: ", error.response?.data || error.message);
     throw error;
   }
 };

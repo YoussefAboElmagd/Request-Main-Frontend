@@ -16,7 +16,7 @@ const Invite = () => {
   const [invites, setInvites] = useState([{ email: "", type: "" }]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [fieldErrors, setFieldErrors] = useState({});
+  // const [fieldErrors, setFieldErrors] = useState({});
   const { projectId, projectName } = location.state || {};
   const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
@@ -48,6 +48,10 @@ const Invite = () => {
         setError(t("This Email is not valid"));
         return;
       }
+         if (invite.email.trim() === user.email) {
+           setError(t("You cannot invite yourself"));
+           return;
+         }
       if (!invite.type) {
         setError(t("role required"));
         return;
@@ -60,7 +64,8 @@ const Invite = () => {
         role: type,
         project: projectId,
         createdBy: user._id,
-      }));
+        projectName,
+      })); 
       console.log(payload);
 
       await sendInvite(token, payload);
