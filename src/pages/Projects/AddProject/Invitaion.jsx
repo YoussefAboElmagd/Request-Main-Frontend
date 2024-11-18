@@ -66,7 +66,7 @@ const Invitation = () => {
       const payload = {
         isApproved: true,
       };
-      const res = await approveInvite(invitationId, payload, lang);
+      const res = await approveInvite(invitationId, payload);
       console.log(res);
       toast.success(
         t("toast.you have been added to {{projectName}} successfully", {

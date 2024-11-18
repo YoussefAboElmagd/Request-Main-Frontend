@@ -940,12 +940,12 @@ export const getDataForInvite = async (token, invitationId, userId, lang) => {
 };
 
 //   approve invite
-export const approveInvite = async (inviteId, inviteData , lang) => {
+export const approveInvite = async (inviteId, inviteData ) => {
   try {
     console.log(inviteData , inviteId);
     
     const response = await axiosInstance.put(
-      `users/invite/${inviteId}&lang=${lang}`,
+      `users/invite/${inviteId}`,
       inviteData
     );
 
@@ -962,10 +962,10 @@ export const approveInvite = async (inviteId, inviteData , lang) => {
 };
 
 //  cancel invite
-export const cancelInvite = async (token, inviteId , lang) => {
+export const cancelInvite = async (token, inviteId ) => {
   try {
     const response = await axiosInstance.delete(
-      `users/invite/${inviteId}&lang=${lang}`,
+      `users/invite/${inviteId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
