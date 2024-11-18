@@ -16,7 +16,7 @@ const RequestForInspection = () => {
         showDiscipline={showDiscipline}
         showActionCodes={showActionCodes}
         showReasons={showReasons}
-        ReqTitle={"Request For Inspection"}
+        ReqTitle={"Request For Inspection(RFI)"}
         ApproveTitle={"requestForInspectionForm"}
       />
     </div>

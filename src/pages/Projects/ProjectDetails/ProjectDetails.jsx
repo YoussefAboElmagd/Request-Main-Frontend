@@ -18,6 +18,7 @@ import Loader from "../../../Components/Loader/Loader";
 import { AddNote } from "../../../Components/AddNote/AddNote";
 import { useSelector } from "react-redux";
 import { IoMdPersonAdd } from "react-icons/io";
+import Button from "../../../Components/UI/Button/Button";
 
 const ProjectDetails = () => {
   const user = useSelector((state) => state.auth.user);
@@ -420,7 +421,7 @@ const ProjectDetails = () => {
                   state={{
                     projectId: Project._id,
                     projectName: Project.name,
-                    fromProject:true,
+                    fromProject: true,
                   }}
                 >
                   <span>
@@ -439,6 +440,15 @@ const ProjectDetails = () => {
                     <IoPrint className="h-7 w-7 text-yellow" />
                   </span>
                 </button>
+              </div>
+              <div className="flex right-0 my-2 items-center gap-3 justify-end">
+                <Button
+                  className="w-fit px-7 border border-solid !border-purple !text-purple"
+                  style={{ background: "white" }}
+                >
+                  approve models
+                </Button>
+                <Button className="w-fit px-7">view all models</Button>
               </div>
             </div>
           </div>

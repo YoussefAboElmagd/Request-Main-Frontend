@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Button from "../../Components/UI/Button/Button";
 import Loader from "../../Components/Loader/Loader";
 import CheckboxGroup from "../../Components/UI/CheckboxGroup/CheckboxGroup";
-import avatar  from "../../assets/images/avatar1.png"
-import signature  from "../../assets/images/signature.png"
+import avatar from "../../assets/images/avatar1.png";
+import signature from "../../assets/images/signature.png";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
@@ -11,11 +11,13 @@ import {
   getAllDiscipline,
   getAllProjectsForUser,
   getAllReasons,
+  getAllUnits,
   sendRequest,
   updateProject,
 } from "../../Services/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { t } from "i18next";
+import Select from "../../Components/UI/Select/Select";
 
 const RequestForm = ({
   ReqTitle,
@@ -31,7 +33,7 @@ const RequestForm = ({
   const location = useLocation();
   const { projectId, projectName } = location.state || {};
   console.log(location.state);
-  
+
   const [actionCodes, setActionCodes] = useState([]);
   const [disciplines, setDisciplines] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -42,8 +44,32 @@ const RequestForm = ({
   const [selectedActionCodes, setSelectedActionCodes] = useState([]);
   const [selectedDisciplines, setSelectedDisciplines] = useState([]);
   const [refNO, setRefNO] = useState("");
-  const [comments, setComments] = useState([]);
-  const [commentInput, setCommentInput] = useState("");
+  // const [comments, setComments] = useState([]);
+  // const [commentInput, setCommentInput] = useState("");
+  const [Desc, setDesc] = useState("");
+  const [supplier, setSupplier] = useState("");
+  const [approvedMaterial, setApprovedMaterial] = useState("");
+
+  const [BOQ, setBOQ] = useState("");
+  const [QTY, setQTY] = useState("");
+  const [units, setUnits] = useState([]);
+  const [UnitsLoading, setUnitsLoading] = useState(true);
+  const [selectedUnit, setSelectedUnit] = useState("");
+  const [deliveryNote, setDeliveryNote] = useState("");
+  const [Remarks, setRemarks] = useState("");
+  const [IsWorkRequest, setIsWorkRequest] = useState(
+    ReqTitle === "Work Request"
+  );
+  const [IsReqForMaterial, setIsReqForMaterial] = useState(
+    ReqTitle === "Request For Material"
+  );
+  const [IsReqForDocumentSubmittal, setIsReqForDocumentSubmittal] = useState(
+    ReqTitle === "Request For DocumentSubmittal"
+  );
+  const [IsRfiReq, setIsRfiReq] = useState(
+    ReqTitle === "Request For Inspection(RFI)"
+  );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const currentDate = new Date();
@@ -59,16 +85,25 @@ const RequestForm = ({
           disciplineResponse,
           ReasonsResponse,
           projectsResponse,
+          UnitsData,
         ] = await Promise.all([
           getAllActionCodes(),
           getAllDiscipline(),
           getAllReasons(),
           getAllProjectsForUser(user._id, token),
+          getAllUnits(),
         ]);
         setActionCodes(actionCodeResponse.results);
         setDisciplines(disciplineResponse.results);
         setReasons(ReasonsResponse.reasons);
         setProjects(projectsResponse.results);
+        setUnits(
+          UnitsData.results.map((unit) => ({
+            value: unit._id,
+            label: unit.name,
+          }))
+        );
+        setUnitsLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -104,18 +139,33 @@ const RequestForm = ({
     }
 
     const requestData = {
-      refNO,
+      refNo: refNO,
+      title: ReqTitle,
       actionCode: selectedActionCodes,
       discipline: selectedDisciplines,
-
+      description: Desc,
       project: projectId,
-      comment: comments.map((comment) => comment.text),
+      // comment: comments.map((comment) => comment.text),
       date: new Date().toLocaleDateString(),
       createdBy: user._id,
     };
     if (showReasons) {
       requestData.reason = selectedReasons;
     }
+    if (IsReqForDocumentSubmittal) {
+      requestData.remarks = Remarks;
+      requestData.qty = QTY;
+      requestData.boqItemNo = BOQ;
+    }
+    if(IsReqForMaterial) {
+        requestData.qty = QTY;
+        requestData.boqItemNo = BOQ;
+        requestData.deliveryNoteNo = deliveryNote;
+        requestData.unit = selectedUnit;
+        requestData.approvedMaterialSubmittalNo = approvedMaterial;
+        requestData.supplier = supplier;
+    }
+    
     console.log("Request Data:", requestData);
     try {
       await sendRequest(token, requestData);
@@ -141,78 +191,78 @@ const RequestForm = ({
     setSelectedActionCodes([]);
     setSelectedDisciplines([]);
 
-    setComments([]);
-    setCommentInput("");
+    // setComments([]);
+    // setCommentInput("");
   };
 
-  const handleAddComment = () => {
-    if (commentInput.trim() !== "") {
-      setComments([...comments, { text: commentInput, isEditing: false }]);
-      setCommentInput("");
-    }
-  };
+  // const handleAddComment = () => {
+  //   if (commentInput.trim() !== "") {
+  //     setComments([...comments, { text: commentInput, isEditing: false }]);
+  //     setCommentInput("");
+  //   }
+  // };
 
-  const handleEditComment = (index) => {
-    const newComments = [...comments];
-    newComments[index].isEditing = !newComments[index].isEditing;
-    setComments(newComments);
-  };
+  // const handleEditComment = (index) => {
+  //   const newComments = [...comments];
+  //   newComments[index].isEditing = !newComments[index].isEditing;
+  //   setComments(newComments);
+  // };
 
-  const handleUpdateComment = (index, newText) => {
-    const newComments = [...comments];
-    newComments[index].text = newText;
-    setComments(newComments);
-  };
+  // const handleUpdateComment = (index, newText) => {
+  //   const newComments = [...comments];
+  //   newComments[index].text = newText;
+  //   setComments(newComments);
+  // };
 
-  const handleSaveComment = (index) => {
-    const newComments = [...comments];
-    newComments[index].isEditing = false;
-    setComments(newComments);
-  };
+  // const handleSaveComment = (index) => {
+  //   const newComments = [...comments];
+  //   newComments[index].isEditing = false;
+  //   setComments(newComments);
+  // };
 
-  const handleDeleteComment = (index) => {
-    const newComments = comments.filter((_, i) => i !== index);
-    setComments(newComments);
-  };
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: "white",
-      border: "1px solid var(--gray)",
-      borderRadius: "12px",
-      padding: "0  15px",
-      boxShadow: "none",
-      "&:hover": { borderColor: "var(--gray)" },
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: "#999",
-    }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      color: "var(--gray)",
-      "&:hover": { color: "var(--gray)" },
-    }),
-    indicatorSeparator: () => ({ display: "none" }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isSelected ? "#CCABDA66" : "white",
-      color: state.isSelected ? "var(--purple)" : "var(--gray)",
-      padding: "10px",
-      borderRadius: "8px",
-      cursor: "pointer",
-      "&:hover": {
-        backgroundColor: "var(--purple)",
-        color: "white",
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      borderRadius: "10px",
-      marginTop: "4px",
-      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
-    }),
-  };
+  // const handleDeleteComment = (index) => {
+  //   const newComments = comments.filter((_, i) => i !== index);
+  //   setComments(newComments);
+  // };
+  // const customStyles = {
+  //   control: (provided) => ({
+  //     ...provided,
+  //     backgroundColor: "white",
+  //     border: "1px solid var(--gray)",
+  //     borderRadius: "12px",
+  //     padding: "0  15px",
+  //     boxShadow: "none",
+  //     "&:hover": { borderColor: "var(--gray)" },
+  //   }),
+  //   placeholder: (provided) => ({
+  //     ...provided,
+  //     color: "#999",
+  //   }),
+  //   dropdownIndicator: (provided) => ({
+  //     ...provided,
+  //     color: "var(--gray)",
+  //     "&:hover": { color: "var(--gray)" },
+  //   }),
+  //   indicatorSeparator: () => ({ display: "none" }),
+  //   option: (provided, state) => ({
+  //     ...provided,
+  //     backgroundColor: state.isSelected ? "#CCABDA66" : "white",
+  //     color: state.isSelected ? "var(--purple)" : "var(--gray)",
+  //     padding: "10px",
+  //     borderRadius: "8px",
+  //     cursor: "pointer",
+  //     "&:hover": {
+  //       backgroundColor: "var(--purple)",
+  //       color: "white",
+  //     },
+  //   }),
+  //   menu: (provided) => ({
+  //     ...provided,
+  //     borderRadius: "10px",
+  //     marginTop: "4px",
+  //     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+  //   }),
+  // };
 
   return (
     <div className="RequestForm">
@@ -226,30 +276,8 @@ const RequestForm = ({
           <div className="content bg-white p-4 rounded-3xl my-6 ">
             <form onSubmit={handleSubmit}>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col items-center gap-3">
-                    <img
-                      src={avatar}
-                      alt="consultant avatar"
-                      className="w-20 h-20 rounded-full  border  border-red border-solid"
-                    />
-                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                      consultant name
-                    </span>
-                  </div>
-                  {/* <div className="flex flex-col items-center gap-3">
-                    <img
-                      src={avatar}
-                      alt="consultant avatar"
-                      className="w-20 h-20 rounded-full  border  border-red border-solid"
-                    />
-                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                      Contractor name
-                    </span>
-                  </div> */}
-                </div>
                 <div className="flex flex-col ">
-                  <div className="Ref flex items-center gap-2 my-6">
+                  <div className="Ref flex items-center gap-2 ">
                     <label
                       htmlFor="Ref"
                       className="font-bold text-base text-gray-dark"
@@ -371,7 +399,7 @@ const RequestForm = ({
                   htmlFor="comment"
                   className="font-bold text-base text-gray-dark flex justify-start"
                 >
-                  {t("Comment")}
+                  {t("consultant comments")}
                 </label>
                 <input
                   type="text"
@@ -389,8 +417,8 @@ const RequestForm = ({
                 >
                   {t("+add new")}
                 </button>
-              </div> */}
-              {/* 
+              </div>
+
               <div className="comments-container my-6 ">
                 {comments.map((comment, index) => (
                   <div
@@ -441,6 +469,293 @@ const RequestForm = ({
                 ))}
               </div> */}
 
+              {/* <div className="flex items-center gap-3 my-4">
+                <div className="flex flex-col gap-2">
+                  <h5 className="font-bold text-base text-gray-dark">
+                    Reviewed by :
+                  </h5>
+                  <span className="font-medium text-sm">fadl mohamed</span>
+                  <img src={signature} alt="signature" className="w-14 h-14" />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <h5 className="font-bold text-base text-gray-dark">
+                    Noted by :
+                  </h5>
+                  <span className="font-medium text-sm">Ahmed mohamed</span>
+                  <img src={signature} alt="signature" className="w-14 h-14" />
+                </div>
+              </div> */}
+
+              <hr className="bg-gray my-4" />
+              <div className="desc ">
+                <label
+                  htmlFor="desc"
+                  className="font-bold text-base text-gray-dark"
+                >
+                  {t("desc")}
+                </label>
+                <input
+                  type="text"
+                  id="desc"
+                  placeholder={t("desc")}
+                  value={Desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                />
+              </div>
+
+              {IsReqForDocumentSubmittal && (
+                <>
+                  <div className="Remarks">
+                    <label
+                      htmlFor="Remarks"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      {t("Remarks")}
+                    </label>
+                    <input
+                      type="text"
+                      id="Remarks"
+                      placeholder={t("Remarks")}
+                      value={Remarks}
+                      onChange={(e) => setRemarks(e.target.value)}
+                      className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                    />
+                  </div>
+                </>
+              )}
+              {IsReqForMaterial && (
+                <div className="grid grid-cols-4 gap-3 my-4">
+                  <div className="col-span-2">
+                    <label
+                      htmlFor="supplier"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      manufacturer / supplier
+                    </label>
+                    <input
+                      type="text"
+                      id="supplier"
+                      value={supplier}
+                      onChange={(e) => setSupplier(e.target.value)}
+                      placeholder="manufacturer / supplier"
+                      className="bg-white my-1 border  w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                    />
+                  </div>
+                  <div className="col-span-2 flex flex-col">
+                    <label
+                      htmlFor="approved"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      approved material submittal no
+                    </label>
+                    <input
+                      type="number"
+                      id="approved"
+                      placeholder="123"
+                      value={approvedMaterial}
+                      onChange={(e) => setApprovedMaterial(e.target.value)}
+                      className="bg-white border my-1  w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center  gap-3 my-2">
+                {(IsReqForDocumentSubmittal ||
+                  IsReqForMaterial ||
+                  IsWorkRequest ||
+                  IsRfiReq) && (
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="BOQ item no"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      BOQ item no
+                    </label>
+                    <input
+                      type="number"
+                      id="BOQ item no"
+                      placeholder="00"
+                      value={BOQ}
+                      onChange={(e) => setBOQ(e.target.value)}
+                      className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                    />
+                  </div>
+                )}
+                {(IsReqForDocumentSubmittal || IsReqForMaterial) && (
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="QTY"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      QTY
+                    </label>
+                    <input
+                      type="number"
+                      id="QTY"
+                      placeholder="00"
+                      value={QTY}
+                      onChange={(e) => setQTY(e.target.value)}
+                      className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                    />
+                  </div>
+                )}
+                {(IsWorkRequest || IsRfiReq) && (
+                  <>
+                    <div className="flex flex-col gap-2">
+                      <label
+                        htmlFor="cell"
+                        className="font-bold text-base text-gray-dark"
+                      >
+                        cell
+                      </label>
+                      <input
+                        type="text"
+                        id="cell"
+                        placeholder="cell"
+                        // value={QTY}
+                        // onChange={(e) => setQTY(e.target.value)}
+                        className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label
+                        htmlFor="currentDay"
+                        className="font-bold text-base text-gray-dark"
+                      >
+                        {t("inspectionDate")}
+                      </label>
+                      <div className="Date flex items-center gap-2 ">
+                        <div className="inputs">
+                          <input
+                            type="text"
+                            id="currentDay"
+                            name="Date"
+                            value={`${currentDay}`}
+                            className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
+                            disabled
+                          />
+                          <input
+                            type="text"
+                            id="currentMonth"
+                            name="Date"
+                            value={`${currentMonth}`}
+                            className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
+                            disabled
+                          />
+                          <input
+                            type="text"
+                            id="currentYear"
+                            name="Date"
+                            value={`${currentYear}`}
+                            className="bg-white border border-gray rounded-2xl max-w-16 font-medium text-center mx-1 "
+                            disabled
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {(IsReqForMaterial || IsRfiReq) && (
+                  <div className="flex flex-col gap-2">
+                    <Select
+                      options={units}
+                      placeholder={t("Unit")}
+                      disabled={UnitsLoading}
+                      label={t("Unit")}
+                      value={selectedUnit}
+                      onChange={(e) => setSelectedUnit(e)}
+                      className={`bg-white mx-4`}
+                      InputClassName={` `}
+                      loading={UnitsLoading}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center  gap-3 my-2">
+                {IsReqForMaterial && (
+                  <div className="flex flex-col gap-2">
+                    <label
+                      htmlFor="delivery note no"
+                      className="font-bold text-base text-gray-dark"
+                    >
+                      delivery note no
+                    </label>
+                    <input
+                      type="text"
+                      id="delivery note no"
+                      placeholder="delivery note no"
+                      value={deliveryNote}
+                      onChange={(e) => setDeliveryNote(e.target.value)}
+                      className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                    />
+                  </div>
+                )}
+              </div>
+              {IsWorkRequest && (
+                <div className="WorkArea">
+                  <label
+                    htmlFor="WorkArea"
+                    className="font-bold text-base text-gray-dark"
+                  >
+                    {t("Work Area")}
+                  </label>
+                  <input
+                    type="text"
+                    id="WorkArea"
+                    placeholder={t("Work Area")}
+                    // value={Desc}
+                    // onChange={(e) => (e.target.value)}
+                    className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                  />
+                </div>
+              )}
+              {IsRfiReq && (
+                <div className="Quantity">
+                  <label
+                    htmlFor="Quantity"
+                    className="font-bold text-base text-gray-dark"
+                  >
+                    {t(" Quantity")}
+                  </label>
+                  <input
+                    type="number"
+                    id="Quantity"
+                    placeholder={t(" Quantity")}
+                    // value={Desc}
+                    // onChange={(e) => (e.target.value)}
+                    className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                  />
+                </div>
+              )}
+              {(IsWorkRequest || IsRfiReq) && (
+                <div className="Location">
+                  <label
+                    htmlFor="Location"
+                    className="font-bold text-base text-gray-dark"
+                  >
+                    {t("location")}
+                  </label>
+                  <input
+                    type="text"
+                    id="WorkArea"
+                    placeholder={t("location")}
+                    // value={Desc}
+                    // onChange={(e) => (e.target.value)}
+                    className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                  />
+                </div>
+              )}
+
+              {/* <div className="flex flex-col gap-2 mt-4">
+                <h5 className="font-bold text-base text-gray-dark">
+                  submitted by:
+                </h5>
+                <span className="font-medium text-sm">fadl mohamed</span>
+                <img src={signature} alt="signature" className="w-14 h-14" />
+              </div> */}
               <div className="review flex items-center gap-2 m-2">
                 <input
                   type="checkbox"
