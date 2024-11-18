@@ -64,7 +64,7 @@ const Invitation = () => {
       const payload = {
         isApproved: true,
       };
-      const res = await approveInvite(invitationId, payload);
+      const res = await approveInvite(invitationId, payload, lang);
       console.log(res);
       toast.success(
         t("toast.you have been added to {{projectName}} successfully", {
@@ -81,7 +81,7 @@ const Invitation = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await cancelInvite(token, invitationId);
+      const res = await cancelInvite(token, invitationId, lang);
       console.log(res);
       toast.success(
         t(

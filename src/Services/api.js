@@ -917,10 +917,10 @@ export const sendInvite = async (token, invitationData) => {
 };
 
 // get data for invite
-export const getDataForInvite = async (token, invitationId, userId) => {
+export const getDataForInvite = async (token, invitationId, userId, lang) => {
   try {
     const response = await axiosInstance.get(
-      `users/invite/${userId}?id=${invitationId}`,
+      `users/invite/${userId}?id=${invitationId}?lang=${lang}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -940,7 +940,7 @@ export const getDataForInvite = async (token, invitationId, userId) => {
 };
 
 //   approve invite
-export const approveInvite = async (inviteId, inviteData ) => {
+export const approveInvite = async (inviteId, inviteData , lang) => {
   try {
     console.log(inviteData , inviteId);
     
@@ -961,13 +961,16 @@ export const approveInvite = async (inviteId, inviteData ) => {
 };
 
 //  cancel invite
-export const cancelInvite = async (token, inviteId) => {
+export const cancelInvite = async (token, inviteId , lang) => {
   try {
-    const response = await axiosInstance.delete(`users/invite/${inviteId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.delete(
+      `users/invite/${inviteId}?lang=${lang}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     console.log("Response from cancel invite => ", response);
     return response.data;
