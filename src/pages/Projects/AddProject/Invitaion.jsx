@@ -16,12 +16,13 @@ const Invitation = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const location = useLocation();
   const navigate = useNavigate();
+
   const queryParams = new URLSearchParams(location.search);
   const invitationId = queryParams.get("id");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+ const lang = i18next.language;
   useEffect(() => {
     if (!isAuth) {
       navigate("/SignUp/ChooseRole");
@@ -35,7 +36,7 @@ const Invitation = () => {
       setLoading(true);
       try {
         const userId = user._id;
-        const data = await getDataForInvite(token, invitationId, userId);
+        const data = await getDataForInvite(token, invitationId, userId, lang);
         setData(data.results);
         if (!data.results.isSignUp) {
           navigate("/SignUp/ChooseRole");
