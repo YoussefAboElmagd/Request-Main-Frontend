@@ -7,6 +7,7 @@ import { useState } from "react";
 import { sendInvite } from "../../../Services/api";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Invite = () => {
   const location = useLocation();
@@ -69,6 +70,7 @@ const Invite = () => {
       console.log(payload);
 
       await sendInvite(token, payload);
+      toast.success(t("toast.inviteSuccess"));
 
       setInvites([{ email: "", type: null }]);
       if(fromProject === true) {

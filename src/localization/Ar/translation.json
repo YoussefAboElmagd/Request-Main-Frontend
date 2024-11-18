@@ -343,7 +343,8 @@
     "ProfileChangesSuccess": "تم حفظ تغييرات الملف الشخصي بنجاح!",
     "TagsCreatedSuccess": "تم إنشاء العلامات بنجاح",
     "you have been added to {{projectName}} successfully": "لقد تم إضافتك إلى {{projectName}} بنجاح",
-    "You have canceled the invitation to {{projectName}} successfully": "لقد ألغيت الدعوة إلى {{projectName}} بنجاح"
+    "You have canceled the invitation to {{projectName}} successfully": "لقد ألغيت الدعوة إلى {{projectName}} بنجاح",
+    "inviteSuccess" : "تم  ارسال الدعوه بنجاح"
   },
   "You have been invited to": "لقد تمت دعوتك إلى",
   "as a": "ك",
