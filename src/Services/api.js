@@ -918,7 +918,7 @@ export const sendInvite = async (token, invitationData) => {
 
 // get data for invite
 export const getDataForInvite = async (token, invitationId, userId) => {
-  try {    
+  try {
     const response = await axiosInstance.get(
       `users/invite/${userId}?id=${invitationId}`,
       {
@@ -939,24 +939,43 @@ export const getDataForInvite = async (token, invitationId, userId) => {
   }
 };
 
-
-//   approve invite 
-export const approveInvite = async (token, inviteId) => {
+//   approve invite
+export const approveInvite = async (inviteId, inviteData ) => {
   try {
-    const response = await axiosInstance.put(
-      `users/invite/${inviteId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    console.log(inviteData , inviteId);
+    
+    const response = await axiosInstance.put(`users/invite/${inviteId}?lang=${lang}`, 
+      inviteData,
     );
+
 
     console.log("Response from approve invite => ", response);
     return response.data;
   } catch (error) {
-    console.error("Approve invite error: ", error.response?.data || error.message);
+    console.error(
+      "Approve invite error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  cancel invite
+export const cancelInvite = async (token, inviteId) => {
+  try {
+    const response = await axiosInstance.delete(`users/invite/${inviteId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Response from cancel invite => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Cancel invite error: ",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };

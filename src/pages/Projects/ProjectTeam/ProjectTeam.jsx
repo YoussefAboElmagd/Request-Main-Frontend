@@ -444,11 +444,14 @@ const ProjectTeam = () => {
       </div>
 
       <div className="admins grid grid-cols-1 lg:grid-cols-3 gap-3 my-3">
-        {(owner || owner !== null ) && (
+        {(owner || owner !== null) && (
           <div className="admin">
             <h4 className="m-1 font-medium text-sm">{t("owner")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
-              <ProfileAvatar name={owner?.name} profilePic={owner?.profilePic} />
+              <ProfileAvatar
+                name={owner?.name}
+                profilePic={owner?.profilePic}
+              />
               <div className="flex flex-col">
                 <span className=" text-sm font-medium">{owner?.name}</span>
                 <span className="text-blue text-sm font-medium">
@@ -475,7 +478,7 @@ const ProjectTeam = () => {
             </div>
           </div>
         )}
-        {(contractor || contractor !== null) && (
+        {(contractor || contractor !== null ) && (
           <div className="contractor">
             <h4 className="m-1 font-medium text-sm">{t("contractor")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
@@ -684,7 +687,7 @@ const ProjectTeam = () => {
           </Dialog>
         </div>
       </div>
-      
+
       {/* DelegatedAccess mobile view */}
       {/* <div className="DelegatedAccess block lg:hidden">
         <Accordion key={idx} open={openAcc === idx}>

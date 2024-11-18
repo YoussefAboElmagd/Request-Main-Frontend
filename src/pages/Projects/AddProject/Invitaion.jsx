@@ -2,7 +2,11 @@ import { t } from "i18next";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { approveInvite, getDataForInvite } from "../../../Services/api";
+import {
+  approveInvite,
+  cancelInvite,
+  getDataForInvite,
+} from "../../../Services/api";
 import { toast } from "react-toastify";
 import Loader from "../../../Components/Loader/Loader";
 
@@ -40,6 +44,10 @@ const Invitation = () => {
         console.log("data:", data);
       } catch (error) {
         console.error("Error fetching data:", error);
+        toast.error(error.message);
+        if (error.message === "Invitation Not found") {
+          navigate("/");
+        }
       } finally {
         setLoading(false);
       }
@@ -52,9 +60,34 @@ const Invitation = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await approveInvite(token, invitationId);
+      const payload = {
+        isApproved: true,
+      };
+      const res = await approveInvite(invitationId, payload);
       console.log(res);
-      toast.success(`you have been added  to ${data.projectName} successfully`);
+      toast.success(
+        t("toast.you have been added to {{projectName}} successfully", {
+          projectName: data.projectName,
+        })
+      );
+      navigate("/");
+    } catch (error) {
+      console.error("Error approving invitation:", error);
+    }
+  };
+  const handleCancel = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await cancelInvite(token, invitationId);
+      console.log(res);
+      toast.success(
+        t(
+          "toast.You have canceled the invitation to {{projectName}} successfully",
+          { projectName: data.projectName }
+        )
+      );
       navigate("/");
     } catch (error) {
       console.error("Error approving invitation:", error);
@@ -71,11 +104,12 @@ const Invitation = () => {
       ) : (
         <div className="wrapper flex flex-col gap-4 ">
           <h3 className="font-inter font-bold text-2xl md:text-3xl lg:text-5xl leading-[50px]  text-purple-dark text-center">
-            Welcome <span>{data?.name}</span> to Request !
+            {t("welcome")} <span>{data?.name}</span> {t("to")} Request !
           </h3>
           <p className="font-inter font-medium text-base md:text-lg lg:text-xl leading-8 ] text-center lg:mt-4 text-gray-600">
-            You have been invited to
-            <span className="font-bold"> {data?.projectName}</span> <br /> as a
+            {t("You have been invited to")}
+            <span className="font-bold"> {data?.projectName}</span> <br />{" "}
+            {t("as a")}
             <span className="font-bold"> {data?.role?.jobTitle}</span>
           </p>
           <div className="flex flex-col md:flex-row justify-center items-center gap-10 my-14">
@@ -87,6 +121,7 @@ const Invitation = () => {
             </button>
             <button
               className={`p-6 lg:p-10 w-[280px] lg:w-[354px] border border-red border-solid text-red rounded-3xl font-bold text-3xl `}
+              onClick={handleCancel}
             >
               {t("Cancel")}
             </button>

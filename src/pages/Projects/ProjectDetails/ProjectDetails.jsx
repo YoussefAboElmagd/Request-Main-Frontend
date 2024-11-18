@@ -17,6 +17,7 @@ import avatar from "../../../assets/images/Avatar.jpg";
 import Loader from "../../../Components/Loader/Loader";
 import { AddNote } from "../../../Components/AddNote/AddNote";
 import { useSelector } from "react-redux";
+import { IoMdPersonAdd } from "react-icons/io";
 
 const ProjectDetails = () => {
   const user = useSelector((state) => state.auth.user);
@@ -414,6 +415,17 @@ const ProjectDetails = () => {
                 placeholder={t("location")}
               />
               <div className="flex right-0 my-2 items-center justify-end">
+                <Link
+                  to={"/AddProject/Invite"}
+                  state={{
+                    projectId: Project._id,
+                    projectName: Project.name,
+                  }}
+                >
+                  <span>
+                    <IoMdPersonAdd className="text-red h-8 w-8 " />
+                  </span>
+                </Link>
                 <button className="files flex items-center gap-1 mx-1">
                   <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
                     {Project?.documentsLength || 0}

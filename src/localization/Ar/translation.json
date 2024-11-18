@@ -341,6 +341,12 @@
     "TaskSavedSuccess": "تم تحديث المهمة بنجاح",
     "GeneralSettingSuccess": "تم حفظ الإعدادات العامة بنجاح!",
     "ProfileChangesSuccess": "تم حفظ تغييرات الملف الشخصي بنجاح!",
-    "TagsCreatedSuccess": "تم إنشاء العلامات بنجاح"
-  }
+    "TagsCreatedSuccess": "تم إنشاء العلامات بنجاح",
+    "you have been added to {{projectName}} successfully": "لقد تم إضافتك إلى {{projectName}} بنجاح",
+    "You have canceled the invitation to {{projectName}} successfully": "لقد ألغيت الدعوة إلى {{projectName}} بنجاح"
+  },
+  "You have been invited to": "لقد تمت دعوتك إلى",
+  "as a": "ك",
+  "welcome"  : "مرحبا",
+  "to" :"في"
 }

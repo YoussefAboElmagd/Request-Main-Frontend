@@ -329,6 +329,12 @@
     "TaskSavedSuccess": "Task Updated successfully",
     "GeneralSettingSuccess": "General settings saved successfully!",
     "ProfileChangesSuccess": "Profile changes saved successfully!",
-    "TagsCreatedSuccess": "tags created Successfully"
-  }
+    "TagsCreatedSuccess": "tags created Successfully",
+    "you have been added to {{projectName}} successfully": "you have been added to {{projectName}} successfully",
+    "You have canceled the invitation to {{projectName}} successfully": "You have canceled the invitation to {{projectName}} successfully"
+  },
+  "You have been invited to": "You have been invited to",
+  "as a": "as a",
+  "welcome": "to",
+  "to": "to"
 }
