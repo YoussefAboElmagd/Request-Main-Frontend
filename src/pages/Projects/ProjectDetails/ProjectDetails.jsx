@@ -420,6 +420,7 @@ const ProjectDetails = () => {
                   state={{
                     projectId: Project._id,
                     projectName: Project.name,
+                    fromProject:true,
                   }}
                 >
                   <span>

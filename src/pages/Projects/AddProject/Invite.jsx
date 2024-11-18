@@ -17,7 +17,7 @@ const Invite = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   // const [fieldErrors, setFieldErrors] = useState({});
-  const { projectId, projectName } = location.state || {};
+  const { projectId, projectName, fromProject } = location.state || {};
   const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
   const roles = [
@@ -71,12 +71,17 @@ const Invite = () => {
       await sendInvite(token, payload);
 
       setInvites([{ email: "", type: null }]);
-      navigate("/Models", {
-        state: {
-          projectId,
-          projectName,
-        },
-      });
+      if(fromProject === true) {
+         navigate("/Projects");
+      } else{
+         navigate("/Models", {
+           state: {
+             projectId,
+             projectName,
+           },
+         });
+      }
+     
       setLoading(false);
     } catch (err) {
       console.error("Error in adding new invite", err);
