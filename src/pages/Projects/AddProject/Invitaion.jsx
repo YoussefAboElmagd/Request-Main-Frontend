@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,6 +23,8 @@ const Invitation = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
  const lang = i18next.language;
+ console.log(lang);
+ 
   useEffect(() => {
     if (!isAuth) {
       navigate("/SignUp/ChooseRole");
