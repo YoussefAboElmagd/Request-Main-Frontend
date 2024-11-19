@@ -31,9 +31,7 @@ const RequestForm = ({
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, projectName } = location.state || {};
-  console.log(location.state);
-
+  const { projectId, projectName, members } = location.state || {};
   const [actionCodes, setActionCodes] = useState([]);
   const [disciplines, setDisciplines] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -49,13 +47,17 @@ const RequestForm = ({
   const [Desc, setDesc] = useState("");
   const [supplier, setSupplier] = useState("");
   const [approvedMaterial, setApprovedMaterial] = useState("");
-
   const [BOQ, setBOQ] = useState("");
   const [QTY, setQTY] = useState("");
   const [units, setUnits] = useState([]);
   const [UnitsLoading, setUnitsLoading] = useState(true);
   const [selectedUnit, setSelectedUnit] = useState("");
   const [deliveryNote, setDeliveryNote] = useState("");
+  const [Location, setLocation] = useState("");
+  const [WorkArea, setWorkArea] = useState("");
+  const [cell, setCell] = useState("");
+  const [InspectionDate, setInspectionDate] = useState("");
+  const [Quantity, setQuantity] = useState("");
   const [Remarks, setRemarks] = useState("");
   const [IsWorkRequest, setIsWorkRequest] = useState(
     ReqTitle === "Work Request"
@@ -157,15 +159,28 @@ const RequestForm = ({
       requestData.qty = QTY;
       requestData.boqItemNo = BOQ;
     }
-    if(IsReqForMaterial) {
-        requestData.qty = QTY;
-        requestData.boqItemNo = BOQ;
-        requestData.deliveryNoteNo = deliveryNote;
-        requestData.unit = selectedUnit;
-        requestData.approvedMaterialSubmittalNo = approvedMaterial;
-        requestData.supplier = supplier;
+    if (IsReqForMaterial) {
+      requestData.qty = QTY;
+      requestData.boqItemNo = BOQ;
+      requestData.deliveryNoteNo = deliveryNote;
+      requestData.unit = selectedUnit;
+      requestData.approvedMaterialSubmittalNo = approvedMaterial;
+      requestData.supplier = supplier;
     }
-    
+    if (IsRfiReq) {
+      requestData.cell = cell;
+      requestData.boqItemNo = BOQ;
+      requestData.location = Location;
+      requestData.unit = selectedUnit;
+      requestData.inspectionDate = new Date().toISOString();
+      requestData.quantity = Quantity;
+    }
+    if (IsWorkRequest) {
+      requestData.boqItemNo = BOQ;
+      requestData.location = Location;
+      requestData.workArea = WorkArea;
+      requestData.cell = cell;
+    }
     console.log("Request Data:", requestData);
     try {
       await sendRequest(token, requestData);
@@ -175,6 +190,8 @@ const RequestForm = ({
       navigate("/Models", {
         state: {
           projectId,
+          projectName,
+          members,
         },
       });
     } catch (error) {
@@ -190,9 +207,10 @@ const RequestForm = ({
     setSelectedProject(null);
     setSelectedActionCodes([]);
     setSelectedDisciplines([]);
-
+    setDesc("");
     // setComments([]);
     // setCommentInput("");
+
   };
 
   // const handleAddComment = () => {
@@ -610,11 +628,11 @@ const RequestForm = ({
                         cell
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         id="cell"
                         placeholder="cell"
-                        // value={QTY}
-                        // onChange={(e) => setQTY(e.target.value)}
+                        value={cell}
+                        onChange={(e) => setCell(e.target.value)}
                         className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
                       />
                     </div>
@@ -706,8 +724,8 @@ const RequestForm = ({
                     type="text"
                     id="WorkArea"
                     placeholder={t("Work Area")}
-                    // value={Desc}
-                    // onChange={(e) => (e.target.value)}
+                    value={WorkArea}
+                    onChange={(e) => setWorkArea(e.target.value)}
                     className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
                   />
                 </div>
@@ -724,8 +742,8 @@ const RequestForm = ({
                     type="number"
                     id="Quantity"
                     placeholder={t(" Quantity")}
-                    // value={Desc}
-                    // onChange={(e) => (e.target.value)}
+                    value={Quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
                     className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
                   />
                 </div>
@@ -742,8 +760,8 @@ const RequestForm = ({
                     type="text"
                     id="WorkArea"
                     placeholder={t("location")}
-                    // value={Desc}
-                    // onChange={(e) => (e.target.value)}
+                    value={Location}
+                    onChange={(e) => setLocation(e.target.value)}
                     className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
                   />
                 </div>

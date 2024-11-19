@@ -1,10 +1,28 @@
 import { t } from "i18next";
 import avatar  from "../../assets/images/avatar1.png"
 import signature  from "../../assets/images/signature.png"
+import { useEffect } from "react";
+import { getModelById } from "../../Services/api";
+import { useLocation } from "react-router-dom";
 
 const ViewRequest = () => {
+  const location = useLocation()
+  const { ModelId } = location.state || {};
 
-
+useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await getModelById(ModelId);
+        setData(data.results);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
     
   const currentDate = new Date();
   const currentDay = currentDate.getDate();

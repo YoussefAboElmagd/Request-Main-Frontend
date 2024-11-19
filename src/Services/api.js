@@ -983,3 +983,52 @@ export const cancelInvite = async (token, inviteId ) => {
     throw error;
   }
 };
+
+
+
+//  get models 
+    export const getModelsByProject = async (token, projectId) => {
+      try {
+        const response = await axiosInstance.get(
+          `request/project/${projectId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Response from get models => ", response);
+        return response.data;
+      } catch (error) {
+        console.error(
+          "Get models error: ",
+          error.response?.data || error.message
+        );
+        throw error;
+      }
+    };
+
+
+    // get model by id 
+    export const getModelById = async (token, ReqId) => {
+      try {
+        const response = await axiosInstance.get(
+          `request/${ReqId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Response from get model by id => ", response);
+        return response.data;
+      } catch (error) {
+        console.error(
+          "Get model by id error: ",
+          error.response?.data || error.message
+        );
+        throw error;
+      }
+    };

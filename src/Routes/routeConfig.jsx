@@ -39,6 +39,7 @@ import Invite from "../pages/Projects/AddProject/Invite.jsx";
 import TaskHistory from "../pages/Tasks/TaskHistory/TaskHistory.jsx";
 import ViewRequest from "../pages/Requests/ViewRequest.jsx";
 import Invitation from "../pages/Projects/AddProject/Invitaion.jsx";
+import ViewAllModels from "../pages/Requests/Models/ViewAllModels.jsx";
 
 // Define public routes
 export const publicRoutes = [
@@ -70,6 +71,8 @@ export const protectedRoutes = [
   { path: "/SubTasks/:id", component: <AllSubTasks /> },
   { path: "/createTag", component: <CreateTag /> },
   { path: "/Models", component: <Models /> },
+  { path: "/ViewAllModels", component: <ViewAllModels /> },
+  { path: "/viewModel/:id", component: <ViewRequest /> },
   { path: "/DriveFiles", component: <DriveFiles /> },
   { path: "/DriveFiles/Tag/:TagName", component: <FilesPerTag /> },
   { path: "/Inbox", component: <Inbox /> },
@@ -85,7 +88,6 @@ export const protectedRoutes = [
   },
   { path: "/Requests/TableOfQuantities", component: <TableOfQuantities /> },
 
-  { path: "/ViewRequest", component: <ViewRequest /> },
   { path: "/Team", component: <Team /> },
   { path: "/SeePlans", component: <SeePlans /> },
   { path: "/PlansInfo", component: <PlansInfo /> },

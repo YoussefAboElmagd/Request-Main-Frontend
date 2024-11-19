@@ -119,7 +119,7 @@ const Models = () => {
                         state={
                           link.to === "/Requests/TableOfQuantities"
                             ? { projectId, members, projectName }
-                            : { projectId, projectName }
+                            : { projectId, projectName, members }
                         }
                         className="font-medium text-base text-left"
                       >

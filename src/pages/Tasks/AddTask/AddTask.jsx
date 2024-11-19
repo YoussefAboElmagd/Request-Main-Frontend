@@ -191,7 +191,6 @@ const AddTask = () => {
       if (isSubtask) {
         taskData.parentTask = ParentId ? ParentId : SelectedParentTask;
       }
-
       if (isSubtask && taskType === "toq") {
         taskData.price = Price;
         taskData.requiredQuantity = Quantity;
@@ -206,6 +205,7 @@ const AddTask = () => {
       console.log(res);
       clearFormFields();
       navigate(`/`);
+
     } catch (err) {
       setError({
         message: err.response ? err.response.data.message : err.message,
