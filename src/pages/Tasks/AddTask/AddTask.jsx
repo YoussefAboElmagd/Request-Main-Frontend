@@ -187,8 +187,10 @@ const AddTask = () => {
         createdBy: user._id,
         tags: selectedTag,
         type: taskType,
-        parentTask: ParentId ? ParentId : SelectedParentTask,
       };
+      if (isSubtask) {
+        taskData.parentTask = ParentId ? ParentId : SelectedParentTask;
+      }
 
       if (isSubtask && taskType === "toq") {
         taskData.price = Price;
