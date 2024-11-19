@@ -14,6 +14,7 @@ const BoardViewModels = ({
   title,
   date,
   inspectionDate,
+  status,
   createdBy,
   supplier,
   unit,
@@ -29,9 +30,9 @@ const BoardViewModels = ({
   );
   return (
     <div className="box bg-white rounded-lg shadow-sm p-2 flex flex-col  col-span-1">
-      {approved && (
+      {status && (
         <span className="Tag text-center px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2">
-          Approved
+          {status}
         </span>
       )}
       <div className="name flex justify-between items-center mx-2 my-3">
