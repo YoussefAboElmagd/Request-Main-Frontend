@@ -368,7 +368,7 @@ const TaskDetails = () => {
               </div>
             )
           )}
-          <div className="flex right-0 my-2 items-center gap-3 justify-end">
+          {/* <div className="flex right-0 my-2 items-center gap-3 justify-end">
             <Button
               className="w-fit px-7 border border-solid !border-purple !text-purple"
               style={{ background: "white" }}
@@ -378,7 +378,7 @@ const TaskDetails = () => {
             <Link to={"/ViewAllModels"}>
               <Button className="w-fit px-7">view all models</Button>
             </Link>
-          </div>
+          </div> */}
         </div>
 
         {/*  parentTask.type === parent (task.parentTask.parentTask === null) && IsToq */}
