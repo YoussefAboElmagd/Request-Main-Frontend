@@ -178,6 +178,11 @@ const Sidebar = () => {
                     {user.role.jobTitle}
                   </p>
                 )}
+                {user?.companyName && (
+                  <p className="role font-bold font-inter text-xs text-gray">
+                    {user.companyName}
+                  </p>
+                )}
               </div>
             )}
           </Link>
@@ -230,7 +235,9 @@ const Sidebar = () => {
             </Button>
           )}
           <Dialog open={OpenDialog} handler={handleOpenDialog}>
-            <DialogHeader className="font-semibold text-lg">{t("Are you sure you want to logout?")}</DialogHeader>
+            <DialogHeader className="font-semibold text-lg">
+              {t("Are you sure you want to logout?")}
+            </DialogHeader>
             <DialogBody className="text-base text-gray font-normal">
               <p>
                 {t(
@@ -248,7 +255,10 @@ const Sidebar = () => {
               >
                 <span>{t("Cancel")}</span>
               </Btn>
-              <button className="px-4 py-2 bg-linear_1 text-white rounded-xl font-semibold text-base" onClick={handleLogoutClick}>
+              <button
+                className="px-4 py-2 bg-linear_1 text-white rounded-xl font-semibold text-base"
+                onClick={handleLogoutClick}
+              >
                 <span>{t("Confirm")}</span>
               </button>
             </DialogFooter>

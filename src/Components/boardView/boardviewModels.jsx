@@ -29,9 +29,9 @@ const BoardViewModels = ({
     [desc]
   );
   return (
-    <div className="box bg-white rounded-lg shadow-sm p-2 flex flex-col  col-span-1">
+    <div className="box bg-white rounded-lg shadow-sm p-2 flex flex-col  col-span-1 min-h-[230px]">
       {status && (
-        <span className="Tag text-center px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2">
+        <span className="Tag text-center px-14 py-2 rounded-3xl font-inter font-semibold text-sm mt-2 capitalize">
           {status}
         </span>
       )}

@@ -9,13 +9,21 @@ import { t } from "i18next";
 
 const Models = () => {
   const location = useLocation();
-  const { projectId, taskType, members, projectName } = location.state || {};
+  const {
+    projectId,
+    taskType,
+    members,
+    projectName,
+    fromTask,
+    TaskId,
+    TaskName,
+  } = location.state || {};
   console.log(location.state);
-  
+
   const [isReviewed, setIsReviewed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [links, setLinks] = useState([]);
-    const [projectDetails, setProjectDetails] = useState(null);
+  const [projectDetails, setProjectDetails] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,8 +126,22 @@ const Models = () => {
                         to={link.to}
                         state={
                           link.to === "/Requests/TableOfQuantities"
-                            ? { projectId, members, projectName }
-                            : { projectId, projectName, members }
+                            ? {
+                                projectId,
+                                members,
+                                projectName,
+                                fromTask,
+                                TaskId,
+                                TaskName,
+                              }
+                            : {
+                                projectId,
+                                projectName,
+                                members,
+                                fromTask,
+                                TaskId,
+                                TaskName,
+                              }
                         }
                         className="font-medium text-base text-left"
                       >
@@ -155,7 +177,14 @@ const Models = () => {
               </label>
             </div>
             <div className="send text-end my-5 mx-3">
-              <Link to={`/ProjectDetails/${projectId}`} state={{ projectId }}>
+              <Link
+                to={
+                  TaskId
+                    ? `TaskDetails/${TaskId}`
+                    : `/ProjectDetails/${projectId}`
+                }
+                state={{ projectId, TaskId }}
+              >
                 <Button type="submit" disabled={!isReviewed}>
                   {t("Send")}
                 </Button>

@@ -940,15 +940,14 @@ export const getDataForInvite = async (token, invitationId, userId, lang) => {
 };
 
 //   approve invite
-export const approveInvite = async (inviteId, inviteData ) => {
+export const approveInvite = async (inviteId, inviteData) => {
   try {
-    console.log(inviteData , inviteId);
-    
+    console.log(inviteData, inviteId);
+
     const response = await axiosInstance.put(
       `users/invite/${inviteId}`,
       inviteData
     );
-
 
     console.log("Response from approve invite => ", response);
     return response.data;
@@ -962,16 +961,13 @@ export const approveInvite = async (inviteId, inviteData ) => {
 };
 
 //  cancel invite
-export const cancelInvite = async (token, inviteId ) => {
+export const cancelInvite = async (token, inviteId) => {
   try {
-    const response = await axiosInstance.delete(
-      `users/invite/${inviteId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.delete(`users/invite/${inviteId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     console.log("Response from cancel invite => ", response);
     return response.data;
@@ -984,51 +980,60 @@ export const cancelInvite = async (token, inviteId ) => {
   }
 };
 
+//  get models
+export const getModelsByProject = async (token, projectId) => {
+  try {
+    const response = await axiosInstance.get(`request/project/${projectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
+    console.log("Response from get models => ", response);
+    return response.data;
+  } catch (error) {
+    console.error("Get models error: ", error.response?.data || error.message);
+    throw error;
+  }
+};
 
-//  get models 
-    export const getModelsByProject = async (token, projectId) => {
-      try {
-        const response = await axiosInstance.get(
-          `request/project/${projectId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+// get model by id
+export const getModelById = async (token, ReqId) => {
+  try {
+    const response = await axiosInstance.get(`request/${ReqId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        console.log("Response from get models => ", response);
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Get models error: ",
-          error.response?.data || error.message
-        );
-        throw error;
-      }
-    };
+    console.log("Response from get model by id => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get model by id error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
 
+//  update model
 
-    // get model by id 
-    export const getModelById = async (token, ReqId) => {
-      try {
-        const response = await axiosInstance.get(
-          `request/${ReqId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        console.log("Response from get model by id => ", response);
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Get model by id error: ",
-          error.response?.data || error.message
-        );
-        throw error;
-      }
-    };
+export const updateModel = async (token, ReqId, modelData) => {
+  try {
+    const response = await axiosInstance.put(`request/${ReqId}`, modelData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Response from update model => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Update model error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};

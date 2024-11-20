@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 
 const colors = [
   "#FFADAD",
@@ -14,26 +15,30 @@ const getRandomColor = () => {
 };
 
 const renderInitials = (name) => {
-  const nameParts = name?.split(" ");
-  const firstNameInitial = nameParts[0] ? nameParts[0][0].toUpperCase() : "";
-  const lastNameInitial = nameParts[1] ? nameParts[1][0].toUpperCase() : "";
+  if (!name) return ""; // Handle cases where name is undefined or null
+  const nameParts = name.trim().split(" ");
+  const firstNameInitial = nameParts[0]?.[0]?.toUpperCase() || "";
+  const lastNameInitial = nameParts[1]?.[0]?.toUpperCase() || "";
   return `${firstNameInitial}${lastNameInitial}`;
 };
 
-const ProfileAvatar = ({ name, profilePic }) =>
-  profilePic ? (
+const ProfileAvatar = ({ name, profilePic, className }) => {
+  const randomColor = useMemo(() => getRandomColor(), []); 
+
+  return profilePic ? (
     <img
       src={profilePic}
       alt="avatar"
-      className="rounded-lg border w-9 h-9 object-cover"
+      className={`rounded-lg border w-9 h-9 ${className} object-cover`}
     />
   ) : (
     <div
-      className="user-profile-image flex items-center justify-center w-9 h-9 rounded-lg text-white font-bold"
-      style={{ backgroundColor: getRandomColor() }}
+      className={`user-profile-image flex items-center justify-center w-9 h-9 ${className} rounded-lg text-white font-bold`}
+      style={{ backgroundColor: randomColor }}
     >
       {renderInitials(name)}
     </div>
   );
+};
 
 export default ProfileAvatar;

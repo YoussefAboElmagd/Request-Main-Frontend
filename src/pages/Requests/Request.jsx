@@ -14,6 +14,7 @@ import {
   getAllUnits,
   sendRequest,
   updateProject,
+  updateTask,
 } from "../../Services/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { t } from "i18next";
@@ -29,9 +30,18 @@ const RequestForm = ({
 }) => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
+  const [IsOwner, setIsOwner] = useState(user.role.jobTitle === "owner");
+  const [IsConsultant, setIsConsultant] = useState(
+    user.role.jobTitle === "consultant"
+  );
+  const [IsContractor, setIsContractor] = useState(
+    user.role.jobTitle === "contractor"
+  );
+
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, projectName, members } = location.state || {};
+  const { projectId, projectName, members, fromTask, TaskId, TaskName } =
+    location.state || {};
   const [actionCodes, setActionCodes] = useState([]);
   const [disciplines, setDisciplines] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -119,14 +129,22 @@ const RequestForm = ({
     setIsReviewed(e.target.checked);
   };
 
-  const handleUpdateProject = async () => {
+  const handleUpdate = async () => {
     try {
       console.log("ApproveTitle :", ApproveTitle);
+      if (fromTask) {
+        const res = await updateTask(token, TaskId, user._id, {
+          [ApproveTitle]: true,
+        });
 
-      const res = await updateProject(projectId, {
-        [ApproveTitle]: true,
-      });
-      console.log("res from update project => ", res);
+        console.log("res from update project => ", res);
+      } else {
+        const res = await updateProject(projectId, {
+          [ApproveTitle]: true,
+        });
+
+        console.log("res from update project => ", res);
+      }
     } catch (error) {
       console.error("Failed to update tasks:", error);
       toast.error(t("Failed to update tasks"));
@@ -135,11 +153,15 @@ const RequestForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // Validate required fields
     if (!selectedActionCodes.length || !selectedDisciplines.length) {
       setError("All fields are required");
+      setLoading(false);
       return;
     }
 
+    // Base request data
     const requestData = {
       refNo: refNO,
       title: ReqTitle,
@@ -147,57 +169,97 @@ const RequestForm = ({
       discipline: selectedDisciplines,
       description: Desc,
       project: projectId,
-      // comment: comments.map((comment) => comment.text),
       date: new Date().toLocaleDateString(),
       createdBy: user._id,
     };
-    if (showReasons) {
-      requestData.reason = selectedReasons;
-    }
-    if (IsReqForDocumentSubmittal) {
-      requestData.remarks = Remarks;
-      requestData.qty = QTY;
-      requestData.boqItemNo = BOQ;
-    }
-    if (IsReqForMaterial) {
-      requestData.qty = QTY;
-      requestData.boqItemNo = BOQ;
-      requestData.deliveryNoteNo = deliveryNote;
-      requestData.unit = selectedUnit;
-      requestData.approvedMaterialSubmittalNo = approvedMaterial;
-      requestData.supplier = supplier;
-    }
-    if (IsRfiReq) {
-      requestData.cell = cell;
-      requestData.boqItemNo = BOQ;
-      requestData.location = Location;
-      requestData.unit = selectedUnit;
-      requestData.inspectionDate = new Date().toISOString();
-      requestData.quantity = Quantity;
-    }
-    if (IsWorkRequest) {
-      requestData.boqItemNo = BOQ;
-      requestData.location = Location;
-      requestData.workArea = WorkArea;
-      requestData.cell = cell;
-    }
+
+    // Add dynamic fields based on conditions
+    const addConditionalFields = () => {
+      if (showReasons) requestData.reason = selectedReasons;
+      if (fromTask) {
+        Object.assign(requestData, { task: TaskId });
+      }
+      if (IsReqForDocumentSubmittal) {
+        Object.assign(requestData, {
+          remarks: Remarks,
+          qty: QTY,
+          boqItemNo: BOQ,
+        });
+      }
+
+      if (IsReqForMaterial) {
+        Object.assign(requestData, {
+          qty: QTY,
+          boqItemNo: BOQ,
+          deliveryNoteNo: deliveryNote,
+          unit: selectedUnit,
+          approvedMaterialSubmittalNo: approvedMaterial,
+          supplier,
+        });
+      }
+
+      if (IsRfiReq) {
+        Object.assign(requestData, {
+          cell,
+          boqItemNo: BOQ,
+          location: Location,
+          unit: selectedUnit,
+          inspectionDate: new Date().toISOString(),
+          quantity: Quantity,
+        });
+      }
+
+      if (IsWorkRequest) {
+        Object.assign(requestData, {
+          boqItemNo: BOQ,
+          location: Location,
+          workArea: WorkArea,
+          cell,
+        });
+      }
+
+      if (IsOwner) {
+        Object.assign(requestData, {
+          ownerStatus: "approved",
+        });
+      }
+
+      if (IsConsultant) {
+        Object.assign(requestData, {
+          consultantStatus: "approved",
+        });
+      }
+
+      if (IsContractor) {
+        Object.assign(requestData, {
+          contractorStatus: "approved",
+        });
+      }
+    };
+
+    // Execute the conditional logic
+    addConditionalFields();
+
+    // Debug the request data
     console.log("Request Data:", requestData);
+
     try {
+      // Send request
       await sendRequest(token, requestData);
+
+      // Success handling
       toast.success(t("toast.ReqSentSuccess"));
       resetForm();
-      handleUpdateProject();
+      handleUpdate();
       navigate("/Models", {
-        state: {
-          projectId,
-          projectName,
-          members,
-        },
+        state: { projectId, projectName, members, fromTask, TaskId, TaskName },
       });
     } catch (error) {
+      // Error handling
       console.error("Error submitting form:", error);
       setError("Failed to submit form");
     } finally {
+      // Always stop the loading spinner
       setLoading(false);
     }
   };
@@ -210,7 +272,6 @@ const RequestForm = ({
     setDesc("");
     // setComments([]);
     // setCommentInput("");
-
   };
 
   // const handleAddComment = () => {
@@ -349,7 +410,9 @@ const RequestForm = ({
               <hr className="bg-gray my-4" />
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-lg">{t("PName")} : </h3>
-                <span className="text-sm  font-bold">{projectName}</span>
+                <span className="text-sm  font-bold">
+                  {fromTask ? TaskName : projectName}
+                </span>
               </div>
               <hr className="bg-gray my-4" />
               {/* {showProjectName && (

@@ -204,8 +204,19 @@ const AddTask = () => {
       setTaskId(res.addedTasks?._id);
       console.log(res);
       clearFormFields();
-      navigate(`/`);
-
+      if (!isSubtask) {
+        navigate(`/Models`, {
+          state: {
+            fromTask: true,
+            TaskId: res.addedTasks[0]._id,
+            TaskName: Name,
+            projectId: projectId,
+         
+          },
+        });
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError({
         message: err.response ? err.response.data.message : err.message,

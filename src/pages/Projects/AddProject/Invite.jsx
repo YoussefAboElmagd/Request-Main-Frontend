@@ -14,7 +14,7 @@ const Invite = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  const [invites, setInvites] = useState([{ email: "", type: "" }]);
+  const [invites, setInvites] = useState([{ email: "", type: "" , comment :""}]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   // const [fieldErrors, setFieldErrors] = useState({});
@@ -60,11 +60,12 @@ const Invite = () => {
     }
 
     try {
-      const payload = invites.map(({ email, type }) => ({
+      const payload = invites.map(({ email, type, comment }) => ({
         email: email.trim(),
         role: type,
         project: projectId,
         createdBy: user._id,
+        comment,
         projectName,
       })); 
       console.log(payload);
@@ -72,7 +73,7 @@ const Invite = () => {
       await sendInvite(token, payload);
       toast.success(t("toast.inviteSuccess"));
 
-      setInvites([{ email: "", type: null }]);
+      setInvites([{ email: "", type: null, comment: "" }]);
       if(fromProject === true) {
          navigate("/Projects");
       } else{
@@ -93,7 +94,7 @@ const Invite = () => {
   };
 
   const addNewInvite = () => {
-    const newInvite = { email: "", type: "" };
+    const newInvite = { email: "", type: "", comment : "" };
     setInvites((prevInvites) => [...prevInvites, newInvite]);
   };
 
@@ -118,9 +119,9 @@ const Invite = () => {
           {invites.map((invite, index) => (
             <div
               key={index}
-              className="invite-item grid grid-cols-3 lg:grid-cols-6 gap-3 mb-2"
+              className="invite-item grid grid-cols-2 lg:grid-cols-6 gap-3 mb-2"
             >
-              <div className="col-span-3">
+              <div className="col-span-2">
                 <Input
                   className="bg-white border border-purple border-solid focus:border-purple focus:border focus:border-solid"
                   label={t("invite")}
@@ -135,6 +136,20 @@ const Invite = () => {
                 />
               </div>
               <div className="col-span-2">
+                <Input
+                  className="bg-white border border-purple border-solid focus:border-purple focus:border focus:border-solid"
+                  label={t("comment")}
+                  placeholder={t("Not required")}
+                  type={"text"}
+                  autoComplete="text"
+                  required
+                  value={invite.comment}
+                  onChange={(e) =>
+                    handleInviteChange(index, "comment", e.target.value)
+                  }
+                />
+              </div>
+              <div className="col-span-1">
                 <Select
                   label={t("type")}
                   options={roles.map((role) => ({
@@ -146,6 +161,7 @@ const Invite = () => {
                   onChange={(value) => handleInviteChange(index, "type", value)}
                 />
               </div>
+
               <div className="col-span-1 flex items-center gap-2 mt-3">
                 {index === 0 && (
                   <button
@@ -170,9 +186,7 @@ const Invite = () => {
           ))}
           {error && <p className="error text-red text-center">{error}</p>}
           <div className="col-span-6 flex justify-end mt-4">
-            <Button onClick={handleSubmit} >
-              {t("invite")}
-            </Button>
+            <Button onClick={handleSubmit}>{t("invite")}</Button>
           </div>
         </form>
       </div>

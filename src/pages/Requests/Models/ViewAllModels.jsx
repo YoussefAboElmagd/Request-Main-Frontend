@@ -11,7 +11,7 @@ import Loader from "../../../Components/Loader/Loader";
 const ViewAllModels = () => {
   const location = useLocation();
   const token = useSelector((state) => state.auth.token);
-  const { projectId, projectName, members } = location.state || {};
+  const { projectId, projectName, members, taskId, taskName } = location.state || {};
   console.log(location.state);
 
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,8 @@ const ViewAllModels = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getModelsByProject(token, projectId);
+        const id = taskId ? taskId : projectId;
+        const data = await getModelsByProject(token, id);
         setModels(data.results);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -58,6 +59,8 @@ const ViewAllModels = () => {
                 projectId,
                 projectName,
                 members,
+                taskId,
+                taskName,
               }}
               className={` box flex flex-col p-5 justify-center gap-4 items-center col-span-1  h-full bg-white  rounded-md shadow-sm  `}
             >

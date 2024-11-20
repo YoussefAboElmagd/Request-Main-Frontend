@@ -22,9 +22,9 @@ const Invitation = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
- const lang = i18next.language;
- console.log(lang);
- 
+  const lang = i18next.language;
+  console.log(lang);
+
   useEffect(() => {
     if (!isAuth) {
       navigate("/SignUp/ChooseRole");
@@ -40,10 +40,7 @@ const Invitation = () => {
         const userId = user._id;
         const data = await getDataForInvite(token, invitationId, userId, lang);
         setData(data.results);
-        if (!data.results.isSignUp) {
-          navigate("/SignUp/ChooseRole");
-          return;
-        }
+
         console.log("data:", data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -115,6 +112,11 @@ const Invitation = () => {
             {t("as a")}
             <span className="font-bold"> {data?.role?.jobTitle}</span>
           </p>
+          {data?.comment && (
+            <p className="font-inter font-medium text-base md:text-lg lg:text-xl leading-8 ] text-center  text-gray-600">
+              {data?.comment}
+            </p>
+          )}
           <div className="flex flex-col md:flex-row justify-center items-center gap-10 my-14">
             <button
               className={`p-6 lg:p-10  w-[280px] lg:w-[354px] rounded-3xl bg-linear_1   text-white font-bold text-3xl `}

@@ -2,16 +2,31 @@ import { t } from "i18next";
 import avatar from "../../assets/images/avatar1.png";
 import signature from "../../assets/images/signature.png";
 import { useEffect, useState } from "react";
-import { getModelById } from "../../Services/api";
+import { getModelById, updateModel } from "../../Services/api";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import Loader from "../../Components/Loader/Loader";
+import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
+import Button from "../../Components/UI/Button/Button";
+import { toast } from "react-toastify";
 
 const ViewRequest = () => {
   const [model, setModel] = useState(null);
   const [loading, setLoading] = useState(true);
   const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.auth.user);
+  const [IsOwner, setIsOwner] = useState(user.role.jobTitle === "owner");
+  const [IsConsultant, setIsConsultant] = useState(
+    user.role.jobTitle === "consultant"
+  );
+  const [IsContractor, setIsContractor] = useState(
+    user.role.jobTitle === "contractor"
+  );
+  //  const IsOwner = user.role.jobTitle === "owner";
+  //  const IsConsultant = user.role.jobTitle === "consultant";
+  //  const IsContractor = user.role.jobTitle === "contractor";
+
   const location = useLocation();
   const { ModelId } = location.state || {};
 
@@ -30,13 +45,41 @@ const ViewRequest = () => {
         setLoading(false);
       }
     };
-    fetchData();
+    if (ModelId) fetchData();
   }, []);
 
-  // const currentDate = new Date();
-  // const currentDay = currentDate.getDate();
-  // const currentMonth = currentDate.getMonth() + 1;
-  // const currentYear = currentDate.getFullYear();
+  const handleApprove = async (e) => {
+    try {
+      // Prepare payload dynamically based on roles
+      const getApprovalPayload = () => {
+        if (IsOwner) return { ownerStatus: "approved" };
+        if (IsConsultant) return { consultantStatus: "approved" };
+        if (IsContractor) return { contractorStatus: "approved" };
+        return {};
+      };
+
+      const payload = getApprovalPayload();
+      console.log("Approval Payload:", payload);
+
+      if (Object.keys(payload).length === 0) {
+        console.error("No valid role detected for approval.");
+        toast.error("Approval failed: Invalid role.");
+        return;
+      }
+
+      // Perform the API call
+      const res = await updateModel(token, ModelId, payload);
+      console.log("API Response:", res);
+
+      // Handle success
+      toast.success("Request approved successfully.");
+      window.location.reload();
+    } catch (error) {
+      // Error handling
+      console.error("Error during approval:", error);
+      toast.error("Failed to approve the request.");
+    }
+  };
 
   const formatDate = (date) => {
     if (!date) return "";
@@ -56,28 +99,61 @@ const ViewRequest = () => {
       </div>
       <div className="content bg-white p-4 rounded-3xl my-6 ">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex flex-col items-center gap-3">
-              <img
-                src={avatar}
-                alt="consultant avatar"
-                className="w-20 h-20 rounded-full  border  border-red border-solid"
-              />
-              <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                consultant name
-              </span>
+          {(model?.consultant || model?.contractor) && (
+            <div className="flex items-center gap-3">
+              {model?.consultant && (
+                <div className="flex flex-col items-center gap-3">
+                
+                  <ProfileAvatar
+                    name={model?.consultant?.companyName}
+                    profilePic={
+                      model?.consultant?.companyLogo
+                        ? model?.consultant?.companyLogo
+                        : model?.consultant?.name
+                    }
+                    className={`!w-20 !h-20 !text-3xl`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {model?.consultant?.name}
+                  </span>
+                </div>
+              )}
+              {model?.contractor && (
+                <div className="flex flex-col items-center gap-3">
+                  
+                  <ProfileAvatar
+                    name={model?.contractor?.companyName}
+                    profilePic={
+                      model?.contractor?.companyLogo !== ""
+                        ? model?.contractor?.companyLogo
+                        : model?.contractor?.name
+                    }
+                    className={`!w-20 !h-20`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {model?.contractor?.name}
+                  </span>
+                </div>
+              )}
+              {model?.owner && (
+                <div className="flex flex-col items-center gap-3">
+                 
+                  <ProfileAvatar
+                    name={model?.owner?.companyName}
+                    profilePic={
+                      model?.owner?.companyLogo
+                        ? model?.owner?.companyLogo
+                        : model?.owner?.name
+                    }
+                    className={`!w-20 !h-20`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {model?.owner?.name}
+                  </span>
+                </div>
+              )}
             </div>
-            <div className="flex flex-col items-center gap-3">
-              <img
-                src={avatar}
-                alt="consultant avatar"
-                className="w-20 h-20 rounded-full  border  border-red border-solid"
-              />
-              <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                Contractor name
-              </span>
-            </div>
-          </div>
+          )}
           <div className="flex flex-col ">
             <div className="Ref flex items-center gap-2 my-6">
               <label
@@ -99,7 +175,7 @@ const ViewRequest = () => {
                 htmlFor="currentDay"
                 className="font-bold text-base text-gray-dark"
               >
-                {t("Date")}
+                {t("date")}
               </label>
               <div className="inputs">
                 <input
@@ -200,18 +276,35 @@ const ViewRequest = () => {
             className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
           />
         </div>
+        {model?.remarks && (
+          <div className="desc ">
+            <label
+              htmlFor="remarks"
+              className="font-bold text-base text-gray-dark"
+            >
+              {t("remarks")}
+            </label>
+            <input
+              type="text"
+              id="remarks"
+              disabled
+              value={model?.remarks}
+              className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+            />
+          </div>
+        )}
         <div className="grid grid-cols-4 gap-3 my-4">
           {model?.supplier && (
             <div className="col-span-2">
               <label
-                htmlFor="desc"
+                htmlFor="supplier"
                 className="font-bold text-base text-gray-dark"
               >
                 manufacturer / supplier
               </label>
               <input
                 type="text"
-                id="desc"
+                id="supplier"
                 disabled
                 value={model?.supplier}
                 className="bg-white my-1 border  w-full  text-gray border-solid border-gray rounded-2xl p-2"
@@ -221,14 +314,14 @@ const ViewRequest = () => {
           {model?.approvedMaterialSubmittalNo && (
             <div className="col-span-2 flex flex-col">
               <label
-                htmlFor="desc"
+                htmlFor="approved"
                 className="font-bold text-base text-gray-dark"
               >
                 approved material submittal no
               </label>
               <input
                 type="text"
-                id="desc"
+                id="approved"
                 disabled
                 value={model?.approvedMaterialSubmittalNo}
                 className="bg-white border my-1  w-fit  text-gray border-solid border-gray rounded-2xl p-2"
@@ -267,6 +360,40 @@ const ViewRequest = () => {
                 id="QTY"
                 disabled
                 value={model?.qty}
+                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
+          {model?.location && (
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="location"
+                className="font-bold text-base text-gray-dark"
+              >
+                location
+              </label>
+              <input
+                type="text"
+                id="location"
+                disabled
+                value={model?.location}
+                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
+          {model?.workArea && (
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="workArea"
+                className="font-bold text-base text-gray-dark"
+              >
+                workArea
+              </label>
+              <input
+                type="text"
+                id="workArea"
+                disabled
+                value={model?.workArea}
                 className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
@@ -324,12 +451,36 @@ const ViewRequest = () => {
               />
             </div>
           )}
+          {model?.inspectionDate && (
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="Unit"
+                className="font-bold text-base text-gray-dark"
+              >
+                {t("inspectionDate")}
+              </label>
+              <input
+                type="text"
+                id="inspectionDate"
+                disabled
+                value={formatDate(model?.inspectionDate)}
+                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-2 mt-4">
           <h5 className="font-bold text-base text-gray-dark">submitted by:</h5>
-          <span className="font-medium text-sm">fadl mohamed</span>
+          <span className="font-medium text-sm">{model?.owner?.name}</span>
           <img src={signature} alt="signature" className="w-14 h-14" />
         </div>
+        {((IsOwner && model?.ownerStatus === "pending") ||
+          (IsConsultant && model?.consultantStatus === "pending") ||
+          (IsContractor && model?.contractorStatus === "pending")) && (
+          <div className="flex right-0 my-2 items-center gap-3 justify-end">
+            <Button onClick={handleApprove}>{t("approve")}</Button>
+          </div>
+        )}
       </div>
     </div>
   );
