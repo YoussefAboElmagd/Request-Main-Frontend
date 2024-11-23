@@ -103,7 +103,6 @@ const ViewRequest = () => {
             <div className="flex items-center gap-3">
               {model?.consultant && (
                 <div className="flex flex-col items-center gap-3">
-                
                   <ProfileAvatar
                     name={model?.consultant?.companyName}
                     profilePic={
@@ -120,7 +119,6 @@ const ViewRequest = () => {
               )}
               {model?.contractor && (
                 <div className="flex flex-col items-center gap-3">
-                  
                   <ProfileAvatar
                     name={model?.contractor?.companyName}
                     profilePic={
@@ -137,7 +135,6 @@ const ViewRequest = () => {
               )}
               {model?.owner && (
                 <div className="flex flex-col items-center gap-3">
-                 
                   <ProfileAvatar
                     name={model?.owner?.companyName}
                     profilePic={
@@ -226,7 +223,7 @@ const ViewRequest = () => {
           {model?.reason && (
             <div className="flex items-center gap-2">
               <h5 className="font-bold text-base text-gray-dark">
-                {t("reason")}
+                {t("Reason")}
               </h5>
               <input
                 type="text"
@@ -240,7 +237,9 @@ const ViewRequest = () => {
         {model?.consultantsComment > 0 &&
           model.consultantsComment.map((comment) => (
             <div className="feedback my-4">
-              <h5 className="font-bold  text-base">consultants Comment</h5>
+              <h5 className="font-bold  text-base">
+                {t("consultants Comment")}
+              </h5>
               <input
                 type="text"
                 disabled
@@ -252,13 +251,15 @@ const ViewRequest = () => {
         <div className="flex items-center gap-3 my-4">
           <div className="flex flex-col gap-2">
             <h5 className="font-bold text-base text-gray-dark">
-              Reviewed by :
+              {t("Reviewed by")} :
             </h5>
             <span className="font-medium text-sm">fadl mohamed</span>
             <img src={signature} alt="signature" className="w-14 h-14" />
           </div>
           <div className="flex flex-col gap-2">
-            <h5 className="font-bold text-base text-gray-dark">Noted by :</h5>
+            <h5 className="font-bold text-base text-gray-dark">
+              {t("Noted by")} :
+            </h5>
             <span className="font-medium text-sm">Ahmed mohamed</span>
             <img src={signature} alt="signature" className="w-14 h-14" />
           </div>
@@ -280,7 +281,7 @@ const ViewRequest = () => {
           <div className="desc ">
             <label
               htmlFor="remarks"
-              className="font-bold text-base text-gray-dark"
+              className="font-bold text-base text-gray-dark text-start"
             >
               {t("remarks")}
             </label>
@@ -298,9 +299,9 @@ const ViewRequest = () => {
             <div className="col-span-2">
               <label
                 htmlFor="supplier"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
-                manufacturer / supplier
+                {t("supplier")}
               </label>
               <input
                 type="text"
@@ -315,9 +316,9 @@ const ViewRequest = () => {
             <div className="col-span-2 flex flex-col">
               <label
                 htmlFor="approved"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
-                approved material submittal no
+                {t("approved material submittal no")}
               </label>
               <input
                 type="text"
@@ -334,9 +335,9 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="BOQ item no"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
-                BOQ item no
+                {t("BOQ item no")}
               </label>
               <input
                 type="text"
@@ -351,9 +352,9 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="QTY"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
-                QTY
+                {t("qty")}
               </label>
               <input
                 type="text"
@@ -368,9 +369,9 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="location"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
-                location
+                {t("location")}
               </label>
               <input
                 type="text"
@@ -385,9 +386,9 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="workArea"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
-                workArea
+                {t("Work Area")}
               </label>
               <input
                 type="text"
@@ -402,7 +403,7 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="Unit"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
                 {t("Unit")}
               </label>
@@ -421,9 +422,9 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="delivery note no"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
-                delivery note no
+                {t("delivery note no")}
               </label>
               <input
                 type="text"
@@ -438,7 +439,7 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="Unit"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
                 {t("cell")}
               </label>
@@ -455,7 +456,7 @@ const ViewRequest = () => {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="Unit"
-                className="font-bold text-base text-gray-dark"
+                className="font-bold text-base text-gray-dark text-start"
               >
                 {t("inspectionDate")}
               </label>
@@ -470,7 +471,9 @@ const ViewRequest = () => {
           )}
         </div>
         <div className="flex flex-col gap-2 mt-4">
-          <h5 className="font-bold text-base text-gray-dark">submitted by:</h5>
+          <h5 className="font-bold text-base text-gray-dark">
+            {t("submitted by")} :
+          </h5>
           <span className="font-medium text-sm">{model?.owner?.name}</span>
           <img src={signature} alt="signature" className="w-14 h-14" />
         </div>

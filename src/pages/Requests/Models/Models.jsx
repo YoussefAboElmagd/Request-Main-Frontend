@@ -3,9 +3,10 @@ import logo from "../../../assets/images/Models.png";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import Button from "../../../Components/UI/Button/Button";
 import { useEffect, useState } from "react";
-import { getProjectDetails } from "../../../Services/api";
+import { getProjectDetails, getTaskDetails } from "../../../Services/api";
 import Loader from "../../../Components/Loader/Loader";
 import { t } from "i18next";
+import { Trans } from "react-i18next";
 
 const Models = () => {
   const location = useLocation();
@@ -29,41 +30,80 @@ const Models = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await getProjectDetails(projectId);
-        const project = data.results;
-        // setProjectDetails(project);
-        setLinks([
-          {
-            label: t("Approval of general documents"),
-            to: "/Requests/RequestForDocumentSubmittal",
-            approved: project?.requestForDocumentSubmittalApproval,
-          },
-          {
-            label: t("Approval of schemes"),
-            to: "/request/",
-            approved: project?.approvalOfSchemes,
-          },
-          {
-            label: "Table of quantities",
-            to: "/Requests/TableOfQuantities",
-            approved: project?.tableOfQuantities,
-          },
-          {
-            label: "Request for Approval Of Materials",
-            to: "/Requests/RequestForMaterial",
-            approved: project?.requestForApprovalOfMaterials,
-          },
-          {
-            label: "Work request",
-            to: "/Requests/WorkRequest",
-            approved: project?.workRequest,
-          },
-          {
-            label: "Material Inspection Form",
-            to: "/Requests/RequestForInspection",
-            approved: project?.requestForInspectionForm,
-          },
-        ]);
+        if (TaskId) {
+          const data = await getTaskDetails(TaskId);
+          const task = data.results;
+          console.log(task);
+          setLinks([
+            {
+              label: t("Approval of general documents"),
+              to: "/Requests/RequestForDocumentSubmittal",
+              approved: task?.requestForDocumentSubmittalApproval,
+            },
+            {
+              label: t("Approval of schemes"),
+              to: "/request/",
+              approved: task?.approvalOfSchemes,
+            },
+            {
+              label: "Table of quantities",
+              to: "/Requests/TableOfQuantities",
+              approved: task?.tableOfQuantities,
+            },
+            {
+              label: "Request for Approval Of Materials",
+              to: "/Requests/RequestForMaterial",
+              approved: task?.requestForApprovalOfMaterials,
+            },
+            {
+              label: "Work request",
+              to: "/Requests/WorkRequest",
+              approved: task?.workRequest,
+            },
+            {
+              label: "Material Inspection Form",
+              to: "/Requests/RequestForInspection",
+              approved: task?.requestForInspectionForm,
+            },
+          ]);
+        } else {
+          const data = await getProjectDetails(projectId);
+
+          const project = data.results;
+          // setProjectDetails(project);
+          setLinks([
+            {
+              label: t("Models.requestForDocumentSubmittalApproval"),
+              to: "/Requests/RequestForDocumentSubmittal",
+              approved: project?.requestForDocumentSubmittalApproval,
+            },
+            {
+              label: t("Models.approvalOfSchemes"),
+              to: "/request/",
+              approved: project?.approvalOfSchemes,
+            },
+            {
+              label: t("Models.tableOfQuantities"),
+              to: "/Requests/TableOfQuantities",
+              approved: project?.tableOfQuantities,
+            },
+            {
+              label: t("Models.requestForApprovalOfMaterials"),
+              to: "/Requests/RequestForMaterial",
+              approved: project?.requestForApprovalOfMaterials,
+            },
+            {
+              label: t("Models.workRequest"),
+              to: "/Requests/WorkRequest",
+              approved: project?.workRequest,
+            },
+            {
+              label: t("Models.requestForInspectionForm"),
+              to: "/Requests/RequestForInspection",
+              approved: project?.requestForInspectionForm,
+            },
+          ]);
+        }
 
         console.log(links);
       } catch (error) {
@@ -74,7 +114,7 @@ const Models = () => {
     };
 
     fetchData();
-  }, [projectId]);
+  }, [TaskId, projectId]);
   const handleReviewChange = (e) => {
     setIsReviewed(e.target.checked);
   };
@@ -98,8 +138,10 @@ const Models = () => {
           </div>
           <div className="content bg-white rounded-3xl relative w-full">
             <p className="text-center text-purple mt-14 font-medium md:font-semibold text-lg md:text-2xl">
-              Complete the following forms to complete <br />
-              your application for the project
+              <Trans i18nKey="Models.msg">
+                Complete the following forms to complete <br /> your application
+                for the project
+              </Trans>
             </p>
 
             <div className="links grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
@@ -118,32 +160,21 @@ const Models = () => {
                       className="appearance-none w-3 h-3 mt-2 mr-1 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple duration-500"
                     />
                     {link.approved ? (
-                      <span className="font-medium text-base text-left text-gray-500">
+                      <span className="font-medium text-base text-left text-gray-500 mx-1">
                         {link.label}
                       </span>
                     ) : (
                       <Link
                         to={link.to}
-                        state={
-                          link.to === "/Requests/TableOfQuantities"
-                            ? {
-                                projectId,
-                                members,
-                                projectName,
-                                fromTask,
-                                TaskId,
-                                TaskName,
-                              }
-                            : {
-                                projectId,
-                                projectName,
-                                members,
-                                fromTask,
-                                TaskId,
-                                TaskName,
-                              }
-                        }
-                        className="font-medium text-base text-left"
+                        state={{
+                          projectId,
+                          projectName,
+                          members,
+                          fromTask,
+                          TaskId,
+                          TaskName,
+                        }}
+                        className="font-medium text-base text-left mx-1"
                       >
                         {link.label}
                       </Link>
@@ -178,11 +209,7 @@ const Models = () => {
             </div>
             <div className="send text-end my-5 mx-3">
               <Link
-                to={
-                  TaskId
-                    ? `TaskDetails/${TaskId}`
-                    : `/ProjectDetails/${projectId}`
-                }
+                to={`/ProjectDetails/${projectId}`}
                 state={{ projectId, TaskId }}
               >
                 <Button type="submit" disabled={!isReviewed}>

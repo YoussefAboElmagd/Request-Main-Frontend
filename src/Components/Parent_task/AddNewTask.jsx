@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import Input from "../UI/Input/Input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Select from "../UI/Select/Select";
-import { getAllTagsByUser, getAllUnits } from "../../Services/api";
+import {
+  getAllMembersByProject,
+  getAllTagsByUser,
+  getAllUnits,
+} from "../../Services/api";
 import { useSelector } from "react-redux";
 import { t } from "i18next";
 import Button from "../UI/Button/Button";
@@ -13,7 +17,7 @@ export const AddNewTask = ({ newTask, task }) => {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
-  const { projectId, taskType, members } = location.state || {};
+  const { projectId, taskType } = location.state || {};
   // console.log(location.state);
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,7 +34,8 @@ export const AddNewTask = ({ newTask, task }) => {
   const [Units, setUnits] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState("");
   const [UnitsLoading, setUnitsLoading] = useState(false);
-  const [Member, setMember] = useState(members);
+  const [Member, setMember] = useState([]);
+  const [MemberLoading, setMemberLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [SelectedMember, setSelectedMember] = useState("");
   const [tagsLoading, setTagsLoading] = useState(true);
@@ -63,9 +68,10 @@ export const AddNewTask = ({ newTask, task }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [tagsData, UnitsData] = await Promise.all([
+        const [tagsData, UnitsData, MembersData] = await Promise.all([
           getAllTagsByUser(user._id),
           getAllUnits(),
+          getAllMembersByProject(projectId),
         ]);
 
         setTags(
@@ -83,6 +89,14 @@ export const AddNewTask = ({ newTask, task }) => {
           }))
         );
         setUnitsLoading(false);
+
+        setMember(
+          MembersData.groupedMembers.map((member) => ({
+            value: member._id,
+            label: member.name,
+          }))
+        );
+        setMemberLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -175,7 +189,7 @@ export const AddNewTask = ({ newTask, task }) => {
         total: Total,
       };
 
-      console.log("taskData" ,  taskData);
+      console.log("taskData", taskData);
       await newTask(taskData);
 
       clearFormFields();
@@ -345,12 +359,10 @@ export const AddNewTask = ({ newTask, task }) => {
                 }`}
                 value={SelectedMember}
                 onChange={(e) => setSelectedMember(e)}
-                options={members.map((member) => ({
-                  value: member._id,
-                  label: member.name,
-                }))}
+                options={Member}
                 placeholder={t("Responsible Person")}
                 error={false}
+                loading={MemberLoading}
               />
             </div>
 

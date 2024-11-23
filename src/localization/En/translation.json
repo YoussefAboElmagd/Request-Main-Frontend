@@ -337,5 +337,31 @@
   "You have been invited to": "You have been invited to",
   "as a": "as a",
   "welcome": "welcome",
-  "to": "to"
+  "to": "to",
+  "Models": {
+    "requestForDocumentSubmittalApproval": "Request For Document Submittal Approval",
+    "approvalOfSchemes": "Approval Of Schemes",
+    "requestForApprovalOfMaterials": "Request For Approval Of Materials",
+    "tableOfQuantities": "Table Of Quantities",
+    "workRequest": "Work Request",
+    "requestForInspectionForm": "Request For Inspection Form",
+    "msg": "Complete the following forms to complete <1 /> your application for the project"
+  },
+  "date": "date",
+  "supplier": "supplier",
+  "approved material submittal no": "approved material submittal no",
+  "BOQ item no": "BOQ item no",
+  "qty": "Qty",
+  "cell": "cell",
+  "delivery note no": "delivery note no",
+  "Work Area": "Work Area",
+  " Quantity": "Quantity",
+  "consultants Comment": "consultants Comment",
+  "Reviewed by": "Reviewed by",
+  "submitted by": "submitted by",
+  "Noted by": "Noted by",
+  "remarks": "remarks",
+  "All models": "All models",
+  "AddModel": "Add Model",
+  "inspectionDate": "Inspection Date"
 }

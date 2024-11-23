@@ -1037,3 +1037,22 @@ export const updateModel = async (token, ReqId, modelData) => {
     throw error;
   }
 };
+
+// get all members by project
+
+export const getAllMembersByProject = async (projectId) => {
+  console.log("projectId from Api => ", projectId);
+
+  try {
+    const response = await axiosInstance.get(`project/members/${projectId}`);
+
+    console.log("Response from members by project => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get members by project error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};

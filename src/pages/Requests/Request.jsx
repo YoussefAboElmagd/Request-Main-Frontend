@@ -132,12 +132,12 @@ const RequestForm = ({
   const handleUpdate = async () => {
     try {
       console.log("ApproveTitle :", ApproveTitle);
-      if (fromTask) {
+      if (TaskId) {
         const res = await updateTask(token, TaskId, user._id, {
           [ApproveTitle]: true,
         });
 
-        console.log("res from update project => ", res);
+        console.log("res from update task => ", res);
       } else {
         const res = await updateProject(projectId, {
           [ApproveTitle]: true,
@@ -376,7 +376,7 @@ const RequestForm = ({
                       htmlFor="currentDay"
                       className="font-bold text-base text-gray-dark"
                     >
-                      {t("Date")}
+                      {t("date")}
                     </label>
                     <div className="inputs">
                       <input
@@ -411,7 +411,7 @@ const RequestForm = ({
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-lg">{t("PName")} : </h3>
                 <span className="text-sm  font-bold">
-                  {fromTask ? TaskName : projectName}
+                  {TaskName ? TaskName : projectName}
                 </span>
               </div>
               <hr className="bg-gray my-4" />
@@ -612,7 +612,7 @@ const RequestForm = ({
                       htmlFor="supplier"
                       className="font-bold text-base text-gray-dark"
                     >
-                      manufacturer / supplier
+                      {t("supplier")}
                     </label>
                     <input
                       type="text"

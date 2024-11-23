@@ -101,9 +101,8 @@ const BoardViewModels = ({
         {inspectionDate && (
           <div className="inspectionDate  flex items-center gap-1  ">
             <p className="font-poppins font-bold text-xs">
-              {t("inspectionDate")}:
-            </p>
-
+              {t("inspectionDate")} :
+            </p>                
             <span className="font-poppins font-normal text-xs text-gray">
               {inspectionDate}
             </span>
@@ -115,3 +114,5 @@ const BoardViewModels = ({
 };
 
 export default BoardViewModels;
+
+

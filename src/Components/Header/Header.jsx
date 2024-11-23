@@ -21,48 +21,45 @@ const Header = () => {
   const toggleNonfiction = () => {
     setIsOpen(!isOpen);
   };
-   const notifications = [
-     {
-       id: 1,
-       icon: <TbRosetteDiscountCheck className="Notification_success" />,
-       message:
-         "Your package has been successfully upgraded to the higher package",
-       timestamp: "12:21 PM 23-8-2024",
-       showButtons: false,
-     },
-     {
-       id: 2,
-       icon: <IoIosWarning className="Notification_warning" />,
-       message:
-         "You have reached the maximum limit for applying to projects...",
-       timestamp: "12:21 PM 23-8-2024",
-       showButtons: true,
-     },
-     {
-       id: 3,
-       icon: <PiHeadset className="Notification_3" />,
-       message: "Your complaint has been successfully submitted to support...",
-       timestamp: "12:21 PM 23-8-2024",
-       showButtons: false,
-     },
-     {
-       id: 4,
-       icon: <IoIosWarning className="Notification_warning" />,
-       message:
-         "You have reached the maximum limit for applying to projects...",
-       timestamp: "12:21 PM 23-8-2024",
-       showButtons: true,
-     },
-     {
-       id: 5,
-       icon: <TbRosetteDiscountCheck className="Notification_success" />,
-       message:
-         "Your package has been successfully upgraded to the higher package",
-       timestamp: "12:21 PM 23-8-2024",
-       showButtons: false,
-     },
-   ];
-
+  const notifications = [
+    {
+      id: 1,
+      icon: <TbRosetteDiscountCheck className="Notification_success" />,
+      message:
+        "Your package has been successfully upgraded to the higher package",
+      timestamp: "12:21 PM 23-8-2024",
+      showButtons: false,
+    },
+    {
+      id: 2,
+      icon: <IoIosWarning className="Notification_warning" />,
+      message: "You have reached the maximum limit for applying to projects...",
+      timestamp: "12:21 PM 23-8-2024",
+      showButtons: true,
+    },
+    {
+      id: 3,
+      icon: <PiHeadset className="Notification_3" />,
+      message: "Your complaint has been successfully submitted to support...",
+      timestamp: "12:21 PM 23-8-2024",
+      showButtons: false,
+    },
+    {
+      id: 4,
+      icon: <IoIosWarning className="Notification_warning" />,
+      message: "You have reached the maximum limit for applying to projects...",
+      timestamp: "12:21 PM 23-8-2024",
+      showButtons: true,
+    },
+    {
+      id: 5,
+      icon: <TbRosetteDiscountCheck className="Notification_success" />,
+      message:
+        "Your package has been successfully upgraded to the higher package",
+      timestamp: "12:21 PM 23-8-2024",
+      showButtons: false,
+    },
+  ];
 
   useEffect(() => {
     const lang = i18n.language || "en";
@@ -106,6 +103,7 @@ const Header = () => {
                   ? "opacity-100 visible translate-y-0"
                   : "opacity-0 invisible -translate-y-2"
               } absolute ltr:right-3 top-12 rtl:left-3 w-[600px] h-[300px] overflow-y-scroll  border border-gray bg-white shadow-lg rounded-md p-2 mt-3 transition-all duration-300 z-50`}
+              onMouseLeave={() => setIsOpen(false)}
             >
               <div className="flex justify-between items-center mx-2">
                 <span className="text-purple-dark text-base font-bold">
@@ -114,6 +112,7 @@ const Header = () => {
                 <Link
                   to="/Notifications"
                   className="text-gray underline underline-offset-1 text-sm font-normal"
+                  onClick={() => setIsOpen(false)}
                 >
                   {t("Make All Read")}
                 </Link>
@@ -131,6 +130,7 @@ const Header = () => {
             </div>
           </div>
           {/* )}  */}
+          <div className="footer"></div>
         </div>
       </header>
     </div>

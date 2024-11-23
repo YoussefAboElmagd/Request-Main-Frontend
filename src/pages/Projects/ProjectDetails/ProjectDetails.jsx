@@ -453,7 +453,7 @@ const ProjectDetails = () => {
                   state={{
                     projectId: Project._id,
                     projectName: Project.name,
-                    members: Project.members,
+       
                   }}
                 >
                   <Button className="w-fit px-7">view all models</Button>

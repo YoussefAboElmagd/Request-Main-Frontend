@@ -347,7 +347,7 @@ const TaskDetails = () => {
                 >
                   <Button className="w-fit px-7">{t("AddSubTask")}</Button>
                 </Link>
-  
+
                 <Link
                   to={`/SubTasks/${Task._id}`}
                   state={{
@@ -372,9 +372,9 @@ const TaskDetails = () => {
             <Link
               to={"/ViewAllModels"}
               state={{
+                projectId: Task?.project?._id,
                 taskId: Task._id,
-                taskName: Task.name,
-                // members: Project.members,
+                TaskName: Task.title,
               }}
             >
               <Button className="w-fit px-7">view all models</Button>

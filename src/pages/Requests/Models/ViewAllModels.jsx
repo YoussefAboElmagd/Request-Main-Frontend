@@ -11,7 +11,8 @@ import Loader from "../../../Components/Loader/Loader";
 const ViewAllModels = () => {
   const location = useLocation();
   const token = useSelector((state) => state.auth.token);
-  const { projectId, projectName, members, taskId, taskName } = location.state || {};
+  const { projectId, projectName, members, taskId, TaskName } =
+    location.state || {};
   console.log(location.state);
 
   const [loading, setLoading] = useState(false);
@@ -60,7 +61,7 @@ const ViewAllModels = () => {
                 projectName,
                 members,
                 taskId,
-                taskName,
+                TaskName,
               }}
               className={` box flex flex-col p-5 justify-center gap-4 items-center col-span-1  h-full bg-white  rounded-md shadow-sm  `}
             >

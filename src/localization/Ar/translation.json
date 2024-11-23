@@ -344,10 +344,36 @@
     "TagsCreatedSuccess": "تم إنشاء العلامات بنجاح",
     "you have been added to {{projectName}} successfully": "لقد تم إضافتك إلى {{projectName}} بنجاح",
     "You have canceled the invitation to {{projectName}} successfully": "لقد ألغيت الدعوة إلى {{projectName}} بنجاح",
-    "inviteSuccess" : "تم  ارسال الدعوه بنجاح"
+    "inviteSuccess": "تم  ارسال الدعوه بنجاح"
   },
   "You have been invited to": "لقد تمت دعوتك إلى",
   "as a": "ك",
-  "welcome"  : "مرحبا",
-  "to" :"في"
+  "welcome": "مرحبا",
+  "to": "في",
+  "Models": {
+    "requestForDocumentSubmittalApproval": "طلب موافقة على تقديم المستندات",
+    "approvalOfSchemes": "موافقة على المخططات",
+    "requestForApprovalOfMaterials": "طلب موافقة على المواد",
+    "tableOfQuantities": "جدول الكميات",
+    "workRequest": "طلب عمل",
+    "requestForInspectionForm": "نموذج طلب فحص",
+    "msg": "قم بإكمال النماذج التالية لإتمام <1 /> طلبك للمشروع"
+  },
+  "date": "التاريخ",
+  "supplier": "المورد",
+  "approved material submittal no": "رقم تقديم المواد الموافق عليه",
+  "BOQ item no": "رقم بند جدول الكميات",
+  "qty": "الكمية",
+  "cell": "الخانة",
+  "delivery note no": "رقم إشعار التسليم",
+  "Work Area": "منطقة العمل",
+  " Quantity": "الكمية",
+  "consultants Comment": "تعليق المستشارين",
+  "Reviewed by": "تمت المراجعة بواسطة",
+  "submitted by": "تم التقديم بواسطة",
+  "Noted by": "تم الإحاطة بواسطة",
+  "remarks": "ملاحظات",
+  "All models": "جميع النماذج",
+  "AddModel": "إضافة نموذج",
+  "inspectionDate" : ""
 }
