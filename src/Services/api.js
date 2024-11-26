@@ -3,7 +3,10 @@ import axiosInstance from "./axiosInstance";
 // Sign up
 export const signUp = async (userData) => {
   try {
-    const response = await axiosInstance.post("auth/signup", userData);
+    const response = await axiosInstance.post(
+      `auth/signup`,
+      userData
+    );
     console.log("Response => ", response);
     console.log("Response => ", response.data);
 
@@ -15,9 +18,12 @@ export const signUp = async (userData) => {
 };
 // Sign in
 
-export const signIn = async (userData) => {
+export const signIn = async (userData ) => {
   try {
-    const response = await axiosInstance.post("auth/signin", userData);
+    const response = await axiosInstance.post(
+      `auth/signin`,
+      userData
+    );
     console.log("Response => ", response);
     return response.data;
   } catch (error) {
@@ -263,12 +269,16 @@ export const updateProject = async (projectId, updatedData) => {
 export const addProject = async (token, projectData) => {
   console.log(projectData);
   try {
-    const response = await axiosInstance.post(`project`, projectData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axiosInstance.post(
+      `project`,
+      projectData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log("Response from add project => ", response);
     return response.data;
@@ -406,13 +416,17 @@ export const getAllTagsByUser = async (userId) => {
 };
 
 //  Add  Tag
-export const addTag = async (tag, userId) => {
+export const addTag = async (tag, userId, ) => {
   try {
-    const response = await axiosInstance.post(`tags/${userId}`, tag, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axiosInstance.post(
+      `tags/${userId}}`,
+      tag,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log("Response from add tag => ", response);
     return response.data;
@@ -650,12 +664,16 @@ export const getAllVocations = async () => {
 
 export const updateTeam = async (token, teamId, teamData) => {
   try {
-    const response = await axiosInstance.put(`team/${teamId}`, teamData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await axiosInstance.put(
+      `team/${teamId}`,
+      teamData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     console.log("Response from update team => ", response);
     return response.data;
@@ -690,13 +708,16 @@ export const delegatedTeam = async (token, teamId) => {
 //  delete user from  project  in delegated Team
 export const deleteUserFromProject = async (token, project, userId) => {
   try {
-    const response = await axiosInstance.delete(`team/user/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      data: { project },
-    });
+    const response = await axiosInstance.delete(
+      `team/user/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        data: { project },
+      }
+    );
 
     console.log("Response from delete user from project => ", response);
     return response.data;
@@ -786,7 +807,7 @@ export const addMemberForProject = async (projectId, MemberData, token) => {
 
   try {
     const response = await axiosInstance.put(
-      `project/member/${projectId}`,
+      `project/member/${projectId}&lang=${lang}`,
       MemberData,
       {
         headers: {

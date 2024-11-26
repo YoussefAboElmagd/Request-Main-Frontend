@@ -2,7 +2,11 @@ import { t } from "i18next";
 import avatar from "../../assets/images/avatar1.png";
 import signature from "../../assets/images/signature.png";
 import { useEffect, useState } from "react";
-import { getModelById, updateModel } from "../../Services/api";
+import {
+  getAllActionCodes,
+  getModelById,
+  updateModel,
+} from "../../Services/api";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { format } from "date-fns";
@@ -10,6 +14,7 @@ import Loader from "../../Components/Loader/Loader";
 import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
 import Button from "../../Components/UI/Button/Button";
 import { toast } from "react-toastify";
+import Select from "../../Components/UI/Select/Select";
 
 const ViewRequest = () => {
   const [model, setModel] = useState(null);
@@ -23,10 +28,10 @@ const ViewRequest = () => {
   const [IsContractor, setIsContractor] = useState(
     user.role.jobTitle === "contractor"
   );
-  //  const IsOwner = user.role.jobTitle === "owner";
-  //  const IsConsultant = user.role.jobTitle === "consultant";
-  //  const IsContractor = user.role.jobTitle === "contractor";
-
+  const [Comment, setComment] = useState("");
+  const [ActionCodes, setActionCodes] = useState([]);
+  const [selectedActionCodes, setSelectedActionCodes] = useState(null);
+  const [ActionCodeLoading, setActionCodeLoading] = useState(true);
   const location = useLocation();
   const { ModelId } = location.state || {};
 
@@ -34,9 +39,14 @@ const ViewRequest = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await getModelById(token, ModelId);
-        setModel(res.results);
-        console.log(res);
+        const [modelData] = await Promise.all([
+          getModelById(token, ModelId),
+          getAllActionCodes(),
+        ]);
+        setModel(modelData.results);
+        console.log(modelData);
+        setActionCodes(ActionCodes.results);
+        setActionCodeLoading(false);
 
         console.log(model);
       } catch (error) {
@@ -52,10 +62,32 @@ const ViewRequest = () => {
     try {
       // Prepare payload dynamically based on roles
       const getApprovalPayload = () => {
-        if (IsOwner) return { ownerStatus: "approved" };
-        if (IsConsultant) return { consultantStatus: "approved" };
-        if (IsContractor) return { contractorStatus: "approved" };
-        return {};
+        const payload = {};
+
+        if (IsOwner) payload.ownerStatus = "approved";
+        if (IsConsultant) payload.consultantStatus = "approved";
+        if (IsContractor) payload.contractorStatus = "approved";
+        if (Comment) payload.comment = Comment;
+        if (selectedActionCodes) payload.actionCode = selectedActionCodes;
+
+        // Determine how many "pending" statuses exist
+        // const pendingStatuses = [
+        //   ownerStatus,
+        //   consultantStatus,
+        //   contractorStatus,
+        // ].filter((status) => status === "pending").length;
+
+        // if (pendingStatuses > 1) {
+        //   // If more than one role is "pending", set reviewedBy to current user
+        //   return { reviewedBy: user._id };
+        // } else if (pendingStatuses === 1) {
+        //   // If only one role is "pending", set notedBy to current user
+        //   return { notedBy: user._id };
+        // }
+
+        // Return an empty payload if no conditions are met
+        console.log(payload);
+        return payload;
       };
 
       const payload = getApprovalPayload();
@@ -92,6 +124,30 @@ const ViewRequest = () => {
       </div>
     );
   }
+
+  const ApprovalStatus = ({ status, label, reviewer }) => (
+    <div className="flex flex-col gap-2">
+      <h5 className="font-bold text-base text-gray-dark">{t(label)} :</h5>
+      {status === "approved" ? (
+        <span className="font-medium text-sm text-gray">{t("Approved")}</span>
+      ) : (
+        <>
+          <span className="font-medium text-sm">
+            {reviewer?.name || t("No name available")}
+          </span>
+          {reviewer?.signature ? (
+            <img
+              src={reviewer?.signature}
+              alt="Signature"
+              className="w-20 h-20"
+            />
+          ) : (
+            <p className="text-xs">{t("No signature found")}</p>
+          )}
+        </>
+      )}
+    </div>
+  );
   return (
     <div className="ViewRequest">
       <div className="header bg-white p-4 rounded-l-3xl">
@@ -99,7 +155,7 @@ const ViewRequest = () => {
       </div>
       <div className="content bg-white p-4 rounded-3xl my-6 ">
         <div className="flex items-center justify-between">
-          {(model?.consultant || model?.contractor) && (
+          {(model?.consultant || model?.contractor || model?.owner) && (
             <div className="flex items-center gap-3">
               {model?.consultant && (
                 <div className="flex flex-col items-center gap-3">
@@ -207,19 +263,44 @@ const ViewRequest = () => {
               />
             </div>
           )}
-          {model?.actionCode && (
+
+          {(IsOwner && model?.ownerStatus === "pending") ||
+          (IsConsultant && model?.consultantStatus === "pending") ||
+          (IsContractor && model?.contractorStatus === "pending") ? (
             <div className="flex items-center gap-2">
               <h5 className="font-bold text-base text-gray-dark">
                 {t("Action Code")}
               </h5>
-              <input
-                type="text"
-                disabled
-                value={model?.actionCode?.name}
-                className="bg-white border  w-fit  text-center border-solid border-gray rounded-2xl p-2"
+              <Select
+                options={ActionCodes.map((item) => ({
+                  id: item._id,
+                  label: item.name,
+                }))}
+                placeholder={t("Action Code")}
+                disabled={ActionCodeLoading}
+                loading={ActionCodeLoading}
+                value={selectedActionCodes}
+                onChange={(e) => setSelectedActionCodes(e)}
+                className={`bg-white `}
+                InputClassName={`border border-gray  rounded-2xl `}
               />
             </div>
+          ) : (
+            model?.actionCode && (
+              <div className="flex items-center gap-2">
+                <h5 className="font-bold text-base text-gray-dark">
+                  {t("Action Code")}
+                </h5>
+                <input
+                  type="text"
+                  disabled
+                  value={model?.actionCode?.name}
+                  className="bg-white border  w-fit  text-center border-solid border-gray rounded-2xl p-2"
+                />
+              </div>
+            )
           )}
+
           {model?.reason && (
             <div className="flex items-center gap-2">
               <h5 className="font-bold text-base text-gray-dark">
@@ -234,35 +315,57 @@ const ViewRequest = () => {
             </div>
           )}
         </div>
-        {model?.consultantsComment > 0 &&
-          model.consultantsComment.map((comment) => (
-            <div className="feedback my-4">
-              <h5 className="font-bold  text-base">
-                {t("consultants Comment")}
-              </h5>
-              <input
-                type="text"
-                disabled
-                value={comment}
-                className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
-              />
-            </div>
-          ))}
+
         <div className="flex items-center gap-3 my-4">
-          <div className="flex flex-col gap-2">
-            <h5 className="font-bold text-base text-gray-dark">
-              {t("Reviewed by")} :
-            </h5>
-            <span className="font-medium text-sm">fadl mohamed</span>
-            <img src={signature} alt="signature" className="w-14 h-14" />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h5 className="font-bold text-base text-gray-dark">
-              {t("Noted by")} :
-            </h5>
-            <span className="font-medium text-sm">Ahmed mohamed</span>
-            <img src={signature} alt="signature" className="w-14 h-14" />
-          </div>
+          {model.consultantStatus === "approved" ? (
+            <div className="flex flex-col gap-2">
+              <h5 className="font-bold text-base text-gray-dark">
+                {t("Reviewed by")} :
+              </h5>
+              <span className="font-medium text-sm">
+                {model?.consultant?.name}
+              </span>
+              {model?.consultant?.signature ? (
+                <img
+                  src={model?.consultant?.signature}
+                  alt="Signature"
+                  className="w-20 h-20"
+                />
+              ) : (
+                <p className="text-xs">No signature found</p>
+              )}{" "}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <h5 className="font-bold text-base text-gray">
+                {t("Reviewed by")} :
+              </h5>
+            </div>
+          )}
+
+          {model?.ownerStatus === "approved" ? (
+            <div className="flex flex-col gap-2">
+              <h5 className="font-bold text-base text-gray-dark">
+                {t("Noted by")} :
+              </h5>
+              <span className="font-medium text-sm">{model?.owner?.name}</span>
+              {model?.owner?.signature ? (
+                <img
+                  src={model?.owner?.signature}
+                  alt="Signature"
+                  className="w-20 h-20"
+                />
+              ) : (
+                <p className="text-xs">No signature found</p>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <h5 className="font-bold text-base text-gray">
+                {t("Noted by")} :
+              </h5>
+            </div>
+          )}
         </div>
         <hr className="bg-gray my-4" />
         <div className="desc ">
@@ -277,6 +380,48 @@ const ViewRequest = () => {
             className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
           />
         </div>
+
+        {(IsOwner && model?.ownerStatus === "pending") ||
+        (IsConsultant && model?.consultantStatus === "pending") ||
+        (IsContractor && model?.contractorStatus === "pending") ? (
+          <div className="feedback my-4">
+            <h5 className="font-bold  text-base">
+              {t("Comment")}{" "}
+              <span className="text-gray font-medium">(Not required)</span>
+            </h5>
+            <input
+              type="text"
+              placeholder="add comment +"
+              value={Comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
+            />
+          </div>
+        ) : model?.comment && model.comment.length > 0 ? (
+          <>
+            <h5 className="font-bold text-base">{t("Comment")}</h5>
+            {model.comment.map((comment, index) => (
+              <div key={index} className="feedback my-4">
+                <input
+                  type="text"
+                  disabled
+                  value={comment}
+                  className="bg-white w-full my-1 text-gray border border-solid border-gray rounded-2xl p-2"
+                />
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className="feedback my-4">
+            <h5 className="font-bold  text-base">{t("Comment")}</h5>
+            <input
+              type="text"
+              disabled
+              value={t("No comments available")}
+              className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
+            />
+          </div>
+        )}
         {model?.remarks && (
           <div className="desc ">
             <label
@@ -475,7 +620,15 @@ const ViewRequest = () => {
             {t("submitted by")} :
           </h5>
           <span className="font-medium text-sm">{model?.owner?.name}</span>
-          <img src={signature} alt="signature" className="w-14 h-14" />
+          {model?.createdBy?.signature ? (
+            <img
+              src={model?.createdBy?.signature}
+              alt="Signature"
+              className="w-20 h-20"
+            />
+          ) : (
+            <p className="text-xs">No signature found</p>
+          )}
         </div>
         {((IsOwner && model?.ownerStatus === "pending") ||
           (IsConsultant && model?.consultantStatus === "pending") ||

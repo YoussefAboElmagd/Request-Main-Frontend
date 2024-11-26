@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Button from "../../Components/UI/Button/Button";
 import Loader from "../../Components/Loader/Loader";
 import CheckboxGroup from "../../Components/UI/CheckboxGroup/CheckboxGroup";
-import avatar from "../../assets/images/avatar1.png";
+import avatar from "../../assets/images/Avatar.jpg";
 import signature from "../../assets/images/signature.png";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -19,6 +19,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { t } from "i18next";
 import Select from "../../Components/UI/Select/Select";
+import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
 
 const RequestForm = ({
   ReqTitle,
@@ -47,10 +48,10 @@ const RequestForm = ({
   const [projects, setProjects] = useState([]);
   const [isReviewed, setIsReviewed] = useState(false);
   const [Reasons, setReasons] = useState([]);
-  const [selectedReasons, setSelectedReasons] = useState("");
+  const [selectedReasons, setSelectedReasons] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [selectedActionCodes, setSelectedActionCodes] = useState([]);
-  const [selectedDisciplines, setSelectedDisciplines] = useState([]);
+  const [selectedActionCodes, setSelectedActionCodes] = useState(null);
+  const [selectedDisciplines, setSelectedDisciplines] = useState(null);
   const [refNO, setRefNO] = useState("");
   // const [comments, setComments] = useState([]);
   // const [commentInput, setCommentInput] = useState("");
@@ -81,6 +82,7 @@ const RequestForm = ({
   const [IsRfiReq, setIsRfiReq] = useState(
     ReqTitle === "Request For Inspection(RFI)"
   );
+  const [signature, setSignature] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -88,6 +90,14 @@ const RequestForm = ({
   const currentDay = currentDate.getDate();
   const currentMonth = currentDate.getMonth() + 1;
   const currentYear = currentDate.getFullYear();
+
+  useEffect(() => {
+    const savedSignature = localStorage.getItem("Signature");
+    if (savedSignature) {
+      setSignature(savedSignature);
+    }
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -155,17 +165,16 @@ const RequestForm = ({
     setLoading(true);
 
     // Validate required fields
-    if (!selectedActionCodes.length || !selectedDisciplines.length) {
-      setError("All fields are required");
-      setLoading(false);
-      return;
-    }
+    // if (!selectedDisciplines) {
+    //   setError("All fields are required");
+    //   setLoading(false);
+    //   return;
+    // }
 
     // Base request data
     const requestData = {
       refNo: refNO,
       title: ReqTitle,
-      actionCode: selectedActionCodes,
       discipline: selectedDisciplines,
       description: Desc,
       project: projectId,
@@ -355,6 +364,41 @@ const RequestForm = ({
           <div className="content bg-white p-4 rounded-3xl my-6 ">
             <form onSubmit={handleSubmit}>
               <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col items-center gap-3">
+                    <ProfileAvatar
+                      name={user.name}
+                      profilePic={user.profilePic}
+                      className={`!w-16 !h-16 !text-3xl`}
+                    />
+                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                      {user.name}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-3">
+                    <ProfileAvatar
+                      name={"Belal"}
+                      profilePic={avatar}
+                      className={`!w-16 !h-16`}
+                    />
+                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                      {"Consultant Name"}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-3">
+                    <ProfileAvatar
+                      name={"Belal"}
+                      profilePic={avatar}
+                      className={`!w-16 !h-16`}
+                    />
+                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                      {"Contractor Name"}
+                    </span>
+                  </div>
+                </div>
+
                 <div className="flex flex-col ">
                   <div className="Ref flex items-center gap-2 ">
                     <label
@@ -415,30 +459,34 @@ const RequestForm = ({
                 </span>
               </div>
               <hr className="bg-gray my-4" />
-              {/* {showProjectName && (
-                <div className="ProjectName flex items-center gap-2 my-6">
+
+              {showActionCodes && (
+                <>
                   <label
-                    htmlFor="ProjectName"
-                    className="font-bold text-base text-gray-dark"
+                    htmlFor="desc"
+                    className="font-bold text-base text-gray"
                   >
-                    {t("PName")}
+                    {t("Action Code")}
                   </label>
-                  <Select
-                    placeholder={t("PName")}
-                    id={"name"}
-                    isClearable
-                    isLoading={loading}
-                    value={selectedProject}
-                    options={projects.map((project) => ({
-                      value: project._id,
-                      label: project.name,
-                    }))}
-                    onChange={(e) => setSelectedProject(e)}
-                    styles={customStyles}
+                  <input
+                    placeholder={t("Action Code")}
+                    disabled
+                    className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
                   />
-                </div>
-              )} */}
-              {showReasons && (
+                </>
+              )}
+              <div className="feedback my-4">
+                <h5 className="font-bold  text-base text-gray">
+                  {t("Comment")}
+                </h5>
+                <input
+                  type="text"
+                  disabled
+                  value={"Comment"}
+                  className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
+                />
+
+                {/* {showReasons && (
                 <CheckboxGroup
                   label={t("Reason")}
                   options={Reasons?.map((item) => ({
@@ -473,9 +521,26 @@ const RequestForm = ({
                   selectedValue={selectedActionCodes}
                   onChange={setSelectedActionCodes}
                 />
-              )}
+              )} */}
 
-              {/* <div className="comment flex flex-col my-6  ">
+                <div className="flex items-center gap-3 my-4 mb-8">
+                  <div className="flex flex-col gap-2 ">
+                    <h5 className="font-bold text-base text-gray">
+                      {t("Reviewed by")} :
+                    </h5>
+                    {/* <span className="font-medium text-sm"></span> */}
+                    {/* <img src={signature} alt="signature" className="w-14 h-14" /> */}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h5 className="font-bold text-base text-gray">
+                      {t("Noted by")} :
+                    </h5>
+                    {/* <span className="font-medium text-sm"></span> */}
+                    {/* <img src={signature} alt="signature" className="w-14 h-14" /> */}
+                  </div>
+                </div>
+
+                {/* <div className="comment flex flex-col my-6  ">
                 <label
                   htmlFor="comment"
                   className="font-bold text-base text-gray-dark flex justify-start"
@@ -550,41 +615,61 @@ const RequestForm = ({
                 ))}
               </div> */}
 
-              {/* <div className="flex items-center gap-3 my-4">
-                <div className="flex flex-col gap-2">
-                  <h5 className="font-bold text-base text-gray-dark">
-                    Reviewed by :
-                  </h5>
-                  <span className="font-medium text-sm">fadl mohamed</span>
-                  <img src={signature} alt="signature" className="w-14 h-14" />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <h5 className="font-bold text-base text-gray-dark">
-                    Noted by :
-                  </h5>
-                  <span className="font-medium text-sm">Ahmed mohamed</span>
-                  <img src={signature} alt="signature" className="w-14 h-14" />
-                </div>
-              </div> */}
+                <hr className="bg-gray my-4" />
 
-              <hr className="bg-gray my-4" />
-              <div className="desc ">
-                <label
-                  htmlFor="desc"
-                  className="font-bold text-base text-gray-dark"
-                >
-                  {t("desc")}
-                </label>
-                <input
-                  type="text"
-                  id="desc"
-                  placeholder={t("desc")}
-                  value={Desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                  className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
-                />
+                <div className="grid  grid-cols-2 lg:grid-cols-4  my-4 gap-3">
+                  <div className="col-span-2">
+                    {showDiscipline && (
+                      <Select
+                        options={disciplines.map((item) => ({
+                          id: item._id,
+                          label: item.name,
+                        }))}
+                        placeholder={t("Discipline")}
+                        disabled={UnitsLoading}
+                        label={t("Discipline")}
+                        value={selectedActionCodes}
+                        onChange={(e) => setSelectedDisciplines(e)}
+                        className={`bg-white `}
+                        InputClassName={`border border-gray  rounded-2xl `}
+                      />
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    {showReasons && (
+                      <Select
+                        options={Reasons.map((item) => ({
+                          id: item._id,
+                          label: item.name,
+                        }))}
+                        placeholder={t("Reason")}
+                        disabled={UnitsLoading}
+                        label={t("Reason")}
+                        value={selectedActionCodes}
+                        onChange={(e) => setSelectedReasons(e)}
+                        className={`bg-white `}
+                        InputClassName={`border border-gray  rounded-2xl `}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="desc ">
+                  <label
+                    htmlFor="desc"
+                    className="font-bold text-base text-gray-dark"
+                  >
+                    {t("desc")}
+                  </label>
+                  <input
+                    type="text"
+                    id="desc"
+                    placeholder={t("desc")}
+                    value={Desc}
+                    onChange={(e) => setDesc(e.target.value)}
+                    className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                  />
+                </div>
               </div>
-
               {IsReqForDocumentSubmittal && (
                 <>
                   <div className="Remarks">
@@ -641,6 +726,7 @@ const RequestForm = ({
                   </div>
                 </div>
               )}
+
               <div className="flex items-center  gap-3 my-2">
                 {(IsReqForDocumentSubmittal ||
                   IsReqForMaterial ||
@@ -830,6 +916,18 @@ const RequestForm = ({
                 </div>
               )}
 
+              <div className="flex flex-col gap-2 ">
+                <h5 className="font-bold text-base text-gray-dark">
+                  {t("submitted by")} :
+                </h5>
+                <span className="font-medium text-sm">{user?.name}</span>
+                {signature ? (
+                  <img src={signature} alt="Signature" className="w-20 h-20" />
+                ) : (
+                  <p>No signature found</p>
+                )}
+              </div>
+
               {/* <div className="flex flex-col gap-2 mt-4">
                 <h5 className="font-bold text-base text-gray-dark">
                   submitted by:
@@ -873,3 +971,6 @@ const RequestForm = ({
 };
 
 export default RequestForm;
+
+
+

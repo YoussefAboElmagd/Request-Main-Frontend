@@ -102,5 +102,3 @@ export const handleUpdateUser = createAsyncThunk(
   }
 );
 
-
-

@@ -8,7 +8,7 @@ import Google from "../../../assets/images/Google.png";
 import Apple from "../../../assets/images/Apple.png";
 import Facebook from "../../../assets/images/Facebook.png";
 import "./style.scss";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
   startAuth,
@@ -46,7 +46,7 @@ const SignUp = () => {
     value: "SA",
     label: "Saudi Arabia",
   });
-
+    const lang = i18next.language;
   const navigate = useNavigate();
 
   const handleConfirmPasswordChange = (e) => {

@@ -28,6 +28,7 @@ import {
   Button as Btn,
 } from "@material-tailwind/react";
 import Loader from "../../../Components/Loader/Loader";
+import i18next from "i18next";
 // Custom styles for react-select
 const customStyles = {
   control: (provided) => ({
@@ -205,6 +206,7 @@ const AddNewAccess = () => {
     access: false,
     Tag: false,
   });
+    const lang = i18next.language;
 
   useEffect(() => {
     console.log("Current access list:", accessList);

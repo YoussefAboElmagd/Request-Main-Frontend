@@ -116,6 +116,7 @@ const LoginByMail = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     labelIcon={<CiMail />}
                     label={t("enter email")}
+                    className="border border-purple border-solid bg-gray"
                   />
                 </div>
 

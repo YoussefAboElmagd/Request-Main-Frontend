@@ -15,9 +15,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CiSquarePlus } from "react-icons/ci";
 import { HiX } from "react-icons/hi";
+import i18next from "i18next";
 
 const AddTask = () => {
   const { ProjectId } = useParams();
+    const lang = i18next.language;
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();

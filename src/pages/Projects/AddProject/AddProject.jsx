@@ -1,4 +1,4 @@
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import Input from "../../../Components/UI/Input/Input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Button from "../../../Components/UI/Button/Button";
@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 const AddProject = () => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
+    const lang = i18next.language;
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

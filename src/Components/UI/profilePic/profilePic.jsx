@@ -29,7 +29,7 @@ const ProfileAvatar = ({ name, profilePic, className }) => {
     <img
       src={profilePic}
       alt="avatar"
-      className={`rounded-lg border w-9 h-9 ${className} object-cover`}
+      className={`rounded-full   w-9 h-9 ${className} object-cover`}
     />
   ) : (
     <div

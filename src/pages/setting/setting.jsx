@@ -9,7 +9,7 @@ import "./style.scss";
 import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
 import { addTag } from "../../Services/api";
 import { toast } from "react-toastify";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
@@ -51,6 +51,7 @@ const Setting = () => {
   const [tags, setTags] = useState([]);
   const profileRef = useRef();
   const generalRef = useRef();
+  const lang = i18next.language;
 
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);

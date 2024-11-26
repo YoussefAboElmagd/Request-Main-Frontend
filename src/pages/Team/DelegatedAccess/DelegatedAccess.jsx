@@ -18,6 +18,7 @@ import {
 } from "@material-tailwind/react";
 import { toast } from "react-toastify";
 import { t } from "i18next";
+import i18next from "i18next";
 
 const DelegatedAccess = () => {
   const user = useSelector((state) => state.auth.user);
@@ -28,7 +29,7 @@ const DelegatedAccess = () => {
   const [openAcc, setOpenAcc] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-
+  const lang = i18next.language;
   const handleOpen = () => setOpen(!open);
   const handleOpenAccordion = (projectId) => {
     setOpenAcc((prevOpen) => (prevOpen === projectId ? null : projectId));

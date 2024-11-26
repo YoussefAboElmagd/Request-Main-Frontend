@@ -35,6 +35,7 @@ import Button from "../../../Components/UI/Button/Button";
 import { t } from "i18next";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import i18next from "i18next";
 
 const customStyles = {
   control: (provided) => ({
@@ -151,6 +152,7 @@ const AnimatedMultiValue = (props) => (
 );
 
 const ProjectTeam = () => {
+    const lang = i18next.language;
   const user = useSelector((state) => state.auth.user);
   const [membersData, setMembersData] = useState(null);
   const token = useSelector((state) => state.auth.token);
@@ -327,7 +329,7 @@ const ProjectTeam = () => {
       };
       console.log(payload);
 
-      await addMemberForProject(projectId, payload, token);
+      await addMemberForProject(projectId, payload, token, lang);
       clearFields();
       toast.success(t("toast.MemberAdded"));
       window.location.reload();
