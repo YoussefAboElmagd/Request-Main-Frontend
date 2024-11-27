@@ -114,11 +114,11 @@ const PlansInfo = () => {
         </div>
       </div>
 
-      <div className="plans flex items-center justify-end gap-4   mt-6">
+      {/* <div className="plans flex items-center justify-end gap-4  mt-6">
         {["Request", "Request Plus", "Request Full Plus"].map((plan, idx) => (
           <div
             key={idx}
-            className={`flex flex-col bg-white rounded-3xl p-4 shadow-lg border-t-4 ${
+            className={`flex flex-col bg-white rounded-3xl p-4 shadow-lg  ${
               idx === 0
                 ? "border-yellow-400"
                 : idx === 1
@@ -147,60 +147,68 @@ const PlansInfo = () => {
             </Link>
           </div>
         ))}
-      </div>
+      </div> */}
 
-      <table className={`table w-full mt-8`}>
+      <table
+        className={`table w-full table-auto border-separate border-spacing-4 mt-8`}
+      >
         <thead>
-          {/* <tr>
-            <th
-              colSpan={4}
-              className="plans flex items-center justify-end  gap-4 mt-6 "
-            >
-              {["Request", "Request Plus", "Request Full Plus"].map(
-                (plan, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex flex-col bg-white rounded-3xl p-4 shadow-lg border-t-4 ${
-                      idx === 0
-                        ? "border-yellow-400"
-                        : idx === 1
-                        ? "border-green-400"
-                        : "border-purple-400"
-                    }`}
-                  >
-                    <h3 className="font-bold text-lg mb-2">{plan}</h3>
-                    <span className="text-gold font-bold text-sm mb-2">
-                      {t("14 day trial")}
-                    </span>
-                    <p className="flex items-center gap-1">
-                      <span className="text-purple text-2xl font-bold">
-                        {idx === 0 ? "8$" : idx === 1 ? "$16" : ""}
-                      </span>
-                      {idx === 2 ? (
-                        <span className="text-purple text-2xl font-bold">
-                          {t("Custom")}
-                        </span>
-                      ) : (
-                        <span className="text-base font-normal">
-                          /{t("month")}
-                        </span>
-                      )}
-                    </p>
-                    <Link to={"/PlanDetails"}>
-                      <Button className={"mt-4 !px-24"}>
-                        {t("Get started")}
-                      </Button>
-                    </Link>
-                  </div>
-                )
-              )}
+          <tr className=" my-2">
+            <th></th>
+            <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
+              <div className="flex flex-col">
+                <h3 className="font-bold text-lg mb-2 text-start">Request</h3>
+                <span className="text-gold font-bold text-sm mb-2 text-start">
+                  {t("14 day trial")}
+                </span>
+                <p className="flex items-center gap-1 text-start">
+                  <span className="text-purple text-2xl font-bold">8$</span>
+                  <span className="text-base font-normal">/{t("month")}</span>
+                </p>
+                <Link to={"/PlanDetails"}>
+                  <Button className="mt-4 !px-24">{t("Get started")}</Button>
+                </Link>
+              </div>
             </th>
-          </tr> */}
+            <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
+              <div className="flex flex-col">
+                <h3 className="font-bold text-lg mb-2 text-start">
+                  Request Plus
+                </h3>
+                <span className="text-gold font-bold text-sm mb-2 text-start">
+                  {t("14 day trial")}
+                </span>
+                <p className="flex items-center gap-1 text-start">
+                  <span className="text-purple text-2xl font-bold">16$</span>
+                  <span className="text-base font-normal">/{t("month")}</span>
+                </p>
+                <Link to={"/PlanDetails"}>
+                  <Button className="mt-4 !px-24">{t("Get started")}</Button>
+                </Link>
+              </div>
+            </th>
+            <th className="bg-white rounded-3xl p-4 shadow-lg  border-purple-400">
+              <div className="flex flex-col">
+                <h3 className="font-bold text-lg mb-2 text-start">
+                  Request Full Plus
+                </h3>
+                <span className="text-gold font-bold text-sm mb-2 text-start">
+                  {t("14 day trial")}
+                </span>
+                <p className="flex items-center gap-1">
+                  <span className="text-purple text-2xl font-bold">Custom</span>
+                </p>
+                <Link to={"/PlanDetails"}>
+                  <Button className="mt-4 !px-24">{t("Get started")}</Button>
+                </Link>
+              </div>
+            </th>
+          </tr>
           <tr>
             <th className="font-bold "></th>
-            <th className="font-bold  text-start">{t("Request")}</th>
-            <th className="font-bold text-start">{t("RequestPlus")}</th>
-            <th className="font-bold text-start">{t("RequestPlusFull")}</th>
+            <th className="font-bold  text-center">{t("Request")}</th>
+            <th className="font-bold text-center">{t("RequestPlus")}</th>
+            <th className="font-bold text-center">{t("RequestPlusFull")}</th>
           </tr>
         </thead>
 
@@ -210,20 +218,22 @@ const PlansInfo = () => {
               <tr key={`section-${secIdx}`}>
                 <td
                   colSpan={4}
-                  className="p-3 font-semibold text-lg bg-gray-200 "
+                  className="p-3 font-semibold text-lg bg-gray-200  "
                 >
                   {section.section}
                 </td>
               </tr>
               {section.features.map((feature, featureIndex) => (
                 <tr key={`feature-${featureIndex}`}>
-                  <td className={`border-b border-gray-300 p-2 `}>
+                  <td className={`border-b border-gray-300 p-2  `}>
                     {feature.name}
                   </td>
-                  <td className="border-b border-gray-300 p-2   ">
+                  <td className="border-b border-gray-300 p-2   text-center">
                     {typeof feature.request === "boolean" ? (
                       feature.request ? (
-                        <FaCheckCircle className="text-green w-5 h-5" />
+                        <div className="flex justify-center items-center">
+                          <FaCheckCircle className="text-green w-5 h-5 text-center" />
+                        </div>
                       ) : (
                         "-"
                       )
@@ -231,10 +241,12 @@ const PlansInfo = () => {
                       feature.request
                     )}
                   </td>
-                  <td className="border-b border-gray-300 p-2 ">
+                  <td className="border-b border-gray-300 p-2 text-center ">
                     {typeof feature.requestPlus === "boolean" ? (
                       feature.requestPlus ? (
-                        <FaCheckCircle className="text-green w-5 h-5" />
+                        <div className="flex justify-center items-center">
+                          <FaCheckCircle className="text-green w-5 h-5 text-center" />
+                        </div>
                       ) : (
                         "-"
                       )
@@ -242,10 +254,12 @@ const PlansInfo = () => {
                       feature.requestPlus
                     )}
                   </td>
-                  <td className="border-b border-gray-300 ">
+                  <td className="border-b border-gray-300 text-center">
                     {typeof feature.fullPlus === "boolean" ? (
                       feature.fullPlus ? (
-                        <FaCheckCircle className="text-green w-5 h-5" />
+                        <div className="flex justify-center items-center">
+                          <FaCheckCircle className="text-green w-5 h-5 text-center" />
+                        </div>
                       ) : (
                         "-"
                       )
