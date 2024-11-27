@@ -38,11 +38,11 @@ const ViewAllModels = () => {
     if (!date) return "";
     return format(new Date(date), "dd MMM");
   };
-
+ 
   return (
-    <div className="ViewAllModels">
+    <div className="ViewAllModels min-h-screen">
       {loading ? (
-        <div className="loader">
+        <div className="flex justify-center">
           <Loader />
         </div>
       ) : (

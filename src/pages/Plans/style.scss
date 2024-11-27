@@ -1,5 +1,3 @@
-
-
 .tooltip {
   position: absolute;
   top: 0;
@@ -7,17 +5,17 @@
   opacity: 1;
   pointer-events: none;
   transition: all 0.3s;
-  background: var(--green);   
+  background: var(--green);
   border-radius: 5px;
   width: 7em;
   text-align: center;
 }
 
-.tooltip:dir(ltr){
-    left: -80%;
+.tooltip:dir(ltr) {
+  left: -80%;
 }
-.tooltip:dir(rtl){
-    left: 80%;
+.tooltip:dir(rtl) {
+  left: 80%;
 }
 
 .tooltip::before {
@@ -29,4 +27,11 @@
   left: 50%;
   transform: translate(-50%) rotate(45deg);
   background: var(--green);
+}
+
+@media screen and (min-width: 1600px) {
+  .plans.mt-6 {
+    gap: 4rem !important;
+    margin-right: 12rem !important;
+  }
 }

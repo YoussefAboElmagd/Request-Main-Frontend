@@ -52,6 +52,7 @@ const RequestForm = ({
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedActionCodes, setSelectedActionCodes] = useState(null);
   const [selectedDisciplines, setSelectedDisciplines] = useState(null);
+
   const [refNO, setRefNO] = useState("");
   // const [comments, setComments] = useState([]);
   // const [commentInput, setCommentInput] = useState("");
@@ -160,6 +161,12 @@ const RequestForm = ({
       toast.error(t("Failed to update tasks"));
     }
   };
+
+  useEffect(() => {
+    console.log("selectedDisciplines", selectedDisciplines);
+    console.log("selectedReasons", selectedReasons);
+  }, [selectedDisciplines, selectedReasons]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -263,6 +270,7 @@ const RequestForm = ({
       navigate("/Models", {
         state: { projectId, projectName, members, fromTask, TaskId, TaskName },
       });
+      // window.location.reload()
     } catch (error) {
       // Error handling
       console.error("Error submitting form:", error);
@@ -622,14 +630,17 @@ const RequestForm = ({
                     {showDiscipline && (
                       <Select
                         options={disciplines.map((item) => ({
-                          id: item._id,
+                          value: item._id,
                           label: item.name,
                         }))}
                         placeholder={t("Discipline")}
                         disabled={UnitsLoading}
                         label={t("Discipline")}
-                        value={selectedActionCodes}
-                        onChange={(e) => setSelectedDisciplines(e)}
+                        value={selectedDisciplines}
+                        onChange={(e) => {
+                          console.log("Discipline Selected:", e);
+                          setSelectedDisciplines(e);
+                        }}
                         className={`bg-white `}
                         InputClassName={`border border-gray  rounded-2xl `}
                       />
@@ -639,13 +650,13 @@ const RequestForm = ({
                     {showReasons && (
                       <Select
                         options={Reasons.map((item) => ({
-                          id: item._id,
+                          value: item._id,
                           label: item.name,
                         }))}
                         placeholder={t("Reason")}
                         disabled={UnitsLoading}
                         label={t("Reason")}
-                        value={selectedActionCodes}
+                        value={selectedReasons}
                         onChange={(e) => setSelectedReasons(e)}
                         className={`bg-white `}
                         InputClassName={`border border-gray  rounded-2xl `}
@@ -851,9 +862,9 @@ const RequestForm = ({
                       delivery note no
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       id="delivery note no"
-                      placeholder="delivery note no"
+                      placeholder="00"
                       value={deliveryNote}
                       onChange={(e) => setDeliveryNote(e.target.value)}
                       className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
@@ -971,6 +982,3 @@ const RequestForm = ({
 };
 
 export default RequestForm;
-
-
-

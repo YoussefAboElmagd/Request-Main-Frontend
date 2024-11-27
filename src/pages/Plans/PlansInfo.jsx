@@ -13,7 +13,6 @@ import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { t } from "i18next";
 
-
 const tableData = [
   {
     section: t("Task Management"),
@@ -92,9 +91,7 @@ const tableData = [
   },
 ];
 
-
 const PlansInfo = () => {
-
   return (
     <div className="PlansInfo">
       <div className="header flex justify-between items-center mb-4">
@@ -117,7 +114,7 @@ const PlansInfo = () => {
         </div>
       </div>
 
-      <div className="plans flex items-center justify-end gap-4 mt-6">
+      <div className="plans flex items-center justify-end gap-4   mt-6">
         {["Request", "Request Plus", "Request Full Plus"].map((plan, idx) => (
           <div
             key={idx}
@@ -154,6 +151,51 @@ const PlansInfo = () => {
 
       <table className={`table w-full mt-8`}>
         <thead>
+          {/* <tr>
+            <th
+              colSpan={4}
+              className="plans flex items-center justify-end  gap-4 mt-6 "
+            >
+              {["Request", "Request Plus", "Request Full Plus"].map(
+                (plan, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex flex-col bg-white rounded-3xl p-4 shadow-lg border-t-4 ${
+                      idx === 0
+                        ? "border-yellow-400"
+                        : idx === 1
+                        ? "border-green-400"
+                        : "border-purple-400"
+                    }`}
+                  >
+                    <h3 className="font-bold text-lg mb-2">{plan}</h3>
+                    <span className="text-gold font-bold text-sm mb-2">
+                      {t("14 day trial")}
+                    </span>
+                    <p className="flex items-center gap-1">
+                      <span className="text-purple text-2xl font-bold">
+                        {idx === 0 ? "8$" : idx === 1 ? "$16" : ""}
+                      </span>
+                      {idx === 2 ? (
+                        <span className="text-purple text-2xl font-bold">
+                          {t("Custom")}
+                        </span>
+                      ) : (
+                        <span className="text-base font-normal">
+                          /{t("month")}
+                        </span>
+                      )}
+                    </p>
+                    <Link to={"/PlanDetails"}>
+                      <Button className={"mt-4 !px-24"}>
+                        {t("Get started")}
+                      </Button>
+                    </Link>
+                  </div>
+                )
+              )}
+            </th>
+          </tr> */}
           <tr>
             <th className="font-bold "></th>
             <th className="font-bold  text-start">{t("Request")}</th>
@@ -186,7 +228,6 @@ const PlansInfo = () => {
                         "-"
                       )
                     ) : (
-              
                       feature.request
                     )}
                   </td>

@@ -39,13 +39,13 @@ const ViewRequest = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [modelData] = await Promise.all([
+        const [modelData, actionCodeData] = await Promise.all([
           getModelById(token, ModelId),
           getAllActionCodes(),
         ]);
         setModel(modelData.results);
         console.log(modelData);
-        setActionCodes(ActionCodes.results);
+        setActionCodes(actionCodeData.results);
         setActionCodeLoading(false);
 
         console.log(model);
@@ -68,8 +68,12 @@ const ViewRequest = () => {
         if (IsConsultant) payload.consultantStatus = "approved";
         if (IsContractor) payload.contractorStatus = "approved";
         if (Comment) payload.comment = Comment;
-        if (selectedActionCodes) payload.actionCode = selectedActionCodes;
-
+        if (selectedActionCodes) {
+          payload.actionCode = selectedActionCodes;
+          payload.firstUpdatedBy = user._id;
+        } else {
+          payload.secondUpdatedBy = user._id;
+        }
         // Determine how many "pending" statuses exist
         // const pendingStatuses = [
         //   ownerStatus,
@@ -157,7 +161,7 @@ const ViewRequest = () => {
         <div className="flex items-center justify-between">
           {(model?.consultant || model?.contractor || model?.owner) && (
             <div className="flex items-center gap-3">
-              {model?.consultant && (
+              {model?.consultantStatus !== "pending" && (
                 <div className="flex flex-col items-center gap-3">
                   <ProfileAvatar
                     name={model?.consultant?.companyName}
@@ -173,7 +177,7 @@ const ViewRequest = () => {
                   </span>
                 </div>
               )}
-              {model?.contractor && (
+              {model?.contractorStatus !== "pending" && (
                 <div className="flex flex-col items-center gap-3">
                   <ProfileAvatar
                     name={model?.contractor?.companyName}
@@ -189,7 +193,7 @@ const ViewRequest = () => {
                   </span>
                 </div>
               )}
-              {model?.owner && (
+              {model?.ownerStatus !== "pending" && (
                 <div className="flex flex-col items-center gap-3">
                   <ProfileAvatar
                     name={model?.owner?.companyName}
@@ -264,16 +268,17 @@ const ViewRequest = () => {
             </div>
           )}
 
-          {(IsOwner && model?.ownerStatus === "pending") ||
-          (IsConsultant && model?.consultantStatus === "pending") ||
-          (IsContractor && model?.contractorStatus === "pending") ? (
+          {((IsOwner && model?.ownerStatus === "pending") ||
+            (IsConsultant && model?.consultantStatus === "pending") ||
+            (IsContractor && model?.contractorStatus === "pending")) &&
+          !model?.actionCode ? (
             <div className="flex items-center gap-2">
               <h5 className="font-bold text-base text-gray-dark">
                 {t("Action Code")}
               </h5>
               <Select
                 options={ActionCodes.map((item) => ({
-                  id: item._id,
+                  value: item._id,
                   label: item.name,
                 }))}
                 placeholder={t("Action Code")}
@@ -317,17 +322,17 @@ const ViewRequest = () => {
         </div>
 
         <div className="flex items-center gap-3 my-4">
-          {model.consultantStatus === "approved" ? (
+          {model.firstUpdatedBy !== null ? (
             <div className="flex flex-col gap-2">
               <h5 className="font-bold text-base text-gray-dark">
                 {t("Reviewed by")} :
               </h5>
               <span className="font-medium text-sm">
-                {model?.consultant?.name}
+                {model?.firstUpdatedBy?.name}
               </span>
-              {model?.consultant?.signature ? (
+              {model?.firstUpdatedBy?.signature ? (
                 <img
-                  src={model?.consultant?.signature}
+                  src={model?.firstUpdatedBy?.signature}
                   alt="Signature"
                   className="w-20 h-20"
                 />
@@ -343,15 +348,17 @@ const ViewRequest = () => {
             </div>
           )}
 
-          {model?.ownerStatus === "approved" ? (
+          {model?.secondUpdatedBy !== null ? (
             <div className="flex flex-col gap-2">
               <h5 className="font-bold text-base text-gray-dark">
                 {t("Noted by")} :
               </h5>
-              <span className="font-medium text-sm">{model?.owner?.name}</span>
-              {model?.owner?.signature ? (
+              <span className="font-medium text-sm">
+                {model?.secondUpdatedBy?.name}
+              </span>
+              {model?.secondUpdatedBy?.signature ? (
                 <img
-                  src={model?.owner?.signature}
+                  src={model?.secondUpdatedBy?.signature}
                   alt="Signature"
                   className="w-20 h-20"
                 />
@@ -381,9 +388,10 @@ const ViewRequest = () => {
           />
         </div>
 
-        {(IsOwner && model?.ownerStatus === "pending") ||
-        (IsConsultant && model?.consultantStatus === "pending") ||
-        (IsContractor && model?.contractorStatus === "pending") ? (
+        {((IsOwner && model?.ownerStatus === "pending") ||
+          (IsConsultant && model?.consultantStatus === "pending") ||
+          (IsContractor && model?.contractorStatus === "pending")) &&
+        model?.firstUpdatedBy === null ? (
           <div className="feedback my-4">
             <h5 className="font-bold  text-base">
               {t("Comment")}{" "}
@@ -556,7 +564,7 @@ const ViewRequest = () => {
                 type="text"
                 id="Unit"
                 disabled
-                value={model?.unit}
+                value={model?.unit?.name}
                 className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
@@ -590,7 +598,7 @@ const ViewRequest = () => {
               </label>
               <input
                 type="text"
-                id="Unit"
+                id="cell"
                 disabled
                 value={model?.cell}
                 className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
