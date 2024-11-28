@@ -201,7 +201,7 @@ const SignUp = () => {
               </h3>
               <p className="font-jost font-medium hidden md:block md:text-xl lg:text-2xl">
                 {t("if you don’t have an account you can")}
-                <Link className="text-blue block">{t("sign in here!")}</Link>
+                <Link className="text-blue block" to={"/LogIn/Mail"}>{t("sign in here!")}</Link>
               </p>
             </div>
             <div className="LogIn_Image md:flex justify-center hidden -z-10">
@@ -217,7 +217,7 @@ const SignUp = () => {
               <form onSubmit={handleSubmit}>
                 <div className="name">
                   <Input
-                    placeholder={"Your Name "}
+                    placeholder={t("yourName")}
                     type="text"
                     id="name"
                     value={name}

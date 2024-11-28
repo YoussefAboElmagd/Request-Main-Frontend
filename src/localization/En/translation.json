@@ -363,5 +363,12 @@
   "remarks": "remarks",
   "All models": "All models",
   "AddModel": "Add Model",
-  "inspectionDate": "Inspection Date"
+  "inspectionDate": "Inspection Date",
+  "No signature found": "No signature found",
+  "ConsultantName": "Consultant Name",
+  "ContractorName": "Contractor Name",
+  "No comments available": "No comments available",
+  "(not required)": "(not required)",
+  "Add Your Note": "Add Your Note",
+  "+add comment":  "+add comment"
 }

@@ -124,7 +124,7 @@ export const AddNote = ({ projectId,  taskId, Notes }) => {
               </div>
             ))
           ) : (
-            <Empty paragraph="Add Your Note" />
+            <Empty paragraph={t("Add Your Note")} />
           )}
         </DialogBody>
         <DialogFooter>

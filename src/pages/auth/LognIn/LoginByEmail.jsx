@@ -89,7 +89,7 @@ const LoginByMail = () => {
               </h3>
               <p className="font-jost font-medium  hidden md:block md:text-xl lg:text-2xl">
                 {t("if you don’t have an account you can")}
-                <Link to="/sign-up" className="text-blue block">
+                <Link to="/SignUp/ChooseRole" className="text-blue block">
                   {t("Register here!")}
                 </Link>
               </p>
@@ -180,7 +180,7 @@ const LoginByMail = () => {
               </div>
               <p className="font-jost font-medium  text-lg text-center block md:hidden my-4">
                 {t("if you don’t have an account you can")}
-                <Link to="/sign-up" className="text-blue block">
+                <Link to="/SignUp/ChooseRole" className="text-blue block">
                   {t("Register here!")}
                 </Link>
               </p>

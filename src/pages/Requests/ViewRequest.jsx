@@ -337,7 +337,7 @@ const ViewRequest = () => {
                   className="w-20 h-20"
                 />
               ) : (
-                <p className="text-xs">No signature found</p>
+                <p className="text-xs">{t("No signature found")}</p>
               )}{" "}
             </div>
           ) : (
@@ -363,7 +363,7 @@ const ViewRequest = () => {
                   className="w-20 h-20"
                 />
               ) : (
-                <p className="text-xs">No signature found</p>
+                <p className="text-xs">{t("No signature found")}</p>
               )}
             </div>
           ) : (
@@ -399,7 +399,7 @@ const ViewRequest = () => {
             </h5>
             <input
               type="text"
-              placeholder="add comment +"
+              placeholder={t("+add comment")}
               value={Comment}
               onChange={(e) => setComment(e.target.value)}
               className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
@@ -635,7 +635,7 @@ const ViewRequest = () => {
               className="w-20 h-20"
             />
           ) : (
-            <p className="text-xs">No signature found</p>
+            <p className="text-xs">{t("No signature found")}</p>
           )}
         </div>
         {((IsOwner && model?.ownerStatus === "pending") ||

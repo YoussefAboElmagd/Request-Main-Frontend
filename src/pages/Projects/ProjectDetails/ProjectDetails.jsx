@@ -442,21 +442,20 @@ const ProjectDetails = () => {
                 </button>
               </div>
               <div className="flex right-0 my-2 items-center gap-3 justify-end">
-                <Button
+                {/* <Button
                   className="w-fit px-7 border border-solid !border-purple !text-purple"
                   style={{ background: "white" }}
                 >
                   approve models
-                </Button>
+                </Button> */}
                 <Link
                   to={"/ViewAllModels"}
                   state={{
                     projectId: Project._id,
                     projectName: Project.name,
-       
                   }}
                 >
-                  <Button className="w-fit px-7">view all models</Button>
+                  <Button className="w-fit ">{t("All models")}</Button>
                 </Link>
               </div>
             </div>

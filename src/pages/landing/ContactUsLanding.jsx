@@ -132,7 +132,7 @@ const ContactUsLanding = () => {
     }
   };
   return (
-    <div className="ContactUsLanding grid  grid-cols-2 lg:grid-cols-4  gap-4 p-8 h-[95vh] overflow-hidden relative">
+    <div className="ContactUsLanding grid  grid-cols-2 lg:grid-cols-4  gap-4 p-8 lg:h-[95vh] overflow-hidden relative">
       <div className="form col-span-2 p-3 mt-10">
         <h2 className="text-purple-dark  text-2xl  font-bold my-1">
           {t("Get in touch")}

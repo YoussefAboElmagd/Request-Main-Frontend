@@ -143,7 +143,7 @@ const PlansInfo = () => {
               )}
             </p>
             <Link to={"/PlanDetails"}>
-              <Button className={"mt-4 !px-24"}>{t("Get started")}</Button>
+              <Button className={"mt-4 !px-24"}> {t("Get Started")}</Button>
             </Link>
           </div>
         ))}
@@ -166,7 +166,7 @@ const PlansInfo = () => {
                   <span className="text-base font-normal">/{t("month")}</span>
                 </p>
                 <Link to={"/PlanDetails"}>
-                  <Button className="mt-4 !px-24">{t("Get started")}</Button>
+                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
                 </Link>
               </div>
             </th>
@@ -183,7 +183,7 @@ const PlansInfo = () => {
                   <span className="text-base font-normal">/{t("month")}</span>
                 </p>
                 <Link to={"/PlanDetails"}>
-                  <Button className="mt-4 !px-24">{t("Get started")}</Button>
+                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
                 </Link>
               </div>
             </th>
@@ -199,7 +199,7 @@ const PlansInfo = () => {
                   <span className="text-purple text-2xl font-bold">Custom</span>
                 </p>
                 <Link to={"/PlanDetails"}>
-                  <Button className="mt-4 !px-24">{t("Get started")}</Button>
+                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
                 </Link>
               </div>
             </th>

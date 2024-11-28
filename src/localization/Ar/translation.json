@@ -183,6 +183,7 @@
   "Table of Quantities": "جدول الكميات",
   "Actions": "الاجراءات",
   "+add new": "+إضافة جديد",
+  "+add comment": "+إضافة تعليق",
   "Please review the following item(s) and return a copy with your Action code": "يرجى مراجعة العنصر(العناصر) التالية وإرجاع نسخة مع رمز الإجراء الخاص بك",
   "Send": "ارسال",
   "Comment": "تعليق",
@@ -375,5 +376,11 @@
   "remarks": "ملاحظات",
   "All models": "جميع النماذج",
   "AddModel": "إضافة نموذج",
-  "inspectionDate" : ""
+  "inspectionDate": "تاريخ الفحص",
+  "No signature found": "لا يوجد توقيع",
+  "ConsultantName": "اسم المستشار",
+  "ContractorName": "اسم المقاول",
+  "No comments available": "لا توجد تعليقات متاحة",
+  "(not required)": "(غير مطلوب)",
+  "Add Your Note": "أضف ملاحظتك"
 }

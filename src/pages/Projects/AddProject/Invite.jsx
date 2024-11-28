@@ -138,8 +138,8 @@ const Invite = () => {
               <div className="col-span-2">
                 <Input
                   className="bg-white border border-purple border-solid focus:border-purple focus:border focus:border-solid"
-                  label={t("comment")}
-                  placeholder={t("Not required")}
+                  label={`${t("Comment")} ${t("(not required)")}`}
+                  placeholder={t("Comment")}
                   type={"text"}
                   autoComplete="text"
                   required

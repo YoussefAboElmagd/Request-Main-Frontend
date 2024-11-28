@@ -73,6 +73,7 @@ const Team = () => {
           <SwitchTabs
             data={buttons.map((button) => button.label)}
             onTabChange={handleTabChange}
+            Tab={selectedTab}
           />
         </div>
         <p className="font-medium  text-base m-3">

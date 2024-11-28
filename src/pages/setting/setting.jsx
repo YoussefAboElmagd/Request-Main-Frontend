@@ -184,7 +184,7 @@ const Setting = () => {
             </button>
             <Drawer open={open} onClose={closeDrawer} className="p-4">
               <h2 className="text-xl font-semibold text-purple">
-                {t("Settings")}
+                {t("settings")}
               </h2>
               <div className="divider h-px w-full bg-gray my-2"></div>
               <div className="flex flex-col justify-start items-start gap-3">
@@ -212,6 +212,7 @@ const Setting = () => {
             data={buttons.map((button) => button.label)}
             onTabChange={handleTabChange}
             Tab={selectedTab}
+            movingBg_style={`!w-[220px]`}
           />
         </div>
         <div className="content mt-4">{buttons[selectedTab].component}</div>

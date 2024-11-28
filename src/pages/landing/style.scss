@@ -2,8 +2,6 @@ body {
   background-color: #f2f2f7 !important;
 }
 
-
-
 .halfCircleEffect {
   border-radius: 700px / 350px;
   width: 1400px;
@@ -66,26 +64,18 @@ body {
   }
 }
 .services,
-.ContactUsLanding{
-    background: linear-gradient(
-      90deg,
-      #F9ECFF 0%,
-      #f2f2f7 16%
-    );
+.ContactUsLanding {
+  background: linear-gradient(90deg, #f9ecff 0%, #f2f2f7 16%);
 }
- .services:dir(rtl),
- .ContactUsLanding:dir(rtl){
- background: linear-gradient(
-      270deg,
-      #F9ECFF 0%,
-      #f2f2f7 16%
-    );
+.services:dir(rtl),
+.ContactUsLanding:dir(rtl) {
+  background: linear-gradient(270deg, #f9ecff 0%, #f2f2f7 16%);
 }
 .services_list {
-  list-style-type: circle; 
+  list-style-type: circle;
 }
 
-.landing_effect{
+.landing_effect {
   background-color: var(--purple);
   border-radius: 700px / 500px;
   width: 1400px;
@@ -95,7 +85,6 @@ body {
   top: -400px;
   z-index: 1;
   opacity: 0.2;
-
 }
 
 /* General transition for all elements */
@@ -104,22 +93,34 @@ body {
 }
 
 /* Specific transitions for images */
-.landingImage1, .landingImage2, .landingImage3 {
+.landingImage1,
+.landingImage2,
+.landingImage3 {
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 .landing_box {
-   transform: scale(0.9); 
+  transform: scale(0.9);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .landing_box.active {
-  transform: scale(1); 
+  transform: scale(1);
   opacity: 1;
 }
 
+.carousel .next-arrow,
+.carousel .prev-arrow {
+  display: none !important;
+}
 
-
+// .carousel-indicators button {
+//   background-color: #e0e0e0; // Default inactive color (gray)
+// }
+// .carousel-indicators button.active {
+//   background-color: #6a0dad; // Purple for active dots
+//   transition: background-color 0.3s ease-in-out;
+// }
 
 /* // Fade and scale animation for images and text */
 @keyframes fadeScale {

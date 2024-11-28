@@ -126,7 +126,7 @@ if (trimmedMessage === "" ) {
             <textarea
               name="message"
               id="message"
-              placeholder={t("type here")}
+              placeholder={t("Type something")}
               required={true}
               value={Message}
               onChange={(e) => setMessage(e.target.value)}

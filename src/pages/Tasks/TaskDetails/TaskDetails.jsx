@@ -315,9 +315,11 @@ const TaskDetails = () => {
           )}
 
           <div className="flex right-0 my-2 items-center justify-end">
-            <button onClick={handleEditToggle}>
-              <MdEditSquare className="text-purple h-7 w-7" />
-            </button>
+            {IsToq && (
+              <button onClick={handleEditToggle}>
+                <MdEditSquare className="text-purple h-7 w-7" />
+              </button>
+            )}
             <button className="files flex items-center gap-1 mx-1">
               <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">
                 {Task?.documents?.length}
@@ -377,15 +379,15 @@ const TaskDetails = () => {
                 TaskName: Task.title,
               }}
             >
-              <Button className="w-fit px-7">view all models</Button>
+              <Button className="w-fit ">{t("All models")}</Button>
             </Link>
 
-            <Button
+            {/* <Button
               className="w-fit px-7 border border-solid !border-purple !text-purple"
               style={{ background: "white" }}
             >
               approve models
-            </Button>
+            </Button> */}
           </div>
         </div>
 

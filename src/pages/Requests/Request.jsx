@@ -391,7 +391,7 @@ const RequestForm = ({
                       className={`!w-16 !h-16`}
                     />
                     <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                      {"Consultant Name"}
+                      {t("ConsultantName")}
                     </span>
                   </div>
 
@@ -402,7 +402,7 @@ const RequestForm = ({
                       className={`!w-16 !h-16`}
                     />
                     <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                      {"Contractor Name"}
+                      {t("ContractorName")}
                     </span>
                   </div>
                 </div>
@@ -418,7 +418,7 @@ const RequestForm = ({
                     <input
                       type="text"
                       id="Ref"
-                      placeholder="ref no"
+                      placeholder={t("REF NO")}
                       onChange={(e) => setRefNO(e.target.value)}
                       className="bg-white border border-gray rounded-lg p-1 max-w-52"
                     />
@@ -490,7 +490,7 @@ const RequestForm = ({
                 <input
                   type="text"
                   disabled
-                  value={"Comment"}
+                  value={t("Comment")}
                   className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
                 />
 
@@ -688,12 +688,12 @@ const RequestForm = ({
                       htmlFor="Remarks"
                       className="font-bold text-base text-gray-dark"
                     >
-                      {t("Remarks")}
+                      {t("remarks")}
                     </label>
                     <input
                       type="text"
                       id="Remarks"
-                      placeholder={t("Remarks")}
+                      placeholder={t("remarks")}
                       value={Remarks}
                       onChange={(e) => setRemarks(e.target.value)}
                       className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
@@ -715,16 +715,16 @@ const RequestForm = ({
                       id="supplier"
                       value={supplier}
                       onChange={(e) => setSupplier(e.target.value)}
-                      placeholder="manufacturer / supplier"
+                      placeholder={t("supplier")}
                       className="bg-white my-1 border  w-full  text-gray border-solid border-gray rounded-2xl p-2"
                     />
                   </div>
-                  <div className="col-span-2 flex flex-col">
+                  <div className="col-span-2 flex flex-col items-start">
                     <label
                       htmlFor="approved"
                       className="font-bold text-base text-gray-dark"
                     >
-                      approved material submittal no
+                      {t("approved material submittal no")}
                     </label>
                     <input
                       type="number"
@@ -743,12 +743,12 @@ const RequestForm = ({
                   IsReqForMaterial ||
                   IsWorkRequest ||
                   IsRfiReq) && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col items-start  gap-2">
                     <label
                       htmlFor="BOQ item no"
                       className="font-bold text-base text-gray-dark"
                     >
-                      BOQ item no
+                      {t("BOQ item no")}
                     </label>
                     <input
                       type="number"
@@ -761,12 +761,12 @@ const RequestForm = ({
                   </div>
                 )}
                 {(IsReqForDocumentSubmittal || IsReqForMaterial) && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col items-start  gap-2">
                     <label
                       htmlFor="QTY"
                       className="font-bold text-base text-gray-dark"
                     >
-                      QTY
+                      {t("qty")}
                     </label>
                     <input
                       type="number"
@@ -780,23 +780,23 @@ const RequestForm = ({
                 )}
                 {(IsWorkRequest || IsRfiReq) && (
                   <>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col items-start gap-2">
                       <label
                         htmlFor="cell"
                         className="font-bold text-base text-gray-dark"
                       >
-                        cell
+                        {t("cell")}
                       </label>
                       <input
                         type="number"
                         id="cell"
-                        placeholder="cell"
+                        placeholder={t("cell")}
                         value={cell}
                         onChange={(e) => setCell(e.target.value)}
                         className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
                       />
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col items-start gap-2">
                       <label
                         htmlFor="currentDay"
                         className="font-bold text-base text-gray-dark"
@@ -854,12 +854,12 @@ const RequestForm = ({
 
               <div className="flex items-center  gap-3 my-2">
                 {IsReqForMaterial && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col  items-start gap-2">
                     <label
                       htmlFor="delivery note no"
-                      className="font-bold text-base text-gray-dark"
+                      className="font-bold text-base text-gray-dark "
                     >
-                      delivery note no
+                      {t("delivery note no")}
                     </label>
                     <input
                       type="number"
@@ -894,7 +894,7 @@ const RequestForm = ({
                 <div className="Quantity">
                   <label
                     htmlFor="Quantity"
-                    className="font-bold text-base text-gray-dark"
+                    className="font-bold text-base text-gray-dark "
                   >
                     {t(" Quantity")}
                   </label>
@@ -912,7 +912,7 @@ const RequestForm = ({
                 <div className="Location">
                   <label
                     htmlFor="Location"
-                    className="font-bold text-base text-gray-dark"
+                    className="font-bold text-base text-gray-dark "
                   >
                     {t("location")}
                   </label>
@@ -935,7 +935,7 @@ const RequestForm = ({
                 {signature ? (
                   <img src={signature} alt="Signature" className="w-20 h-20" />
                 ) : (
-                  <p>No signature found</p>
+                  <p>{t("No signature found")}</p>
                 )}
               </div>
 

@@ -94,8 +94,8 @@ const tableData = [
 const PlansInfoLanding = () => {
   return (
     <div className="PlansInfo">
-      <div className="header flex justify-between items-center mb-4">
-        <div className="content">
+      <div className="header flex justify-between items-center mb-4 mx-2">
+        <div className="content ">
           <h2 className="font-bold text-xl">{t("Feature Table")}</h2>
           <p className="text-base text-gray-500">
             {t("Choose the perfect plan for your business needs")}
@@ -114,7 +114,7 @@ const PlansInfoLanding = () => {
         </div>
       </div>
 
-      <div className="plans flex items-center justify-end gap-4 mt-6">
+      {/* <div className="plans flex items-center justify-end gap-4 mt-6">
         {["Request", "Request Plus", "Request Full Plus"].map((plan, idx) => (
           <div
             key={idx}
@@ -147,15 +147,68 @@ const PlansInfoLanding = () => {
             </Link>
           </div>
         ))}
-      </div>
+      </div> */}
 
-      <table className={`table w-full mt-8`}>
+      <table
+        className={`table w-full table-auto border-separate border-spacing-4 mt-8`}
+      >
         <thead>
+          <tr className=" my-2">
+            <th></th>
+            <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
+              <div className="flex flex-col">
+                <h3 className="font-bold text-lg mb-2 text-start">Request</h3>
+                <span className="text-gold font-bold text-sm mb-2 text-start">
+                  {t("14 day trial")}
+                </span>
+                <p className="flex items-center gap-1 text-start">
+                  <span className="text-purple text-2xl font-bold">8$</span>
+                  <span className="text-base font-normal">/{t("month")}</span>
+                </p>
+                <Link to={"/PlanDetails"}>
+                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
+                </Link>
+              </div>
+            </th>
+            <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
+              <div className="flex flex-col">
+                <h3 className="font-bold text-lg mb-2 text-start">
+                  Request Plus
+                </h3>
+                <span className="text-gold font-bold text-sm mb-2 text-start">
+                  {t("14 day trial")}
+                </span>
+                <p className="flex items-center gap-1 text-start">
+                  <span className="text-purple text-2xl font-bold">16$</span>
+                  <span className="text-base font-normal">/{t("month")}</span>
+                </p>
+                <Link to={"/PlanDetails"}>
+                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
+                </Link>
+              </div>
+            </th>
+            <th className="bg-white rounded-3xl p-4 shadow-lg  border-purple-400">
+              <div className="flex flex-col">
+                <h3 className="font-bold text-lg mb-2 text-start">
+                  Request Full Plus
+                </h3>
+                <span className="text-gold font-bold text-sm mb-2 text-start">
+                  {t("14 day trial")}
+                </span>
+                <p className="flex items-center gap-1">
+                  <span className="text-purple text-2xl font-bold">Custom</span>
+                </p>
+                <Link to={"/PlanDetails"}>
+                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
+                </Link>
+              </div>
+            </th>
+          </tr>
           <tr>
             <th className="font-bold "></th>
-            <th className="font-bold  text-start">{t("Request")}</th>
-            <th className="font-bold text-start">{t("RequestPlus")}</th>
-            <th className="font-bold text-start">{t("RequestPlusFull")}</th>
+            <th className="font-bold  text-center">{t("Request")}</th>
+            <th className="font-bold text-center">{t("RequestPlus")}</th>
+            <th className="font-bold text-center">{t("RequestPlusFull")}</th>
           </tr>
         </thead>
 
@@ -172,13 +225,15 @@ const PlansInfoLanding = () => {
               </tr>
               {section.features.map((feature, featureIndex) => (
                 <tr key={`feature-${featureIndex}`}>
-                  <td className={`border-b border-gray-300 p-2 `}>
+                  <td className={`border-b border-gray-300 p-2  `}>
                     {feature.name}
                   </td>
-                  <td className="border-b border-gray-300 p-2   ">
+                  <td className="border-b border-gray-300 p-2   text-center">
                     {typeof feature.request === "boolean" ? (
                       feature.request ? (
-                        <FaCheckCircle className="text-green w-5 h-5" />
+                        <div className="flex justify-center items-center">
+                          <FaCheckCircle className="text-green w-5 h-5 text-center" />
+                        </div>
                       ) : (
                         "-"
                       )
@@ -186,10 +241,12 @@ const PlansInfoLanding = () => {
                       feature.request
                     )}
                   </td>
-                  <td className="border-b border-gray-300 p-2 ">
+                  <td className="border-b border-gray-300 p-2 text-center ">
                     {typeof feature.requestPlus === "boolean" ? (
                       feature.requestPlus ? (
-                        <FaCheckCircle className="text-green w-5 h-5" />
+                        <div className="flex justify-center items-center">
+                          <FaCheckCircle className="text-green w-5 h-5 text-center" />
+                        </div>
                       ) : (
                         "-"
                       )
@@ -197,10 +254,12 @@ const PlansInfoLanding = () => {
                       feature.requestPlus
                     )}
                   </td>
-                  <td className="border-b border-gray-300 ">
+                  <td className="border-b border-gray-300 text-center">
                     {typeof feature.fullPlus === "boolean" ? (
                       feature.fullPlus ? (
-                        <FaCheckCircle className="text-green w-5 h-5" />
+                        <div className="flex justify-center items-center">
+                          <FaCheckCircle className="text-green w-5 h-5 text-center" />
+                        </div>
                       ) : (
                         "-"
                       )

@@ -204,7 +204,7 @@ const Otp = () => {
               </h3>
               <p className="font-jost font-medium text-2xl">
                 {t("if you don’t have an account you can")}
-                <Link className="text-blue block" to="/register">
+                <Link className="text-blue block" to="/SignUp/ChooseRole">
                   {t("Register here!")}
                 </Link>
               </p>
@@ -238,7 +238,7 @@ const Otp = () => {
                     : ""}
                 </span>
               </div>
-              <div  dir="ltr">
+              <div dir="ltr">
                 <OTPInput
                   value={otp}
                   onChange={setOtp}
