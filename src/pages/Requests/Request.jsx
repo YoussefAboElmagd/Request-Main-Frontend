@@ -418,6 +418,7 @@ const RequestForm = ({
                     <input
                       type="text"
                       id="Ref"
+                      required
                       placeholder={t("REF NO")}
                       onChange={(e) => setRefNO(e.target.value)}
                       className="bg-white border border-gray rounded-lg p-1 max-w-52"

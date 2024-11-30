@@ -662,10 +662,10 @@ export const getAllVocations = async () => {
 
 // update team
 
-export const updateTeam = async (token, teamId, teamData) => {
+export const updateTeam = async (token, teamId, teamData,lang) => {
   try {
     const response = await axiosInstance.put(
-      `team/${teamId}`,
+      `team/${teamId}&lang=${lang}`,
       teamData,
       {
         headers: {
