@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   addTask,
   getAllParentTasks,
+  getAllTagsByProject,
   getAllTagsByUser,
   getAllUnits,
 } from "../../../Services/api";
@@ -19,7 +20,7 @@ import i18next from "i18next";
 
 const AddTask = () => {
   const { ProjectId } = useParams();
-    const lang = i18next.language;
+  const lang = i18next.language;
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,7 +39,7 @@ const AddTask = () => {
   const [Description, setDescription] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
-  const [tags, setTags] = useState([]);
+  const [Tags, setTags] = useState([]);
   const [Price, setPrice] = useState(0);
   const [Quantity, setQuantity] = useState(0);
   const [Total, setTotal] = useState(0);
@@ -82,18 +83,12 @@ const AddTask = () => {
     const fetchData = async () => {
       try {
         const [tagsData, UnitsData, parentTasks] = await Promise.all([
-          getAllTagsByUser(user._id),
+          getAllTagsByProject(projectId),
           getAllUnits(),
           getAllParentTasks(user._id, projectId),
         ]);
 
-        setTags(
-          tagsData?.results?.map((tag) => ({
-            value: tag._id,
-            label: tag.name,
-            colorCode: tag.colorCode,
-          }))
-        );
+        setTags(tagsData?.tags);
         setTagsLoading(false);
         setUnits(
           UnitsData?.results.map((unit) => ({
@@ -213,7 +208,6 @@ const AddTask = () => {
             TaskId: res.addedTasks[0]._id,
             TaskName: Name,
             projectId: projectId,
-         
           },
         });
       } else {
@@ -437,20 +431,30 @@ const AddTask = () => {
                     value={selectedTag}
                     onChange={handleTagChange}
                     InputClassName={`${
-                      fieldErrors.tag ? "border  border-red rounded-2xl " : ""
+                      fieldErrors.tag ? "border border-red rounded-2xl" : ""
                     }`}
-                    options={tags.map((tag) => ({
-                      label: (
-                        <div className="flex items-center justify-between">
-                          <span className="text">{tag.label}</span>
-                          <span
-                            className="w-4 h-4 ml-2 rounded-full"
-                            style={{ backgroundColor: tag.colorCode }}
-                          />
-                        </div>
-                      ),
-                      value: tag.value,
-                    }))}
+                    options={
+                      Tags.length === 0
+                        ? [
+                            {
+                              label: t("No tags available from consultant"),
+                              value: "no-tags",
+                              isDisabled: true,
+                            },
+                          ]
+                        : Tags.map((tag) => ({
+                            label: (
+                              <div className="flex items-center justify-between">
+                                <span className="text">{tag.name}</span>
+                                <span
+                                  className="w-4 h-4 ml-2 rounded-full"
+                                  style={{ backgroundColor: tag.colorCode }}
+                                />
+                              </div>
+                            ),
+                            value: tag._id,
+                          }))
+                    }
                     error={false}
                     placeholder={t("tag")}
                   />

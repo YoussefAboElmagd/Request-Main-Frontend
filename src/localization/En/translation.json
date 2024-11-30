@@ -330,6 +330,7 @@
     "GeneralSettingSuccess": "General settings saved successfully!",
     "ProfileChangesSuccess": "Profile changes saved successfully!",
     "TagsCreatedSuccess": "tags created Successfully",
+    "VocCreatedSuccess": "Vocations created Successfully",
     "you have been added to {{projectName}} successfully": "you have been added to {{projectName}} successfully",
     "You have canceled the invitation to {{projectName}} successfully": "You have canceled the invitation to {{projectName}} successfully",
     "inviteSuccess": "Invite Sent Successfully"
@@ -370,5 +371,13 @@
   "No comments available": "No comments available",
   "(not required)": "(not required)",
   "Add Your Note": "Add Your Note",
-  "+add comment":  "+add comment"
+  "+add comment": "+add comment",
+  "Vocations": "Vocations",
+  "+ Add new vocation": "+ Add new vocation",
+  "VName": "Vocation Name",
+  "createVocation": "Create Vocation",
+  "Vocation name cannot be empty": "Vocation name cannot be empty",
+  "Enter vocation name in English": "Enter vocation name in English",
+  "Enter vocation name in Arabic": "Enter vocation name in Arabic",
+  "No tags available from consultant":  "No tags available from consultant"
 }

@@ -7,13 +7,14 @@ import Profile from "./Profile/Profile";
 import CreateTag from "./Tags/CreateTag";
 import "./style.scss";
 import SwitchTabs from "../../Components/switchTabs/SwitchTabs";
-import { addTag } from "../../Services/api";
+import { addTag, addVocation } from "../../Services/api";
 import { toast } from "react-toastify";
 import i18next, { t } from "i18next";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { Drawer } from "@material-tailwind/react";
+import CreateVocation from "./Vocation/CreateVocation";
 
 //  check input
 export function CheckInput({ checked, onChange }) {
@@ -46,9 +47,11 @@ function debounce(func, delay) {
 const Setting = () => {
   const location = useLocation();
   const user = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
   const [selectedTab, setSelectedTab] = useState(0);
   const [open, setOpen] = useState(false);
   const [tags, setTags] = useState([]);
+  // const [Vocations, seVocations] = useState([]);
   const profileRef = useRef();
   const generalRef = useRef();
   const lang = i18next.language;
@@ -83,44 +86,82 @@ const Setting = () => {
   const saveSecurityChanges = () => {
     console.log("Saving Security Settings...");
   };
+  const saveVocationChanges = () => {
+    console.log("Saving Vocation Settings...");
+  };
 
   const handleSaveChanges = () => {
     const currentTab = buttons[selectedTab];
     currentTab.handleSave();
   };
+const saveCreateTagChanges = async () => {
+  try {
 
-  const saveCreateTagChanges = async () => {
-    try {
-      console.log("Saving all added tags:", tags);
 
-      const savePromises = tags.map(async (tag) => {
-        try {
-          console.log("Sending tag to API:", tag);
-          const response = await addTag(tag, user._id);
-          console.log(`Tag added successfully:`, response);
+    const savePromises = tags.map(async (tag) => {
+      try {
+        console.log(tag, user._id , lang);
+        
+        const response = await addTag(tag, user._id, lang);
+        console.log(`Tag added successfully:`, response);
 
-          return response;
-        } catch (error) {
-          console.error(`Error adding tag: ${tag.name}`, error);
-          throw error;
-        }
-      });
+        return response;
+      } catch (error) {
+        console.error(`Error adding tag: ${tag.name}`, error);
+        throw error;
+      }
+    });
 
-      const results = await Promise.all(savePromises);
-      window.location.reload();
-      toast.success(t("toast.TagsCreatedSuccess"));
+    const results = await Promise.all(savePromises);
+    window.location.reload();
+    toast.success(t("toast.TagsCreatedSuccess"));
 
-      console.log("All tags saved successfully:", results);
-    } catch (error) {
-      console.error("Error saving tags:", error);
-    }
-  };
+    console.log("All tags saved successfully:", results);
+  } catch (error) {
+    console.error("Error saving tags:", error);
+  }
+};
 
   const debouncedSaveCreateTagChanges = debounce(saveCreateTagChanges, 1000);
 
+  // const saveCreateVocationChanges = async () => {
+  //   try {
+  //     console.log("Saving all added Vocations:", Vocations);
+
+  //     const savePromises = Vocations.map(async (voc) => {
+  //       try {
+  //         const payload = {
+  //           name: voc.name,
+  //           createdBy: user._id,
+  //         };
+  //         console.log("Sending voc to API:", payload);
+  //         const response = await addVocation(token, payload, lang);
+  //         console.log(`voc added successfully:`, response);
+
+  //         return response;
+  //       } catch (error) {
+  //         console.error(`Error adding tag: ${voc.name}`, error);
+  //         throw error;
+  //       }
+  //     });
+
+  //     const results = await Promise.all(savePromises);
+  //     // window.location.reload();
+  //     toast.success(t("toast.VocCreatedSuccess"));
+
+  //     console.log("All vocations saved successfully:", results);
+  //   } catch (error) {
+  //     console.error("Error saving tags:", error);
+  //   }
+  // };
   const handleTagsChange = (updatedTags) => {
     setTags(updatedTags);
   };
+
+  // const handleVocationsChange = (updatedVocations) => {
+  //   seVocations(updatedVocations);
+  //   console.log("Vocations:", updatedVocations);
+  // };
 
   const buttons = [
     {
@@ -154,6 +195,12 @@ const Setting = () => {
       value: "CreateTags",
       component: <CreateTag onTagsChange={handleTagsChange} />,
       handleSave: debouncedSaveCreateTagChanges,
+    },
+    {
+      label: t("createVocation"),
+      value: "createVocation",
+      component: <CreateVocation />,
+      handleSave: saveVocationChanges,
     },
   ];
 
@@ -212,7 +259,8 @@ const Setting = () => {
             data={buttons.map((button) => button.label)}
             onTabChange={handleTabChange}
             Tab={selectedTab}
-            movingBg_style={`!w-[220px]`}
+            movingBg_style={`!w-[180px]`}
+            tab_style={`!w-[180px]`}
           />
         </div>
         <div className="content mt-4">{buttons[selectedTab].component}</div>

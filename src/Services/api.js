@@ -18,12 +18,9 @@ export const signUp = async (userData) => {
 };
 // Sign in
 
-export const signIn = async (userData ) => {
+export const signIn = async (userData) => {
   try {
-    const response = await axiosInstance.post(
-      `auth/signin`,
-      userData
-    );
+    const response = await axiosInstance.post(`auth/signin`, userData);
     console.log("Response => ", response);
     return response.data;
   } catch (error) {
@@ -269,16 +266,12 @@ export const updateProject = async (projectId, updatedData) => {
 export const addProject = async (token, projectData) => {
   console.log(projectData);
   try {
-    const response = await axiosInstance.post(
-      `project`,
-      projectData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axiosInstance.post(`project`, projectData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     console.log("Response from add project => ", response);
     return response.data;
@@ -416,16 +409,12 @@ export const getAllTagsByUser = async (userId) => {
 };
 
 //  Add  Tag
-export const addTag = async (tag, userId, ) => {
+export const addTag = async (tag, userId, lang) => {
   try {
+    console.log(`tags/${userId}`, "tag", tag);
     const response = await axiosInstance.post(
-      `tags/${userId}}`,
-      tag,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      `tags/${userId}?lang=${lang}`,
+      tag
     );
 
     console.log("Response from add tag => ", response);
@@ -645,9 +634,11 @@ export const getUserGroup = async (token) => {
 };
 
 //  get all vocations
-export const getAllVocations = async () => {
+export const getAllVocations = async (userId, lang) => {
   try {
-    const response = await axiosInstance.get(`vocation`);
+    const response = await axiosInstance.get(
+      `vocation/user/${userId}?lang=${lang}`
+    );
 
     console.log("Response from vocations => ", response);
     return response.data;
@@ -662,10 +653,10 @@ export const getAllVocations = async () => {
 
 // update team
 
-export const updateTeam = async (token, teamId, teamData,lang) => {
+export const updateTeam = async (token, teamId, teamData, lang) => {
   try {
     const response = await axiosInstance.put(
-      `team/${teamId}&lang=${lang}`,
+      `team/${teamId}?lang=${lang}`,
       teamData,
       {
         headers: {
@@ -708,16 +699,13 @@ export const delegatedTeam = async (token, teamId) => {
 //  delete user from  project  in delegated Team
 export const deleteUserFromProject = async (token, project, userId) => {
   try {
-    const response = await axiosInstance.delete(
-      `team/user/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        data: { project },
-      }
-    );
+    const response = await axiosInstance.delete(`team/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      data: { project },
+    });
 
     console.log("Response from delete user from project => ", response);
     return response.data;
@@ -807,7 +795,7 @@ export const addMemberForProject = async (projectId, MemberData, token) => {
 
   try {
     const response = await axiosInstance.put(
-      `project/member/${projectId}&lang=${lang}`,
+      `project/member/${projectId}?lang=${lang}`,
       MemberData,
       {
         headers: {
@@ -941,7 +929,7 @@ export const sendInvite = async (token, invitationData) => {
 export const getDataForInvite = async (token, invitationId, userId, lang) => {
   try {
     const response = await axiosInstance.get(
-      `users/invite/${userId}?id=${invitationId}&lang=${lang}`,
+      `users/invite/${userId}?id=${invitationId}?lang=${lang}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1061,17 +1049,67 @@ export const updateModel = async (token, ReqId, modelData) => {
 
 // get all members by project
 
-export const getAllMembersByProject = async (projectId) => {
+export const getAllMembersByProject = async (projectId, lang) => {
   console.log("projectId from Api => ", projectId);
 
   try {
-    const response = await axiosInstance.get(`project/members/${projectId}`);
+    const response = await axiosInstance.get(
+      `project/members/${projectId}?lang=${lang}`
+    );
 
     console.log("Response from members by project => ", response);
     return response.data;
   } catch (error) {
-    console.error(
+    console.error(  
       "Get members by project error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  add vocation
+
+export const addVocation = async (token, vocationData, lang) => {
+  try {
+    const response = await axiosInstance.post(
+      `vocation?lang=${lang}`,
+      vocationData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(`vocation?lang=${lang}`);
+
+    console.log("Response from add vocation => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Add vocation error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  get all tags by project
+
+export const getAllTagsByProject = async (projectId, lang) => {
+  console.log("projectId from Api => ", projectId);
+
+  try {
+    const response = await axiosInstance.get(
+      `tags/project/${projectId}?lang=${lang}`
+    );
+
+    console.log("Response from tags by project => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get tags by project error: ",
       error.response?.data || error.message
     );
     throw error;

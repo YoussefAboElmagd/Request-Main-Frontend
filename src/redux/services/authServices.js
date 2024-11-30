@@ -13,13 +13,14 @@ import {
   startAuth,
 } from "../slices/authSlice.js";
 
+
 // Sign Up Thunk
 export const handleSignUp = createAsyncThunk(
   "auth/signUp",
   async (userData, { dispatch }) => {
     try {
       dispatch(startAuth());
-      const response = await signUp(userData);
+      const response = await signUp(userData );
       console.log("response ======>>>  ", response);
 
       dispatch(authSuccess({ user: response.results, token: response.token }));

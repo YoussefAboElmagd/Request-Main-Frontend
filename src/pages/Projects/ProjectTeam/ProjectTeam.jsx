@@ -216,13 +216,13 @@ const ProjectTeam = () => {
           TagsRes,
           MembersRes,
         ] = await Promise.all([
-          getAllVocations(),
+          getAllVocations(user._id, lang),
           // getAllProjectsForUser(user._id, token),
           getAllTagsByUser(user._id),
-          getMembersByProject(projectId),
+          getMembersByProject(projectId,lang),
         ]);
 
-        setVocations(vocationResponse.allVocations);
+        setVocations(vocationResponse.results);
         setVocationLoading(false);
 
         // setProjects(projectsResponse.results);

@@ -64,9 +64,9 @@ function SwatchComponent({ color, onChange }) {
       ]}
       color={color}
       rectProps={{
-        style: { minWidth: "40px", minHeight: "40px" ,borderRadius: "50%" },
+        style: { minWidth: "40px", minHeight: "40px", borderRadius: "50%" },
         children: <Point checked={true} />,
-        className: "col-span-1 "
+        className: "col-span-1 ",
       }}
       className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8"
       onChange={(hsvColor) => onChange(hsvaToHex(hsvColor))}
@@ -80,7 +80,7 @@ const CreateTag = ({ onTagsChange }) => {
   const [color, setColor] = useState("#73A8FF");
   const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState([]);
-  const [newTags, setNewTags] = useState([]); 
+  const [newTags, setNewTags] = useState([]);
   const [newTagName, setNewTagName] = useState("");
 
   useEffect(() => {
@@ -98,10 +98,9 @@ const CreateTag = ({ onTagsChange }) => {
     getTags();
   }, [userId]);
 
- 
   const handleAddTag = (e) => {
     e.preventDefault();
-    const trimmedTagName = newTagName.trim(); 
+    const trimmedTagName = newTagName.trim();
     if (trimmedTagName === "") {
       toast.error(t("Tag name cannot be empty"));
       return;
@@ -115,7 +114,6 @@ const CreateTag = ({ onTagsChange }) => {
     onTagsChange(updatedTags);
     setNewTagName(""); // Clear input after adding the tag
   };
-
 
   const handleDeleteTag = (tagToDelete) => {
     const updatedTags = tags.filter((tag) => tag !== tagToDelete);

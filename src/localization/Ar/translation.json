@@ -343,6 +343,7 @@
     "GeneralSettingSuccess": "تم حفظ الإعدادات العامة بنجاح!",
     "ProfileChangesSuccess": "تم حفظ تغييرات الملف الشخصي بنجاح!",
     "TagsCreatedSuccess": "تم إنشاء العلامات بنجاح",
+    "VocCreatedSuccess": "تم إنشاء المهن بنجاح",
     "you have been added to {{projectName}} successfully": "لقد تم إضافتك إلى {{projectName}} بنجاح",
     "You have canceled the invitation to {{projectName}} successfully": "لقد ألغيت الدعوة إلى {{projectName}} بنجاح",
     "inviteSuccess": "تم  ارسال الدعوه بنجاح"
@@ -382,5 +383,13 @@
   "ContractorName": "اسم المقاول",
   "No comments available": "لا توجد تعليقات متاحة",
   "(not required)": "(غير مطلوب)",
-  "Add Your Note": "أضف ملاحظتك"
+  "Add Your Note": "أضف ملاحظتك",
+  "Vocations": "الوظائف",
+  "+ Add new vocation": "اضافه وظيفة  جديدة+",
+  "createVocation": "اضافه وظيفة ",
+  "VName": "اسم الوظيفة ",
+  "Vocation name cannot be empty": "لا يمكن أن يكون اسم الوظيفة  فارغًا",
+  "Enter vocation name in English": "أدخل اسم الوظيفة  باللغة الإنجليزية",
+  "Enter vocation name in Arabic": "أدخل اسم الوظيفة  باللغة العربية",
+  "No tags available from consultant": "لا توجد علامات متاحة من المستشار"
 }

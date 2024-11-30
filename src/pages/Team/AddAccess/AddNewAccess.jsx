@@ -217,13 +217,13 @@ const AddNewAccess = () => {
       try {
         const [vocationResponse, projectsResponse, TagsRes] = await Promise.all(
           [
-            getAllVocations(),
+            getAllVocations(user._id, lang),
             getAllProjectsForUser(user._id, token),
             getAllTagsByUser(user._id),
           ]
         );
 
-        setVocations(vocationResponse.allVocations);
+        setVocations(vocationResponse.results);
         setVocationLoading(false)
 
         setProjects(projectsResponse.results);

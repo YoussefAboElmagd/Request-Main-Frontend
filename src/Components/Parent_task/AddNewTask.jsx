@@ -5,6 +5,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 import Select from "../UI/Select/Select";
 import {
   getAllMembersByProject,
+  getAllTagsByProject,
   getAllTagsByUser,
   getAllUnits,
 } from "../../Services/api";
@@ -12,9 +13,11 @@ import { useSelector } from "react-redux";
 import { t } from "i18next";
 import Button from "../UI/Button/Button";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import i18n from "../../config/i18n";
 
 export const AddNewTask = ({ newTask, task }) => {
   const user = useSelector((state) => state.auth.user);
+  const lang = i18n.language
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId, taskType } = location.state || {};
@@ -27,7 +30,7 @@ export const AddNewTask = ({ newTask, task }) => {
   const [Description, setDescription] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
-  const [tags, setTags] = useState([]);
+  const [Tags, setTags] = useState([]);
   const [Price, setPrice] = useState(0);
   const [Quantity, setQuantity] = useState(0);
   const [Total, setTotal] = useState(0);
@@ -69,18 +72,12 @@ export const AddNewTask = ({ newTask, task }) => {
     const fetchData = async () => {
       try {
         const [tagsData, UnitsData, MembersData] = await Promise.all([
-          getAllTagsByUser(user._id),
+          getAllTagsByProject(projectId,lang),
           getAllUnits(),
-          getAllMembersByProject(projectId),
+          getAllMembersByProject(projectId, lang),
         ]);
 
-        setTags(
-          tagsData.results.map((tag) => ({
-            value: tag._id,
-            label: tag.name,
-            colorCode: tag.colorCode,
-          }))
-        );
+        setTags(tagsData.tags);
         setTagsLoading(false);
         setUnits(
           UnitsData.results.map((unit) => ({
@@ -333,18 +330,28 @@ export const AddNewTask = ({ newTask, task }) => {
                   InputClassName={`${
                     fieldErrors.tag ? "border  border-red rounded-2xl " : ""
                   }`}
-                  options={tags.map((tag) => ({
-                    label: (
-                      <div className="flex items-center justify-between">
-                        <span className="text">{tag.label}</span>
-                        <span
-                          className="w-4 h-4 ml-2 rounded-full"
-                          style={{ backgroundColor: tag.colorCode }}
-                        />
-                      </div>
-                    ),
-                    value: tag.value,
-                  }))}
+                  options={
+                    Tags.length === 0
+                      ? [
+                          {
+                            label: t("No tags available from consultant"),
+                            value: "no-tags",
+                            isDisabled: true,
+                          },
+                        ]
+                      : Tags.map((tag) => ({
+                          label: (
+                            <div className="flex items-center justify-between">
+                              <span className="text">{tag.name}</span>
+                              <span
+                                className="w-4 h-4 ml-2 rounded-full"
+                                style={{ backgroundColor: tag.colorCode }}
+                              />
+                            </div>
+                          ),
+                          value: tag._id,
+                        }))
+                  }
                   error={false}
                   placeholder={t("tag")}
                 />
