@@ -124,6 +124,8 @@ const TableOfQuantities = () => {
   const location = useLocation();
   const { projectId, taskType, members, projectName } = location.state || {};
   console.log(location.state);
+  console.log("project id :", projectId);
+  
   const navigate = useNavigate();
 
   const handleNewTask = (task) => {
@@ -192,7 +194,7 @@ const TableOfQuantities = () => {
     <div className="TableOfQuantities">
       <div className="header bg-white p-4 rounded-l-3xl flex items-center justify-between">
         <h5 className="font-bold text-base">{t("Table of Quantities")}</h5>
-        <AddNewTask newTask={handleNewTask} />
+        <AddNewTask newTask={handleNewTask} projectId={projectId} />
       </div>
 
       {tasks.length > 0 ? (

@@ -26,7 +26,6 @@ const AddTask = () => {
   const location = useLocation();
   const { projectId, taskType, members, ParentId, subTask } =
     location.state || {};
-  console.log(location.state);
 
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -81,6 +80,8 @@ const AddTask = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+  
+      
       try {
         const [tagsData, UnitsData, parentTasks] = await Promise.all([
           getAllTagsByProject(projectId),
@@ -197,7 +198,7 @@ const AddTask = () => {
 
       setLoading(true);
       console.log("task data =>  ", taskData);
-      const res = await addTask(taskData);
+      const res = await addTask(taskData, lang);
       setTaskId(res.addedTasks?._id);
       console.log(res);
       clearFormFields();
@@ -375,7 +376,7 @@ const AddTask = () => {
                       onChange={(date) => setSDate(date)}
                       primaryColor={"purple"}
                       popoverClassName="!bg-white !border-gray-300 !shadow-md"
-                      popoverDirection="up"
+                      popoverDirection="down"
                       toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
                       inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                         fieldErrors.sDate ? "border-red border" : ""
@@ -400,6 +401,7 @@ const AddTask = () => {
                         popoverClassName="!bg-white !border-gray-300 !shadow-md"
                         popoverDirection="down"
                         toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+
                         inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
                           fieldErrors.eDate && "border-red border"
                         }`}

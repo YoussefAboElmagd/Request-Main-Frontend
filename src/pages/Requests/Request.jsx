@@ -371,7 +371,7 @@ const RequestForm = ({
           </div>
           <div className="content bg-white p-4 rounded-3xl my-6 ">
             <form onSubmit={handleSubmit}>
-              <div className="flex items-center justify-between">
+              <div className="flex items-start lg:items-center justify-between flex-col lg:flex-row gap-3">
                 <div className="flex items-center gap-3">
                   <div className="flex flex-col items-center gap-3">
                     <ProfileAvatar
@@ -703,7 +703,7 @@ const RequestForm = ({
                 </>
               )}
               {IsReqForMaterial && (
-                <div className="grid grid-cols-4 gap-3 my-4">
+                <div className="grid grid-col-2 lg:grid-cols-4 gap-3 my-4">
                   <div className="col-span-2">
                     <label
                       htmlFor="supplier"
@@ -733,18 +733,18 @@ const RequestForm = ({
                       placeholder="123"
                       value={approvedMaterial}
                       onChange={(e) => setApprovedMaterial(e.target.value)}
-                      className="bg-white border my-1  w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                      className="bg-white border my-1    text-gray border-solid border-gray rounded-2xl p-2"
                     />
                   </div>
                 </div>
               )}
 
-              <div className="flex items-center  gap-3 my-2">
+              <div className="grid grid-cols-2 lg:grid-cols-8 gap-1 lg:gap-3 my-2">
                 {(IsReqForDocumentSubmittal ||
                   IsReqForMaterial ||
                   IsWorkRequest ||
                   IsRfiReq) && (
-                  <div className="flex flex-col items-start  gap-2">
+                  <div className="flex flex-col lg:items-start  gap-2 col-span-2">
                     <label
                       htmlFor="BOQ item no"
                       className="font-bold text-base text-gray-dark"
@@ -757,12 +757,12 @@ const RequestForm = ({
                       placeholder="00"
                       value={BOQ}
                       onChange={(e) => setBOQ(e.target.value)}
-                      className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                      className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
                     />
                   </div>
                 )}
                 {(IsReqForDocumentSubmittal || IsReqForMaterial) && (
-                  <div className="flex flex-col items-start  gap-2">
+                  <div className="flex flex-col lg:items-start  gap-2 col-span-2">
                     <label
                       htmlFor="QTY"
                       className="font-bold text-base text-gray-dark"
@@ -775,13 +775,13 @@ const RequestForm = ({
                       placeholder="00"
                       value={QTY}
                       onChange={(e) => setQTY(e.target.value)}
-                      className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                      className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
                     />
                   </div>
                 )}
                 {(IsWorkRequest || IsRfiReq) && (
                   <>
-                    <div className="flex flex-col items-start gap-2">
+                    <div className="flex flex-col lg:items-start gap-2 col-span-2">
                       <label
                         htmlFor="cell"
                         className="font-bold text-base text-gray-dark"
@@ -794,10 +794,10 @@ const RequestForm = ({
                         placeholder={t("cell")}
                         value={cell}
                         onChange={(e) => setCell(e.target.value)}
-                        className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                        className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
                       />
                     </div>
-                    <div className="flex flex-col items-start gap-2">
+                    <div className="flex flex-col lg:items-start gap-2 col-span-2">
                       <label
                         htmlFor="currentDay"
                         className="font-bold text-base text-gray-dark"
@@ -837,7 +837,7 @@ const RequestForm = ({
                 )}
 
                 {(IsReqForMaterial || IsRfiReq) && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 col-span-2">
                     <Select
                       options={units}
                       placeholder={t("Unit")}
@@ -845,7 +845,7 @@ const RequestForm = ({
                       label={t("Unit")}
                       value={selectedUnit}
                       onChange={(e) => setSelectedUnit(e)}
-                      className={`bg-white mx-4`}
+                      className={`bg-white lg:mx-4`}
                       InputClassName={` `}
                       loading={UnitsLoading}
                     />
@@ -853,9 +853,9 @@ const RequestForm = ({
                 )}
               </div>
 
-              <div className="flex items-center  gap-3 my-2">
+              <div className="grid grid-cols-2 lg:grid-cols-6   gap-3 my-2">
                 {IsReqForMaterial && (
-                  <div className="flex flex-col  items-start gap-2">
+                  <div className="flex flex-col  items-start gap-2 col-span-2">
                     <label
                       htmlFor="delivery note no"
                       className="font-bold text-base text-gray-dark "
@@ -868,13 +868,13 @@ const RequestForm = ({
                       placeholder="00"
                       value={deliveryNote}
                       onChange={(e) => setDeliveryNote(e.target.value)}
-                      className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                      className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
                     />
                   </div>
                 )}
               </div>
               {IsWorkRequest && (
-                <div className="WorkArea">
+                <div className="WorkArea col-span-2">
                   <label
                     htmlFor="WorkArea"
                     className="font-bold text-base text-gray-dark"
@@ -892,7 +892,7 @@ const RequestForm = ({
                 </div>
               )}
               {IsRfiReq && (
-                <div className="Quantity">
+                <div className="Quantity col-span-2">
                   <label
                     htmlFor="Quantity"
                     className="font-bold text-base text-gray-dark "
@@ -910,7 +910,7 @@ const RequestForm = ({
                 </div>
               )}
               {(IsWorkRequest || IsRfiReq) && (
-                <div className="Location">
+                <div className="Location col-span-2">
                   <label
                     htmlFor="Location"
                     className="font-bold text-base text-gray-dark "

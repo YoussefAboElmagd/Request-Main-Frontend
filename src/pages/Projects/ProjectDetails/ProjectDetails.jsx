@@ -8,7 +8,11 @@ import { FaCommentMedical } from "react-icons/fa6";
 import { CircularProgress } from "@mui/joy";
 import { CircularProgress as CircularProgressbar } from "@mui/material";
 
-import { getProjectDetails } from "../../../Services/api";
+import {
+  getAllTagsByProject,
+  getProjectDetails,
+  getProjectTagProgress,
+} from "../../../Services/api";
 import { Link, useLocation } from "react-router-dom";
 import { format } from "date-fns";
 import { BiTask } from "react-icons/bi";
@@ -19,6 +23,8 @@ import { AddNote } from "../../../Components/AddNote/AddNote";
 import { useSelector } from "react-redux";
 import { IoMdPersonAdd } from "react-icons/io";
 import Button from "../../../Components/UI/Button/Button";
+import { TagsChart } from "../../../Components/TagsChart/TagsChart";
+import i18next from "i18next";
 
 const ProjectDetails = () => {
   const user = useSelector((state) => state.auth.user);
@@ -27,20 +33,35 @@ const ProjectDetails = () => {
   const [Project, setProject] = useState({});
   const [Owner, setOwner] = useState({});
   const [Contractor, setContractor] = useState([]);
+  const [tags, setTags] = useState({});
+
   const location = useLocation();
   const { projectId } = location.state || {};
+  const lang = i18next.language;
+
+  console.log(
+    `progress_wrapper flex flex-col lg:flex-row items-center gap-2 rounded-2xl shadow-md p-8 relative ${
+      user.plan.name === "RequestPlus" || tags.length > 0
+        ? "lg:justify-between"
+        : "lg:justify-center"
+    }
+       `
+  );
 
   useEffect(() => {
     const fetchProject = async () => {
       setLoading(true);
       try {
-        const Project = await getProjectDetails(projectId);
-        setProject(Project.results);
-        setOwner(Project.results.owner);
-        setContractor(Project.results.contractor[0]);
-        console.log(Project);
-        console.log(Project.results.owner);
-        console.log(Project.results.contractor[0]);
+        const [ProjectData, tagsData] = await Promise.all([
+          getProjectDetails(projectId),
+          getProjectTagProgress(projectId, lang),
+        ]);
+
+        setProject(ProjectData.results);
+        setOwner(ProjectData.results.owner);
+        setContractor(ProjectData.results.contractor[0]);
+        setTags(tagsData.results);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching Project:", error);
       } finally {
@@ -180,11 +201,11 @@ const ProjectDetails = () => {
 
               <div className="analytics_box rounded-md shadow-md p-8 flex flex-col gap-3  mt-4 mb-4 mx-4 ">
                 <div
-                  className={`progress_wrapper  flex flex-col lg:flex-row items-center ${
-                    user.plan.name === "RequestPlus"
+                  className={`progress_wrapper flex flex-col lg:flex-row items-center gap-2 rounded-2xl shadow-md p-8 relative ${
+                    user.plan.name === "RequestPlus" 
                       ? "lg:justify-between"
                       : "lg:justify-center"
-                  }   gap-2 rounded-2xl shadow-md p-8 relative`}
+                  }`}
                 >
                   {user.plan.name === "RequestPlus" && (
                     <div className="Progress">
@@ -218,114 +239,15 @@ const ProjectDetails = () => {
                       </CircularProgress>
                     </div>
                   )}
-                  <div className="tags relative">
-                    <span className="absolute -top-5 font-inter font-extrabold text-xs leading-4 my-1 ">
-                      tags
-                    </span>
-                    <Box position="relative" display="inline-flex">
-                      {/* Green Progress Circle */}
-                      <CircularProgressbar
-                        variant="determinate"
-                        value={100}
-                        sx={{
-                          color: "var(--green)",
-                          "--CircularProgress-size": "180px",
-                          "--CircularProgress-trackThickness": "30px",
-                          "--CircularProgress-progressThickness": "30px",
-                        }}
-                        size={180}
-                        thickness={6}
-                      />
-                      <Box
-                        position="absolute"
-                        top="30%"
-                        left="4%"
-                        transform="translate(-50%, -50%)"
-                        color="white"
-                        fontSize="14px"
-                      >
-                        50
-                      </Box>
+                
+                    <div className="tags relative">
+                      <span className="absolute -top-5 font-inter font-extrabold text-xs leading-4 my-1 ">
+                        {t("Tags")}
+                      </span>
 
-                      {/* Purple Progress Circle */}
-                      <CircularProgressbar
-                        variant="determinate"
-                        value={70}
-                        sx={{
-                          color: "var(--purple)",
-                          position: "absolute",
-                          left: 0,
-                          "--CircularProgress-size": "180px",
-                          "--CircularProgress-trackThickness": "30px",
-                          "--CircularProgress-progressThickness": "30px",
-                        }}
-                        size={180}
-                        thickness={6}
-                      />
-                      <Box
-                        position="absolute"
-                        bottom="5%"
-                        left="30%"
-                        transform="translate(-50%, -50%)"
-                        color="white"
-                        fontSize="14px"
-                      >
-                        70
-                      </Box>
-
-                      {/* Red Progress Circle */}
-                      <CircularProgressbar
-                        variant="determinate"
-                        value={40}
-                        sx={{
-                          color: "var(--red)",
-                          position: "absolute",
-                          left: 0,
-                          "--CircularProgress-size": "180px",
-                          "--CircularProgress-trackThickness": "30px",
-                          "--CircularProgress-progressThickness": "30px",
-                        }}
-                        size={180}
-                        thickness={6}
-                      />
-                      <Box
-                        position="absolute"
-                        top="50%"
-                        right="3px"
-                        transform="translate(-50%, -50%)"
-                        color="white"
-                        fontSize="14px"
-                      >
-                        40
-                      </Box>
-
-                      {/* Yellow Progress Circle */}
-                      <CircularProgressbar
-                        variant="determinate"
-                        value={20}
-                        sx={{
-                          color: "var(--yellow)",
-                          position: "absolute",
-                          left: 0,
-                          "--CircularProgress-size": "180px",
-                          "--CircularProgress-trackThickness": "30px",
-                          "--CircularProgress-progressThickness": "30px",
-                        }}
-                        size={180}
-                        thickness={6}
-                      />
-                      <Box
-                        position="absolute"
-                        top="10%"
-                        right="20%"
-                        transform="translate(-50%, -50%)"
-                        color="white"
-                        fontSize="14px"
-                      >
-                        20
-                      </Box>
-                    </Box>
-                  </div>
+                      <TagsChart tags={tags} />
+                    </div>
+                
                 </div>
 
                 <div className="Badges flex items-center  justify-around gap-2">
@@ -340,9 +262,9 @@ const ProjectDetails = () => {
                     {Project.projectPriority}
                   </span>
                 </div>
-                {Project.tags && Project.tags.length > 0 && (
+                {tags && tags.length > 0 && (
                   <div className="Tags flex flex-wrap gap-2">
-                    {Project.tags.map((tag, index) => (
+                    {tags.map((tag, index) => (
                       <div
                         key={index}
                         className="tag-item flex items-center gap-1 px-3 py-1 rounded-full"
@@ -354,7 +276,7 @@ const ProjectDetails = () => {
                           }}
                         />
                         <span className="text-black font-semibold text-xs">
-                          {tag.name || "Unknown Tag"}
+                          {tag.tagName || "Unknown Tag"}
                         </span>
                       </div>
                     ))}
@@ -467,5 +389,3 @@ const ProjectDetails = () => {
 };
 
 export default ProjectDetails;
-
-

@@ -157,10 +157,10 @@ const ViewRequest = () => {
       <div className="header bg-white p-4 rounded-l-3xl">
         <h5 className="font-bold text-base">{model?.title}</h5>
       </div>
-      <div className="content bg-white p-4 rounded-3xl my-6 ">
-        <div className="flex items-center justify-between">
+      <div className="content bg-white p-2 lg:p-4 rounded-3xl my-6 ">
+        <div className="flex items-start lg:items-center justify-between flex-col lg:flex-row gap-3">
           {(model?.consultant || model?.contractor || model?.owner) && (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center  gap-3">
               {model?.consultantStatus !== "pending" && (
                 <div className="flex flex-col items-center gap-3">
                   <ProfileAvatar
@@ -224,7 +224,7 @@ const ViewRequest = () => {
                 id="Ref"
                 disabled
                 value={model?.refNo}
-                className="bg-white border border-gray rounded-lg p-1 max-w-52"
+                className="bg-white border border-gray rounded-lg p-1  lg:max-w-52"
               />
             </div>
             <div className="Date flex items-center gap-2 ">
@@ -253,7 +253,7 @@ const ViewRequest = () => {
           <span className="text-sm  font-bold"> {model?.project?.name}</span>
         </div>
         <hr className="bg-gray my-4" />
-        <div className="flex items-center gap-5">
+        <div className="flex item-start lg:items-center flex-col  lg:flex-row  gap-5">
           {model?.discipline && (
             <div className="flex items-center gap-2">
               <h5 className="font-bold text-base text-gray-dark">
@@ -447,7 +447,7 @@ const ViewRequest = () => {
             />
           </div>
         )}
-        <div className="grid grid-cols-4 gap-3 my-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 my-4">
           {model?.supplier && (
             <div className="col-span-2">
               <label
@@ -478,14 +478,14 @@ const ViewRequest = () => {
                 id="approved"
                 disabled
                 value={model?.approvedMaterialSubmittalNo}
-                className="bg-white border my-1  w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border my-1    text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
         </div>
-        <div className="flex items-center  gap-3 my-2">
+        <div className="grid grid-cols-2 lg:grid-cols-8 gap-1 lg:gap-3 my-2">
           {model?.boqItemNo && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
                 htmlFor="BOQ item no"
                 className="font-bold text-base text-gray-dark text-start"
@@ -497,12 +497,12 @@ const ViewRequest = () => {
                 id="BOQ item no"
                 disabled
                 value={model?.boqItemNo}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1  text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
           {model?.qty && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
                 htmlFor="QTY"
                 className="font-bold text-base text-gray-dark text-start"
@@ -514,12 +514,12 @@ const ViewRequest = () => {
                 id="QTY"
                 disabled
                 value={model?.qty}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
           {model?.location && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
                 htmlFor="location"
                 className="font-bold text-base text-gray-dark text-start"
@@ -531,12 +531,12 @@ const ViewRequest = () => {
                 id="location"
                 disabled
                 value={model?.location}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
           {model?.workArea && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
                 htmlFor="workArea"
                 className="font-bold text-base text-gray-dark text-start"
@@ -548,12 +548,12 @@ const ViewRequest = () => {
                 id="workArea"
                 disabled
                 value={model?.workArea}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1  text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
           {model?.unit && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
                 htmlFor="Unit"
                 className="font-bold text-base text-gray-dark text-start"
@@ -565,14 +565,14 @@ const ViewRequest = () => {
                 id="Unit"
                 disabled
                 value={model?.unit?.name}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
         </div>
-        <div className="flex items-center  gap-3 my-2">
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 my-2 ">
           {model?.deliveryNoteNo && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
                 htmlFor="delivery note no"
                 className="font-bold text-base text-gray-dark text-start"
@@ -584,14 +584,14 @@ const ViewRequest = () => {
                 id="delivery note no"
                 disabled
                 value={model?.deliveryNoteNo}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
           {model?.cell && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
-                htmlFor="Unit"
+                htmlFor="cell"
                 className="font-bold text-base text-gray-dark text-start"
               >
                 {t("cell")}
@@ -601,12 +601,12 @@ const ViewRequest = () => {
                 id="cell"
                 disabled
                 value={model?.cell}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}
           {model?.inspectionDate && (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 col-span-2">
               <label
                 htmlFor="Unit"
                 className="font-bold text-base text-gray-dark text-start"
@@ -618,7 +618,7 @@ const ViewRequest = () => {
                 id="inspectionDate"
                 disabled
                 value={formatDate(model?.inspectionDate)}
-                className="bg-white border  my-1 w-fit  text-gray border-solid border-gray rounded-2xl p-2"
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}

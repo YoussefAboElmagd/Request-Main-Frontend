@@ -378,9 +378,9 @@ export const getAllContractors = async (token) => {
 };
 
 // addTask function
-export const addTask = async (taskData) => {
+export const addTask = async (taskData, lang) => {
   try {
-    const response = await axiosInstance.post(`task`, taskData, {
+    const response = await axiosInstance.post(`task?lang=${lang}`, taskData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -1098,7 +1098,6 @@ export const addVocation = async (token, vocationData, lang) => {
 //  get all tags by project
 
 export const getAllTagsByProject = async (projectId, lang) => {
-  console.log("projectId from Api => ", projectId);
 
   try {
     const response = await axiosInstance.get(
@@ -1110,6 +1109,27 @@ export const getAllTagsByProject = async (projectId, lang) => {
   } catch (error) {
     console.error(
       "Get tags by project error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+//  get project tag progress 
+
+export const getProjectTagProgress = async ( projectId, lang) => {
+
+  try {
+    const response = await axiosInstance.get(
+      `project/tags/progress/${projectId}?lang=${lang}`
+    );
+
+    console.log("Response from get project tag progress => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get project tag progress error: ",
       error.response?.data || error.message
     );
     throw error;

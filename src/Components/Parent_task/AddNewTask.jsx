@@ -21,7 +21,9 @@ export const AddNewTask = ({ newTask, task }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId, taskType } = location.state || {};
-  // console.log(location.state);
+  console.log(location.state);
+  console.log("projectId :", projectId);
+  
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
@@ -70,14 +72,15 @@ export const AddNewTask = ({ newTask, task }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
         const [tagsData, UnitsData, MembersData] = await Promise.all([
-          getAllTagsByProject(projectId,lang),
+          getAllTagsByProject(projectId, lang),
           getAllUnits(),
           getAllMembersByProject(projectId, lang),
         ]);
 
-        setTags(tagsData.tags);
+        setTags(tagsData?.tags);
         setTagsLoading(false);
         setUnits(
           UnitsData.results.map((unit) => ({
@@ -331,7 +334,7 @@ export const AddNewTask = ({ newTask, task }) => {
                     fieldErrors.tag ? "border  border-red rounded-2xl " : ""
                   }`}
                   options={
-                    Tags.length === 0
+                    Tags?.length === 0
                       ? [
                           {
                             label: t("No tags available from consultant"),
@@ -339,7 +342,7 @@ export const AddNewTask = ({ newTask, task }) => {
                             isDisabled: true,
                           },
                         ]
-                      : Tags.map((tag) => ({
+                      : Tags?.map((tag) => ({
                           label: (
                             <div className="flex items-center justify-between">
                               <span className="text">{tag.name}</span>

@@ -7,30 +7,38 @@ import "./style.scss";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { Drawer, IconButton, Typography } from "@material-tailwind/react";
 import { CheckInput } from "../../pages/setting/setting";
+import { useLanguage } from "../../context/LanguageContext";
 
 const LandingHeader = () => {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isRTL, setIsRTL] = useState(false);
   const [open, setOpen] = useState(false);
+  const [languageChecked, setLanguageChecked] = useState(false);
   const { t, i18n } = useTranslation();
-  const  location  = useLocation();
+  const location = useLocation();
 
-    const openDrawer = () => setOpen(true);
-    const closeDrawer = () => setOpen(false);
+  const { changeLanguage } = useLanguage();
+
+  const openDrawer = () => setOpen(true);
+  const closeDrawer = () => setOpen(false);
 
   const toggleLangOptions = () => {
     setIsLangOpen(!isLangOpen);
   };
+
   useEffect(() => {
     const lang = i18n.language || "en";
     setIsRTL(lang === "ar");
+    setLanguageChecked(lang === "ar");
+
     document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
   }, [i18n.language]);
 
-  const changeLanguage = (lang) => {
+  const changeLang = (lang) => {
     i18n.changeLanguage(lang);
+    setLanguageChecked(lang === "ar"); // Update the checkbox status
     document.body.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-    window.location.reload();
+    window.location.reload(); // Optionally reload after changing language
   };
   return (
     <div
@@ -83,18 +91,16 @@ const LandingHeader = () => {
               >
                 {t("Contact us")}
               </Link>
-              <Link
-                className="flex items-center justify-between select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
-                // onClick={toggleLangOptions}
-              >
+              <div className="flex items-center justify-between select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer">
                 <span> {t("language")}</span>
                 <CheckInput
-                  // checked={languageChecked}
-                  // onChange={() => {
-                  //   setLanguageChecked(!languageChecked);
-                  // }}
+                  checked={languageChecked}
+                  onChange={() => {
+                    const newLang = languageChecked ? "en" : "ar";
+                    changeLang(newLang);
+                  }}
                 />
-              </Link>
+              </div>
             </div>
           </Drawer>
         </div>
@@ -142,13 +148,13 @@ const LandingHeader = () => {
             }`}
           >
             <div
-              onClick={() => changeLanguage("ar")}
+              onClick={() => changeLang("ar")}
               className="ar font-workSans font-medium text-base text-gray-md m-1 cursor-pointer text-center"
             >
               العربية
             </div>
             <div
-              onClick={() => changeLanguage("en")}
+              onClick={() => changeLang("en")}
               className="en font-workSans font-medium text-base text-gray-md m-1 cursor-pointer text-center"
             >
               English
