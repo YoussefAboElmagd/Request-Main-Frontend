@@ -38,7 +38,7 @@ const Invitation = () => {
       setLoading(true);
       try {
         const userId = user._id;
-        const data = await getDataForInvite(token, invitationId, userId, lang);
+        const data = await getDataForInvite(token, invitationId, userId);
         setData(data.results);
 
         console.log("data:", data);

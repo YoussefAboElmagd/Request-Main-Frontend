@@ -926,10 +926,10 @@ export const sendInvite = async (token, invitationData) => {
 };
 
 // get data for invite
-export const getDataForInvite = async (token, invitationId, userId, lang) => {
+export const getDataForInvite = async (token, invitationId, userId) => {
   try {
     const response = await axiosInstance.get(
-      `users/invite/${userId}?id=${invitationId}?lang=${lang}`,
+      `users/invite/${userId}?id=${invitationId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1135,3 +1135,22 @@ export const getProjectTagProgress = async ( projectId, lang) => {
     throw error;
   }
 };
+
+//  get all notifications 
+
+    export const getAllNotifications = async (token, userId, days) => {
+      try {
+        const response = await axiosInstance.get(
+          `notification/${userId}?days=${days}`
+        );
+
+        console.log("Response from get all notifications => ", response);
+        return response.data;
+      } catch (error) {
+        console.error(
+          "Get all notifications error: ",
+          error.response?.data || error.message
+        );
+        throw error;
+      }
+    };
