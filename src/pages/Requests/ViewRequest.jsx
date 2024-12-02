@@ -627,7 +627,7 @@ const ViewRequest = () => {
           <h5 className="font-bold text-base text-gray-dark">
             {t("submitted by")} :
           </h5>
-          <span className="font-medium text-sm">{model?.owner?.name}</span>
+          <span className="font-medium text-sm">{model?.createdBy?.name}</span>
           {model?.createdBy?.signature ? (
             <img
               src={model?.createdBy?.signature}
