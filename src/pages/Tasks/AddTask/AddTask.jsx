@@ -80,8 +80,6 @@ const AddTask = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-  
-      
       try {
         const [tagsData, UnitsData, parentTasks] = await Promise.all([
           getAllTagsByProject(projectId),
@@ -401,7 +399,6 @@ const AddTask = () => {
                         popoverClassName="!bg-white !border-gray-300 !shadow-md"
                         popoverDirection="down"
                         toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-
                         inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
                           fieldErrors.eDate && "border-red border"
                         }`}
@@ -436,7 +433,7 @@ const AddTask = () => {
                       fieldErrors.tag ? "border border-red rounded-2xl" : ""
                     }`}
                     options={
-                      Tags.length === 0
+                      Tags?.length === 0
                         ? [
                             {
                               label: t("No tags available from consultant"),
@@ -444,17 +441,17 @@ const AddTask = () => {
                               isDisabled: true,
                             },
                           ]
-                        : Tags.map((tag) => ({
+                        : Tags?.map((tag) => ({
                             label: (
                               <div className="flex items-center justify-between">
-                                <span className="text">{tag.name}</span>
+                                <span className="text">{tag?.name}</span>
                                 <span
                                   className="w-4 h-4 ml-2 rounded-full"
-                                  style={{ backgroundColor: tag.colorCode }}
+                                  style={{ backgroundColor: tag?.colorCode }}
                                 />
                               </div>
                             ),
-                            value: tag._id,
+                            value: tag?._id,
                           }))
                     }
                     error={false}

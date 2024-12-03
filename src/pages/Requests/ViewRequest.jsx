@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import avatar from "../../assets/images/avatar1.png";
+import avatar from "../../assets/images/Avatar.jpg";
 import signature from "../../assets/images/signature.png";
 import { useEffect, useState } from "react";
 import {
@@ -161,39 +161,7 @@ const ViewRequest = () => {
         <div className="flex items-start lg:items-center justify-between flex-col lg:flex-row gap-3">
           {(model?.consultant || model?.contractor || model?.owner) && (
             <div className="flex items-center  gap-3">
-              {model?.consultantStatus !== "pending" && (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={model?.consultant?.companyName}
-                    profilePic={
-                      model?.consultant?.companyLogo
-                        ? model?.consultant?.companyLogo
-                        : model?.consultant?.name
-                    }
-                    className={`!w-20 !h-20 !text-3xl`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {model?.consultant?.name}
-                  </span>
-                </div>
-              )}
-              {model?.contractorStatus !== "pending" && (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={model?.contractor?.companyName}
-                    profilePic={
-                      model?.contractor?.companyLogo !== ""
-                        ? model?.contractor?.companyLogo
-                        : model?.contractor?.name
-                    }
-                    className={`!w-20 !h-20`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {model?.contractor?.name}
-                  </span>
-                </div>
-              )}
-              {model?.ownerStatus !== "pending" && (
+              {model?.ownerStatus !== "pending" ? (
                 <div className="flex flex-col items-center gap-3">
                   <ProfileAvatar
                     name={model?.owner?.companyName}
@@ -202,10 +170,75 @@ const ViewRequest = () => {
                         ? model?.owner?.companyLogo
                         : model?.owner?.name
                     }
-                    className={`!w-20 !h-20`}
+                    className={`!w-16 !h-16`}
                   />
                   <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
                     {model?.owner?.name}
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-3">
+                  <ProfileAvatar
+                    name={"ownerName"}
+                    profilePic={avatar}
+                    className={`!w-16 !h-16`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {t("ownerName")}
+                  </span>
+                </div>
+              )}
+              {model?.consultantStatus !== "pending" ? (
+                <div className="flex flex-col items-center gap-3">
+                  <ProfileAvatar
+                    name={model?.consultant?.companyName}
+                    profilePic={
+                      model?.consultant?.companyLogo
+                        ? model?.consultant?.companyLogo
+                        : model?.consultant?.name
+                    }
+                    className={`!w-16 !h-16 !text-3xl`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {model?.consultant?.name}
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-3">
+                  <ProfileAvatar
+                    name={"ConsultantName"}
+                    profilePic={avatar}
+                    className={`!w-16 !h-16`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {t("ConsultantName")}
+                  </span>
+                </div>
+              )}
+              {model?.contractorStatus !== "pending" ? (
+                <div className="flex flex-col items-center gap-3">
+                  <ProfileAvatar
+                    name={model?.contractor?.companyName}
+                    profilePic={
+                      model?.contractor?.companyLogo !== ""
+                        ? model?.contractor?.companyLogo
+                        : model?.contractor?.name
+                    }
+                    className={`!w-16 !h-16`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {model?.contractor?.name}
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-3">
+                  <ProfileAvatar
+                    name={"ContractorName"}
+                    profilePic={avatar}
+                    className={`!w-16 !h-16`}
+                  />
+                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                    {t("ContractorName")}
                   </span>
                 </div>
               )}
@@ -253,73 +286,96 @@ const ViewRequest = () => {
           <span className="text-sm  font-bold"> {model?.project?.name}</span>
         </div>
         <hr className="bg-gray my-4" />
-        <div className="flex item-start lg:items-center flex-col  lg:flex-row  gap-5">
-          {model?.discipline && (
-            <div className="flex items-center gap-2">
-              <h5 className="font-bold text-base text-gray-dark">
-                {t("Discipline")}
-              </h5>
-              <input
-                type="text"
-                disabled
-                value={model?.discipline?.name}
-                className="bg-white w-fit  text-center border  border-solid border-gray rounded-2xl p-2"
-              />
-            </div>
-          )}
 
-          {((IsOwner && model?.ownerStatus === "pending") ||
-            (IsConsultant && model?.consultantStatus === "pending") ||
-            (IsContractor && model?.contractorStatus === "pending")) &&
-          !model?.actionCode ? (
-            <div className="flex items-center gap-2">
-              <h5 className="font-bold text-base text-gray-dark">
-                {t("Action Code")}
-              </h5>
-              <Select
-                options={ActionCodes.map((item) => ({
-                  value: item._id,
-                  label: item.name,
-                }))}
-                placeholder={t("Action Code")}
-                disabled={ActionCodeLoading}
-                loading={ActionCodeLoading}
-                value={selectedActionCodes}
-                onChange={(e) => setSelectedActionCodes(e)}
-                className={`bg-white `}
-                InputClassName={`border border-gray  rounded-2xl `}
-              />
-            </div>
-          ) : (
-            model?.actionCode && (
-              <div className="flex items-center gap-2">
-                <h5 className="font-bold text-base text-gray-dark">
-                  {t("Action Code")}
-                </h5>
+        {((IsOwner && model?.ownerStatus === "pending") ||
+          (IsConsultant && model?.consultantStatus === "pending") ||
+          (IsContractor && model?.contractorStatus === "pending")) &&
+        !model?.actionCode ? (
+          <div className="flex items-center gap-2">
+            <h5 className="font-bold text-base text-gray-dark">
+              {t("Action Code")}
+            </h5>
+            <Select
+              options={ActionCodes.map((item) => ({
+                value: item._id,
+                label: item.name,
+              }))}
+              placeholder={t("Action Code")}
+              disabled={ActionCodeLoading}
+              loading={ActionCodeLoading}
+              value={selectedActionCodes}
+              onChange={(e) => setSelectedActionCodes(e)}
+              className={`bg-white `}
+              InputClassName={`border border-gray  rounded-2xl `}
+            />
+          </div>
+        ) : model?.actionCode ? (
+          <div className="flex items-center gap-2">
+            <h5 className="font-bold text-base text-gray-dark">
+              {t("Action Code")}
+            </h5>
+            <input
+              type="text"
+              disabled
+              value={model?.actionCode?.name}
+              className="bg-white border  w-fit  text-center border-solid border-gray rounded-2xl p-2"
+            />
+          </div>
+        ) : (
+          <>
+            <label htmlFor="desc" className="font-bold text-base text-gray">
+              {t("Action Code")}
+            </label>
+            <input
+              placeholder={t("Action Code")}
+              disabled
+              className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+            />
+          </>
+        )}
+
+        {((IsOwner && model?.ownerStatus === "pending") ||
+          (IsConsultant && model?.consultantStatus === "pending") ||
+          (IsContractor && model?.contractorStatus === "pending")) &&
+        model?.firstUpdatedBy === null ? (
+          <div className="feedback my-4">
+            <h5 className="font-bold  text-base">
+              {t("Comment")}{" "}
+              <span className="text-gray font-medium">(Not required)</span>
+            </h5>
+            <input
+              type="text"
+              placeholder={t("+add comment")}
+              value={Comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
+            />
+          </div>
+        ) : model?.comment && model.comment.length > 0 ? (
+          <>
+            <h5 className="font-bold text-base">{t("Comment")}</h5>
+            {model.comment.map((comment, index) => (
+              <div key={index} className="feedback my-4">
                 <input
                   type="text"
                   disabled
-                  value={model?.actionCode?.name}
-                  className="bg-white border  w-fit  text-center border-solid border-gray rounded-2xl p-2"
+                  value={comment}
+                  className="bg-white w-full my-1 text-gray border border-solid border-gray rounded-2xl p-2"
                 />
               </div>
-            )
-          )}
-
-          {model?.reason && (
-            <div className="flex items-center gap-2">
-              <h5 className="font-bold text-base text-gray-dark">
-                {t("Reason")}
-              </h5>
-              <input
-                type="text"
-                disabled
-                value={model?.reason?.name}
-                className="bg-white border  w-fit  text-center border-solid border-gray rounded-2xl p-2"
-              />
-            </div>
-          )}
-        </div>
+            ))}
+          </>
+        ) : (
+          <div className="feedback my-4">
+            <h5 className="font-bold  text-base">{t("Comment")}</h5>
+            <input
+              type="text"
+              disabled
+              value={t("No comments available")}
+              className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
+            />
+          </div>
+        )}
 
         <div className="flex items-center gap-3 my-4">
           {model.firstUpdatedBy !== null ? (
@@ -375,6 +431,36 @@ const ViewRequest = () => {
           )}
         </div>
         <hr className="bg-gray my-4" />
+
+        <div className="grid  grid-cols-2 lg:grid-cols-4  my-4 gap-3">
+          {model?.discipline && (
+            <div className="col-span-2">
+              <h5 className="font-bold text-base text-gray-dark">
+                {t("Discipline")}
+              </h5>
+              <input
+                type="text"
+                disabled
+                value={model?.discipline?.name}
+                className="bg-white text-gray w-full text-start border  border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
+
+          {model?.reason && (
+            <div className="col-span-2">
+              <h5 className="font-bold text-base text-gray-dark">
+                {t("Reason")}
+              </h5>
+              <input
+                type="text"
+                disabled
+                value={model?.reason?.name}
+                className="bg-white border text-gray w-full  text-start border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
+        </div>
         <div className="desc ">
           <label htmlFor="desc" className="font-bold text-base text-gray-dark">
             {t("desc")}
@@ -388,48 +474,6 @@ const ViewRequest = () => {
           />
         </div>
 
-        {((IsOwner && model?.ownerStatus === "pending") ||
-          (IsConsultant && model?.consultantStatus === "pending") ||
-          (IsContractor && model?.contractorStatus === "pending")) &&
-        model?.firstUpdatedBy === null ? (
-          <div className="feedback my-4">
-            <h5 className="font-bold  text-base">
-              {t("Comment")}{" "}
-              <span className="text-gray font-medium">(Not required)</span>
-            </h5>
-            <input
-              type="text"
-              placeholder={t("+add comment")}
-              value={Comment}
-              onChange={(e) => setComment(e.target.value)}
-              className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
-            />
-          </div>
-        ) : model?.comment && model.comment.length > 0 ? (
-          <>
-            <h5 className="font-bold text-base">{t("Comment")}</h5>
-            {model.comment.map((comment, index) => (
-              <div key={index} className="feedback my-4">
-                <input
-                  type="text"
-                  disabled
-                  value={comment}
-                  className="bg-white w-full my-1 text-gray border border-solid border-gray rounded-2xl p-2"
-                />
-              </div>
-            ))}
-          </>
-        ) : (
-          <div className="feedback my-4">
-            <h5 className="font-bold  text-base">{t("Comment")}</h5>
-            <input
-              type="text"
-              disabled
-              value={t("No comments available")}
-              className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
-            />
-          </div>
-        )}
         {model?.remarks && (
           <div className="desc ">
             <label
@@ -518,6 +562,77 @@ const ViewRequest = () => {
               />
             </div>
           )}
+
+          {model?.cell && (
+            <div className="flex flex-col gap-2 col-span-2">
+              <label
+                htmlFor="cell"
+                className="font-bold text-base text-gray-dark text-start"
+              >
+                {t("cell")}
+              </label>
+              <input
+                type="text"
+                id="cell"
+                disabled
+                value={model?.cell}
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
+          {model?.inspectionDate && (
+            <div className="flex flex-col gap-2 col-span-2">
+              <label
+                htmlFor="Unit"
+                className="font-bold text-base text-gray-dark text-start"
+              >
+                {t("inspectionDate")}
+              </label>
+              <input
+                type="text"
+                id="inspectionDate"
+                disabled
+                value={formatDate(model?.inspectionDate)}
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
+          {model?.unit && (
+            <div className="flex flex-col gap-2 col-span-2">
+              <label
+                htmlFor="Unit"
+                className="font-bold text-base text-gray-dark text-start"
+              >
+                {t("Unit")}
+              </label>
+              <input
+                type="text"
+                id="Unit"
+                disabled
+                value={model?.unit?.name}
+                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
+        </div>
+        <div className="grid grid-cols-2   gap-3 my-2 ">
+          {model?.deliveryNoteNo && (
+            <div className="flex flex-col gap-2 col-span-2">
+              <label
+                htmlFor="delivery note no"
+                className="font-bold text-base text-gray-dark text-start"
+              >
+                {t("delivery note no")}
+              </label>
+              <input
+                type="text"
+                id="delivery note no"
+                disabled
+                value={model?.deliveryNoteNo}
+                className="bg-white border  my-1 w-full   text-gray border-solid border-gray rounded-2xl p-2"
+              />
+            </div>
+          )}
           {model?.location && (
             <div className="flex flex-col gap-2 col-span-2">
               <label
@@ -552,73 +667,20 @@ const ViewRequest = () => {
               />
             </div>
           )}
-          {model?.unit && (
+          {model?.quantity && (
             <div className="flex flex-col gap-2 col-span-2">
               <label
-                htmlFor="Unit"
+                htmlFor="quantity"
                 className="font-bold text-base text-gray-dark text-start"
               >
-                {t("Unit")}
+                {t(" Quantity")}
               </label>
               <input
                 type="text"
-                id="Unit"
+                id="quantity"
                 disabled
-                value={model?.unit?.name}
-                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
-              />
-            </div>
-          )}
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 my-2 ">
-          {model?.deliveryNoteNo && (
-            <div className="flex flex-col gap-2 col-span-2">
-              <label
-                htmlFor="delivery note no"
-                className="font-bold text-base text-gray-dark text-start"
-              >
-                {t("delivery note no")}
-              </label>
-              <input
-                type="text"
-                id="delivery note no"
-                disabled
-                value={model?.deliveryNoteNo}
-                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
-              />
-            </div>
-          )}
-          {model?.cell && (
-            <div className="flex flex-col gap-2 col-span-2">
-              <label
-                htmlFor="cell"
-                className="font-bold text-base text-gray-dark text-start"
-              >
-                {t("cell")}
-              </label>
-              <input
-                type="text"
-                id="cell"
-                disabled
-                value={model?.cell}
-                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
-              />
-            </div>
-          )}
-          {model?.inspectionDate && (
-            <div className="flex flex-col gap-2 col-span-2">
-              <label
-                htmlFor="Unit"
-                className="font-bold text-base text-gray-dark text-start"
-              >
-                {t("inspectionDate")}
-              </label>
-              <input
-                type="text"
-                id="inspectionDate"
-                disabled
-                value={formatDate(model?.inspectionDate)}
-                className="bg-white border  my-1   text-gray border-solid border-gray rounded-2xl p-2"
+                value={model?.quantity}
+                className="bg-white border  my-1  text-gray border-solid border-gray rounded-2xl p-2"
               />
             </div>
           )}

@@ -59,12 +59,10 @@ const CreateCompany = () => {
     setStamp(null);
   };
 
-   
   // Form validation logic
   useEffect(() => {
     const isValid = logo && stamp && signature && name.trim();
-    console.log(isValid);
-    
+
     setIsFormValid(isValid);
   }, [logo, stamp, signature, name]);
 
@@ -72,7 +70,7 @@ const CreateCompany = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    const trimmedName = name.trim()
+    const trimmedName = name.trim();
     if (!trimmedName) {
       toast.error("Company name cannot be empty");
       return;
@@ -90,9 +88,10 @@ const CreateCompany = () => {
         signature: signature,
         companyName: name,
       };
+      console.log(updatedData);
 
       const res = await uploadCompanyFiles(userId, updatedData);
-      
+      console.log(res);
 
       const updatedUser = { ...user, ...res.updates };
       localStorage.setItem("user", JSON.stringify(updatedUser));
@@ -100,13 +99,12 @@ const CreateCompany = () => {
       toast.success(t("toast.userCreatedSuccessfully"));
       clearFields();
       navigate("/");
-      window.location.reload();
-
+      // window.location.reload();
     } catch (err) {
       console.error("Update user failed:", err);
       setError(err.message || "An error occurred");
       toast.error(err.message || "An error occurred");
-    }finally{
+    } finally {
       setLoading(false);
     }
   };

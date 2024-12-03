@@ -39,14 +39,7 @@ const ProjectDetails = () => {
   const { projectId } = location.state || {};
   const lang = i18next.language;
 
-  console.log(
-    `progress_wrapper flex flex-col lg:flex-row items-center gap-2 rounded-2xl shadow-md p-8 relative ${
-      user.plan.name === "RequestPlus" || tags.length > 0
-        ? "lg:justify-between"
-        : "lg:justify-center"
-    }
-       `
-  );
+ 
 
   useEffect(() => {
     const fetchProject = async () => {

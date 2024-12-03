@@ -52,7 +52,6 @@ const RequestForm = ({
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedActionCodes, setSelectedActionCodes] = useState(null);
   const [selectedDisciplines, setSelectedDisciplines] = useState(null);
-
   const [refNO, setRefNO] = useState("");
   // const [comments, setComments] = useState([]);
   // const [commentInput, setCommentInput] = useState("");
@@ -386,7 +385,7 @@ const RequestForm = ({
 
                   <div className="flex flex-col items-center gap-3">
                     <ProfileAvatar
-                      name={"Belal"}
+                      name={"ConsultantName"}
                       profilePic={avatar}
                       className={`!w-16 !h-16`}
                     />
@@ -397,7 +396,7 @@ const RequestForm = ({
 
                   <div className="flex flex-col items-center gap-3">
                     <ProfileAvatar
-                      name={"Belal"}
+                      name={"ContractorName"}
                       profilePic={avatar}
                       className={`!w-16 !h-16`}
                     />
@@ -418,7 +417,7 @@ const RequestForm = ({
                     <input
                       type="text"
                       id="Ref"
-                      required
+                      disabled
                       placeholder={t("REF NO")}
                       onChange={(e) => setRefNO(e.target.value)}
                       className="bg-white border border-gray rounded-lg p-1 max-w-52"
@@ -729,6 +728,7 @@ const RequestForm = ({
                     </label>
                     <input
                       type="number"
+                      min="0"
                       id="approved"
                       placeholder="123"
                       value={approvedMaterial}
@@ -753,6 +753,7 @@ const RequestForm = ({
                     </label>
                     <input
                       type="number"
+                      min="0"
                       id="BOQ item no"
                       placeholder="00"
                       value={BOQ}
@@ -771,6 +772,7 @@ const RequestForm = ({
                     </label>
                     <input
                       type="number"
+                      min="0"
                       id="QTY"
                       placeholder="00"
                       value={QTY}
@@ -790,6 +792,7 @@ const RequestForm = ({
                       </label>
                       <input
                         type="number"
+                        min="0"
                         id="cell"
                         placeholder={t("cell")}
                         value={cell}
@@ -853,9 +856,9 @@ const RequestForm = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-2 lg:grid-cols-6   gap-3 my-2">
+              <div className="grid grid-cols-2   gap-3 my-2">
                 {IsReqForMaterial && (
-                  <div className="flex flex-col  items-start gap-2 col-span-2">
+                  <div className="flex flex-col   gap-2 col-span-2">
                     <label
                       htmlFor="delivery note no"
                       className="font-bold text-base text-gray-dark "
@@ -864,6 +867,7 @@ const RequestForm = ({
                     </label>
                     <input
                       type="number"
+                      min="0"
                       id="delivery note no"
                       placeholder="00"
                       value={deliveryNote}
@@ -901,6 +905,7 @@ const RequestForm = ({
                   </label>
                   <input
                     type="number"
+                    min="0"
                     id="Quantity"
                     placeholder={t(" Quantity")}
                     value={Quantity}
@@ -919,7 +924,7 @@ const RequestForm = ({
                   </label>
                   <input
                     type="text"
-                    id="WorkArea"
+                    id="location"
                     placeholder={t("location")}
                     value={Location}
                     onChange={(e) => setLocation(e.target.value)}

@@ -379,5 +379,6 @@
   "Vocation name cannot be empty": "Vocation name cannot be empty",
   "Enter vocation name in English": "Enter vocation name in English",
   "Enter vocation name in Arabic": "Enter vocation name in Arabic",
-  "No tags available from consultant":  "No tags available from consultant"
+  "No tags available from consultant": "No tags available from consultant",
+  "no notifications available": "No Notifications Available"
 }

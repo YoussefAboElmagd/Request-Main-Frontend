@@ -1,28 +1,49 @@
 import React from "react";
 import Button from "../UI/Button/Button";
 import { t } from "i18next";
+import {  IoWarningOutline } from "react-icons/io5";
+import { LuBadgeCheck } from "react-icons/lu";
+import i18n from "../../config/i18n";
+
 
 const NotificationItem = ({
-  icon,
-  message,
+  // icon,
+  message_en,
+  message_ar,
   timestamp,
   showButtons,
   onApprove,
   onCancel,
+  type,
 }) => {
+  const lang = i18n.language;
+
   return (
     <div
-      className="notification-item  p-3 rounded-md flex items-start space-x-4 my-1"
-      style={{
-        background: "rgba(204, 171, 218, 0.1)",
-      }}
+      className="notification-item  p-3 rounded-md flex items-center justify-start space-x-4 my-1 border-b border-solid border-gray "
+      // style={{
+      //   background: "rgba(204, 171, 218, 0.1)",
+      // }}
     >
       <div className="icon text-2xl">
-        <span>{icon}</span>
+        <span>
+          {type === "warning" ? (
+            <IoWarningOutline className="text-yellow" />
+          ) : type === "success" ? (
+            <LuBadgeCheck className="text-green" />
+          ) : (
+            <LuBadgeCheck className="text-purple" />
+          )}
+        </span>
       </div>
       <div className="content flex-1">
-        <p className="text-sm">{message}</p>
-        <p className="text-xs text-gray-500">{timestamp}</p>
+        {lang === "ar" ? (
+          <p className="text-sm my-1">{message_ar}</p>
+        ) : (
+          <p className="text-sm my-1">{message_en}</p>
+        )}
+
+        <p className="text-xs text-gray-400 my-1">{timestamp}</p>
         {showButtons && (
           <div className="actions flex justify-end gap-2 space-x-2 mt-2">
             <button

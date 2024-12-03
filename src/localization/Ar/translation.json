@@ -279,7 +279,7 @@
   "Type something": "اكتب شيئًا",
   "Parent Task": "مهمة رئيسية",
   "Sub Task": "مهمة فرعية",
-  "Milestone": "معلم رئيسي",
+  "Milestone": "مهمة رئيسي",
   "Recurring Task": "مهمة متكررة",
   "One-time Task": "مهمة لمرة واحدة",
   "task started:": "بدات المهمة",
@@ -327,6 +327,7 @@
   "invoiced quantity": "الكمية المفوترة",
   "Approved quantity": "الكمية المعتمدة",
   "Executed quantity": "الكمية المنفذة",
+  "quantity": "الكمية المنفذة",
   "CreateTask": "إنشاء مهمة",
   "UpdateTask": "تحديث مهمة",
   "GeneralChange": "تغيير عام",
@@ -391,5 +392,7 @@
   "Vocation name cannot be empty": "لا يمكن أن يكون اسم الوظيفة  فارغًا",
   "Enter vocation name in English": "أدخل اسم الوظيفة  باللغة الإنجليزية",
   "Enter vocation name in Arabic": "أدخل اسم الوظيفة  باللغة العربية",
-  "No tags available from consultant": "لا توجد علامات متاحة من المستشار"
+  "No tags available from consultant": "لا توجد علامات متاحة من المستشار",
+  "no notifications available" : "لا توجد إشعارات متاحة"
+
 }

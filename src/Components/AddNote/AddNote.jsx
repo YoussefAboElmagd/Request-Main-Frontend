@@ -17,6 +17,8 @@ import ProfileAvatar from "../UI/profilePic/profilePic";
 import Empty from "../empty/empty";
 
 export const AddNote = ({ projectId,  taskId, Notes }) => {
+  console.log(projectId, taskId, Notes);
+  
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const [open, setOpen] = useState(false);

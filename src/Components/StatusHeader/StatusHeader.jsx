@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import "./style.scss";
 import { useLanguage } from "../../context/LanguageContext";
 
-const StatusHeader = ({ buttons, onFilterChange, className }) => {
+const StatusHeader = ({
+  buttons,
+  onFilterChange,
+  className,
+  active_indicator,
+  bar,
+}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activePosition, setActivePosition] = useState(0);
   const { isRTL } = useLanguage();
@@ -33,9 +39,9 @@ const StatusHeader = ({ buttons, onFilterChange, className }) => {
         </div>
         <div className="filterBtn"></div>
       </div>
-      <div className="bar">
+      <div className={`bar ${bar}`}>
         <span
-          className="active-indicator"
+          className={`active-indicator ${active_indicator}`}
           style={{
             ...(isRTL
               ? { right: `${activePosition}px` }
