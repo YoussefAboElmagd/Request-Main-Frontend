@@ -179,7 +179,7 @@ const ViewRequest = () => {
               ) : (
                 <div className="flex flex-col items-center gap-3">
                   <ProfileAvatar
-                    name={"ownerName"}
+                    name={"owner Name"}
                     profilePic={avatar}
                     className={`!w-16 !h-16`}
                   />
@@ -291,7 +291,7 @@ const ViewRequest = () => {
           (IsConsultant && model?.consultantStatus === "pending") ||
           (IsContractor && model?.contractorStatus === "pending")) &&
         !model?.actionCode ? (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col justify-start gap-2">
             <h5 className="font-bold text-base text-gray-dark">
               {t("Action Code")}
             </h5>
@@ -304,13 +304,14 @@ const ViewRequest = () => {
               disabled={ActionCodeLoading}
               loading={ActionCodeLoading}
               value={selectedActionCodes}
+              required
               onChange={(e) => setSelectedActionCodes(e)}
               className={`bg-white `}
               InputClassName={`border border-gray  rounded-2xl `}
             />
           </div>
         ) : model?.actionCode ? (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col    gap-2">
             <h5 className="font-bold text-base text-gray-dark">
               {t("Action Code")}
             </h5>
@@ -318,7 +319,7 @@ const ViewRequest = () => {
               type="text"
               disabled
               value={model?.actionCode?.name}
-              className="bg-white border  w-fit  text-center border-solid border-gray rounded-2xl p-2"
+              className="bg-white border    text-start border-solid border-gray rounded-2xl p-2"
             />
           </div>
         ) : (
@@ -713,3 +714,4 @@ const ViewRequest = () => {
 };
 
 export default ViewRequest;
+

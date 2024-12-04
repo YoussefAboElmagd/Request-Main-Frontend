@@ -320,19 +320,18 @@ const Payments = () => {
               </h3>
             </div>
             <p className="font-medium text-base">
-             {
-                selectedTab === "apple"
-                  ? t("Apple Pay selected for checkout.")
-                  : selectedTab === "google"
-                  ? t("Google Pay selected for checkout.")
-                  : ""
-              } 
-            
+              {selectedTab === "apple"
+                ? t("Apple Pay selected for checkout.")
+                : selectedTab === "google"
+                ? t("Google Pay selected for checkout.")
+                : ""}
             </p>
           </div>
           <hr className="bg-gray my-4" />
           <div className="email">
-            <label className=" mb-2 flex items-center justify-start text-sm font-medium">Email</label>
+            <label className=" mb-2 flex items-center justify-start text-sm font-medium">
+              {t("Email")}
+            </label>
             <input
               type="mail"
               name="mail"

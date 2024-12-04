@@ -161,7 +161,7 @@ const CreateVocation = () => {
                 <Input
                   label={t("VName")}
                   placeholder={t("Enter vocation name in Arabic")}
-                  className="bg-white text-end border border-purple mx-2 border-solid focus:border focus:border-purple focus:border-solid"
+                  className="bg-white text-start border border-purple mx-2 border-solid focus:border focus:border-purple focus:border-solid"
                   type="text"
                   label_class={""}
                   required={true}
@@ -170,7 +170,7 @@ const CreateVocation = () => {
                     setVoc((prev) => ({ ...prev, nameAR: e.target.value }))
                   }
                 />
-              </div>
+            </div>
             </div>
 
             <div className="btn flex items-center justify-center md:justify-end m-4">

@@ -179,7 +179,7 @@ const RequestForm = ({
 
     // Base request data
     const requestData = {
-      refNo: refNO,
+      // refNo: refNO,
       title: ReqTitle,
       discipline: selectedDisciplines,
       description: Desc,
@@ -229,6 +229,7 @@ const RequestForm = ({
           boqItemNo: BOQ,
           location: Location,
           workArea: WorkArea,
+          inspectionDate: new Date().toISOString(),
           cell,
         });
       }
@@ -469,7 +470,7 @@ const RequestForm = ({
               <hr className="bg-gray my-4" />
 
               {showActionCodes && (
-                <>
+                <div>
                   <label
                     htmlFor="desc"
                     className="font-bold text-base text-gray"
@@ -481,7 +482,7 @@ const RequestForm = ({
                     disabled
                     className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
                   />
-                </>
+                </div>
               )}
               <div className="feedback my-4">
                 <h5 className="font-bold  text-base text-gray">

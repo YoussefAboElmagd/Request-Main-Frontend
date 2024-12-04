@@ -84,29 +84,30 @@ const Header = () => {
                   </button>
                 )}
               </div>
-
-              {notifications.length === 0 && (
-                <div className="text-gray text-center mt-4">
-                  {t("no notifications available")}
-                </div>
-              )}
-              {notifications
-                .filter((notification) => notification?.message)
-                .slice(-5)
-                .map((notification, idx) => (
-                  <NotificationItem
-                    key={notification._id}
-                    type={notification?.type}
-                    message_en={notification?.message?.message_en}
-                    message_ar={notification?.message?.message_ar}
-                    timestamp={
-                      notification?.timestamp || new Date().toLocaleString()
-                    }
-                    showButtons={notification?.showButtons}
-                  />
-                ))}
-              {notifications.length !== 0 && (
-                <div className="footer sticky bottom-0 bg-linear_1 w-full !m-0 p-2 rounded-t-2xl">
+              
+                {notifications.length === 0 && (
+                  <div className="text-gray text-center mt-4">
+                    {t("no notifications available")}
+                  </div>
+                )}
+                {notifications
+                  .filter((notification) => notification?.message)
+                  .slice(0, 5)
+                  .map((notification, idx) => (
+                    <NotificationItem
+                      key={notification._id}
+                      type={notification?.type}
+                      message_en={notification?.message?.message_en}
+                      message_ar={notification?.message?.message_ar}
+                      timestamp={
+                        notification?.timestamp || new Date().toLocaleString()
+                      }
+                      showButtons={notification?.showButtons}
+                    />
+                  ))}
+           
+              {notifications.length > 3 && (
+                <div className="footer sticky bottom-0  bg-linear_1 w-full !m-0 p-2 rounded-t-2xl">
                   <Link
                     to="/Notifications"
                     className="text-white font-medium text-base "

@@ -455,7 +455,10 @@ const ProjectTeam = () => {
                 profilePic={owner?.profilePic}
               />
               <div className="flex flex-col">
-                <span className=" text-sm font-medium">{owner?.name}</span>
+                <p className=" text-sm font-medium">
+                  {owner?.name}{" "}
+                  <span className="text-gray">(project manager)</span>
+                </p>
                 <span className="text-blue text-sm font-medium">
                   {t("ownerTeam")}
                 </span>
@@ -463,16 +466,19 @@ const ProjectTeam = () => {
             </div>
           </div>
         )}
-        {(consultant || consultant !== null ) && (
+        {(consultant || consultant !== null) && (
           <div className="consultant">
-            <h4 className="m-1 font-medium text-sm">{t("consultant")}</h4>
+            <h4 className="m-1 font-medium text-sm">{t("consultant")} </h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
               <ProfileAvatar
                 name={consultant?.name}
                 profilePic={consultant?.profilePic}
               />
               <div className="flex flex-col">
-                <span className=" text-sm font-medium">{consultant?.name}</span>
+                <p className=" text-sm font-medium">
+                  {consultant?.name}{" "}
+                  <span className="text-gray">(Consulting Manager)</span>
+                </p>
                 <span className="text-blue text-sm font-medium">
                   {t("consultantTeam")}
                 </span>
@@ -480,7 +486,7 @@ const ProjectTeam = () => {
             </div>
           </div>
         )}
-        {(contractor || contractor !== null ) && (
+        {(contractor || contractor !== null) && (
           <div className="contractor">
             <h4 className="m-1 font-medium text-sm">{t("contractor")}</h4>
             <div className=" bg-white  flex items-center  gap-2 p-3 rounded-3xl">
@@ -489,7 +495,10 @@ const ProjectTeam = () => {
                 profilePic={contractor?.profilePic}
               />
               <div className="flex flex-col">
-                <span className=" text-sm font-medium">{contractor?.name}</span>
+                <p className=" text-sm font-medium">
+                  {contractor?.name}{" "}
+                  <span className="text-gray">(Contracting Manager)</span>
+                </p>
                 <span className="text-blue text-sm font-medium">
                   {t("contractorTeam")}
                 </span>
