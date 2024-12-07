@@ -1,10 +1,9 @@
 import React from "react";
 import Button from "../UI/Button/Button";
 import { t } from "i18next";
-import {  IoWarningOutline } from "react-icons/io5";
+import { IoWarningOutline } from "react-icons/io5";
 import { LuBadgeCheck } from "react-icons/lu";
 import i18n from "../../config/i18n";
-
 
 const NotificationItem = ({
   // icon,
@@ -14,16 +13,17 @@ const NotificationItem = ({
   showButtons,
   onApprove,
   onCancel,
+  isRead,
   type,
 }) => {
   const lang = i18n.language;
 
   return (
     <div
-      className="notification-item  p-3 rounded-md flex items-center justify-start space-x-4 my-1 border-b border-solid border-gray "
-      // style={{
-      //   background: "rgba(204, 171, 218, 0.1)",
-      // }}
+      className={`notification-item  p-3 rounded-md flex items-center justify-start space-x-4 my-1 border-b border-solid border-gray  `}
+      style={{
+        background: isRead ? "rgba(204, 171, 218, 0.1)" : "#fff",
+      }}
     >
       <div className="icon text-2xl">
         <span>

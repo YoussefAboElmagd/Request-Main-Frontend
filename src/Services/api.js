@@ -3,10 +3,7 @@ import axiosInstance from "./axiosInstance";
 // Sign up
 export const signUp = async (userData) => {
   try {
-    const response = await axiosInstance.post(
-      `auth/signup`,
-      userData
-    );
+    const response = await axiosInstance.post(`auth/signup`, userData);
     console.log("Response => ", response);
     console.log("Response => ", response.data);
 
@@ -1060,7 +1057,7 @@ export const getAllMembersByProject = async (projectId, lang) => {
     console.log("Response from members by project => ", response);
     return response.data;
   } catch (error) {
-    console.error(  
+    console.error(
       "Get members by project error: ",
       error.response?.data || error.message
     );
@@ -1098,7 +1095,6 @@ export const addVocation = async (token, vocationData, lang) => {
 //  get all tags by project
 
 export const getAllTagsByProject = async (projectId, lang) => {
-
   try {
     const response = await axiosInstance.get(
       `tags/project/${projectId}?lang=${lang}`
@@ -1115,11 +1111,9 @@ export const getAllTagsByProject = async (projectId, lang) => {
   }
 };
 
+//  get project tag progress
 
-//  get project tag progress 
-
-export const getProjectTagProgress = async ( projectId, lang) => {
-
+export const getProjectTagProgress = async (projectId, lang) => {
   try {
     const response = await axiosInstance.get(
       `project/tags/progress/${projectId}?lang=${lang}`
@@ -1136,21 +1130,69 @@ export const getProjectTagProgress = async ( projectId, lang) => {
   }
 };
 
-//  get all notifications 
+//  get all notifications
 
-    export const getAllNotifications = async (token, userId, days) => {
-      try {
-        const response = await axiosInstance.get(
-          `notification/${userId}?days=${days}`
-        );
+export const getAllNotifications = async (token, userId, days) => {
+  try {
+    const response = await axiosInstance.get(
+      `notification/${userId}?days=${days}`
+    );
 
-        console.log("Response from get all notifications => ", response);
-        return response.data;
-      } catch (error) {
-        console.error(
-          "Get all notifications error: ",
-          error.response?.data || error.message
-        );
-        throw error;
+    console.log("Response from get all notifications => ", response);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Get all notifications error: ",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+//  update notification
+
+export const updateNotification = async (token, NotifiId, NotifiData) => {
+  try {
+    const response = await axiosInstance.put(
+      `/notification/${NotifiId}`,
+      NotifiData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       }
-    };
+    );
+    console.log("Response from update notification =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Update notification error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+
+//  make all read 
+export const MakeAllRead = async (token, userId, NotifiData) => {
+  try {
+    const response = await axiosInstance.put(
+      `/notification/all/${userId}`,
+      NotifiData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Response from update notifications =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Update notifications error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};

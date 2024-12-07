@@ -23,6 +23,7 @@ export const NotificationsProvider = ({ children }) => {
         // Add the notification if it's not a duplicate
         addNotification(newNotification);
       }
+      
     });
 
     console.log("Connected to notifications socket");
