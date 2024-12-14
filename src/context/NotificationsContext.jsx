@@ -41,7 +41,7 @@ export const NotificationsProvider = ({ children }) => {
         );
 
         if (!isDuplicate) {
-          console.log("aaaaaa");
+         
           return [newNotification, ...prevNotifications];
         }
 

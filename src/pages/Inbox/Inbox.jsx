@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -20,6 +20,7 @@ import {
   getAllProjectsByUser,
   getAllProjectsForUser,
   getMessagesBetweenUsers,
+  sendDocsAndVoiceNote,
   sendMessage,
 } from "../../Services/api";
 import { useSelector } from "react-redux";
@@ -29,12 +30,15 @@ import Loader from "../../Components/Loader/Loader";
 import { CreateGroup } from "../../Components/CreateGroup/CreateGroup";
 import { Skeleton } from "@mui/material";
 import { CiChat1 } from "react-icons/ci";
+import { toast } from "react-toastify";
+import { ChatContext } from "../../context/ChatContext";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Inbox = () => {
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
-  const lang = i18n.language;
+  const { messages, setMessages, addMsg } = useContext(ChatContext);
   const [loading, setLoading] = useState(true);
   const [ChatLoading, setChatLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(false);
@@ -42,15 +46,17 @@ const Inbox = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [IsSender, setIsSender] = useState();
+  // const [messages, setMessages] = useState([]);
   const [Projects, setProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
-  console.log(preview);
-  console.log(file);
+  const [filePath, setFilePath] = useState(null);
+  const [limit] = useState(20);
+  const [offset, setOffset] = useState(1);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -76,17 +82,20 @@ const Inbox = () => {
 
     setIsChatVisible(true);
   };
-
   useEffect(() => {
     const fetchMessages = async () => {
       if (activeChat) {
         setChatLoading(true);
+        setOffset(1);
+        setHasMoreMessages(true);
         try {
           const messagesData = await getMessagesBetweenUsers(
             token,
             activeChat.projectId,
             userId,
-            activeChat.member._id
+            activeChat.member._id,
+            limit,
+            offset
           );
           setMessages(messagesData.results);
 
@@ -101,9 +110,33 @@ const Inbox = () => {
         }
       }
     };
-
     fetchMessages();
-  }, [token, activeChat, userId]);
+  }, [activeChat, token, userId]);
+  const loadMoreMessages = async () => {
+    if (!activeChat || !hasMoreMessages) return;
+    try {
+      const newOffset = offset + limit; // Update the offset
+      console.log("newOffset", newOffset);
+      const messagesData = await getMessagesBetweenUsers(
+        token,
+        activeChat.projectId,
+        userId,
+        activeChat.member._id,
+        limit,
+        newOffset
+      );
+
+      if (messagesData.results.length < limit) {
+        setHasMoreMessages(false); // No more messages available
+      }
+
+      // Append new messages at the beginning of the current list
+      setMessages((prevMessages) => [...messagesData.results, ...prevMessages]);
+      setOffset(newOffset);
+    } catch (error) {
+      console.error("Error loading more messages:", error);
+    }
+  };
 
   const addAudioMessage = (url) => {
     const newMessage = {
@@ -116,11 +149,49 @@ const Inbox = () => {
     setMessages((prev) => [...prev, newMessage]);
   };
 
+  const addAttachmentMessage = async () => {
+    try {
+      if (!file) {
+        console.error("No file selected for upload.");
+        throw new Error("File is required to send an attachment.");
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.info("File size exceeds 10MB limit.");
+      }
+
+      // Ensure file is wrapped in FormData for upload
+      const formData = new FormData();
+      formData.append("docs", file);
+
+      // Send the file using sendDocsAndVoiceNote
+      const res = await sendDocsAndVoiceNote(formData);
+
+      if (res && res.docs) {
+        console.log("✅ Attachment uploaded successfully:", res);
+        setFilePath(res.docs);
+        console.log(filePath);
+
+        setPreview(null);
+      } else {
+        throw new Error("Invalid response from server.");
+      }
+    } catch (err) {
+      console.error("❌ Error adding attachment:", err.message || err);
+
+      // toast.error("Failed to upload attachment. Please try again.");
+    } finally {
+      setPreview(null);
+      setFile(null);
+    }
+  };
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
     try {
       // if (messageInput.trim() === "") return;
+      if (file) {
+        await addAttachmentMessage();
+      }
 
       const newMessage = {
         sender: userId,
@@ -129,19 +200,20 @@ const Inbox = () => {
         isSender: true,
         type: messageInput ? "text" : file ? "doc" : "text",
       };
-      if (messageInput) {
+      if (messageInput.trim()) {
         newMessage.content = messageInput;
       }
-      console.log(preview, "/", file);
+      console.log(filePath);
 
       if (preview?.type === "image") {
-        newMessage.docs = file;
+        newMessage.docs = filePath;
       }
 
       console.log("newMessage:", newMessage);
 
-      const res = await sendMessage(token, newMessage);
+      const res = await sendMessage(newMessage);
       console.log(res);
+      setMessages((prev) => [...prev, newMessage]);
 
       setMessageInput("");
     } catch (error) {
@@ -149,32 +221,16 @@ const Inbox = () => {
     }
   };
 
-  const addAttachmentMessage = (file) => {
-    const extension = file.name.split(".").pop().toLowerCase();
-    const isImage = ["jpg", "jpeg", "png", "gif"].includes(extension);
-    const isPdf = extension === "pdf";
-    const isAudio = ["mp3", "wav", "ogg"].includes(extension);
-    const fileUrl = URL.createObjectURL(file);
-
-    const newMessage = {
-      id: messages.length + 1,
-      time: new Date().toLocaleTimeString(),
-      type: "send",
-      attachment: { url: fileUrl, isImage, isPdf, isAudio },
-    };
-
-    // Add the new message to the state
-    setMessages((prev) => [...prev, newMessage]);
-  };
-
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
+      console.log(selectedFile);
+
       const fileUrl = URL.createObjectURL(selectedFile); // Create a URL for the file
 
       const extension = selectedFile.name.split(".").pop().toLowerCase();
       const isImage = ["jpg", "jpeg", "png", "gif"].includes(extension);
-      const isPdf = extension === "pdf";
+      const isPdf = ["pdf", "docx"].includes(extension);
       const isAudio = ["mp3", "wav", "ogg"].includes(extension);
 
       if (isImage) {
@@ -188,6 +244,8 @@ const Inbox = () => {
         setPreview({
           type: "pdf",
           url: fileUrl,
+          name: selectedFile.name,
+          size: selectedFile.size,
         });
       } else if (isAudio) {
         // Display audio preview
@@ -240,91 +298,9 @@ const Inbox = () => {
     return () => clearTimeout(timer);
   }, [searchTerm, handleSearch]);
 
-  // const renderMessageContent = (message) => {
-  //   if (message.docs?.isImage) {
-  //     return (
-  //       <div
-  //         className={`relative max-w-xs ${message.isSender === true ? "" : ""}`}
-  //       >
-  //         <img
-  //           src={message.docs.url}
-  //           alt="attachment"
-  //           className="w-full  max-w-xs rounded-lg"
-  //         />{" "}
-  //         <span
-  //           className={`absolute  bottom-2 p-2  rounded-full text-white ${
-  //             message.isSender === true
-  //               ? "right-2 bg-linear_1 "
-  //               : "left-2 bg-linear_3  "
-  //           } text-xs`}
-  //         >
-  //           {message.date}
-  //         </span>
-  //       </div>
-  //     );
-  //   }
-  //   if (message.docs?.isPdf) {
-  //     return (
-  //       <div className="relative">
-  //         <a
-  //           href={message.docs.url}
-  //           target="_blank"
-  //           rel="noopener noreferrer"
-  //           className="text-blue-500 underline"
-  //         >
-  //           Open PDF
-  //         </a>
-  //         <span
-  //           className={`absolute  bottom-2 p-2  rounded-full text-white ${
-  //             message.sender === userId ? "right-2  " : "left-2   "
-  //           } text-xs`}
-  //         >
-  //           {message.date}
-  //         </span>
-  //       </div>
-  //     );
-  //   }
-  //   if (message.audio) {
-  //     return (
-  //       <div className="relative max-w-xs">
-  //         <CustomAudioPlayer
-  //           src={message.voiceNote}
-  //           className={`${
-  //             message.sender === userId
-  //               ? "bg-linear_1 send"
-  //               : "bg-linear_3 receive"
-  //           }`}
-  //         />
-  //         <span
-  //           className={`absolute  bottom-2 p-2  rounded-full text-white ${
-  //             message.isSender === true ? "right-2  " : "left-2   "
-  //           } text-xs`}
-  //         >
-  //           {message.date}
-  //         </span>
-  //       </div>
-  //     );
-  //   }
-  //   return (
-  //     <div
-  //       className={`message  ltr:text-start rtl:text-end
-  //         relative p-2 m-2 w-full max-w-md ${
-  //           message.sender === userId
-  //             ? "bg-linear_1 send"
-  //             : "bg-linear_3 receive"
-  //         } text-white`}
-  //     >
-  //       <div className="text">{message.content}</div>
-  //       <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
-  //         {message.date}
-  //       </span>
-  //     </div>
-  //   );
-  // };
-
   const renderMessageContent = (message) => {
     switch (true) {
-      case message.docs?.isImage:
+      case message.type === "doc":
         return renderImage(message);
       case message.docs?.isPdf:
         return renderPDF(message);
@@ -338,9 +314,9 @@ const Inbox = () => {
   const renderImage = (message) => (
     <div className={`relative max-w-xs ${message.isSender === true ? "" : ""}`}>
       <img
-        src={message.docs.url}
+        src={`https://api.request-sa.com/${message.docs}`}
         alt="attachment"
-        className="w-full  max-w-xs rounded-lg"
+        className="w-full min-w-[200px]  max-w-xs rounded-lg"
       />{" "}
       <span
         className={`absolute  bottom-2 p-2  rounded-full text-white ${
@@ -349,7 +325,11 @@ const Inbox = () => {
             : "left-2 bg-linear_3  "
         } text-xs`}
       >
-        {message.date}
+        {message.date ||
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
       </span>
     </div>
   );
@@ -369,7 +349,11 @@ const Inbox = () => {
           message.sender === userId ? "right-2  " : "left-2   "
         } text-xs`}
       >
-        {message.date}
+        {message.date ||
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
       </span>
     </div>
   );
@@ -387,7 +371,11 @@ const Inbox = () => {
           message.isSender === true ? "right-2  " : "left-2   "
         } text-xs`}
       >
-        {message.date}
+        {message.date ||
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
       </span>
     </div>
   );
@@ -403,7 +391,11 @@ const Inbox = () => {
     >
       <div className="text">{message.content}</div>
       <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
-        {message.date}
+        {message.date ||
+          new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
       </span>
     </div>
   );
@@ -417,7 +409,7 @@ const Inbox = () => {
       {Array.from({ length: messages.length }).map((_, index) => (
         <div
           key={index}
-          className={`skeleton-item  relative p-2 m-2 w-full max-w-md ${ 
+          className={`skeleton-item  relative p-2 m-2 w-full max-w-md ${
             index % 2 === 0 ? "self-start" : "self-end"
           } 
 
@@ -598,31 +590,73 @@ const Inbox = () => {
               </div>
               <Divider />
               <div className="chat_container overflow-y-scroll relative  h-[70vh] lg:h-[50vh] my-3 ">
-                {ChatLoading
-                  ? renderSkeletonLoader()
-                  : messages.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className={`flex items-center ${
-                          msg.sender !== userId
-                            ? "justify-start"
-                            : "justify-end"
-                        }`}
-                      >
-                        {renderMessageContent(msg)}
-                      </div>
-                    ))}
+                <InfiniteScroll
+                  dataLength={messages.length}
+                  next={loadMoreMessages}
+                  hasMore={hasMoreMessages}
+                  loader={<h4>Loading...</h4>}
+                  inverse={true}
+                  endMessage={
+                    <p className="text-red text-center">No more messages</p>
+                  }
+                >
+                  <button className="" onclick={loadMoreMessages}>
+                    load more{" "}
+                  </button>
+                  {ChatLoading
+                    ? renderSkeletonLoader()
+                    : messages
+                        .slice()
+                        .reverse()
+                        .map((msg) => (
+                          <div
+                            key={msg._id}
+                            className={`flex items-center ${
+                              msg.sender !== userId
+                                ? "justify-start"
+                                : "justify-end"
+                            }`}
+                          >
+                            {renderMessageContent(msg)}
+                          </div>
+                        ))}
+                </InfiniteScroll>
               </div>
-              <div className="preview relative flex items-center justify-center" >
+              <div className="preview relative flex items-center justify-center">
                 {preview && preview.type === "image" && (
                   <div className=" -bottom-10 p-2 absolute bg-gray-50  rounded-md">
                     <img
                       src={preview.url}
                       alt="File preview"
-                      className="preview-image w-[80vh] h-[40vh] object-contain rounded-md"
+                      className="preview-image !w-[80vh] !h-[40vh] object-contain rounded-md"
                     />
 
                     <div className="actions mt-1 flex items-center justify-end gap-3">
+                      <button
+                        onClick={handleCancelFile}
+                        className="p-2 font-bold text-red"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleSendMessage}
+                        className="py-2 px-4 font-bold bg-purple text-white rounded-md"
+                      >
+                        Send
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {preview && preview.type === "pdf" && (
+                  <div className=" -bottom-10 p-3 absolute bg-gray-100 w-full h-[20vh]  rounded-md">
+                    <div className=" text-center my-3">
+                      <h4 className="font-bold text-lg"> {preview.name}</h4>
+                      <span className="font-bold text-sm text-gray">
+                        {(preview.size / (1024 * 1024)).toFixed(2)} MB
+                      </span>
+                    </div>
+
+                    <div className="actions mt-1 flex items-center  gap-3 bottom-2 absolute right-5">
                       <button
                         onClick={handleCancelFile}
                         className="p-2 font-bold text-red"
@@ -688,4 +722,3 @@ const Inbox = () => {
 };
 
 export default Inbox;
-

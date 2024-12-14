@@ -1239,11 +1239,13 @@ export const getMessagesBetweenUsers = async (
   token,
   projectId,
   sender,
-  receiver
+  receiver,
+  limit = 20,
+  page = 1
 ) => {
   try {
     const response = await axiosInstance.get(
-      `Message/${projectId}?sender=${sender}&receiver=${receiver}`,
+      `Message/${projectId}?sender=${sender}&receiver=${receiver}&limit=${limit}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1283,12 +1285,12 @@ export const getAllProjectsByUser = async (token, userId) => {
 };
 
 //  send msg
-export const sendMessage = async (token, msgData) => {
+export const sendMessage = async (msgData) => {
   try {
     const response = await axiosInstance.post(`/message`, msgData, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
+        // Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
     console.log("Response from send msg =>", response.data);
@@ -1301,4 +1303,20 @@ export const sendMessage = async (token, msgData) => {
   }
 };
 
-  
+//  send docs & VoiceNote
+export const sendDocsAndVoiceNote = async (msgData) => {
+  try {
+    const response = await axiosInstance.post(`/message/images`, msgData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("✅ Response from send docs & VoiceNote:", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("❌ Send docs & VoiceNote error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
