@@ -117,8 +117,8 @@ export function SignatureBtn({ onSignatureChange }) {
   const handleSaveSignature = () => {
     if (signaturePadRef.current) {
       const trimmedCanvas = signaturePadRef.current.getTrimmedCanvas();
+      console.log(trimmedCanvas);
       const dataUrl = trimmedCanvas.toDataURL("image/png");
-
       setPreview(dataUrl);
       localStorage.setItem("Signature", dataUrl);
 

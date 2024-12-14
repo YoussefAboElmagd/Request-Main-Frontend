@@ -347,7 +347,8 @@
     "VocCreatedSuccess": "تم إنشاء المهن بنجاح",
     "you have been added to {{projectName}} successfully": "لقد تم إضافتك إلى {{projectName}} بنجاح",
     "You have canceled the invitation to {{projectName}} successfully": "لقد ألغيت الدعوة إلى {{projectName}} بنجاح",
-    "inviteSuccess": "تم  ارسال الدعوه بنجاح"
+    "inviteSuccess": "تم  ارسال الدعوه بنجاح",
+    "groupCreatedSuccess": "تم انشاء المجموعه بنجاح"
   },
   "You have been invited to": "لقد تمت دعوتك إلى",
   "as a": "ك",

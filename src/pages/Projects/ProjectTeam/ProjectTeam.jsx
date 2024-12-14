@@ -3,6 +3,7 @@ import { BsEye, BsEyeSlash, BsMicrosoftTeams } from "react-icons/bs";
 import {
   addMemberForProject,
   deleteMemberFromProjectTeam,
+  getAllMembersByProject,
   getAllTagsByUser,
   getAllVocations,
   getMembersByProject,
@@ -219,7 +220,7 @@ const ProjectTeam = () => {
           getAllVocations(user._id, lang),
           // getAllProjectsForUser(user._id, token),
           getAllTagsByUser(user._id),
-          getMembersByProject(projectId,lang),
+          getAllMembersByProject(projectId, lang),
         ]);
 
         setVocations(vocationResponse.results);

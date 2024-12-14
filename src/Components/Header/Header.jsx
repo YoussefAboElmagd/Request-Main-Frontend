@@ -18,9 +18,9 @@ import {
   updateNotification,
 } from "../../Services/api";
 const Header = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);    
   const token = useSelector((state) => state.auth.token);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isRTL, setIsRTL] = useState(false);
   const { t, i18n } = useTranslation();
@@ -145,9 +145,9 @@ const formatDate = (isoString) => {
                 {unreadNotifications
                   .filter((notification) => notification?.message)
                   .slice(0, 5)
-                  .map((notification, idx) => (
+                  .map((notification,idx ) => (
                     <NotificationItem
-                      key={notification._id}
+                      key={idx}
                       type={notification?.type}
                       message_en={notification?.message?.message_en}
                       message_ar={notification?.message?.message_ar}

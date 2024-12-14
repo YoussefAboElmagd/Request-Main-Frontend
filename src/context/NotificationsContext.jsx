@@ -17,13 +17,12 @@ export const NotificationsProvider = ({ children }) => {
       if (data?.message) {
         const newNotification = {
           ...data,
-          _id: data._id || `${Date.now()}-${Math.random()}`, // Fallback ID generation
+          // _id: data._id || `${Date.now()}-${Math.random()}`, // Fallback ID generation
         };
 
         // Add the notification if it's not a duplicate
         addNotification(newNotification);
       }
-      
     });
 
     console.log("Connected to notifications socket");
@@ -42,6 +41,7 @@ export const NotificationsProvider = ({ children }) => {
         );
 
         if (!isDuplicate) {
+          console.log("aaaaaa");
           return [newNotification, ...prevNotifications];
         }
 

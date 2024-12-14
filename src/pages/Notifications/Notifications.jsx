@@ -11,7 +11,7 @@ import Empty from "../../Components/empty/empty";
 import { t } from "i18next";
 import Loader from "../../Components/Loader/Loader";
 
-const SOCKET_URL = "https://socket.request-sa.com";
+// const SOCKET_URL = "https://socket.request-sa.com";
 const Notifications = () => {
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
@@ -36,11 +36,11 @@ const Notifications = () => {
         } else {
           setError("Failed to load notifications.");
         }
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false); 
       } catch (error) {
         console.error("Error fetching notifications:", error);
         setError("Failed to fetch notifications.");
-        setLoading(false); // Set loading to false in case of an error
+        setLoading(false);
       }
     };
 

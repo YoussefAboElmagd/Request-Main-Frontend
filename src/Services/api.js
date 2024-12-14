@@ -1173,8 +1173,7 @@ export const updateNotification = async (token, NotifiId, NotifiData) => {
   }
 };
 
-
-//  make all read 
+//  make all read
 export const MakeAllRead = async (token, userId, NotifiData) => {
   try {
     const response = await axiosInstance.put(
@@ -1196,3 +1195,110 @@ export const MakeAllRead = async (token, userId, NotifiData) => {
     throw new Error(errorMessage);
   }
 };
+
+//  get all groups & members
+
+export const getAllGroupsAndMembers = async (token, projectId) => {
+  try {
+    const response = await axiosInstance.get(`/group/project/${projectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Response from get all groups and members =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Get all groups and members error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+//  create chat Group
+export const createChatGroup = async (token, chatGroupData) => {
+  try {
+    const response = await axiosInstance.post(`/group`, chatGroupData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Response from create chat group =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Create chat group error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+//  get messages between two users
+export const getMessagesBetweenUsers = async (
+  token,
+  projectId,
+  sender,
+  receiver
+) => {
+  try {
+    const response = await axiosInstance.get(
+      `Message/${projectId}?sender=${sender}&receiver=${receiver}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(
+      "Response from get messages between two users =>",
+      response.data
+    );
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Get messages between two users error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+//  get all projects by user
+
+export const getAllProjectsByUser = async (token, userId) => {
+  try {
+    const response = await axiosInstance.get(`/Message/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Response from get all projects by user =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Get all projects by user error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+//  send msg
+export const sendMessage = async (token, msgData) => {
+  try {
+    const response = await axiosInstance.post(`/message`, msgData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("Response from send msg =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Send msg error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+  

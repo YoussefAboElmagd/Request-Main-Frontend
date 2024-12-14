@@ -10,8 +10,15 @@ const colors = [
   "#FFC6FF",
 ];
 
-const getRandomColor = () => {
-  return colors[Math.floor(Math.random() * colors.length)];
+const getRandomColor = (name) => {
+  if (!name) return colors[0];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash << 5) - hash + name.charCodeAt(i);
+  }
+
+  const colorIndex = Math.abs(hash) % colors.length;
+  return colors[colorIndex];
 };
 
 const renderInitials = (name) => {
@@ -23,7 +30,7 @@ const renderInitials = (name) => {
 };
 
 const ProfileAvatar = ({ name, profilePic, className }) => {
-  const randomColor = useMemo(() => getRandomColor(), []); 
+  const randomColor = useMemo(() => getRandomColor(), []);
 
   return profilePic ? (
     <img
