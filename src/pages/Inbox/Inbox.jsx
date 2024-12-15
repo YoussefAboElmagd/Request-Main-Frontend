@@ -19,12 +19,12 @@ import {
   getAllGroupsAndMembers,
   getAllProjectsByUser,
   getAllProjectsForUser,
+  getGroupData,
   getMessagesBetweenUsers,
   sendDocsAndVoiceNote,
   sendMessage,
 } from "../../Services/api";
 import { useSelector } from "react-redux";
-import i18n from "../../config/i18n";
 import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
 import Loader from "../../Components/Loader/Loader";
 import { CreateGroup } from "../../Components/CreateGroup/CreateGroup";
@@ -32,30 +32,59 @@ import { Skeleton } from "@mui/material";
 import { CiChat1 } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { ChatContext } from "../../context/ChatContext";
-import InfiniteScroll from "react-infinite-scroll-component";
+
 
 const Inbox = () => {
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
-  const { messages, setMessages, addMsg } = useContext(ChatContext);
+  const { messages, setMessages } = useContext(ChatContext);
   const [loading, setLoading] = useState(true);
   const [ChatLoading, setChatLoading] = useState(true);
-  const [isOnline, setIsOnline] = useState(false);
   const [activeChat, setActiveChat] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [messageInput, setMessageInput] = useState("");
-  // const [messages, setMessages] = useState([]);
   const [Projects, setProjects] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
   const [filePath, setFilePath] = useState(null);
-  const [limit] = useState(20);
-  const [offset, setOffset] = useState(1);
-  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const [IsGroup, setIsGroup] = useState(false);
+  // const [limit] = useState(20);
+  // const [offset, setOffset] = useState(1);
+  // const [hasMoreMessages, setHasMoreMessages] = useState(true);
+
+  useEffect(() => {
+    if (activeChat?.member?.isGroup) {
+      setIsGroup(true);
+    } else {
+      setIsGroup(false);
+    }
+  }, [activeChat]);
+  console.log("IsGroup  :", IsGroup);
+  useEffect(() => {
+    const fetchGroupData = async () => {
+      setLoading(true);
+      try {
+        const projectsData = await getGroupData(
+          token,
+          activeChat?.projectId,
+          activeChat.member._id
+        );
+
+        setProjects(projectsData.results);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (IsGroup) {
+      fetchGroupData();
+    }
+  }, [activeChat, token]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,7 +101,7 @@ const Inbox = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token, userId]);
 
   const handleChatClick = (member, projectId) => {
     setActiveChat({
@@ -86,21 +115,19 @@ const Inbox = () => {
     const fetchMessages = async () => {
       if (activeChat) {
         setChatLoading(true);
-        setOffset(1);
-        setHasMoreMessages(true);
+        // setOffset(1);
+        // setHasMoreMessages(true);
         try {
           const messagesData = await getMessagesBetweenUsers(
             token,
             activeChat.projectId,
             userId,
-            activeChat.member._id,
-            limit,
-            offset
+            activeChat.member._id
           );
           setMessages(messagesData.results);
 
           console.log(
-            `Response from get messages between ${userId} & ${activeChat.member._id}`,
+            `Response from get messages between ${userId} & ${activeChat.member._id} in ${activeChat.projectId} `,
             messagesData.results
           );
         } catch (error) {
@@ -110,33 +137,36 @@ const Inbox = () => {
         }
       }
     };
-    fetchMessages();
-  }, [activeChat, token, userId]);
-  const loadMoreMessages = async () => {
-    if (!activeChat || !hasMoreMessages) return;
-    try {
-      const newOffset = offset + limit; // Update the offset
-      console.log("newOffset", newOffset);
-      const messagesData = await getMessagesBetweenUsers(
-        token,
-        activeChat.projectId,
-        userId,
-        activeChat.member._id,
-        limit,
-        newOffset
-      );
-
-      if (messagesData.results.length < limit) {
-        setHasMoreMessages(false); // No more messages available
-      }
-
-      // Append new messages at the beginning of the current list
-      setMessages((prevMessages) => [...messagesData.results, ...prevMessages]);
-      setOffset(newOffset);
-    } catch (error) {
-      console.error("Error loading more messages:", error);
+    if (!IsGroup) {
+      fetchMessages();
     }
-  };
+  }, [activeChat, token, userId]);
+
+  // const loadMoreMessages = async () => {
+  //   if (!activeChat || !hasMoreMessages) return;
+  //   try {
+  //     const newOffset = offset + limit; // Update the offset
+  //     console.log("newOffset", newOffset);
+  //     const messagesData = await getMessagesBetweenUsers(
+  //       token,
+  //       activeChat.projectId,
+  //       userId,
+  //       activeChat.member._id,
+  //       limit,
+  //       newOffset
+  //     );
+
+  //     if (messagesData.results.length < limit) {
+  //       setHasMoreMessages(false); // No more messages available
+  //     }
+
+  //     // Append new messages at the beginning of the current list
+  //     setMessages((prevMessages) => [...messagesData.results, ...prevMessages]);
+  //     setOffset(newOffset);
+  //   } catch (error) {
+  //     console.error("Error loading more messages:", error);
+  //   }
+  // };
 
   const addAudioMessage = (url) => {
     const newMessage = {
@@ -213,7 +243,6 @@ const Inbox = () => {
 
       const res = await sendMessage(newMessage);
       console.log(res);
-      setMessages((prev) => [...prev, newMessage]);
 
       setMessageInput("");
     } catch (error) {
@@ -229,7 +258,7 @@ const Inbox = () => {
       const fileUrl = URL.createObjectURL(selectedFile); // Create a URL for the file
 
       const extension = selectedFile.name.split(".").pop().toLowerCase();
-      const isImage = ["jpg", "jpeg", "png", "gif"].includes(extension);
+      const isImage = ["jpg", "jpeg","png", "gif"].includes(extension);
       const isPdf = ["pdf", "docx"].includes(extension);
       const isAudio = ["mp3", "wav", "ogg"].includes(extension);
 
@@ -337,7 +366,7 @@ const Inbox = () => {
   const renderPDF = (message) => (
     <div className="relative">
       <a
-        href={message.docs.url}
+        href={`https://api.request-sa.com/${message.docs.url}`}
         target="_blank"
         rel="noopener noreferrer"
         className="text-blue-500 underline"
@@ -552,7 +581,7 @@ const Inbox = () => {
                   />
                   <div className="content flex flex-col">
                     <span>{activeChat?.member?.name || "Loading..."}</span>
-                    {activeChat?.member?.isGroup ? (
+                    {activeChat?.member?.isGroup && (
                       <div className="avatars flex items-center  -space-x-2">
                         {activeChat?.member?.users?.slice(0, 3).map((user) => (
                           <ProfileAvatar
@@ -568,29 +597,20 @@ const Inbox = () => {
                           </div>
                         )}
                       </div>
-                    ) : (
-                      <div className="state flex items-center gap-1">
-                        <span
-                          className={`w-3 h-3 rounded-full ${
-                            isOnline ? "bg-green" : "bg-gray"
-                          }`}
-                        />
-                        <span>{isOnline ? "online" : "offline"}</span>
-                      </div>
                     )}
                   </div>
                 </div>
-                {activeChat?.member?.isGroup ? (
+                {/* {activeChat?.member?.isGroup ? (
                   <div>add member</div>
-                ) : (
+                ) : ( */}
                   <div className="dot">
                     <HiOutlineDotsHorizontal />
                   </div>
-                )}
+                {/* )} */}
               </div>
               <Divider />
               <div className="chat_container overflow-y-scroll relative  h-[70vh] lg:h-[50vh] my-3 ">
-                <InfiniteScroll
+                {/* <InfiniteScroll
                   dataLength={messages.length}
                   next={loadMoreMessages}
                   hasMore={hasMoreMessages}
@@ -599,28 +619,41 @@ const Inbox = () => {
                   endMessage={
                     <p className="text-red text-center">No more messages</p>
                   }
-                >
-                  <button className="" onclick={loadMoreMessages}>
+                > */}
+                {/* <button className="" onclick={loadMoreMessages}>
                     load more{" "}
-                  </button>
-                  {ChatLoading
-                    ? renderSkeletonLoader()
-                    : messages
-                        .slice()
-                        .reverse()
-                        .map((msg) => (
-                          <div
-                            key={msg._id}
-                            className={`flex items-center ${
-                              msg.sender !== userId
-                                ? "justify-start"
-                                : "justify-end"
-                            }`}
-                          >
-                            {renderMessageContent(msg)}
-                          </div>
-                        ))}
-                </InfiniteScroll>
+                  </button> */}
+                {ChatLoading
+                  ? renderSkeletonLoader()
+                  : messages
+                      .slice()
+                      .reverse()
+                      .map((msg, idx) => (
+                        <div
+                          key={idx}
+                          className={`flex items-center ${
+                            msg.sender !== userId
+                              ? "justify-start"
+                              : "justify-end"
+                          }`}
+                        >
+                          {renderMessageContent(msg)}
+                        </div>
+                      ))}
+                {messages?.length === 0 && (
+                  <div className="flex items-center justify-center text-center text-gray-500">
+                    {IsGroup ? (
+                      <p>
+                        No messages in this group chat yet. Be the first to send
+                        a message!
+                      </p>
+                    ) : (
+                      <p>No messages in this chat yet. Start a conversation!</p>
+                    )}
+                  </div>
+                )}
+
+                {/* </InfiniteScroll> */}
               </div>
               <div className="preview relative flex items-center justify-center">
                 {preview && preview.type === "image" && (
@@ -722,3 +755,6 @@ const Inbox = () => {
 };
 
 export default Inbox;
+
+
+

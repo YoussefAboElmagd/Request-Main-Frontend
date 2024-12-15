@@ -1197,7 +1197,6 @@ export const MakeAllRead = async (token, userId, NotifiData) => {
 };
 
 //  get all groups & members
-
 export const getAllGroupsAndMembers = async (token, projectId) => {
   try {
     const response = await axiosInstance.get(`/group/project/${projectId}`, {
@@ -1245,7 +1244,7 @@ export const getMessagesBetweenUsers = async (
 ) => {
   try {
     const response = await axiosInstance.get(
-      `Message/${projectId}?sender=${sender}&receiver=${receiver}&limit=${limit}&page=${page}`,
+      `Message/${projectId}?sender=${sender}&receiver=${receiver}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1317,6 +1316,28 @@ export const sendDocsAndVoiceNote = async (msgData) => {
     const errorMessage =
       error.response?.data?.message || error.response?.data || error.message;
     console.error("❌ Send docs & VoiceNote error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+//  get group data
+
+export const getGroupData = async (token, projectId, groupId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/Message/group/${projectId}?group=${groupId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Response from get group data =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Get group data error:", errorMessage);
     throw new Error(errorMessage);
   }
 };
