@@ -6,6 +6,7 @@ import "./RecordAudio.scss";
 const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
   const { startRecording, stopRecording, isRecording, recordingBlob } =
     useAudioRecorder();
+  console.log("isRecording from component: ", isRecording);
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
@@ -15,6 +16,11 @@ const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
 
   useEffect(() => {
     setIsRecording(isRecording);
+    if (isRecording) {
+      startRecording();
+    } else {
+      stopRecording();
+    }
   }, [isRecording]);
 
   return (
@@ -25,10 +31,18 @@ const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
           noiseSuppression: true,
           echoCancellation: true,
         }}
-        downloadOnSavePress={true}
-        downloadFileExtension="webm"
+        downloadOnSavePress={false}
         classes={{ icon: "mic-icon" }}
         buttonProps={{ icon: <MdOutlineKeyboardVoice /> }}
+        // recorderControls={{
+        //   showStopButton: isRecording,
+        //   showRecordButton: !isRecording,
+        //   showSaveButton: false,
+        //   showCancelButton: false,
+        // }}
+        mediaRecorderOptions={{
+          audioBitsPerSecond: 128000,
+        }}
         showVisualizer
       />
     </div>

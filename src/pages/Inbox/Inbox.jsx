@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect, useState, useCallback, useContext, useRef } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -32,7 +32,7 @@ import { Skeleton } from "@mui/material";
 import { CiChat1 } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { ChatContext } from "../../context/ChatContext";
-
+import { Record } from "../../Components/RecordAudio/Record";
 
 const Inbox = () => {
   const token = useSelector((state) => state.auth.token);
@@ -43,6 +43,9 @@ const Inbox = () => {
   const [ChatLoading, setChatLoading] = useState(true);
   const [activeChat, setActiveChat] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [audioData, setAudioData] = useState(null);
+  const [recordingTime, setRecordingTime] = useState(0);
   const [isChatVisible, setIsChatVisible] = useState(false);
   const [messageInput, setMessageInput] = useState("");
   const [Projects, setProjects] = useState([]);
@@ -50,97 +53,179 @@ const Inbox = () => {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
-  const [filePath, setFilePath] = useState(null);
+
   const [IsGroup, setIsGroup] = useState(false);
-  // const [limit] = useState(20);
-  // const [offset, setOffset] = useState(1);
-  // const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+  const [page, setPage] = useState(1);
+  const chatContainerRef = useRef(null);
+  const topRef = useRef(null);
 
-  useEffect(() => {
-    if (activeChat?.member?.isGroup) {
-      setIsGroup(true);
-    } else {
-      setIsGroup(false);
+
+  const handleRecordingStateChange = (
+    recordingState,
+    pausedState,
+    audioBlob = null
+  ) => {
+    setIsRecording(recordingState);
+    setIsPaused(pausedState);
+    console.log(audioBlob);
+
+    if (audioBlob) {
+      setAudioData(audioBlob);
+      console.log(
+        "Audio Blob:",
+        URL.createObjectURL(audioBlob),
+        audioBlob.size / 1024, // Convert bytes to KB
+        audioBlob.type
+      );
     }
-  }, [activeChat]);
-  console.log("IsGroup  :", IsGroup);
+  };
+
+  const handleClear = () => {
+    setIsRecording(false);
+    setIsPaused(false);
+    setAudioData(null); // Clear the audio data
+    setRecordingTime(0); // Reset the timer
+  };
+  // Scroll to the bottom whenever messages change or chat loading state updates
   useEffect(() => {
-    const fetchGroupData = async () => {
-      setLoading(true);
-      try {
-        const projectsData = await getGroupData(
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, ChatLoading]);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const projectsData = await getAllProjectsByUser(token, userId);
+      setProjects(projectsData.results);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMessagesData = async () => {
+    if (!activeChat) return;
+
+    setChatLoading(true);
+    const { projectId, member } = activeChat;
+
+    try {
+      if (IsGroup) {
+        const groupData = await getGroupData(token, projectId, member._id);
+        setMessages(groupData.results);
+      } else {
+        const messagesData = await getMessagesBetweenUsers(
           token,
-          activeChat?.projectId,
-          activeChat.member._id
+          projectId,
+          userId,
+          member._id
         );
-
-        setProjects(projectsData.results);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+        setMessages(messagesData.results);
       }
-    };
-    if (IsGroup) {
-      fetchGroupData();
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    } finally {
+      setChatLoading(false);
     }
-  }, [activeChat, token]);
+  }; 
+  // const fetchMessagesData = async (prepend = false) => {
+  //   if (!activeChat || isFetching || !hasMoreMessages) return;
 
+  //   setIsFetching(true);
+  //   setChatLoading(true);
+  //   const { projectId, member } = activeChat;
+
+  //   try {
+  //     let newMessages = [];
+  //     let totalMsgs = 0;
+  //     const nextPage = prepend ? page + 1 : page;
+
+  //     // Fetch messages based on group or user chat
+  //     if (IsGroup) {
+  //       const groupData = await getGroupData(token, projectId, member._id);
+  //       newMessages = groupData.results;
+  //     } else {
+  //       const messagesData = await getMessagesBetweenUsers(
+  //         token,
+  //         projectId,
+  //         userId,
+  //         member._id,
+  //         20,
+  //         nextPage
+  //       );
+  //       newMessages = messagesData.results;
+  //       totalMsgs = messagesData.totalMessages; // Total number of messages for this chat
+  //     }
+
+  //     // Check if there are no more messages
+  //     if (newMessages.length === 0 || totalMsgs <= messages.length) {
+  //       setHasMoreMessages(false); // Stop fetching when no more messages are available
+  //     } else if (prepend) {
+  //       setPage((prev) => prev + 1); // Increment page only when prepending
+  //     }
+
+  //     // Update messages state based on whether we're prepending or appending
+  //     setMessages((prevMessages) => {
+  //       return prepend
+  //         ? [...newMessages, ...prevMessages]
+  //         : [...prevMessages, ...newMessages];
+  //     });
+
+  //     // Adjust scroll position after prepending messages
+  //     if (prepend && chatContainerRef.current) {
+  //       chatContainerRef.current.scrollTop += 200; // Adjust scroll offset
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching messages:", error);
+  //   } finally {
+  //     setIsFetching(false);
+  //     setChatLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting && hasMoreMessages && !isFetching) {
+  //         fetchMessagesData(true); // Fetch older messages when scrolled to top
+  //       }
+  //     },
+  //     { threshold: 0.5 } // Trigger when 50% of the top element is visible
+  //   );
+
+  //   if (topRef.current) observer.observe(topRef.current);
+
+  //   return () => {
+  //     if (topRef.current) observer.unobserve(topRef.current); // Disconnect observer cleanly
+  //   };
+  // }, [hasMoreMessages, isFetching]);
+
+  const handleChatClick = (member, projectId) => {
+    setActiveChat({ member, projectId });
+    setIsGroup(member.isGroup);
+    setIsChatVisible(true);
+  };
+
+  // Fetch projects when component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const projectsData = await getAllProjectsByUser(token, userId);
-
-        setProjects(projectsData.results);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [token, userId]);
 
-  const handleChatClick = (member, projectId) => {
-    setActiveChat({
-      member,
-      projectId,
-    });
-
-    setIsChatVisible(true);
-  };
+  // Detect if the active chat is a group chat
   useEffect(() => {
-    const fetchMessages = async () => {
-      if (activeChat) {
-        setChatLoading(true);
-        // setOffset(1);
-        // setHasMoreMessages(true);
-        try {
-          const messagesData = await getMessagesBetweenUsers(
-            token,
-            activeChat.projectId,
-            userId,
-            activeChat.member._id
-          );
-          setMessages(messagesData.results);
+    setIsGroup(activeChat?.member?.isGroup || false);
+  }, [activeChat]);
 
-          console.log(
-            `Response from get messages between ${userId} & ${activeChat.member._id} in ${activeChat.projectId} `,
-            messagesData.results
-          );
-        } catch (error) {
-          console.error("Error fetching messages:", error);
-        } finally {
-          setChatLoading(false);
-        }
-      }
-    };
-    if (!IsGroup) {
-      fetchMessages();
+  // Fetch group or direct messages based on the active chat type
+  useEffect(() => {
+    if (activeChat) {
+      fetchMessagesData();
     }
-  }, [activeChat, token, userId]);
+  }, [activeChat, IsGroup, token, userId]);
 
   // const loadMoreMessages = async () => {
   //   if (!activeChat || !hasMoreMessages) return;
@@ -168,127 +253,128 @@ const Inbox = () => {
   //   }
   // };
 
-  const addAudioMessage = (url) => {
-    const newMessage = {
-      id: messages.length + 1,
-      text: "Audio message",
-      time: new Date().toLocaleTimeString(),
-      type: "send",
-      audio: url,
-    };
-    setMessages((prev) => [...prev, newMessage]);
-  };
-
   const addAttachmentMessage = async () => {
+    setFile(null);
+
     try {
       if (!file) {
         console.error("No file selected for upload.");
         throw new Error("File is required to send an attachment.");
       }
+
       if (file.size > 10 * 1024 * 1024) {
         toast.info("File size exceeds 10MB limit.");
+        return null;
       }
 
-      // Ensure file is wrapped in FormData for upload
       const formData = new FormData();
       formData.append("docs", file);
 
-      // Send the file using sendDocsAndVoiceNote
       const res = await sendDocsAndVoiceNote(formData);
 
       if (res && res.docs) {
         console.log("✅ Attachment uploaded successfully:", res);
-        setFilePath(res.docs);
-        console.log(filePath);
-
         setPreview(null);
+        return res.docs; // Return the uploaded file path
       } else {
         throw new Error("Invalid response from server.");
       }
     } catch (err) {
       console.error("❌ Error adding attachment:", err.message || err);
-
-      // toast.error("Failed to upload attachment. Please try again.");
+      toast.error("Failed to upload attachment. Please try again.");
+      return null;
     } finally {
       setPreview(null);
       setFile(null);
     }
   };
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
     try {
-      // if (messageInput.trim() === "") return;
+      if (!messageInput.trim() && !file) {
+        console.warn("No content or file to send.");
+        return;
+      }
+      let uploadedFilePath = null;
+
       if (file) {
-        await addAttachmentMessage();
+        // Get the file path directly from addAttachmentMessage
+        uploadedFilePath = await addAttachmentMessage();
+
+        if (!uploadedFilePath) {
+          console.error("File upload failed, no file path received.");
+          throw new Error("Failed to upload the file.");
+        }
       }
 
       const newMessage = {
         sender: userId,
-        receiver: activeChat.member._id,
         project: activeChat.projectId,
         isSender: true,
         type: messageInput ? "text" : file ? "doc" : "text",
       };
+
       if (messageInput.trim()) {
         newMessage.content = messageInput;
       }
-      console.log(filePath);
 
-      if (preview?.type === "image") {
-        newMessage.docs = filePath;
+      if (uploadedFilePath) {
+        newMessage.docs = uploadedFilePath;
       }
 
-      console.log("newMessage:", newMessage);
+      if (IsGroup) {
+        newMessage.group = activeChat.member._id;
+      } else {
+        newMessage.receiver = activeChat.member._id;
+      }
+
+      console.log("newMessage from inbox:", newMessage);
 
       const res = await sendMessage(newMessage);
-      console.log(res);
+      console.log("Message sent successfully:", res);
 
+      // Reset state after message is sent
       setMessageInput("");
+      setPreview(null);
+      setFile(null);
     } catch (error) {
-      console.log("Error sending message:", error);
+      console.error("❌ Error sending message:", error.message || error);
+      toast.error("Failed to send message. Please try again.");
     }
   };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      console.log(selectedFile);
 
-      const fileUrl = URL.createObjectURL(selectedFile); // Create a URL for the file
+    if (!selectedFile) {
+      console.warn("No file selected.");
+      return;
+    }
 
-      const extension = selectedFile.name.split(".").pop().toLowerCase();
-      const isImage = ["jpg", "jpeg","png", "gif"].includes(extension);
-      const isPdf = ["pdf", "docx"].includes(extension);
-      const isAudio = ["mp3", "wav", "ogg"].includes(extension);
+    console.log("Selected File:", selectedFile);
 
-      if (isImage) {
-        // Display image preview
-        setPreview({
-          type: "image",
-          url: fileUrl,
-        });
-      } else if (isPdf) {
-        // Display PDF preview or link
-        setPreview({
-          type: "pdf",
-          url: fileUrl,
-          name: selectedFile.name,
-          size: selectedFile.size,
-        });
-      } else if (isAudio) {
-        // Display audio preview
-        setPreview({
-          type: "audio",
-          url: fileUrl,
-        });
-      } else {
-        // Handle other file types if needed
-        setPreview(null);
-      }
+    const fileUrl = URL.createObjectURL(selectedFile);
+    const extension = selectedFile.name.split(".").pop().toLowerCase();
 
-      // Store the file in the state to be used later
-      setFile(selectedFile);
+    // Set file state
+    setFile(selectedFile);
+
+    // Set preview based on extension (optional preview logic)
+    const supportedExtensions = {
+      image: ["jpg", "jpeg", "png", "gif", "bmp"],
+      document: ["pdf", "doc", "docx", "xls"],
+    };
+
+    if (supportedExtensions.image.includes(extension)) {
+      setPreview({ type: "image", url: fileUrl });
+    } else if (supportedExtensions.document.includes(extension)) {
+      setPreview({ type: "document", name: selectedFile.name });
+    } else {
+      toast.info(`File type ${extension} is not supported.`);
+      setFile(null);
+      return;
     }
   };
 
@@ -327,65 +413,131 @@ const Inbox = () => {
     return () => clearTimeout(timer);
   }, [searchTerm, handleSearch]);
 
+  const cleanFileName = (filePath) => {
+    const fileName = filePath.split("/").pop();
+    return fileName.replace(/^\d+-/, "");
+  };
+
   const renderMessageContent = (message) => {
+    // Check if docs exist and determine the file extension
+    const extension = message.docs
+      ? message.docs.split(".").pop().toLowerCase()
+      : null;
+
+    // Define supported image extensions
+    const imageExtensions = [
+      "jpg",
+      "jpeg",
+      "png",
+      "gif",
+      "bmp",
+      "tiff",
+      "svg",
+      "webp",
+    ];
+
     switch (true) {
-      case message.type === "doc":
+      // If message.docs exists and the file is an image
+      case message.docs && imageExtensions.includes(extension):
         return renderImage(message);
-      case message.docs?.isPdf:
+
+      // If message.docs exists and the file is not an image
+      case message.docs && !imageExtensions.includes(extension):
         return renderPDF(message);
+
+      // If message.audio exists, render audio
       case message.audio:
         return renderAudio(message);
+
+      // Default case: Render text
       default:
         return renderText(message);
     }
   };
 
-  const renderImage = (message) => (
-    <div className={`relative max-w-xs ${message.isSender === true ? "" : ""}`}>
-      <img
-        src={`https://api.request-sa.com/${message.docs}`}
-        alt="attachment"
-        className="w-full min-w-[200px]  max-w-xs rounded-lg"
-      />{" "}
-      <span
-        className={`absolute  bottom-2 p-2  rounded-full text-white ${
-          message.isSender === true
-            ? "right-2 bg-linear_1 "
-            : "left-2 bg-linear_3  "
-        } text-xs`}
-      >
-        {message.date ||
-          new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-      </span>
-    </div>
-  );
+  const renderImage = (message) => {
+    const senderId = message.sender?._id || message.sender;
+    const isSender = senderId === userId;
 
-  const renderPDF = (message) => (
-    <div className="relative">
-      <a
-        href={`https://api.request-sa.com/${message.docs.url}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-500 underline"
-      >
-        Open PDF
-      </a>
-      <span
-        className={`absolute  bottom-2 p-2  rounded-full text-white ${
-          message.sender === userId ? "right-2  " : "left-2   "
-        } text-xs`}
-      >
-        {message.date ||
-          new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-      </span>
-    </div>
-  );
+    const senderName = message.sender?.name || message.senderName;
+    const formattedDate =
+      message.date ||
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+    return (
+      <div className={`relative max-w-xs rounded-lg  m-2 `}>
+        {IsGroup && (
+          <div
+            className={`text-black w-full  m-1 ${
+              isSender ? "hidden" : "block"
+            }`}
+          >
+            {senderName}
+            {/* {isSender && <span className="text-gray"> (you)</span>} */}
+          </div>
+        )}
+        <div
+          className={` relative   border-gray-100 border  border-solid  text-white`}
+        >
+          <img
+            src={`https://api.request-sa.com/${message?.docs}`}
+            alt="attachment"
+            className="w-full min-w-[200px] max-w-xs rounded-lg"
+          />
+
+          <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
+            {formattedDate}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
+  const renderPDF = (message) => {
+    const senderId = message.sender?._id || message.sender;
+    const isSender = senderId === userId;
+    const senderName = message.sender?.name || message.senderName;
+    const formattedDate =
+      message.date ||
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    return (
+      <div className="w-full max-w-md  my-1 ">
+        {IsGroup && (
+          <div
+            className={`text-black w-full  m-1 ${
+              isSender ? "hidden" : "block"
+            }`}
+          >
+            {senderName}
+            {/* {isSender && <span className="text-gray"> (you)</span>} */}
+          </div>
+        )}
+        <div
+          className={` ltr:text-start rtl:text-end relative p-2  ${
+            isSender ? "bg-linear_1 send" : "bg-linear_3 receive"
+          } ${IsGroup ? "mx-2 " : "m-2"} text-white`}
+        >
+          <a
+            href={`https://api.request-sa.com/${message.docs}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className=" underline m-2"
+          >
+            {cleanFileName(message.docs)}
+          </a>
+          <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
+            {formattedDate}
+          </span>
+        </div>
+      </div>
+    );
+  };
 
   const renderAudio = (message) => (
     <div className="relative max-w-xs">
@@ -409,25 +561,44 @@ const Inbox = () => {
     </div>
   );
 
-  const renderText = (message) => (
-    <div
-      className={`message  ltr:text-start rtl:text-end
-          relative p-2 m-2 w-full max-w-md ${
-            message.sender === userId
-              ? "bg-linear_1 send"
-              : "bg-linear_3 receive"
-          } text-white`}
-    >
-      <div className="text">{message.content}</div>
-      <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
-        {message.date ||
-          new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-      </span>
-    </div>
-  );
+  const renderText = (message) => {
+    // Check if the sender is the current user (handle both object and primitive ID cases)
+    const senderId = message.sender?._id || message.sender;
+    const isSender = senderId === userId;
+
+    const senderName = message.sender?.name || message.senderName;
+    const formattedDate =
+      message.date ||
+      new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+    return (
+      <div className="w-full max-w-md  my-1 ">
+        {IsGroup && (
+          <div
+            className={`text-black w-full ${
+              isSender ? "hidden" : "block"
+            } mx-3`}
+          >
+            {senderName}
+            {/* {isSender && <span className="text-gray"> (you)</span>} */}
+          </div>
+        )}
+        <div
+          className={`message ltr:text-start rtl:text-end relative p-2  ${
+            isSender ? "bg-linear_1 send" : "bg-linear_3 receive"
+          } ${IsGroup ? "mx-2 " : "m-2"} text-white`}
+        >
+          <div className="text">{message.content}</div>
+          <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
+            {formattedDate}
+          </span>
+        </div>
+      </div>
+    );
+  };
 
   const renderSkeletonLoader = () => (
     <div
@@ -603,13 +774,16 @@ const Inbox = () => {
                 {/* {activeChat?.member?.isGroup ? (
                   <div>add member</div>
                 ) : ( */}
-                  <div className="dot">
-                    <HiOutlineDotsHorizontal />
-                  </div>
+                <div className="dot">
+                  <HiOutlineDotsHorizontal />
+                </div>
                 {/* )} */}
               </div>
               <Divider />
-              <div className="chat_container overflow-y-scroll relative  h-[70vh] lg:h-[50vh] my-3 ">
+              <div
+                className="chat_container overflow-y-scroll relative  h-[70vh] lg:h-[50vh] my-3 "
+                ref={chatContainerRef}
+              >
                 {/* <InfiniteScroll
                   dataLength={messages.length}
                   next={loadMoreMessages}
@@ -628,18 +802,22 @@ const Inbox = () => {
                   : messages
                       .slice()
                       .reverse()
-                      .map((msg, idx) => (
-                        <div
-                          key={idx}
-                          className={`flex items-center ${
-                            msg.sender !== userId
-                              ? "justify-start"
-                              : "justify-end"
-                          }`}
-                        >
-                          {renderMessageContent(msg)}
-                        </div>
-                      ))}
+                      .map((msg, idx) => {
+                        const senderId = msg.sender?._id || msg.sender;
+                        const isSender = senderId === userId;
+
+                        return (
+                          <div
+                            key={idx}
+                            className={`flex items-center ${
+                              isSender ? "justify-end" : "justify-start"
+                            }`}
+                          >
+                            {renderMessageContent(msg)}
+                          </div>
+                        );
+                      })}
+                {/* <div ref={topRef} /> */}
                 {messages?.length === 0 && (
                   <div className="flex items-center justify-center text-center text-gray-500">
                     {IsGroup ? (
@@ -657,7 +835,7 @@ const Inbox = () => {
               </div>
               <div className="preview relative flex items-center justify-center">
                 {preview && preview.type === "image" && (
-                  <div className=" -bottom-10 p-2 absolute bg-gray-50  rounded-md">
+                  <div className=" bottom-0 p-2 absolute bg-gray-100  rounded-md">
                     <img
                       src={preview.url}
                       alt="File preview"
@@ -680,8 +858,8 @@ const Inbox = () => {
                     </div>
                   </div>
                 )}
-                {preview && preview.type === "pdf" && (
-                  <div className=" -bottom-10 p-3 absolute bg-gray-100 w-full h-[20vh]  rounded-md">
+                {preview && preview.type === "document" && (
+                  <div className=" bottom-0 p-3 absolute bg-gray-100 w-full h-[20vh]  rounded-md">
                     <div className=" text-center my-3">
                       <h4 className="font-bold text-lg"> {preview.name}</h4>
                       <span className="font-bold text-sm text-gray">
@@ -722,10 +900,25 @@ const Inbox = () => {
                         isRecording ? "hidden" : ""
                       }`}
                     />
-                    <RecordAudio
+                    {/* <RecordAudio
                       setIsRecording={setIsRecording}
+                    
                       onAddAudioMessage={addAudioMessage}
+                    /> */}
+                    <Record
+                      isRecording={isRecording}
+                      isPaused={isPaused}
+                      onRecordingStateChange={handleRecordingStateChange}
+                      setRecordingTime={setRecordingTime}
                     />
+                    {isRecording && (
+                      <span>
+                        {" "}
+                        {Math.floor(recordingTime / 60)}:
+                        {String(recordingTime % 60).padStart(2, "0")}
+                      </span>
+                    )}
+
                     <input
                       type="file"
                       onChange={handleFileChange}
@@ -737,6 +930,7 @@ const Inbox = () => {
                       onClick={() =>
                         document.getElementById("fileInput").click()
                       }
+                      className={`${isRecording ? "hidden" : ""}`}
                     >
                       <IoAttach className="text-yellow w-8 h-8" />
                     </button>
@@ -755,6 +949,3 @@ const Inbox = () => {
 };
 
 export default Inbox;
-
-
-

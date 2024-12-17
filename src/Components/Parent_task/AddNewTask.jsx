@@ -182,7 +182,7 @@ export const AddNewTask = ({ newTask, task }) => {
         assignees: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
-        type: "toq",
+        type: "tableOfQuantity",
         price: Price,
         requiredQuantity: Quantity,
         unit: selectedUnit,

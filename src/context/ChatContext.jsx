@@ -7,68 +7,125 @@ export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const socket = useSocket();
 
+  // Utility function to generate the channel name dynamically
+  const getChannelName = (message) => {
+    if (message.group) {
+      return `message_${message.sender._id}_${message.project}_${message.group._id}`;
+    }
+    return `message_${message.sender}_${message.project}_${message.receiver}`;
+  };
+
+  // Function to handle incoming messages and add them to state
+  const handleMessage = (data) => {
+    console.log("Received message via socket:", data);
+    const newMessage = {
+      date: data?.createdAt,
+      content: data?.content,
+      senderName: data?.senderName,
+      sender: data?.sender,
+      type: data?.type,
+      docs: data?.docs,
+      voiceNote: data?.voiceNote,
+      _id: data?.id,
+    };
+    console.log("newMessage:", newMessage);
+
+    // Add the new message if valid
+    addMsg(newMessage);
+  };
+
+  // // Function to add a new message to the state
+  const addMsg = (newMessage) => {
+    if (newMessage) {
+      const hasValidContent =
+        (typeof newMessage.content === "string" &&
+          newMessage.content.trim() !== "" &&
+          newMessage.content !== undefined) ||
+        (typeof newMessage.docs === "string" &&
+          newMessage.docs.trim() !== "" &&
+          newMessage.docs !== null) ||
+        (Array.isArray(newMessage.voiceNote) &&
+          newMessage.voiceNote.length > 0);
+
+      if (hasValidContent) {
+        setMessages((prevMessages) => {
+          const isDuplicate = prevMessages.some(
+            (msg) => msg._id === newMessage._id
+          );
+
+          if (!isDuplicate) {
+            return [newMessage, ...prevMessages];
+          }
+
+          return prevMessages;
+        });
+      } else {
+        console.warn("Message is invalid and will not be added:", newMessage);
+      }
+    }
+  };
+
+  // const addMsg = (newMessage) => {
+  //   if (newMessage) {
+  //     // Check if any valid content exists in the message
+  //     const hasValidContent =
+  //       newMessage.content || newMessage.docs || newMessage.voiceNote;
+
+  //     if (hasValidContent) {
+  //       setMessages((prevMessages) => {
+  //         // Check if the message is a duplicate based on _id and content validity
+  //         const isDuplicate = prevMessages.some(
+  //           (msg) =>
+  //             msg._id === newMessage._id || // Check for duplicate _id
+  //             (!hasValidContent && msg._id === newMessage._id) // Also check if invalid message with same _id
+  //         );
+
+  //         if (!isDuplicate) {
+  //           // Add the new message to the state if it's not a duplicate
+  //           return [newMessage, ...prevMessages];
+  //         }
+
+  //         return prevMessages;
+  //       });
+  //     } else {
+  //       console.warn("Message is invalid and will not be added:", newMessage);
+  //     }
+  //   }
+  // };
+
   useEffect(() => {
     if (!socket) return;
 
-    const handleMessage = (data) => {
-      console.log("Received message via socket:", data);
-
-      const newMessage = {
-        date: data?.createdAt,
-        content: data?.content,
-        senderName: data?.senderName,
-        sender: data?.sender,
-        docs: data?.docs,
-        voiceNote: data?.voiceNote,
-        _id: data.id,
-      };
-      console.log("newMessage", newMessage);
-
-      // Add the new message to the state
-      addMsg(newMessage);
-    };
-
     // Listen to dynamically constructed channels based on sender, receiver, project, and group
-    const listenToChannel = (message) => {
-      const channel = message.group
-        ? `message_${message.sender._id}_${message.project}_${message.group}`
-        : `message_${message.sender}_${message.project}_${message.receiver}`;
+    const activeChannels = new Set();
 
-      socket.on(channel, handleMessage);
-      console.log(`Listening to channel: ${channel}`);
+    const listenToChannel = (message) => {
+      const channel = getChannelName(message);
+
+      if (!activeChannels.has(channel)) {
+        socket.on(channel, handleMessage);
+        activeChannels.add(channel);
+        // console.log(`Listening to channel: ${channel}`);
+      }
+
+      console.log(
+        message.group
+          ? `Listening to group: ${message.group._id}`
+          : `Listening to chat between ${message.sender} & ${message.receiver}`
+      );
     };
 
+    // Listen to each message channel dynamically
     messages.forEach(listenToChannel);
 
-    console.log("Connected to chat socket");
-
-    // Cleanup the socket event listener when the component unmounts
+    // Cleanup socket listeners when component unmounts or dependencies change
     return () => {
-      messages.forEach((message) => {
-        const channel = message.group
-          ? `message_${message.sender._id}_${message.project}_${message.group}`
-          : `message_${message.sender}_${message.project}_${message.receiver}`;
+      activeChannels.forEach((channel) => {
         socket.off(channel, handleMessage);
+        // console.log(`Disconnected from channel: ${channel}`);
       });
-      console.log("Disconnected from message channels");
     };
   }, [socket, messages]);
-
-  const addMsg = (newMessage) => {
-    if (newMessage) {
-      setMessages((prevMessages) => {
-        const isDuplicate = prevMessages.some(
-          (msg) => msg._id === newMessage._id
-        );
-
-        if (!isDuplicate) {
-          return [newMessage, ...prevMessages];
-        }
-
-        return prevMessages;
-      });
-    }
-  };
 
   return (
     <ChatContext.Provider value={{ messages, addMsg, setMessages }}>

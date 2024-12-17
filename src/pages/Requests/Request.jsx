@@ -199,6 +199,7 @@ const RequestForm = ({
           remarks: Remarks,
           qty: QTY,
           boqItemNo: BOQ,
+          type: "requestForDocumentSubmittal",
         });
       }
 
@@ -210,6 +211,7 @@ const RequestForm = ({
           unit: selectedUnit,
           approvedMaterialSubmittalNo: approvedMaterial,
           supplier,
+          type: "requestForMaterialAndEquipment",
         });
       }
 
@@ -221,6 +223,7 @@ const RequestForm = ({
           unit: selectedUnit,
           inspectionDate: new Date().toISOString(),
           quantity: Quantity,
+          type: "requestForInspaction",
         });
       }
 
@@ -231,6 +234,7 @@ const RequestForm = ({
           workArea: WorkArea,
           inspectionDate: new Date().toISOString(),
           cell,
+          type: "workRequest",
         });
       }
 

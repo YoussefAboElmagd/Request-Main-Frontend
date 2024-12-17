@@ -13,3 +13,7 @@
 .audio-recorder-visualizer canvas{
     color: var(--purple)!important;
 }
+
+.audio-recorder-mic[title="Save recording"] {
+  display: none!important;
+}

@@ -1244,7 +1244,7 @@ export const getMessagesBetweenUsers = async (
 ) => {
   try {
     const response = await axiosInstance.get(
-      `Message/${projectId}?sender=${sender}&receiver=${receiver}`,
+      `Message/${projectId}?sender=${sender}&receiver=${receiver}&limit=${limit}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

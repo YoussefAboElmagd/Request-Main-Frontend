@@ -159,91 +159,90 @@ const ViewRequest = () => {
       </div>
       <div className="content bg-white p-2 lg:p-4 rounded-3xl my-6 ">
         <div className="flex items-start lg:items-center justify-between flex-col lg:flex-row gap-3">
-          {(model?.consultant || model?.contractor || model?.owner) && (
-            <div className="flex items-center  gap-3">
-              {model?.ownerStatus !== "pending" ? (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={model?.owner?.companyName}
-                    profilePic={
-                      model?.owner?.companyLogo
-                        ? model?.owner?.companyLogo
-                        : model?.owner?.name
-                    }
-                    className={`!w-16 !h-16`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {model?.owner?.name}
-                  </span>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={"owner Name"}
-                    profilePic={avatar}
-                    className={`!w-16 !h-16`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {t("ownerName")}
-                  </span>
-                </div>
-              )}
-              {model?.consultantStatus !== "pending" ? (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={model?.consultant?.companyName}
-                    profilePic={
-                      model?.consultant?.companyLogo
-                        ? model?.consultant?.companyLogo
-                        : model?.consultant?.name
-                    }
-                    className={`!w-16 !h-16 !text-3xl`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {model?.consultant?.name}
-                  </span>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={"ConsultantName"}
-                    profilePic={avatar}
-                    className={`!w-16 !h-16`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {t("ConsultantName")}
-                  </span>
-                </div>
-              )}
-              {model?.contractorStatus !== "pending" ? (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={model?.contractor?.companyName}
-                    profilePic={
-                      model?.contractor?.companyLogo !== ""
-                        ? model?.contractor?.companyLogo
-                        : model?.contractor?.name
-                    }
-                    className={`!w-16 !h-16`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {model?.contractor?.name}
-                  </span>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-3">
-                  <ProfileAvatar
-                    name={"ContractorName"}
-                    profilePic={avatar}
-                    className={`!w-16 !h-16`}
-                  />
-                  <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                    {t("ContractorName")}
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
+          <div className="flex items-center  gap-3">
+            {model?.owner ? (
+              <div className="flex flex-col items-center gap-3">
+                <ProfileAvatar
+                  name={model?.owner?.companyName}
+                  profilePic={
+                    model?.owner?.companyLogo
+                      ? model?.owner?.companyLogo
+                      : model?.owner?.name
+                  }
+                  className={`!w-16 !h-16`}
+                />
+                <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                  {model?.owner?.name}
+                </span>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-3">
+                <ProfileAvatar
+                  name={"owner Name"}
+                  profilePic={avatar}
+                  className={`!w-16 !h-16`}
+                />
+                <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                  {t("ownerName")}
+                </span>
+              </div>
+            )}
+            {model?.consultant ? (
+              <div className="flex flex-col items-center gap-3">
+                <ProfileAvatar
+                  name={model?.consultant?.companyName}
+                  profilePic={
+                    model?.consultant?.companyLogo
+                      ? model?.consultant?.companyLogo
+                      : model?.consultant?.name
+                  }
+                  className={`!w-16 !h-16 !text-3xl`}
+                />
+                <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                  {model?.consultant?.name}
+                </span>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-3">
+                <ProfileAvatar
+                  name={"ConsultantName"}
+                  profilePic={avatar}
+                  className={`!w-16 !h-16`}
+                />
+                <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                  {t("ConsultantName")}
+                </span>
+              </div>
+            )}
+            {model?.contractor ? (
+              <div className="flex flex-col items-center gap-3">
+                <ProfileAvatar
+                  name={model?.contractor?.companyName}
+                  profilePic={
+                    model?.contractor?.companyLogo !== ""
+                      ? model?.contractor?.companyLogo
+                      : model?.contractor?.name
+                  }
+                  className={`!w-16 !h-16`}
+                />
+                <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                  {model?.contractor?.name}
+                </span>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-3">
+                <ProfileAvatar
+                  name={"ContractorName"}
+                  profilePic={avatar}
+                  className={`!w-16 !h-16`}
+                />
+                <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                  {t("ContractorName")}
+                </span>
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col ">
             <div className="Ref flex items-center gap-2 my-6">
               <label
