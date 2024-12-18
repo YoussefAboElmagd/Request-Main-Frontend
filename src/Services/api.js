@@ -1238,13 +1238,11 @@ export const getMessagesBetweenUsers = async (
   token,
   projectId,
   sender,
-  receiver,
-  limit = 20,
-  page = 1
+  receiver
 ) => {
   try {
     const response = await axiosInstance.get(
-      `Message/${projectId}?sender=${sender}&receiver=${receiver}&limit=${limit}&page=${page}`,
+      `Message/${projectId}?sender=${sender}&receiver=${receiver}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1338,6 +1336,67 @@ export const getGroupData = async (token, projectId, groupId) => {
     const errorMessage =
       error.response?.data?.message || error.response?.data || error.message;
     console.error("Get group data error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+// get Group data by id
+
+export const getGroupDataById = async (token, groupId) => {
+  try {
+    const response = await axiosInstance.get(`/group/${groupId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Response from get group data by id =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Get group data by id error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+//  get users to add new member
+
+export const getUsersToAddMember = async (token, projectId, groupId) => {
+  try {
+    const response = await axiosInstance.get(
+      `/group/${groupId}/project/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Response from get users to add new member =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Get users to add new member error:", errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+//  update group
+
+export const updateGroupData = async (token, groupId, data) => {
+  try {
+    const response = await axiosInstance.put(`/group/${groupId}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("Response from update group =>", response.data);
+    return response.data;
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message || error.response?.data || error.message;
+    console.error("Update group error:", errorMessage);
     throw new Error(errorMessage);
   }
 };

@@ -1,59 +1,86 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogHeader,
   DialogBody,
   DialogFooter,
-} from "@material-tailwind/react"; // Ensure imports are correct
-import Button from "../../Components/UI/Button/Button"; // Correct import for Button
-import Input from "../UI/Input/Input";
+} from "@material-tailwind/react";
+import Button from "../../Components/UI/Button/Button";
 import { t } from "i18next";
 import ProfileAvatar from "../UI/profilePic/profilePic";
 import { useSelector } from "react-redux";
-import { createChatGroup } from "../../Services/api";
+import {
+  createChatGroup,
+  getGroupDataById,
+  getUsersToAddMember,
+  updateGroupData,
+} from "../../Services/api";
 import { toast } from "react-toastify";
 
-export const CreateGroup = ({ members, projectId }) => {
+export const AddMemberToGroup = ({ groupId, projectId }) => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const [open, setOpen] = useState(false);
+  const [groupData, setGroupData] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [selectedMembers, setSelectedMembers] = useState([]);
-  const [groupName, setGroupName] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await getUsersToAddMember(token, projectId, groupId);
+        setGroupMembers(data.results);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [token, projectId, groupId]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleMemberSelect = (memberId) => {
-    setSelectedMembers(
-      (prevSelected) =>
-        prevSelected.includes(memberId)
-          ? prevSelected.filter((id) => id !== memberId) // Remove member if already selected
-          : [...prevSelected, memberId] // Add member if not selected
+    setSelectedMembers((prevSelected) =>
+      prevSelected.includes(memberId)
+        ? prevSelected.filter((id) => id !== memberId)
+        : [...prevSelected, memberId]
     );
   };
 
-    const handleClearSelection = () => {
-      setSelectedMembers([]);
+  const handleClearSelection = () => {
+    setSelectedMembers([]);
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    if (selectedMembers.length === 0) {
+      setError("Please select at least one member.");
+      return;
+    }
+
+    setLoading(true);
+    const payload = {
+      users: selectedMembers,
     };
 
-  const handleCreateGroup = async () => {
     try {
-      const payload = {
-        name: groupName,
-        users: selectedMembers,
-        createdBy: user._id,
-        project: projectId,
-        isGroup:true,
-      };
-      console.log("creating group with payload:", payload);
-      const res = await createChatGroup(token, payload);
-      console.log(res);
-      toast.success(t("toast.groupCreatedSuccess"));
-      window.location.reload();
+      await updateGroupData(token, groupId, payload);
+      toast.success("Members added successfully!");
+      handleClose();
     } catch (err) {
-      console.log(err);
+      console.error("Error while adding members to group:", err);
+      toast.error("Failed to add members.");
+      setError("An error occurred while adding members.");
     } finally {
-      setOpen(false);
+      setLoading(false);
     }
   };
 
@@ -61,39 +88,23 @@ export const CreateGroup = ({ members, projectId }) => {
     <div className="CreateGroup">
       <button
         onClick={handleOpen}
-        className="border border-solid border-yellow text-yellow w-full py-2 my-2 rounded-lg"
+        className={`${groupMembers.length === 0 ? "hidden" : "block"}`}
       >
-        Create Group
+        Add Member
       </button>
 
       <Dialog open={open} handler={handleClose}>
         <DialogHeader className="text-gray-dark font-bold text-lg">
-          Create Group
+          Add New Member
         </DialogHeader>
         <hr />
         <DialogBody>
-          <div className="">
-            <Input
-              label={t("groupName")}
-              placeholder={t("groupName")}
-              className={`bg-white border border-purple border-solid focus:border focus:border-purple focus:border-solid `}
-              type={"name"}
-              required={true}
-              id={"name"}
-              autoComplete="name"
-              value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
-              autoFocus={true}
-              label_class={`text-gray`}
-            />
-          </div>
-
           <span className="text-gray font-medium text-base my-2 mx-2">
-            Select members to add to the group :
+            Select members to add to the group:
           </span>
           <div className="flex flex-col border border-gray p-2 rounded-lg gap-3 max-h-[30vh] overflow-y-scroll">
-            {members.map((member) => (
-              <div className="flex items-center gap-3   mx-2 " key={member._id}>
+            {groupMembers.map((member) => (
+              <div className="flex items-center gap-3 mx-2" key={member._id}>
                 <input
                   type="checkbox"
                   id={member._id}
@@ -101,6 +112,7 @@ export const CreateGroup = ({ members, projectId }) => {
                   checked={selectedMembers.includes(member._id)}
                   onChange={() => handleMemberSelect(member._id)}
                   className="appearance-none w-3 h-3 border border-gray rounded-sm cursor-pointer checked:bg-purple checked:border-purple"
+                  aria-label={`Select ${member.name}`}
                 />
                 <label htmlFor={member._id} className="flex items-center gap-2">
                   <ProfileAvatar
@@ -113,23 +125,23 @@ export const CreateGroup = ({ members, projectId }) => {
               </div>
             ))}
           </div>
-
           {selectedMembers.length > 0 && (
             <button
-              variant="outlined"
+             
               onClick={handleClearSelection}
               className="ml-2 text-gray  underline text-end"
             >
-              Clear
+              Clear 
             </button>
           )}
+          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
         </DialogBody>
         <DialogFooter>
           <Button
-            onClick={handleCreateGroup}
-            disabled={selectedMembers.length === 0 || !groupName}
+            disabled={loading || selectedMembers.length === 0}
+            onClick={handleUpdate}
           >
-            Create
+            {loading ? "Adding..." : "Add New Members"}
           </Button>
         </DialogFooter>
       </Dialog>

@@ -33,6 +33,7 @@ import { CiChat1 } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { ChatContext } from "../../context/ChatContext";
 import { Record } from "../../Components/RecordAudio/Record";
+import { AddMemberToGroup } from "../../Components/CreateGroup/AddMember";
 
 const Inbox = () => {
   const token = useSelector((state) => state.auth.token);
@@ -42,6 +43,8 @@ const Inbox = () => {
   const [loading, setLoading] = useState(true);
   const [ChatLoading, setChatLoading] = useState(true);
   const [activeChat, setActiveChat] = useState(null);
+  console.log(activeChat);
+
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [audioData, setAudioData] = useState(null);
@@ -61,33 +64,33 @@ const Inbox = () => {
   const chatContainerRef = useRef(null);
   const topRef = useRef(null);
 
+  // const handleRecordingStateChange = (
+  //   recordingState,
+  //   pausedState,
+  //   audioBlob = null
+  // ) => {
+  //   setIsRecording(recordingState);
+  //   setIsPaused(pausedState);
+  //   console.log(audioBlob);
 
-  const handleRecordingStateChange = (
-    recordingState,
-    pausedState,
-    audioBlob = null
-  ) => {
-    setIsRecording(recordingState);
-    setIsPaused(pausedState);
-    console.log(audioBlob);
+  //   if (audioBlob) {
+  //     setAudioData(audioBlob);
+  //     console.log(
+  //       "Audio Blob:",
+  //       URL.createObjectURL(audioBlob),
+  //       audioBlob.size / 1024, // Convert bytes to KB
+  //       audioBlob.type
+  //     );
+  //   }
+  // };
 
-    if (audioBlob) {
-      setAudioData(audioBlob);
-      console.log(
-        "Audio Blob:",
-        URL.createObjectURL(audioBlob),
-        audioBlob.size / 1024, // Convert bytes to KB
-        audioBlob.type
-      );
-    }
-  };
+  // const handleClear = () => {
+  //   setIsRecording(false);
+  //   setIsPaused(false);
+  //   setAudioData(null); // Clear the audio data
+  //   setRecordingTime(0); // Reset the timer
+  // };
 
-  const handleClear = () => {
-    setIsRecording(false);
-    setIsPaused(false);
-    setAudioData(null); // Clear the audio data
-    setRecordingTime(0); // Reset the timer
-  };
   // Scroll to the bottom whenever messages change or chat loading state updates
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -131,7 +134,7 @@ const Inbox = () => {
     } finally {
       setChatLoading(false);
     }
-  }; 
+  };
   // const fetchMessagesData = async (prepend = false) => {
   //   if (!activeChat || isFetching || !hasMoreMessages) return;
 
@@ -253,6 +256,12 @@ const Inbox = () => {
   //   }
   // };
 
+
+  //  addAudioMessage log the data only 
+  const addAudioMessage = async () => {
+    console.log("Voice Added");
+    
+  }
   const addAttachmentMessage = async () => {
     setFile(null);
 
@@ -583,7 +592,6 @@ const Inbox = () => {
             } mx-3`}
           >
             {senderName}
-            {/* {isSender && <span className="text-gray"> (you)</span>} */}
           </div>
         )}
         <div
@@ -771,13 +779,17 @@ const Inbox = () => {
                     )}
                   </div>
                 </div>
-                {/* {activeChat?.member?.isGroup ? (
-                  <div>add member</div>
-                ) : ( */}
-                <div className="dot">
-                  <HiOutlineDotsHorizontal />
-                </div>
-                {/* )} */}
+                {activeChat?.member?.isGroup && (
+                  <AddMemberToGroup
+                    groupId={activeChat?.member?._id}
+                    projectId={activeChat?.projectId}
+                  />
+                )}
+
+                {/* <div className="dot">
+                  // <HiOutlineDotsHorizontal />
+                 
+                </div> */}
               </div>
               <Divider />
               <div
@@ -817,7 +829,7 @@ const Inbox = () => {
                           </div>
                         );
                       })}
-                {/* <div ref={topRef} /> */}
+                <div ref={topRef} />
                 {messages?.length === 0 && (
                   <div className="flex items-center justify-center text-center text-gray-500">
                     {IsGroup ? (
@@ -900,24 +912,23 @@ const Inbox = () => {
                         isRecording ? "hidden" : ""
                       }`}
                     />
-                    {/* <RecordAudio
+                    <RecordAudio
                       setIsRecording={setIsRecording}
                     
                       onAddAudioMessage={addAudioMessage}
-                    /> */}
-                    <Record
+                    />
+                    {/* <Record
                       isRecording={isRecording}
                       isPaused={isPaused}
                       onRecordingStateChange={handleRecordingStateChange}
                       setRecordingTime={setRecordingTime}
-                    />
-                    {isRecording && (
+                    /> */}
+                    {/* {isRecording && (
                       <span>
-                        {" "}
                         {Math.floor(recordingTime / 60)}:
                         {String(recordingTime % 60).padStart(2, "0")}
                       </span>
-                    )}
+                    )} */}
 
                     <input
                       type="file"

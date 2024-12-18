@@ -9,6 +9,8 @@ const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
   console.log("isRecording from component: ", isRecording);
 
   const addAudioElement = (blob) => {
+    console.log("blob :" ,  blob);
+    
     const url = URL.createObjectURL(blob);
     // Here we call the onAddAudioMessage to add the audio to the messages
     onAddAudioMessage(url, blob);
@@ -31,7 +33,7 @@ const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
           noiseSuppression: true,
           echoCancellation: true,
         }}
-        downloadOnSavePress={false}
+        downloadOnSavePress={true}
         classes={{ icon: "mic-icon" }}
         buttonProps={{ icon: <MdOutlineKeyboardVoice /> }}
         // recorderControls={{
