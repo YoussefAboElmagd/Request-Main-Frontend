@@ -8,12 +8,16 @@ const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
     useAudioRecorder();
 
   const addAudioElement = (blob) => {
-    console.log("Blob: ", blob);
     const url = URL.createObjectURL(blob);
-    onAddAudioMessage(url, blob); // Add the audio to the messages
+    onAddAudioMessage(url, blob);
   };
 
   useEffect(() => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.error("getUserMedia is not supported in this environment.");
+      return;
+    }
+
     setIsRecording(isRecording);
 
     try {
