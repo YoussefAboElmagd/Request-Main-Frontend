@@ -15,7 +15,7 @@ const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
     // Here we call the onAddAudioMessage to add the audio to the messages
     onAddAudioMessage(url, blob);
   };
-
+//  test audio 
   useEffect(() => {
     setIsRecording(isRecording);
     if (isRecording) {

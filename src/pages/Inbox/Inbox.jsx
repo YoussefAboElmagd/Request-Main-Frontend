@@ -256,12 +256,10 @@ const Inbox = () => {
   //   }
   // };
 
-
-  //  addAudioMessage log the data only 
+  //  addAudioMessage log the data only
   const addAudioMessage = async () => {
     console.log("Voice Added");
-    
-  }
+  };
   const addAttachmentMessage = async () => {
     setFile(null);
 
@@ -914,7 +912,6 @@ const Inbox = () => {
                     />
                     <RecordAudio
                       setIsRecording={setIsRecording}
-                    
                       onAddAudioMessage={addAudioMessage}
                     />
                     {/* <Record
