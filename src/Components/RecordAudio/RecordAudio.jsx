@@ -6,22 +6,24 @@ import "./RecordAudio.scss";
 const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
   const { startRecording, stopRecording, isRecording, recordingBlob } =
     useAudioRecorder();
-  console.log("isRecording from component: ", isRecording);
 
   const addAudioElement = (blob) => {
-    console.log("blob :" ,  blob);
-    
+    console.log("Blob: ", blob);
     const url = URL.createObjectURL(blob);
-    // Here we call the onAddAudioMessage to add the audio to the messages
-    onAddAudioMessage(url, blob);
+    onAddAudioMessage(url, blob); // Add the audio to the messages
   };
-//  test audio 
+
   useEffect(() => {
     setIsRecording(isRecording);
-    if (isRecording) {
-      startRecording();
-    } else {
-      stopRecording();
+
+    try {
+      if (isRecording) {
+        startRecording();
+      } else {
+        stopRecording();
+      }
+    } catch (error) {
+      console.error("Error with audio recording: ", error);
     }
   }, [isRecording]);
 
@@ -36,16 +38,13 @@ const RecordAudio = ({ setIsRecording, onAddAudioMessage }) => {
         downloadOnSavePress={true}
         classes={{ icon: "mic-icon" }}
         buttonProps={{ icon: <MdOutlineKeyboardVoice /> }}
-        // recorderControls={{
-        //   showStopButton: isRecording,
-        //   showRecordButton: !isRecording,
-        //   showSaveButton: false,
-        //   showCancelButton: false,
-        // }}
         mediaRecorderOptions={{
           audioBitsPerSecond: 128000,
         }}
         showVisualizer
+        onError={(error) => {
+          console.error("Audio Recorder Error: ", error);
+        }}
       />
     </div>
   );
