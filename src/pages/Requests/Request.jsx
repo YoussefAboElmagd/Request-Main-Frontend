@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import {
   getAllActionCodes,
   getAllDiscipline,
+  getAllMembersByProject,
   getAllProjectsForUser,
   getAllReasons,
   getAllUnits,
@@ -17,9 +18,10 @@ import {
   updateTask,
 } from "../../Services/api";
 import { useLocation, useNavigate } from "react-router-dom";
-import { t } from "i18next";
+import i18next, { t } from "i18next";
 import Select from "../../Components/UI/Select/Select";
 import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
+import i18n from "../../config/i18n";
 
 const RequestForm = ({
   ReqTitle,
@@ -29,6 +31,7 @@ const RequestForm = ({
   showReasons,
   ApproveTitle,
 }) => {
+  const lang = i18next.language;
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const [IsOwner, setIsOwner] = useState(user.role.jobTitle === "owner");
@@ -70,6 +73,7 @@ const RequestForm = ({
   const [InspectionDate, setInspectionDate] = useState("");
   const [Quantity, setQuantity] = useState("");
   const [Remarks, setRemarks] = useState("");
+  const [MembersInProject, setMembersInProject] = useState([]);
   const [IsWorkRequest, setIsWorkRequest] = useState(
     ReqTitle === "Work Request"
   );
@@ -108,17 +112,22 @@ const RequestForm = ({
           ReasonsResponse,
           projectsResponse,
           UnitsData,
+          MemberInProject,
         ] = await Promise.all([
           getAllActionCodes(),
           getAllDiscipline(),
           getAllReasons(),
           getAllProjectsForUser(user._id, token),
           getAllUnits(),
+          getAllMembersByProject(projectId, lang),
         ]);
         setActionCodes(actionCodeResponse.results);
         setDisciplines(disciplineResponse.results);
         setReasons(ReasonsResponse.reasons);
         setProjects(projectsResponse.results);
+        setMembersInProject(MemberInProject.admins);
+        console.log(MemberInProject);
+
         setUnits(
           UnitsData.results.map((unit) => ({
             value: unit._id,
@@ -389,25 +398,55 @@ const RequestForm = ({
                   </div>
 
                   <div className="flex flex-col items-center gap-3">
-                    <ProfileAvatar
-                      name={"ConsultantName"}
-                      profilePic={avatar}
-                      className={`!w-16 !h-16`}
-                    />
-                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                      {t("ConsultantName")}
-                    </span>
+                    {MembersInProject?.consultant ? (
+                      <>
+                        <ProfileAvatar
+                          name={MembersInProject?.consultant?.name}
+                          profilePic={MembersInProject?.consultant?.profilePic}
+                          className={`!w-16 !h-16`}
+                        />
+                        <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                          {MembersInProject?.consultant?.name}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <ProfileAvatar
+                          name={"ConsultantName"}
+                          profilePic={avatar}
+                          className={`!w-16 !h-16`}
+                        />
+                        <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                          {t("ConsultantName")}
+                        </span>
+                      </>
+                    )}
                   </div>
 
                   <div className="flex flex-col items-center gap-3">
-                    <ProfileAvatar
-                      name={"ContractorName"}
-                      profilePic={avatar}
-                      className={`!w-16 !h-16`}
-                    />
-                    <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
-                      {t("ContractorName")}
-                    </span>
+                    {MembersInProject?.contractor ? (
+                      <>
+                        <ProfileAvatar
+                          name={MembersInProject?.contractor?.name}
+                          profilePic={MembersInProject?.contractor?.profilePic}
+                          className={`!w-16 !h-16`}
+                        />
+                        <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                          {MembersInProject?.contractor?.name}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <ProfileAvatar
+                          name={"ContractorName"}
+                          profilePic={avatar}
+                          className={`!w-16 !h-16`}
+                        />
+                        <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
+                          {t("ContractorName")}
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -993,4 +1032,3 @@ const RequestForm = ({
 };
 
 export default RequestForm;
-

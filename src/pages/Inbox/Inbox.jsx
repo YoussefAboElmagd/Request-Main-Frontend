@@ -395,7 +395,7 @@ const Inbox = () => {
     (term) => {
       const filtered = Projects.map((project) => ({
         ...project,
-        members: project.members.filter((member) =>
+        members: project.combinedList.filter((member) =>
           member.name.toLowerCase().includes(term.toLowerCase())
         ),
       })).filter((project) => project.members.length > 0);
