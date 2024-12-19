@@ -32,9 +32,9 @@ export const CreateGroup = ({ members, projectId }) => {
     );
   };
 
-    const handleClearSelection = () => {
-      setSelectedMembers([]);
-    };
+  const handleClearSelection = () => {
+    setSelectedMembers([]);
+  };
 
   const handleCreateGroup = async () => {
     try {
@@ -43,7 +43,7 @@ export const CreateGroup = ({ members, projectId }) => {
         users: selectedMembers,
         createdBy: user._id,
         project: projectId,
-        isGroup:true,
+        isGroup: true,
       };
       console.log("creating group with payload:", payload);
       const res = await createChatGroup(token, payload);
@@ -63,12 +63,13 @@ export const CreateGroup = ({ members, projectId }) => {
         onClick={handleOpen}
         className="border border-solid border-yellow text-yellow w-full py-2 my-2 rounded-lg"
       >
-        Create Group
+        {t("Create Group")}
       </button>
 
       <Dialog open={open} handler={handleClose}>
         <DialogHeader className="text-gray-dark font-bold text-lg">
-          Create Group
+          {" "}
+          {t("Create Group")}
         </DialogHeader>
         <hr />
         <DialogBody>
@@ -89,7 +90,7 @@ export const CreateGroup = ({ members, projectId }) => {
           </div>
 
           <span className="text-gray font-medium text-base my-2 mx-2">
-            Select members to add to the group :
+            {t("Select members to add to the group :")}
           </span>
           <div className="flex flex-col border border-gray p-2 rounded-lg gap-3 max-h-[30vh] overflow-y-scroll">
             {members.map((member) => (
@@ -120,7 +121,7 @@ export const CreateGroup = ({ members, projectId }) => {
               onClick={handleClearSelection}
               className="ml-2 text-gray  underline text-end"
             >
-              Clear
+              {t("clear")}
             </button>
           )}
         </DialogBody>
@@ -129,7 +130,7 @@ export const CreateGroup = ({ members, projectId }) => {
             onClick={handleCreateGroup}
             disabled={selectedMembers.length === 0 || !groupName}
           >
-            Create
+            {t("Create")}
           </Button>
         </DialogFooter>
       </Dialog>

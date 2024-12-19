@@ -43,8 +43,6 @@ const Inbox = () => {
   const [loading, setLoading] = useState(true);
   const [ChatLoading, setChatLoading] = useState(true);
   const [activeChat, setActiveChat] = useState(null);
-  console.log(activeChat);
-
   const [isRecording, setIsRecording] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [audioData, setAudioData] = useState(null);
@@ -495,7 +493,7 @@ const Inbox = () => {
             className="w-full min-w-[200px] max-w-xs rounded-lg"
           />
 
-          <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
+          <span className={`absolute bottom-2 right-2 text-xs`}>
             {formattedDate}
           </span>
         </div>
@@ -538,7 +536,7 @@ const Inbox = () => {
           >
             {cleanFileName(message.docs)}
           </a>
-          <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
+          <span className={`absolute bottom-2 right-2 text-xs`}>
             {formattedDate}
           </span>
         </div>
@@ -598,7 +596,7 @@ const Inbox = () => {
           } ${IsGroup ? "mx-2 " : "m-2"} text-white`}
         >
           <div className="text">{message.content}</div>
-          <span className={`absolute bottom-2 rtl:left-2 ltr:right-2 text-xs`}>
+          <span className={`absolute bottom-2 right-2 text-xs`}>
             {formattedDate}
           </span>
         </div>
@@ -615,7 +613,7 @@ const Inbox = () => {
       {Array.from({ length: messages.length }).map((_, index) => (
         <div
           key={index}
-          className={`skeleton-item  relative p-2 m-2 w-full max-w-md ${
+          className={`skeleton-item  relative p-2 m-2 w-full max-w-sm  md:max-w-md ${
             index % 2 === 0 ? "self-start" : "self-end"
           } 
 
@@ -650,16 +648,18 @@ const Inbox = () => {
           </h1>
           <Divider className={`${isChatVisible ? "hidden" : ""} lg:block`} />
           {isChatVisible && (
-            <div className="sm_header bg-white p-2 rounded-2xl w-full md:hidden flex items-center  justify-between">
+            <div className="sm_header bg-white p-2 rounded-2xl w-full lg:hidden flex items-center  justify-between">
               <div className="back">
                 <button
-                  className="flex items-center justify-center w-8 h-8 rounded-full text-purple"
+                  className="flex items-center justify-center w-8 h-8 rounded-full text-purple rtl:rotate-180 ltr:rotate-0"
                   onClick={() => setIsChatVisible(false)}
                 >
                   <FaArrowLeft />
                 </button>
               </div>
-              <div className="title text-purple  font-bold text-lg">Inbox</div>
+              <div className="title text-purple  font-bold text-lg">
+                {t("Inbox")}
+              </div>
             </div>
           )}
           <div className="container flex items-center justify-center  md:gap-10 ">
@@ -672,10 +672,10 @@ const Inbox = () => {
                 <input
                   type="text"
                   className="w-full px-16 py-2 rounded-xl text-sm border"
-                  placeholder={t("Search")}
+                  placeholder={t("search")}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <span className="absolute left-10 top-3 w-6 h-6 text-gray">
+                <span className="absolute rtl:right-10 ltr:left-10 top-3 w-6 h-6 text-gray">
                   <BiSearch />
                 </span>
               </div>
@@ -731,16 +731,17 @@ const Inbox = () => {
             </div>
 
             {!activeChat && (
-              <div className="bg-white rounded-3xl max-w-3xl w-full shadow-sm p-4 mx-2 mt-4 min-h-[70vh] max-h-[90vh] flex flex-col items-center justify-center">
+              <div className="bg-white rounded-3xl max-w-3xl w-full shadow-sm p-4 mx-2 mt-4 min-h-[70vh] max-h-[90vh] hidden  lg:flex flex-col items-center justify-center">
                 <span className="material-icons text-gray-300 text-6xl">
                   <CiChat1 />
                 </span>
                 <h2 className="text-gray-500 text-lg font-semibold">
-                  No Active Chat
+                  {t("No Active Chat")}
                 </h2>
                 <p className="text-gray-400 text-sm">
-                  Select a chat from the list to get started, or start a new
-                  conversation.
+                  {t(
+                    "Select a chat from the list to get started, or start a new conversation."
+                  )}
                 </p>
               </div>
             )}
@@ -832,11 +833,16 @@ const Inbox = () => {
                   <div className="flex items-center justify-center text-center text-gray-500">
                     {IsGroup ? (
                       <p>
-                        No messages in this group chat yet. Be the first to send
-                        a message!
+                        {t(
+                          "No messages in this group chat yet. Be the first to send a message!"
+                        )}
                       </p>
                     ) : (
-                      <p>No messages in this chat yet. Start a conversation!</p>
+                      <p>
+                        {t(
+                          "No messages in this chat yet. Start a conversation!"
+                        )}
+                      </p>
                     )}
                   </div>
                 )}
@@ -845,7 +851,7 @@ const Inbox = () => {
               </div>
               <div className="preview relative flex items-center justify-center">
                 {preview && preview.type === "image" && (
-                  <div className=" bottom-0 p-2 absolute bg-gray-100  rounded-md">
+                  <div className=" -bottom-3 p-2 absolute bg-gray-100  rounded-md">
                     <img
                       src={preview.url}
                       alt="File preview"
@@ -857,19 +863,19 @@ const Inbox = () => {
                         onClick={handleCancelFile}
                         className="p-2 font-bold text-red"
                       >
-                        Cancel
+                        {t("Cancel")}
                       </button>
                       <button
                         onClick={handleSendMessage}
                         className="py-2 px-4 font-bold bg-purple text-white rounded-md"
                       >
-                        Send
+                        {t("Send")}
                       </button>
                     </div>
                   </div>
                 )}
                 {preview && preview.type === "document" && (
-                  <div className=" bottom-0 p-3 absolute bg-gray-100 w-full h-[20vh]  rounded-md">
+                  <div className=" -bottom-3 p-3 absolute bg-gray-100 w-full h-[20vh]  rounded-md">
                     <div className=" text-center my-3">
                       <h4 className="font-bold text-lg"> {preview.name}</h4>
                       <span className="font-bold text-sm text-gray">
@@ -882,13 +888,13 @@ const Inbox = () => {
                         onClick={handleCancelFile}
                         className="p-2 font-bold text-red"
                       >
-                        Cancel
+                        {t("Cancel")}
                       </button>
                       <button
                         onClick={handleSendMessage}
                         className="py-2 px-4 font-bold bg-purple text-white rounded-md"
                       >
-                        Send
+                        {t("Send")}
                       </button>
                     </div>
                   </div>
@@ -905,7 +911,7 @@ const Inbox = () => {
                       type="text"
                       value={messageInput}
                       onChange={(e) => setMessageInput(e.target.value)}
-                      placeholder="Type something"
+                      placeholder={t("Type something")}
                       className={`w-full p-2 rounded-md border ${
                         isRecording ? "hidden" : ""
                       }`}

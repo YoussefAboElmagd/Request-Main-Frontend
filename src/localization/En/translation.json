@@ -334,7 +334,7 @@
     "you have been added to {{projectName}} successfully": "you have been added to {{projectName}} successfully",
     "You have canceled the invitation to {{projectName}} successfully": "You have canceled the invitation to {{projectName}} successfully",
     "inviteSuccess": "Invite Sent Successfully",
-    "groupCreatedSuccess":"Group Created Successfully"
+    "groupCreatedSuccess": "Group Created Successfully"
   },
   "You have been invited to": "You have been invited to",
   "as a": "as a",
@@ -381,5 +381,6 @@
   "Enter vocation name in English": "Enter vocation name in English",
   "Enter vocation name in Arabic": "Enter vocation name in Arabic",
   "No tags available from consultant": "No tags available from consultant",
-  "no notifications available": "No Notifications Available"
+  "no notifications available": "No Notifications Available",
+  "groupName": "Group Name"
 }

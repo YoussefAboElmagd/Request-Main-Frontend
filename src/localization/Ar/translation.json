@@ -394,6 +394,18 @@
   "Enter vocation name in English": "أدخل اسم الوظيفة  باللغة الإنجليزية",
   "Enter vocation name in Arabic": "أدخل اسم الوظيفة  باللغة العربية",
   "No tags available from consultant": "لا توجد علامات متاحة من المستشار",
-  "no notifications available" : "لا توجد إشعارات متاحة"
+  "no notifications available": "لا توجد إشعارات متاحة",
+  "No messages in this group chat yet. Be the first to send a message!": "لا توجد رسائل في هذه الدردشة الجماعية بعد. كن أول من يرسل رسالة!",
+  "No messages in this chat yet. Start a conversation!": "لا توجد رسائل في هذه الدردشة بعد. ابدأ محادثة!",
+  "No Active Chat": "لا توجد دردشة نشطة",
+  "Select a chat from the list to get started, or start a new conversation.": "حدد دردشة من القائمة للبدء، أو ابدأ محادثة جديدة.",
+  "Create Group" : "إنشاء مجموعة",
+  "Select members to add to the group :": "اختر الأعضاء لإضافتهم إلى المجموعة:",
+  "groupName" : "اسم المجموعة",
+  "Add Member":"إضافة عضو",
+  "Add New Member":"إضافة عضو جديد",
+  "Add":"إضافة",
+  "Adding...":"يتم الاضافه",
+  "clear" : "مسح"
 
 }

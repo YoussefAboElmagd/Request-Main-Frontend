@@ -1,9 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import { useSocket } from "../hooks/useSocket";
+import { useSelector } from "react-redux";
 
 export const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
+  const user = useSelector((state) => state.auth.user);
   const [messages, setMessages] = useState([]);
   const socket = useSocket();
 
@@ -96,7 +98,7 @@ export const ChatProvider = ({ children }) => {
   useEffect(() => {
     if (!socket) return;
 
-    // Listen to dynamically constructed channels based on sender, receiver, project, and group
+    // Set to track active channels and avoid duplicates
     const activeChannels = new Set();
 
     const listenToChannel = (message) => {

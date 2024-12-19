@@ -33,3 +33,11 @@ body{
     transform: translate(20%, 10%);
   }
 }
+
+
+@media (max-width: 1024px) {
+
+  .effect{
+    top: 100px;
+  }
+}

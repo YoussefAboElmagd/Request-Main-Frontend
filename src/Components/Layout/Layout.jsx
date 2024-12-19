@@ -48,7 +48,7 @@ const Layout = () => {
       {showSidebar && <Header className="w-full" />}
       <div className="flex flex-1">
         {showSidebar && <Sidebar />}
-        <main className={`flex-1 ${isLandingPage ? 'p-0' : 'p-4'} `}>
+        <main className={`flex-1 ${isLandingPage ? 'p-0' : 'p-2 md:p-4'}  `}>
           <AppRoutes />
         </main>
       </div>

@@ -197,19 +197,28 @@ const Otp = () => {
       ) : (
         <>
           <LandingHeader />
-          <div className="Wrapper flex items-center justify-between">
-            <div className="w-96 my-40">
-              <h3 className="font-workSans font-bold text-5xl">
+          <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
+              <div className="image_phone md:hidden">
+                <img
+                  src={OtpImg}
+                  alt="LogIn By Phone"
+                  width={200}
+                  height={200}
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="font-workSans  font-semibold text-purple text-center md:text-left md:text-gray-dark md:font-bold text-base md:text-3xl lg:text-5xl">
                 {t("sign in To activate your business easily")}
               </h3>
-              <p className="font-jost font-medium text-2xl">
+              <p className="font-jost font-medium hidden md:block md:text-xl lg:text-2xl">
                 {t("if you don’t have an account you can")}
                 <Link className="text-blue block" to="/SignUp/ChooseRole">
                   {t("Register here!")}
                 </Link>
               </p>
             </div>
-            <div className="LogIn_Image flex justify-center -z-10">
+            <div className="LogIn_Image hidden md:flex justify-center -z-10">
               <img
                 src={OtpImg}
                 alt="OTP"
@@ -219,11 +228,11 @@ const Otp = () => {
               />
             </div>
             <div className="form flex flex-col items-center">
-              <div className="Otp_text font-workSans font-normal text-xl text-center">
-                <p>
+              <div className="Otp_text font-workSans font-normal text-sm lg:text-xl text-center">
+                <p className="text-sm lg:text-base">
                   {t(`An OTP Message containing your code has been sent to`)}
                 </p>
-                <span className="text-red d-block">
+                <span className="text-red block">
                   {phone
                     ? `+${phone.substring(0, 2)} ${phone.substring(
                         2,

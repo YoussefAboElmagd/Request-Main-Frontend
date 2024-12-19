@@ -75,6 +75,7 @@ export const AddMemberToGroup = ({ groupId, projectId }) => {
       await updateGroupData(token, groupId, payload);
       toast.success("Members added successfully!");
       handleClose();
+      window.location.reload()
     } catch (err) {
       console.error("Error while adding members to group:", err);
       toast.error("Failed to add members.");
@@ -90,17 +91,17 @@ export const AddMemberToGroup = ({ groupId, projectId }) => {
         onClick={handleOpen}
         className={`${groupMembers.length === 0 ? "hidden" : "block"}`}
       >
-        Add Member
+        {t("Add Member")}
       </button>
 
       <Dialog open={open} handler={handleClose}>
         <DialogHeader className="text-gray-dark font-bold text-lg">
-          Add New Member
+          {t("Add New Member")}
         </DialogHeader>
         <hr />
         <DialogBody>
           <span className="text-gray font-medium text-base my-2 mx-2">
-            Select members to add to the group:
+            {t("Select members to add to the group :")}
           </span>
           <div className="flex flex-col border border-gray p-2 rounded-lg gap-3 max-h-[30vh] overflow-y-scroll">
             {groupMembers.map((member) => (
@@ -127,11 +128,10 @@ export const AddMemberToGroup = ({ groupId, projectId }) => {
           </div>
           {selectedMembers.length > 0 && (
             <button
-             
               onClick={handleClearSelection}
               className="ml-2 text-gray  underline text-end"
             >
-              Clear 
+              {t("clear")}
             </button>
           )}
           {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
@@ -141,7 +141,7 @@ export const AddMemberToGroup = ({ groupId, projectId }) => {
             disabled={loading || selectedMembers.length === 0}
             onClick={handleUpdate}
           >
-            {loading ? "Adding..." : "Add New Members"}
+            {loading ? t("Adding...") : t("Add")}
           </Button>
         </DialogFooter>
       </Dialog>
