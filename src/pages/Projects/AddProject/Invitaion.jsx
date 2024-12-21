@@ -38,6 +38,7 @@ const Invitation = () => {
       setLoading(true);
       try {
         const userId = user._id;
+
         const data = await getDataForInvite(token, invitationId, userId);
         setData(data.results);
 
@@ -46,6 +47,9 @@ const Invitation = () => {
         console.error("Error fetching data:", error);
         toast.error(error.message);
         if (error.message === "Invitation Not found") {
+          navigate("/");
+        }
+        if (error.message === "Email Not Match") {
           navigate("/");
         }
       } finally {

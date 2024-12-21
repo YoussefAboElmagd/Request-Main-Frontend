@@ -22,6 +22,7 @@ import i18next, { t } from "i18next";
 import Select from "../../Components/UI/Select/Select";
 import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
 import i18n from "../../config/i18n";
+import { Image } from "../../Components/UI/Image/image";
 
 const RequestForm = ({
   ReqTitle,
@@ -983,7 +984,7 @@ const RequestForm = ({
                 </h5>
                 <span className="font-medium text-sm">{user?.name}</span>
                 {signature ? (
-                  <img src={signature} alt="Signature" className="w-20 h-20" />
+                  <Image src={signature} alt={"Signature"} className={"w-20 h-20"} />
                 ) : (
                   <p>{t("No signature found")}</p>
                 )}

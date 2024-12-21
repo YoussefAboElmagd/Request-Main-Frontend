@@ -8,17 +8,18 @@ import { SignatureBtn } from "../../../Components/signature/signature";
 import Button from "../../../Components/UI/Button/Button";
 import { toast } from "react-toastify";
 import { uploadCompanyFiles } from "../../../Services/api";
+import { Image } from "../../../Components/UI/Image/image";
 
 const Company = () => {
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
   console.log(userId);
 
-  const [preview, setPreview] = useState(user.companyLogo);
-  const [logo, setLogo] = useState(user.companyLogo);
-  const [name, setName] = useState(user.companyName);
-  const [stampPreview, setStampPreview] = useState(user.electronicStamp);
-  const [stamp, setStamp] = useState(user.electronicStamp);
+  const [preview, setPreview] = useState(user?.companyLogo);
+  const [logo, setLogo] = useState(user?.companyLogo);
+  const [name, setName] = useState(user?.companyName);
+  const [stampPreview, setStampPreview] = useState(user?.electronicStamp);
+  const [stamp, setStamp] = useState(user?.electronicStamp);
   const [signature, setSignature] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -89,9 +90,11 @@ const Company = () => {
         <div className="flex flex-col">
           <div className="logo my-2 mx-2 lg:mx-4 relative">
             <img
-              src={preview}
+              src={`https://api.request-sa.com/${preview}`}
               alt={user.companyName}
-              className="rounded-full w-20 h-20 lg:w-24 lg:h-24  object-contain border border-gray p-2"
+              className={
+                "rounded-full w-20 h-20 lg:w-24 lg:h-24  object-contain border border-gray p-2"
+              }
             />
             <button
               onClick={() => document.getElementById("fileInput").click()}
@@ -110,6 +113,7 @@ const Company = () => {
               id="companyName"
               name="companyName"
               placeholder={name}
+              value={name}
               required
               onChange={(e) => setName(e.target.value)}
               label={t("CompanyName")}
@@ -129,7 +133,7 @@ const Company = () => {
                 <LiaStampSolid className="text-purple w-6 h-6" />
               </div>
               <img
-                src={stampPreview}
+                src={`https://api.request-sa.com/${stampPreview}`}
                 alt="Stamp Preview"
                 className="w-[50px] h-[50px] lg:w-[66px] lg:h-[62px] object-cover rounded-lg"
               />

@@ -13,6 +13,8 @@ import Button from "../../../Components/UI/Button/Button";
 import { AddNote } from "../../../Components/AddNote/AddNote";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { Image } from "../../../Components/UI/Image/image";
+import ProfileAvatar from "../../../Components/UI/profilePic/profilePic";
 const TaskDetails = () => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
@@ -270,19 +272,20 @@ const TaskDetails = () => {
               </p>
               <div className="flex justify-between items-center gap-1 border border-purple rounded-lg py-1  px-2">
                 <div className="flex items-center gap-5">
-                  <img
+                  <ProfileAvatar
                     className="h-8 w-8 rounded-full"
-                    src={Task.createdBy.profilePic || avatar}
+                    src={Task?.createdBy?.profilePic}
+                    name={Task?.createdBy?.name}
                     alt="Tasksetter"
                   />
 
                   <span className="font-inter font-medium text-base">
-                    {Task.createdBy.name}
+                    {Task?.createdBy?.name}
                   </span>
                 </div>
 
                 <span className="font-inter font-medium text-base">
-                  {Task.createdBy.role.name}
+                  {Task?.createdBy?.role?.name}
                 </span>
               </div>
             </div>
@@ -295,9 +298,10 @@ const TaskDetails = () => {
               </p>
               <div className="flex justify-between items-center gap-1 border border-purple rounded-lg py-1  px-2">
                 <div className="flex items-center gap-5">
-                  <img
+                  <ProfileAvatar
                     className="h-8 w-8 rounded-full"
-                    src={assignee.profilePic || avatar}
+                    src={assignee?.profilePic}
+                    name={assignee?.name}
                     alt="Tasksetter"
                   />
 

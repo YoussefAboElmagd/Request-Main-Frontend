@@ -34,7 +34,7 @@ const ProfileAvatar = ({ name, profilePic, className }) => {
 
   return profilePic ? (
     <img
-      src={profilePic}
+      src={`https://api.request-sa.com/${profilePic}`}
       alt="avatar"
       className={`rounded-full   w-9 h-9 ${className} object-cover`}
     />

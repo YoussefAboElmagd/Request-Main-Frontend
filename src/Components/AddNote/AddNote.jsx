@@ -15,6 +15,7 @@ import avatar from "../../assets/images/Avatar.jpg";
 import { t } from "i18next";
 import ProfileAvatar from "../UI/profilePic/profilePic";
 import Empty from "../empty/empty";
+import { Image } from "../UI/Image/image";
 
 export const AddNote = ({ projectId,  taskId, Notes }) => {
   console.log(projectId, taskId, Notes);
@@ -100,10 +101,10 @@ export const AddNote = ({ projectId,  taskId, Notes }) => {
             notes.map((note) => (
               <div key={note.id} className="note flex items-start gap-2 p-2">
                 {note?.postedBy?.profilePic ? (
-                  <img
+                  <Image
                     src={note.postedBy.profilePic}
-                    alt="Avatar"
-                    className="w-10 h-10 rounded-full"
+                    alt={"Avatar"}
+                    className={"w-10 h-10 rounded-full"}
                   />
                 ) : (
                   <ProfileAvatar

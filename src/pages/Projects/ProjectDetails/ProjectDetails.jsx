@@ -1,5 +1,5 @@
 import { t } from "i18next";
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../../../Components/UI/Input/Input";
 import { MdCalendarToday } from "react-icons/md";
 import { FaFileLines } from "react-icons/fa6";
@@ -25,21 +25,19 @@ import { IoMdPersonAdd } from "react-icons/io";
 import Button from "../../../Components/UI/Button/Button";
 import { TagsChart } from "../../../Components/TagsChart/TagsChart";
 import i18next from "i18next";
+import { Image } from "../../../Components/UI/Image/image";
+import ProfileAvatar from "../../../Components/UI/profilePic/profilePic";
 
 const ProjectDetails = () => {
   const user = useSelector((state) => state.auth.user);
-
   const [loading, setLoading] = useState(false);
   const [Project, setProject] = useState({});
   const [Owner, setOwner] = useState({});
   const [Contractor, setContractor] = useState([]);
   const [tags, setTags] = useState({});
-
   const location = useLocation();
   const { projectId } = location.state || {};
   const lang = i18next.language;
-
- 
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -160,9 +158,10 @@ const ProjectDetails = () => {
                       className="avatar-container w-10 h-10 ring-2 ring-white inline-block rounded-full overflow-hidden"
                       title={member.name}
                     >
-                      <img
-                        src={member.profilePic || avatar}
-                        alt={`${member.name}'s avatar`}
+                      <ProfileAvatar
+                        src={member?.profilePic}
+                        name={member?.name}
+                        alt={`${member?.name}'s avatar`}
                         className="w-full h-full object-cover"
                       />
                     </Link>
@@ -195,7 +194,7 @@ const ProjectDetails = () => {
               <div className="analytics_box rounded-md shadow-md p-8 flex flex-col gap-3  mt-4 mb-4 mx-4 ">
                 <div
                   className={`progress_wrapper flex flex-col lg:flex-row items-center gap-2 rounded-2xl shadow-md p-8 relative ${
-                    user.plan.name === "RequestPlus" 
+                    user.plan.name === "RequestPlus"
                       ? "lg:justify-between"
                       : "lg:justify-center"
                   }`}
@@ -232,15 +231,14 @@ const ProjectDetails = () => {
                       </CircularProgress>
                     </div>
                   )}
-                
-                    <div className="tags relative">
-                      <span className="absolute -top-5 font-inter font-extrabold text-xs leading-4 my-1 ">
-                        {t("Tags")}
-                      </span>
 
-                      <TagsChart tags={tags} />
-                    </div>
-                
+                  <div className="tags relative">
+                    <span className="absolute -top-5 font-inter font-extrabold text-xs leading-4 my-1 ">
+                      {t("Tags")}
+                    </span>
+
+                    <TagsChart tags={tags} />
+                  </div>
                 </div>
 
                 <div className="Badges flex items-center  justify-around gap-2">

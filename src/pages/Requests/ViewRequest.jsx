@@ -15,6 +15,7 @@ import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
 import Button from "../../Components/UI/Button/Button";
 import { toast } from "react-toastify";
 import Select from "../../Components/UI/Select/Select";
+import { Image } from "../../Components/UI/Image/image";
 
 const ViewRequest = () => {
   const [model, setModel] = useState(null);
@@ -140,10 +141,10 @@ const ViewRequest = () => {
             {reviewer?.name || t("No name available")}
           </span>
           {reviewer?.signature ? (
-            <img
+            <Image
               src={reviewer?.signature}
-              alt="Signature"
-              className="w-20 h-20"
+              alt={"Signature"}
+              className={"w-20 h-20"}
             />
           ) : (
             <p className="text-xs">{t("No signature found")}</p>
@@ -387,7 +388,7 @@ const ViewRequest = () => {
                 {model?.firstUpdatedBy?.name}
               </span>
               {model?.firstUpdatedBy?.signature ? (
-                <img
+                <Image
                   src={model?.firstUpdatedBy?.signature}
                   alt="Signature"
                   className="w-20 h-20"
@@ -413,7 +414,7 @@ const ViewRequest = () => {
                 {model?.secondUpdatedBy?.name}
               </span>
               {model?.secondUpdatedBy?.signature ? (
-                <img
+                <Image
                   src={model?.secondUpdatedBy?.signature}
                   alt="Signature"
                   className="w-20 h-20"
@@ -691,7 +692,7 @@ const ViewRequest = () => {
           </h5>
           <span className="font-medium text-sm">{model?.createdBy?.name}</span>
           {model?.createdBy?.signature ? (
-            <img
+            <Image
               src={model?.createdBy?.signature}
               alt="Signature"
               className="w-20 h-20"

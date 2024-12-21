@@ -34,6 +34,7 @@ import { toast } from "react-toastify";
 import { ChatContext } from "../../context/ChatContext";
 import { Record } from "../../Components/RecordAudio/Record";
 import { AddMemberToGroup } from "../../Components/CreateGroup/AddMember";
+import { Image } from "../../Components/UI/Image/image";
 
 const Inbox = () => {
   const token = useSelector((state) => state.auth.token);
@@ -487,10 +488,10 @@ const Inbox = () => {
         <div
           className={` relative   border-gray-100 border  border-solid  text-white`}
         >
-          <img
-            src={`https://api.request-sa.com/${message?.docs}`}
-            alt="attachment"
-            className="w-full min-w-[200px] max-w-xs rounded-lg"
+          <Image
+            src={message?.docs}
+            alt={"attachment"}
+            className={"w-full min-w-[200px] max-w-xs rounded-lg"}
           />
 
           <span className={`absolute bottom-2 right-2 text-xs`}>

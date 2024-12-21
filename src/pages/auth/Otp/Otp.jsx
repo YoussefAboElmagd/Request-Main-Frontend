@@ -40,7 +40,6 @@ const Otp = () => {
     email_signUp,
   } = location.state || {};
   console.log(location.state);
-  
 
   const dispatch = useDispatch();
 
@@ -229,7 +228,7 @@ const Otp = () => {
             </div>
             <div className="form flex flex-col items-center">
               <div className="Otp_text font-workSans font-normal text-sm lg:text-xl text-center">
-                <p className="text-sm lg:text-base">
+                <p className="text-xs lg:text-base">
                   {t(`An OTP Message containing your code has been sent to`)}
                 </p>
                 <span className="text-red block">
@@ -256,6 +255,11 @@ const Otp = () => {
                   required
                   renderSeparator={<span> </span>}
                   renderInput={(props) => <input {...props} />}
+                  onPaste={(e) => {
+                    e.preventDefault();
+                    const clipboardData = e.clipboardData.getData("text/plain");
+                    setOtp(clipboardData);
+                  }}
                   inputStyle={{
                     width: "48px",
                     height: "62px",
