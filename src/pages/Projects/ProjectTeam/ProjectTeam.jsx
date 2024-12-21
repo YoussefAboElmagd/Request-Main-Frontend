@@ -330,7 +330,7 @@ const ProjectTeam = () => {
       };
       console.log(payload);
 
-      await addMemberForProject(projectId, payload, token, lang);
+      await addMemberForProject(projectId, payload, token);
       clearFields();
       toast.success(t("toast.MemberAdded"));
       window.location.reload();

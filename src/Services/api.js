@@ -792,7 +792,7 @@ export const addMemberForProject = async (projectId, MemberData, token) => {
 
   try {
     const response = await axiosInstance.put(
-      `project/member/${projectId}?lang=${lang}`,
+      `project/member/${projectId}`,
       MemberData,
       {
         headers: {
