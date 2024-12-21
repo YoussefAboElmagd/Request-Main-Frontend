@@ -134,8 +134,8 @@ const AllSubTasks = () => {
                     taskPriority={task.taskPriority}
                     status={task.taskStatus}
                     avatars={avatars}
-                    filesLength={2}
-                    MsgLength={6}
+                    filesLength={task?.documents?.length}
+                    MsgLength={task?.notes?.length}
                     sDate={formatDate(task?.sDate)}
                     eDate={formatDate(task?.dueDate)}
                   />

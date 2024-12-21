@@ -180,7 +180,7 @@ const Sidebar = () => {
                 )}
                 {user?.companyName && (
                   <p className="role font-bold font-inter text-xs text-gray">
-                    {user.companyName}
+                    {user?.companyName}
                   </p>
                 )}
               </div>
