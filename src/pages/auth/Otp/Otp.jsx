@@ -188,7 +188,7 @@ const Otp = () => {
   // }, []);
 
   return (
-    <div className="Otp h-screen relative effect overflow-hidden">
+    <div className="Otp h-screen  relative effect overflow-hidden">
       {loading ? (
         <div className="loader flex justify-center items-center m-auto">
           <Loader />
@@ -196,8 +196,8 @@ const Otp = () => {
       ) : (
         <>
           <LandingHeader />
-          <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between">
-            <div className="md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
+          <div className="Wrapper flex flex-col  md:flex-row  md:items-center md:justify-between">
+            <div className=" md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14   md:my-40">
               <div className="image_phone md:hidden">
                 <img
                   src={OtpImg}
@@ -226,8 +226,8 @@ const Otp = () => {
                 loading="lazy"
               />
             </div>
-            <div className="form flex flex-col items-center">
-              <div className="Otp_text font-workSans font-normal text-sm lg:text-xl text-center">
+            <div className="form flex flex-col items-center ">
+              <div className="Otp_text font-workSans font-normal text-sm  hidden md:block lg:text-xl text-center">
                 <p className="text-xs lg:text-base">
                   {t(`An OTP Message containing your code has been sent to`)}
                 </p>

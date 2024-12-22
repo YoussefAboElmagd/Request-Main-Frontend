@@ -13,7 +13,7 @@ const WorkRequest = () => {
         showProjectName={showProjectName}
         showDiscipline={showDiscipline}
         showActionCodes={showActionCodes}
-        showReasons={showReasons}
+      showReasons={showReasons}
         ReqTitle={"Work Request"}
         ApproveTitle={"workRequest"}
       />
