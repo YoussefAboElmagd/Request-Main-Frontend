@@ -63,7 +63,6 @@ const Header = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const data = await getNotificationCounts(token, user._id);
         setNotificationCounts(data);
@@ -75,8 +74,6 @@ const Header = () => {
         console.log(data);
       } catch (error) {
         console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
@@ -209,7 +206,6 @@ const Header = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Open Admin Dashboard"
-             
             >
               <LuLayoutDashboard className="w-6 h-6 text-purple " />
             </a>

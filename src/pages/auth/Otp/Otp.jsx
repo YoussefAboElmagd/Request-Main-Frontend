@@ -39,7 +39,12 @@ const Otp = () => {
     userData_login,
     email_signUp,
   } = location.state || {};
-  console.log(location.state);
+
+
+  useEffect(() => {
+    console.log("Otp : ", userData_login.verificationCode);
+  }, [userData_login.verificationCode]);
+  
 
   const dispatch = useDispatch();
 

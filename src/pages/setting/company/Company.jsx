@@ -15,7 +15,7 @@ const Company = () => {
   const userId = user._id;
   console.log(userId);
 
-  const [preview, setPreview] = useState(user?.companyLogo);
+  const [preview, setPreview] = useState("");
   const [logo, setLogo] = useState(user?.companyLogo);
   const [name, setName] = useState(user?.companyName);
   const [stampPreview, setStampPreview] = useState(user?.electronicStamp);
@@ -65,8 +65,7 @@ const Company = () => {
       const res = await uploadCompanyFiles(userId, updatedData);
       console.log("Response from server:", res);
 
-    
-      const updatedUser = { ...user, ...res.updates }; 
+      const updatedUser = { ...user, ...res.updates };
       console.log("Updated user data:", updatedUser);
 
       // Save to local storage
@@ -83,15 +82,18 @@ const Company = () => {
     }
   };
 
-
   return (
     <div className="Company">
       <div className="wrapper bg-white rounded-xl p-2 m-2">
         <div className="flex flex-col">
           <div className="logo my-2 mx-2 lg:mx-4 relative">
             <img
-              src={`https://api.request-sa.com/${preview}`}
-              alt={user.companyName}
+              src={
+                preview
+                  ? preview
+                  : `https://api.request-sa.com/${user?.companyLogo}`
+              }
+              alt={user?.companyName}
               className={
                 "rounded-full w-20 h-20 lg:w-24 lg:h-24  object-contain border border-gray p-2"
               }
@@ -133,7 +135,11 @@ const Company = () => {
                 <LiaStampSolid className="text-purple w-6 h-6" />
               </div>
               <img
-                src={`https://api.request-sa.com/${stampPreview}`}
+                src={
+                  preview
+                    ? `${stampPreview}`
+                    : `https://api.request-sa.com/${stamp}`
+                }
                 alt="Stamp Preview"
                 className="w-[50px] h-[50px] lg:w-[66px] lg:h-[62px] object-cover rounded-lg"
               />
@@ -170,6 +176,3 @@ const Company = () => {
 };
 
 export default Company;
-
-
- 

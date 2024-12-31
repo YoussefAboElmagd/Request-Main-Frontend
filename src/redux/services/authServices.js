@@ -37,6 +37,7 @@ export const signInThunk = createAsyncThunk(
     try {
       const response = await signIn({ email, password });
       console.log("Response :: => ", response);
+      localStorage.setItem("user", JSON.stringify(response.userData_login));
 
       dispatch(
         authSuccess({
@@ -63,7 +64,7 @@ export const handleLogout = createAsyncThunk(
     try {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-      localStorage.removeItem("token");
+
       dispatch(logoutSuccess());
     } catch (error) {
       dispatch(authFailure(error.message));
