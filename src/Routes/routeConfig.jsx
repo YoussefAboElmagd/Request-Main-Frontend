@@ -40,6 +40,8 @@ import TaskHistory from "../pages/Tasks/TaskHistory/TaskHistory.jsx";
 import ViewRequest from "../pages/Requests/ViewRequest.jsx";
 import Invitation from "../pages/Projects/AddProject/Invitaion.jsx";
 import ViewAllModels from "../pages/Requests/Models/ViewAllModels.jsx";
+import Page404 from "../pages/404Page/page404.jsx";
+import { Navigate } from "react-router-dom";
 
 // Define public routes
 export const publicRoutes = [
@@ -52,6 +54,11 @@ export const publicRoutes = [
   { path: "/SignUp/ChooseRole", component: <Role /> },
   { path: "/SignUp/createCompany", component: <CreateCompany /> },
   { path: "/ContactUs", component: <ContactUs /> },
+  {
+    path: "*",
+    component: <Navigate to="/404" replace />,
+  },
+  { path: "/404", component: <Page404 /> },
 ];
 
 // Define protected routes
@@ -97,3 +104,6 @@ export const protectedRoutes = [
   { path: "/ProjectTeam", component: <ProjectTeam /> },
   { path: "/Notifications", component: <Notifications /> },
 ];
+
+
+

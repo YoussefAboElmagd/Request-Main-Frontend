@@ -227,7 +227,7 @@ const DelegatedAccess = () => {
                   key={member._id}
                   className="flex flex-col  relative  rounded-xl shadow-md p-4 my-2 bg-white"
                 >
-                  <div className="absolute top-4 right-4 flex gap-2">
+                  <div className="absolute top-4 rtl:left-4 ltr:right-4 flex gap-2">
                     <button
                       className="text-red"
                       onClick={() => {

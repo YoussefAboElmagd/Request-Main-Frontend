@@ -54,23 +54,33 @@ const ForgotPassword = () => {
       ) : (
         <>
           <LandingHeader />
-          <div className="Wrapper flex items-center justify-between">
-            <div className="w-96 my-40">
+          <div className="Wrapper flex flex-col lg:flex-row md:items-center md:justify-between">
+            <div className="w-full  md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
+              <div className="image_phone md:hidden">
+                <img
+                  src={forgot}
+                  alt="LogIn By Phone"
+                  width={300}
+                  height={300}
+                  loading="lazy"
+                />
+              </div>
+
               {forget_id ? (
                 <>
-                  <h3 className="font-workSans font-bold text-5xl">
+                  <h3 className="font-workSans font-semibold text-purple text-center md:text-left md:text-gray-dark md:font-bold text-xl md:text-3xl lg:text-5xl">
                     {t("Reset Your Password")}
                   </h3>
-                  <p className="font-jost font-medium text-2xl">
+                  <p className="font-jost font-medium  hidden md:block md:text-xl lg:text-2xl">
                     {t("Enter your new password below to complete the reset")}
                   </p>
                 </>
               ) : (
                 <>
-                  <h3 className="font-workSans font-bold text-5xl">
+                  <h3 className="font-workSans font-semibold text-purple text-center md:text-left md:text-gray-dark md:font-bold text-xl md:text-3xl lg:text-5xl">
                     {t("Enter your email to reset the password")}
                   </h3>
-                  <p className="font-jost font-medium text-2xl">
+                  <p className="font-jost font-medium  hidden md:block md:text-xl lg:text-2xl">
                     {t(
                       "You will receive a code in your email that must be entered to reset your password"
                     )}
@@ -78,7 +88,8 @@ const ForgotPassword = () => {
                 </>
               )}
             </div>
-            <div className="LogIn_Image flex justify-center">
+
+            <div className="LogIn_Image hidden md:flex justify-center">
               <img
                 src={forgot}
                 alt="Forgot Password"
@@ -86,7 +97,7 @@ const ForgotPassword = () => {
                 loading="lazy"
               />
             </div>
-            <div className="form flex flex-col mt-14">
+            <div className="form flex flex-col md:mt-14">
               <form onSubmit={handleSubmit}>
                 {forget_id ? (
                   <div className="password">
@@ -136,13 +147,11 @@ const ForgotPassword = () => {
                   </div>
                 )}
 
-                <Button
-                  className="mt-5 w-full flex justify-center items-center"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {t("Send")}
-                </Button>
+                <div className="flex justify-center items-center">
+                  <Button className="mt-5  " type="submit" disabled={loading}>
+                    {t("Send")}
+                  </Button>
+                </div>
                 {error && (
                   <div className="text-center">
                     <p className="text-red">{error}</p>

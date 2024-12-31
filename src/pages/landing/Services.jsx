@@ -75,7 +75,7 @@ const Services = () => {
         <img
           src={servicesImage}
           alt="servicesImage"
-          className="h-[40vh] sm:h-[60vh] lg:h-[70vh] hidden lg:block lg:w-3/4 object-cover absolute right-0 rtl:scale-x-[-1]"
+          className="h-[40vh] sm:h-[60vh] lg:h-[70vh] hidden lg:block lg:w-3/4 object-cover absolute rtl:left-0 ltr:right-0 rtl:scale-x-[-1]"
           loading="lazy"
         />
         <div className="box_services absolute rtl:rounded-r-xl ltr:rounded-l-xl bg-linear_1 p-4 h-[15vh] hidden lg:grid  grid-cols-3 items-center gap-2 text-white w-4/5 rtl:left-0 ltr:right-0 lg:bottom-20">

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ApiUrl = "https://api.request-sa.com/api/v1/";
+const ApiUrl = import.meta.env.VITE_API_URL;
 const axiosInstance = axios.create({
   baseURL: ApiUrl,
   timeout: 10000,
@@ -14,7 +14,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // Check if error.response exists, otherwise return a default error message
     if (error.response) {
-      return Promise.reject(error.response.data); 
+      return Promise.reject(error.response.data);
     } else if (error.request) {
       // Request was made, but no response was received
       return Promise.reject({
@@ -30,6 +30,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
-
-

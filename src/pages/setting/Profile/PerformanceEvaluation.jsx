@@ -161,7 +161,7 @@ const PerformanceEvaluation = () => {
           <div className="visa-card h-[200px] rounded-2xl bg-linear_1 p-3 text-white flex flex-col">
             <div className="header flex items-center justify-between p-1 md:p-2">
               <div className="flex flex-col">
-                <span className="text-xs font-normal">Balance</span>
+                <span className="text-xs font-normal">{t("Balance")}</span>
                 <span className="font-semibold text-xl">$5,756</span>
               </div>
               <span className="mx-2">
@@ -170,11 +170,13 @@ const PerformanceEvaluation = () => {
             </div>
             <div className="content m-3 flex items-center justify-around">
               <div className="flex flex-col">
-                <span className="text-xs font-normal">CARD HOLDER</span>
+                <span className="text-xs font-normal">
+                  {t("Card holder Name")}
+                </span>
                 <span className="font-semibold text-base">Eddy Cusuma</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-xs font-normal">VALID THRU</span>
+                <span className="text-xs font-normal">{t("VALID THRU")}</span>
                 <span className="font-semibold text-base">12/22</span>
               </div>
             </div>
@@ -188,20 +190,22 @@ const PerformanceEvaluation = () => {
         </div>
 
         <div className="PackageShippingMovement col-span-2">
-          <p className="font-medium text-sm mb-2">Package shipping movement</p>
+          <p className="font-medium text-sm mb-2">
+            {t("Package shipping movement")}
+          </p>
           <div className="card h-[170px] bg-white rounded-2xl overflow-y-scroll overflow-x-hidden">
             <table className="w-full text-left p-4">
               <thead>
                 <tr>
                   <th className="border-b text-gray font-medium text-sm p-1 md:p-2"></th>
                   <th className="border-b text-gray font-medium text-sm p-1 md:p-2">
-                    Date
+                    {t("Date")}
                   </th>
                   <th className="border-b text-gray font-medium text-sm p-1 md:p-2">
-                    Name
+                    {t("Name")}
                   </th>
                   <th className="border-b text-gray font-medium text-sm p-1 md:p-2">
-                    Price
+                    {t("Price")}
                   </th>
                 </tr>
               </thead>
@@ -226,21 +230,21 @@ const PerformanceEvaluation = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 my-3">
         <div className="activeProjects col-span-2">
-          <p className="font-medium text-base">Active Projects</p>
+          <p className="font-medium text-base">{t("ActiveProjects")}</p>
           <table className="w-full table-auto bg-white rounded-2xl overflow-hidden">
             <thead className="bg-gray-200">
               <tr>
                 <th className="border-b font-medium text-sm p-1 md:p-2">
-                  Project Name
+                  {t("Project Name")}
                 </th>
                 <th className="border-b font-medium text-sm p-1 md:p-2">
-                  Tasks
+                  {t("Tasks")}
                 </th>
                 <th className="border-b font-medium text-sm p-1 md:p-2">
-                  Progress
+                  {t("Progress")}
                 </th>
                 <th className="border-b font-medium text-sm p-1 md:p-2">
-                  Members
+                  {t("Members")}
                 </th>
               </tr>
             </thead>
@@ -249,9 +253,11 @@ const PerformanceEvaluation = () => {
                 .fill(0)
                 .map((_, idx) => (
                   <tr key={idx} className="hover:bg-gray-100">
-                    <td className="p-1 md:p-2 text-xs md:text-base">Project Name {idx + 1}</td>
+                    <td className="p-1 md:p-2 text-xs md:text-base">
+                      {t("Project Name")} {idx + 1}
+                    </td>
                     <td className="p-1 md:p-2">
-                      134 <span className="hidden md:block">Tasks</span>
+                      134 <span className="hidden md:block"> {t("Tasks")}</span>
                     </td>
                     <td className="p-1 md:p-2 flex items-center gap-1">
                       <span className="font-inter  text-xs text-gray-dark ">
@@ -294,11 +300,11 @@ const PerformanceEvaluation = () => {
           </table>
         </div>
         <div className="bg-white p-4 shadow-lg rounded-lg col-span-2">
-          <h3 className="font-semibold mb-2">Projects Performance</h3>
+          <h3 className="font-semibold mb-2">{t("ProjectsPerformance")}</h3>
           <div className="flex flex-col">
             <Chart
-              options={ProjectsPerformanceOptions}
-              series={ProjectsPerformanceOptions.series}
+              options={SettingOptions}
+              series={SettingOptions.series}
               type="radialBar"
               height={180}
             />
@@ -313,7 +319,7 @@ const PerformanceEvaluation = () => {
                   />
                 </span>
                 <span className="font-semibold text-lg">44%</span>
-                <span className="font-medium text-base">Completed</span>
+                <span className="font-medium text-base">{t("completed")}</span>
               </div>
               <div className="In-Progress flex flex-col items-center">
                 <span>
@@ -325,7 +331,7 @@ const PerformanceEvaluation = () => {
                   />
                 </span>
                 <span className="font-semibold text-lg">55%</span>
-                <span className="font-medium text-base">In-Progress</span>
+                <span className="font-medium text-base">{t("inProgress")}</span>
               </div>
               <div className="Delayed flex flex-col items-center">
                 <span>
@@ -337,7 +343,7 @@ const PerformanceEvaluation = () => {
                   />
                 </span>
                 <span className="font-semibold text-lg">67%</span>
-                <span className="font-medium text-base">Delayed</span>
+                <span className="font-medium text-base">{t("delayed")}</span>
               </div>
             </div>
           </div>
@@ -345,7 +351,7 @@ const PerformanceEvaluation = () => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 my-3">
         <div className="weeklyActivity col-span-2 bg-white rounded-2xl  shadow-md p-1 md:p-2">
-          <span className="mx-2">weekly Activity</span>
+          <span className="mx-2">{t("Weekly Activity")}</span>
           <Chart
             options={weeklyActivityOptions}
             series={weeklyActivityOptions.series}
@@ -354,7 +360,7 @@ const PerformanceEvaluation = () => {
           />
         </div>
         <div className="weeklyActivity col-span-2 bg-white rounded-2xl  shadow-md p-1 md:p-2">
-          <span className="mx-2">Monthly Revenue</span>
+          <span className="mx-2">{t("Monthly Revenue")}</span>
           <Chart
             options={MonthlyRevenueChart}
             series={MonthlyRevenueChart.series}

@@ -2,14 +2,13 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "../SideBar/Sidebar";
 import Header from "../Header/Header";
 import { ToastContainer } from "react-toastify";
-  import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import AppRoutes from "../../Routes/AppRoutes";
 
-
 const Layout = () => {
   const location = useLocation();
-    // useAuthRedirect();
+  // useAuthRedirect();
   const options = {
     position: "bottom-right",
     autoClose: 5000,
@@ -35,12 +34,16 @@ const Layout = () => {
     "/landing/PlansInfo",
     "/landing/*",
     "/Invitation",
+    "*",
+    "/404",
   ];
 
+  const isLandingPage =
+    location.pathname === "/landing" ||
+    location.pathname.startsWith("/landing/");
 
-   const isLandingPage =
-     location.pathname === "/landing" ||
-     location.pathname.startsWith("/landing/");
+  
+
   const showSidebar = !noSidebarRoutes.includes(location.pathname);
 
   return (
@@ -48,7 +51,7 @@ const Layout = () => {
       {showSidebar && <Header className="w-full" />}
       <div className="flex flex-1">
         {showSidebar && <Sidebar />}
-        <main className={`flex-1 ${isLandingPage ? 'p-0' : 'p-2 md:p-4'}  `}>
+        <main className={`flex-1 ${isLandingPage ? "p-0" : "p-2 md:p-4"}  `}>
           <AppRoutes />
         </main>
       </div>

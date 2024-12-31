@@ -43,9 +43,9 @@ const ListView = ({
     <div className="box bg-white rounded-lg shadow-sm py-1 px-3 flex items-center justify-between gap-2 ">
       <div className="files flex items-center gap-3 cursor-pointer">
         <div className="pen">
-          <span>
+          {/* <span>
             <FaPen className="text-gray w-3 h-3 md:w-4 md:h-4 cursor-pointer" />
-          </span>
+          </span> */}
         </div>
         <div className="files flex items-center gap-1">
           <span className="text-purple-dark font-inter font-extrabold text-sm leading-4">

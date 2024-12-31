@@ -35,7 +35,7 @@ const PlanDetails = () => {
   return (
     <div className="PlanDetails bg-white p-2 rounded-3xl">
       <h2 className="font-semibold text-xl">{t("Subscription System")}</h2>
-      <div className="boxes grid grid-cols-4 gap-2 mt-5 mx-2">
+      <div className="boxes grid grid-cols-2 md:grid-cols-4 gap-2 mt-5 mx-2">
         <div className="package_box border border-gray py-2 px-4 rounded-xl col-span-2">
           <div className="flex my-1">
             <span className="rounded-lg">
@@ -76,7 +76,7 @@ const PlanDetails = () => {
         </div>
       </div>
       <hr className="my-4" />
-      <div className="flex items-center justify-between mt-5 mx-2">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mt-5 mx-2">
         <div className="content">
           <h6 className="text-xs my-1" style={{ color: "#919EAB" }}>
             {t("Current Plan")}
@@ -103,7 +103,9 @@ const PlanDetails = () => {
           <p className="underline underline-offset-1 text-gray font-medium text-xs">
             {t("Learn more about our membership policy")}
           </p>
-          <Button className={"px-20 my-3"}>{t("Change Plan")}</Button>
+          <Button className={"px-20 my-3 text-center"}>
+            {t("Change Plan")}
+          </Button>
         </div>
       </div>
       <form action="submit" className="mx-2">
@@ -114,16 +116,24 @@ const PlanDetails = () => {
           placeholder={t("Name")}
           required={true}
         />
-        <div className="grid grid-cols-2">
-          <div className="col-span-1"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="col-span-1">
+            <Input
+              label={t("Price")}
+              className="bg-white border border-solid border-gray focus:border focus:border-solid focus:border-gray"
+              id={"Price"}
+              placeholder={t("Price")}
+              required={true}
+            />
+          </div>
           <div className="col-span-1">
             <label
               htmlFor="Billing"
-              className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
+              className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium  mx-2"
             >
               {t("Billing Period")}
             </label>
-            <Select label={t("Billing Period")} id="Billing">
+            <Select label={t("Billing Period")} id="Billing" className="my-2">
               <Option value="monthly">{t("Monthly")}</Option>
               <Option value="yearly">{t("Yearly")}</Option>
             </Select>
@@ -191,7 +201,7 @@ const PlanDetails = () => {
                 index === 0 ? "border-transparent" : "border-gray-300"
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1 md:gap-3">
                 <input
                   type="radio"
                   id={plan.name}
@@ -205,14 +215,16 @@ const PlanDetails = () => {
                   <span className="text-gray-600">{plan.description}</span>
                 </div>
               </div>
-              <div className="text-lg font-bold">{plan.price}</div>
-              {plan.badge && (
-                <span
-                  className={`text-xs font-medium ${plan.badgeColor} px-2 py-1 rounded-lg`}
-                >
-                  {plan.badge}
-                </span>
-              )}
+              <div className="flex items-center gap-1 md:gap-2">
+                <div className="text-lg font-bold">{plan.price}</div>
+                {plan.badge && (
+                  <span
+                    className={`text-xs font-medium ${plan.badgeColor} px-2 py-1 rounded-lg`}
+                  >
+                    {plan.badge}
+                  </span>
+                )}
+              </div>
             </div>
           ))}
         </div>

@@ -399,13 +399,18 @@
   "No messages in this chat yet. Start a conversation!": "لا توجد رسائل في هذه الدردشة بعد. ابدأ محادثة!",
   "No Active Chat": "لا توجد دردشة نشطة",
   "Select a chat from the list to get started, or start a new conversation.": "حدد دردشة من القائمة للبدء، أو ابدأ محادثة جديدة.",
-  "Create Group" : "إنشاء مجموعة",
+  "Create Group": "إنشاء مجموعة",
   "Select members to add to the group :": "اختر الأعضاء لإضافتهم إلى المجموعة:",
-  "groupName" : "اسم المجموعة",
-  "Add Member":"إضافة عضو",
-  "Add New Member":"إضافة عضو جديد",
-  "Add":"إضافة",
-  "Adding...":"يتم الاضافه",
-  "clear" : "مسح"
-
+  "groupName": "اسم المجموعة",
+  "Add Member": "إضافة عضو",
+  "Add New Member": "إضافة عضو جديد",
+  "Add": "إضافة",
+  "Adding...": "يتم الاضافه",
+  "clear": "مسح",
+  "Oops! the page not found.": "عذرًا! الصفحة غير موجودة.",
+  "Or simply leverage the expertise of our consultation team.": "أو ببساطة استفد من خبرة فريق الاستشارات لدينا.",
+  "Go Home": "الذهاب إلى الصفحة الرئيسية",
+  "Balance": "الرصيد",
+  "Package shipping movement": "حركة شحن الطرود",
+  "VALID THRU": "صالح حتى"
 }

@@ -58,9 +58,9 @@ const BoardView = ({
       </div>
       <div className="name flex justify-between items-center mx-2 my-3">
         <p className="font-inter font-medium text-xs leading-5">{NameOfTask}</p>
-        <span>
+        {/* <span>
           <FaPen className="text-gray w-4 h-4 cursor-pointer" />
-        </span>
+        </span> */}
       </div>
       {taskType === "toq" && (
         <div className="progress w-full mx-2 my-3">

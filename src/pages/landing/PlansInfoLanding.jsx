@@ -94,14 +94,14 @@ const tableData = [
 const PlansInfoLanding = () => {
   return (
     <div className="PlansInfo">
-      <div className="header flex justify-between items-center mb-4 mx-2">
+      <div className="header  flex flex-col  gap-3 md:flex-row md:justify-between md:items-center mb-4 mx-2">
         <div className="content ">
           <h2 className="font-bold text-xl">{t("Feature Table")}</h2>
           <p className="text-base text-gray-500">
             {t("Choose the perfect plan for your business needs")}
           </p>
         </div>
-        <div className="switch flex items-center gap-2">
+        <div className="switch flex flex-col lg:flex-row  gap-2  lg:items-center">
           <span className="text-purple-dark">
             {t("Save 15% on yearly plan!")}
           </span>
@@ -114,7 +114,7 @@ const PlansInfoLanding = () => {
         </div>
       </div>
 
-      {/* <div className="plans flex items-center justify-end gap-4 mt-6">
+      <div className="plans flex flex-col md:flex-row  justify-between items-center w-full lg:hidden gap-4  mt-6">
         {["Request", "Request Plus", "Request Full Plus"].map((plan, idx) => (
           <div
             key={idx}
@@ -147,13 +147,13 @@ const PlansInfoLanding = () => {
             </Link>
           </div>
         ))}
-      </div> */}
+      </div>
 
       <table
         className={`table w-full table-auto border-separate border-spacing-4 mt-8`}
       >
         <thead>
-          <tr className=" my-2">
+          <tr className=" my-2 hidden lg:table-row">
             <th></th>
             <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
               <div className="flex flex-col">

@@ -264,7 +264,7 @@ export const AddNewTask = ({ newTask, task }) => {
                 } bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid`}
               />
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
               <div className="flex flex-col my-2 col-span-1">
                 <label
                   htmlFor="sDate"
@@ -310,7 +310,7 @@ export const AddNewTask = ({ newTask, task }) => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
               <Select
                 id="priority"
                 label={t("Priority")}
@@ -360,7 +360,7 @@ export const AddNewTask = ({ newTask, task }) => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
               <Select
                 id=""
                 label={t("Responsible Person")}
@@ -376,7 +376,7 @@ export const AddNewTask = ({ newTask, task }) => {
               />
             </div>
 
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
               <Input
                 type="number"
                 min={0}

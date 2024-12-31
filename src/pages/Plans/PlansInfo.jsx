@@ -101,7 +101,7 @@ const PlansInfo = () => {
             {t("Choose the perfect plan for your business needs")}
           </p>
         </div>
-        <div className="switch flex  gap-2  items-center ">
+        <div className="switch flex flex-col lg:flex-row  gap-2  lg:items-center ">
           <span className="text-purple-dark">
             {t("Save 15% on yearly plan!")}
           </span>
@@ -114,7 +114,7 @@ const PlansInfo = () => {
         </div>
       </div>
 
-      <div className="plans flex flex-col  justify-between items-center w-full md:hidden gap-4  mt-6">
+      <div className="plans flex flex-col md:flex-row  justify-between items-center w-full lg:hidden gap-4  mt-6">
         {["Request", "Request Plus", "Request Full Plus"].map((plan, idx) => (
           <div
             key={idx}
@@ -153,7 +153,7 @@ const PlansInfo = () => {
         className={`table w-full table-auto border-separate border-spacing-4 mt-8  `}
       >
         <thead>
-          <tr className=" my-2">
+          <tr className=" my-2 hidden lg:table-row">
             <th></th>
             <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
               <div className="flex flex-col">

@@ -33,7 +33,7 @@ const PlansDetailsLanding = () => {
   return (
     <div className="PlanDetails bg-white p-2 rounded-3xl">
       <h2 className="font-semibold text-xl">{t("Subscription System")}</h2>
-      <div className="boxes grid grid-cols-4 gap-2 mt-5 mx-2">
+      <div className="boxes grid grid-cols-2 md:grid-cols-4 gap-2 mt-5 mx-2">
         <div className="package_box border border-gray py-2 px-4 rounded-xl col-span-2">
           <div className="flex my-1">
             <span className="rounded-lg">
@@ -55,7 +55,7 @@ const PlansDetailsLanding = () => {
             backgroundColor: "rgba(204, 171, 218, 0.09)",
           }}
         >
-          <div className="flex items-center justify-between my-1">
+          <div className="flex flex-col md:flex-row md:items-center justify-between my-1">
             <span className="rounded-lg">
               <BsFillLightningChargeFill className="text-purple-dark w-4 h-4" />
             </span>
@@ -113,7 +113,15 @@ const PlansDetailsLanding = () => {
           required={true}
         />
         <div className="grid grid-cols-2">
-          <div className="col-span-1"></div>
+          <div className="col-span-1">
+            <Input
+              label={t("Price")}
+              className="bg-white border border-solid border-gray focus:border focus:border-solid focus:border-gray"
+              id={"Price"}
+              placeholder={t("Price")}
+              required={true}
+            />
+          </div>
           <div className="col-span-1">
             <label
               htmlFor="Billing"
@@ -121,7 +129,7 @@ const PlansDetailsLanding = () => {
             >
               {t("Billing Period")}
             </label>
-            <Select label={t("Billing Period")} id="Billing">
+            <Select label={t("Billing Period")} id="Billing" className="my-2">
               <Option value="monthly">{t("Monthly")}</Option>
               <Option value="yearly">{t("Yearly")}</Option>
             </Select>

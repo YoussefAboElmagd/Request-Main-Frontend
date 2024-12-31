@@ -42,7 +42,6 @@ const Sidebar = () => {
     Team: 0,
     Settings: 0,
   });
-  console.log(notifications);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
