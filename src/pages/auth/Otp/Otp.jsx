@@ -42,8 +42,8 @@ const Otp = () => {
 
 
   useEffect(() => {
-    console.log("Otp : ", userData_login.verificationCode);
-  }, [userData_login.verificationCode]);
+    console.log("Otp : ", userData_login?.verificationCode);
+  }, [userData_login?.verificationCode]);
   
 
   const dispatch = useDispatch();

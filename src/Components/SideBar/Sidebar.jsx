@@ -124,9 +124,9 @@ const Sidebar = () => {
   const handleItemClick = (index) => {
     setActiveIndex(index);
   };
-  const nameParts = user.name.split(" ");
-  const firstNameInitial = nameParts[0] ? nameParts[0][0] : "";
-  const lastNameInitial = nameParts[1] ? nameParts[1][0] : "";
+  const nameParts = user?.name?.split(" ") || [];
+  const firstNameInitial = nameParts[0]?.[0] || "";
+  const lastNameInitial = nameParts[1]?.[0] || "";
 
   return (
     <div className="Sidebar rtl:left-0">
@@ -153,9 +153,9 @@ const Sidebar = () => {
             className="flex gap-2 items-center"
           >
             <div className="relative">
-              {user.profilePic ? (
+              {user?.profilePic ? (
                 <img
-                  src={user.profilePic}
+                  src={user?.profilePic}
                   alt="avatar"
                   className="rounded-full  w-12 h-12 object-contain relative border border-solid  border-gray p-2"
                 />
@@ -171,10 +171,10 @@ const Sidebar = () => {
             </div>
             {!Open && (
               <div className="flex flex-col">
-                <p className="name font-bold font-inter text-xs">{user.name}</p>
-                {user?.role && user.role.jobTitle && (
+                <p className="name font-bold font-inter text-xs">{user?.name}</p>
+                {user?.role && user?.role?.jobTitle && (
                   <p className="role font-bold font-inter text-xs text-gray">
-                    {user.role.jobTitle}
+                    {user?.role.jobTitle}
                   </p>
                 )}
                 {user?.companyName && (

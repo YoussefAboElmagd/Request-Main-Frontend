@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { t } from "i18next";
 import { Box, CircularProgress } from "@mui/joy";
 import { Typography } from "@material-tailwind/react";
-import { LuAlarmPlus } from "react-icons/lu";
+import { MdAlarmAdd } from "react-icons/md";
 import { RiProgress4Line } from "react-icons/ri";
 import ListView from "../../Components/ListView/listView";
 
@@ -122,7 +122,7 @@ const Home = () => {
                 </div>
                 <div className="box bg-linear_4 w-full py-4 px-2 rounded-3xl text-white flex items-center justify-center gap-1">
                   <span className="icon bg-white w-8 h-8 rounded-full flex justify-center items-center">
-                    <LuAlarmPlus className="text-red" />
+                    <MdAlarmAdd className="text-red" />
                   </span>
                   <div className="flex flex-col font-poppins font-normal">
                     <span className="text-xl leading-6">

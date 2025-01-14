@@ -200,7 +200,7 @@ const Header = () => {
           </span>
         </div> */}
         <div className="flex justify-between items-center gap-2">
-          {user.userType === "admin" && (
+          {user?.userType === "admin" && (
             <a
               href="http://62.72.32.44:8005/"
               target="_blank"
