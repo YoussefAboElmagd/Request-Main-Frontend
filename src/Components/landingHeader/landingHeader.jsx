@@ -53,7 +53,7 @@ const LandingHeader = () => {
         <img 
           src={logo} 
           alt="logo" 
-          className={`object-contain h-24 w-24 absolute ${isRTL ? "right-4" : "left-4"} top-1 z-10  backdrop-blur-md rounded-lg bg-transparent`}
+          className={`object-contain h-24 w-24 absolute ${isRTL ? "right-4" : "left-4"} top-4 z-10  backdrop-blur-md rounded-lg bg-transparent`}
         />
       
         <div className="flex py-6 px-10 shadow-lg ring-1 mx-auto z-20 rounded-full border mt-5 transition-all duration-300 hover:shadow-xl">
