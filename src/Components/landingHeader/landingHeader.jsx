@@ -8,7 +8,7 @@ import { FaBarsStaggered } from "react-icons/fa6";
 import { Drawer, IconButton, Typography } from "@material-tailwind/react";
 import { CheckInput } from "../../pages/setting/setting";
 import { useLanguage } from "../../context/LanguageContext";
-
+import logo from "../../assets/images/transpairant-1.png";
 const LandingHeader = () => {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isRTL, setIsRTL] = useState(false);
@@ -49,126 +49,147 @@ const LandingHeader = () => {
           : ""
       }`}
     >
-      <header className="flex justify-between align-center p-3">
-        <div className="logo hidden lg:block font-bold text-2xl">logo</div>
-        {/* mobile view items */}
-        <div className="block lg:hidden">
-          <button onClick={openDrawer}>
-            <FaBarsStaggered className="text-purple w-5 h-5" />
-          </button>
-          <Drawer open={open} onClose={closeDrawer} className="p-4">
-            <div className="mb-6 flex items-center ">
-              <IconButton
-                variant="text"
-                color="blue-gray"
-                onClick={closeDrawer}
-              >
-                <IoMdClose />
-              </IconButton>
-            </div>
-            <div className="flex flex-col gap-3">
+      <header className="relative flex  justify-center items-center">
+        <img 
+          src={logo} 
+          alt="logo" 
+          className={`object-contain h-40 w-40 absolute ${isRTL ? "right-4" : "left-4"} top-4 z-10  backdrop-blur-md rounded-lg bg-transparent`}
+        />
+      
+        <div className="flex py-6 px-10 shadow-lg ring-1 mx-auto z-20 rounded-full border mt-5 transition-all duration-300 hover:shadow-xl">
+          {/* mobile view items */}
+          <div className="block lg:hidden">
+            <button 
+              onClick={openDrawer}
+              className="transition-transform duration-200 hover:scale-110"
+            >
+              <FaBarsStaggered className="text-purple w-5 h-5" />
+            </button>
+            <Drawer open={open} onClose={closeDrawer} className="p-4">
+              <div className="mb-6 flex items-center">
+                <IconButton
+                  variant="text"
+                  color="blue-gray"
+                  onClick={closeDrawer}
+                  className="transition-all duration-200 hover:bg-purple/10"
+                >
+                  <IoMdClose />
+                </IconButton>
+              </div>
+              <div className="flex flex-col gap-3">
+                <Link
+                  to={"/landing"}
+                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                >
+                  {t("Home")}
+                </Link>
+                <Link
+                  to={"/landing/services"}
+                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                >
+                  {t("Services")}
+                </Link>
+                <Link
+                  to={"/landing/seePlans"}
+                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                >
+                  {t("Price")}
+                </Link>
+                <Link
+                  to={"/landing/ContactUs"}
+                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                >
+                  {t("Contact us")}
+                </Link>
+                <div className="flex items-center justify-between select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200">
+                  <span>{t("language")}</span>
+                  <CheckInput
+                    checked={languageChecked}
+                    onChange={() => {
+                      const newLang = languageChecked ? "en" : "ar";
+                      changeLang(newLang);
+                    }}
+                  />
+                </div>
+              </div>
+            </Drawer>
+          </div>
+          <div className="items relative">
+            <nav className="hidden lg:flex items-center gap-5">
               <Link
                 to={"/landing"}
-                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
+                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
               >
                 {t("Home")}
               </Link>
               <Link
                 to={"/landing/services"}
-                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
+                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
               >
                 {t("Services")}
               </Link>
               <Link
                 to={"/landing/seePlans"}
-                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
+                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
               >
                 {t("Price")}
               </Link>
               <Link
                 to={"/landing/ContactUs"}
-                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
+                className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
               >
                 {t("Contact us")}
               </Link>
-              <div className="flex items-center justify-between select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer">
-                <span> {t("language")}</span>
-                <CheckInput
-                  checked={languageChecked}
-                  onChange={() => {
-                    const newLang = languageChecked ? "en" : "ar";
-                    changeLang(newLang);
-                  }}
-                />
+              <Link
+                className="flex items-center select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                onClick={toggleLangOptions}
+              >
+                <span>{t("language")}</span>
+                <span className="transition-transform duration-300">
+                  <IoIosArrowDown 
+                    style={{ color: "var(--gray-md)" }}
+                    className={`transform ${isLangOpen ? 'rotate-180' : 'rotate-0'}`}
+                  />
+                </span>
+              </Link>
+            </nav>
+            <div
+              className={`lang_options z-50 bg-white shadow-lg rounded-md p-2 absolute ltr:right-3 rtl:-left-2 w-24 mt-3 transition-all duration-300 ${
+                isLangOpen
+                  ? "opacity-100 visible translate-y-0"
+                  : "opacity-0 invisible -translate-y-2"
+              }`}
+            >
+              <div
+                onClick={() => changeLang("ar")}
+                className="ar font-workSans font-medium text-base text-gray-md m-1 cursor-pointer text-center transition-colors duration-200 hover:text-purple"
+              >
+                العربية
+              </div>
+              <div
+                onClick={() => changeLang("en")}
+                className="en font-workSans font-medium text-base text-gray-md m-1 cursor-pointer text-center transition-colors duration-200 hover:text-purple"
+              >
+                English
               </div>
             </div>
-          </Drawer>
-        </div>
-        <div className="items relative">
-          <nav className=" hidden lg:flex items-center gap-5 ">
-            <Link
-              to={"/landing"}
-              className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
-            >
-              {t("Home")}
-            </Link>
-            <Link
-              to={"/landing/services"}
-              className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
-            >
-              {t("Services")}
-            </Link>
-            <Link
-              to={"/landing/seePlans"}
-              className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
-            >
-              {t("Price")}
-            </Link>
-            <Link
-              to={"/landing/ContactUs"}
-              className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
-            >
-              {t("Contact us")}
-            </Link>
-            <Link
-              className="flex items-center select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer"
-              onClick={toggleLangOptions}
-            >
-              <span> {t("language")}</span>
-              <span>
-                <IoIosArrowDown style={{ color: "var(--gray-md)" }} />
-              </span>
-            </Link>
-          </nav>
-          <div
-            className={`lang_options z-50 bg-white shadow-lg rounded-md p-2 absolute ltr:right-3 rtl:-left-2 w-24 mt-3 transition-all duration-300 ${
-              isLangOpen
-                ? "opacity-100 visible translate-y-0"
-                : "opacity-0 invisible -translate-y-2"
-            }`}
-          >
-            <div
-              onClick={() => changeLang("ar")}
-              className="ar font-workSans font-medium text-base text-gray-md m-1 cursor-pointer text-center"
-            >
-              العربية
-            </div>
-            <div
-              onClick={() => changeLang("en")}
-              className="en font-workSans font-medium text-base text-gray-md m-1 cursor-pointer text-center"
-            >
-              English
-            </div>
           </div>
+       
         </div>
-        <div className="CTA">
+        <div className="CTA flex items-center ">
           <Link to="/LogIn/Mail">
-            <button className="py-1 px-5 md:px-10 bg-linear_1 rounded-3xl text-light mx-2 font-semibold md:text-xl text-base">
+            <button className="py-2 px-6 md:px-8 bg-linear_1 rounded-3xl text-light mx-2 font-semibold md:text-xl text-base transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
               {t("signIn")}
             </button>
           </Link>
           <Link to="/SignUp/ChooseRole">
-            <button className="py-1 px-5 md:px-10 bg-light border border-purple border-solid rounded-3xl text-purple mx-2 font-semibold md:text-xl text-base ">
+            <button className="py-2 px-6 md:px-8 bg-light border-2 border-purple border-solid rounded-3xl text-purple mx-2 font-semibold md:text-xl text-base transition-all duration-200 hover:scale-105 hover:shadow-lg hover:bg-purple hover:text-white flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+              </svg>
               {t("Sign Up")}
             </button>
           </Link>

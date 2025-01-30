@@ -6,13 +6,13 @@ const Services = () => {
   const services = [
     {
       icon: <FiSettings />,
-      title: t("servicesLanding.title1"),
+      title: t("servicesLanding.title1"), 
       description: t("servicesLanding.message1"),
     },
     {
       icon: <FiSettings />,
       title: t("servicesLanding.title2"),
-      description: t("servicesLanding.message2"),
+      description: t("servicesLanding.message2"), 
     },
     {
       icon: <FiSettings />,
@@ -21,9 +21,19 @@ const Services = () => {
     },
     {
       icon: <FiSettings />,
-      title: t("servicesLanding.title4"),
+      title: t("servicesLanding.title4"), 
       description: t("servicesLanding.message4"),
     },
+    {
+      icon: <FiSettings />,
+      title: t("servicesLanding.title5"),
+      description: t("servicesLanding.message5"),
+    },
+    {
+      icon: <FiSettings />,
+      title: t("servicesLanding.title6"),
+      description: t("servicesLanding.message6"), 
+    }
   ];
 
   return (
@@ -42,7 +52,7 @@ const Services = () => {
           <span className="font-medium text-base">{t("successPartner")}</span>
         </div>
       </div>
-      <div className="col-span-1 lg:col-span-2 mt-6">
+      <div className="col-span-1 lg:col-span-2 mt-16">
         <h1 className="font-bold text-2xl sm:text-3xl lg:text-5xl text-purple-dark">
           {t("servicesLanding.head")}
         </h1>

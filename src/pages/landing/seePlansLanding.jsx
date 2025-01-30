@@ -130,7 +130,7 @@ function classNames(...classes) {
 const SeePlansLanding = () => {
  
   return (
-    <div className="SeePlans flex flex-col items-center">
+    <div className="SeePlans flex flex-col items-center mt-6">
       <h1 className="text-xl  md:text-2xl ltr:lg:text-3xl rtl:lg:text-4xl font-extrabold">
         {t("Streamline your teamwork. Start free.")}
       </h1>

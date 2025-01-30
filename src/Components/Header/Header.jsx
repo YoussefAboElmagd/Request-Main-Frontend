@@ -4,7 +4,7 @@ import {
   MdNotificationsNone,
   MdOutlinePayment,
 } from "react-icons/md";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/transpairant-1.png";
 import { IoSearch } from "react-icons/io5";
 import "./style.scss";
 import { useContext, useEffect, useState } from "react";
