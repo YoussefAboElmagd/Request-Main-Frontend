@@ -7,6 +7,8 @@ import "./style.scss";
 import { Chip } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { t } from "i18next";
+import { motion } from "framer-motion";
+
 const tiers = [
   {
     name: "Request",
@@ -128,7 +130,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 const SeePlansLanding = () => {
- 
+  const cardVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+    tap: { scale: 0.95 },
+  };
+
   return (
     <div className="SeePlans flex flex-col items-center mt-6">
       <h1 className="text-xl  md:text-2xl ltr:lg:text-3xl rtl:lg:text-4xl font-extrabold">
@@ -153,7 +159,7 @@ const SeePlansLanding = () => {
 
       <div className=" grid grid-cols-6 gap-3 ">
         {tiers.map((tier, tierIdx) => (
-          <div
+          <motion.div
             key={tier.id}
             className={classNames(
               "rounded-3xl col-span-6 md:col-span-3 lg:col-span-2  p-8 ring-1 ring-gray-900/10 sm:p-10 bg-white/60 border-t-4 ",
@@ -163,6 +169,9 @@ const SeePlansLanding = () => {
                 ? "border-green h-[580px] mt-5"
                 : "border-purple-dark h-[550px] mt-10"
             )}
+            variants={cardVariants}
+            whileHover="hover"
+            whileTap="tap"
           >
             <h3
               id={tier.id}
@@ -226,7 +235,7 @@ const SeePlansLanding = () => {
                 {t("Get Started")}
               </Button>
             </Link>
-          </div>
+          </motion.div>
         ))}
       </div>
       <Link

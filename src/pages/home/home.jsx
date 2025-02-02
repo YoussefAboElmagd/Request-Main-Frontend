@@ -92,11 +92,11 @@ const Home = () => {
                   {t("YourTaskManagementArea")}
                 </h5>
                 <p className="font-poppins font-light text-xs md:text-sm leading-5 m-2 text-gray-md">
-                  "{t("headerDesc")}"
+                  {t("headerDesc")}
                 </p>
-                <button className="mt-3 mx-2 text-white font-Poppins py-3 px-5 rounded-3xl capitalize border bg-linear_1 text-sm md:text-base font-medium text-left">
+                {/* <button className="mt-3 mx-2 text-white font-Poppins py-3 px-5 rounded-3xl capitalize border bg-linear_1 text-sm md:text-base font-medium text-left">
                   {t("LearnMore")}
-                </button>
+                </button> */}
               </div>
               <div className="image">
                 <img
