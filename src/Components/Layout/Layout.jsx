@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAuthRedirect from "../../hooks/useAuthRedirect";
 import AppRoutes from "../../Routes/AppRoutes";
+import Footer from "../Footer/Footer";
 
 const Layout = () => {
   const location = useLocation();
@@ -56,7 +57,12 @@ const Layout = () => {
         </main>
       </div>
       <ToastContainer options={options} stacked />
+      <div className="fixed bottom-0 w-full">
+        <Footer />
+      </div>
+
     </div>
+    
   );
 };
 
