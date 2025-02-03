@@ -13,7 +13,7 @@ import { Image } from "../../../Components/UI/Image/image";
 const Company = () => {
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
-  console.log(userId);
+  (userId);
 
   const [preview, setPreview] = useState("");
   const [logo, setLogo] = useState(user?.companyLogo);
@@ -59,18 +59,18 @@ const Company = () => {
       signature: signature,
       companyName: name,
     };
-    console.log("Updated data:", updatedData);
+    ("Updated data:", updatedData);
 
     try {
       const res = await uploadCompanyFiles(userId, updatedData);
-      console.log("Response from server:", res);
+      ("Response from server:", res);
 
       const updatedUser = { ...user, ...res.updates };
-      console.log("Updated user data:", updatedUser);
+      ("Updated user data:", updatedUser);
 
       // Save to local storage
       localStorage.setItem("user", JSON.stringify(updatedUser));
-      console.log("User saved to local storage successfully");
+      ("User saved to local storage successfully");
 
       toast.success(t("toast.userUpdatedSuccessfully"));
       setError(null);

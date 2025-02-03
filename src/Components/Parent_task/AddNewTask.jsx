@@ -21,8 +21,8 @@ export const AddNewTask = ({ newTask, task }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId, taskType } = location.state || {};
-  console.log(location.state);
-  console.log("projectId :", projectId);
+  (location.state);
+  ("projectId :", projectId);
   
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -189,13 +189,13 @@ export const AddNewTask = ({ newTask, task }) => {
         total: Total,
       };
 
-      console.log("taskData", taskData);
+      ("taskData", taskData);
       await newTask(taskData);
 
       clearFormFields();
     } catch (err) {
       setError(err.message);
-      console.log(err);
+      (err);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -206,7 +206,7 @@ export const AddNewTask = ({ newTask, task }) => {
     if (isOpen) clearFormFields();
   };
   const handleTagChange = (selectedOptions) => {
-    // console.log("Selected options:", selectedOptions);
+    // ("Selected options:", selectedOptions);
     setSelectedTag(selectedOptions || []);
   };
 

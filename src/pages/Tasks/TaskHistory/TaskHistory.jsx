@@ -10,7 +10,7 @@ const TaskHistory = () => {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
   const { taskId } = location.state || {};
-  console.log(location.state);
+  (location.state);
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ const TaskHistory = () => {
       setLoading(true);
       try {
         const data = await getTaskHistory(token, taskId);
-        console.log(data);
+        (data);
 
         setData(data.results.updates);
       } catch (error) {

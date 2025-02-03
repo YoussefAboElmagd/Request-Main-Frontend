@@ -10,7 +10,7 @@ const FilesPerTag = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const { TagId, projectId } = location.state || {}; 
-  console.log(location.state);
+  (location.state);
   
   useEffect(() => {
     if (!TagId) return;

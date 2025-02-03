@@ -45,11 +45,11 @@ const ViewRequest = () => {
           getAllActionCodes(),
         ]);
         setModel(modelData.results);
-        console.log(modelData);
+        (modelData);
         setActionCodes(actionCodeData.results);
         setActionCodeLoading(false);
 
-        console.log(model);
+        (model);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -91,12 +91,12 @@ const ViewRequest = () => {
         // }
 
         // Return an empty payload if no conditions are met
-        console.log(payload);
+        (payload);
         return payload;
       };
 
       const payload = getApprovalPayload();
-      console.log("Approval Payload:", payload);
+      ("Approval Payload:", payload);
 
       if (Object.keys(payload).length === 0) {
         console.error("No valid role detected for approval.");
@@ -106,7 +106,7 @@ const ViewRequest = () => {
 
       // Perform the API call
       const res = await updateModel(token, ModelId, payload);
-      console.log("API Response:", res);
+      ("API Response:", res);
 
       // Handle success
       toast.success("Request approved successfully.");

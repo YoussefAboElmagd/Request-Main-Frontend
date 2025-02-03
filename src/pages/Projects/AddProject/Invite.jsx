@@ -68,7 +68,7 @@ const Invite = () => {
         comment,
         projectName,
       })); 
-      console.log(payload);
+      (payload);
 
       await sendInvite(token, payload);
       toast.success(t("toast.inviteSuccess"));

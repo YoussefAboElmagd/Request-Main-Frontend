@@ -1,7 +1,7 @@
 import ReactApexChart from "react-apexcharts";
 
 export const TagsChart = ({ tags }) => {
-  console.log(tags);
+  (tags);
 
   const state = {
     series: [

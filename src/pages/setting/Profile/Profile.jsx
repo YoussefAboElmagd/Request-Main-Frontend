@@ -32,7 +32,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0]; // Access the first file in the FileList
     if (file) {
-      console.log("Selected file:", file); // Debugging: Check if file is selected correctly
+      ("Selected file:", file); // Debugging: Check if file is selected correctly
       setProfilePic(file); // Set the selected file
       const reader = new FileReader();
       reader.onloadend = () => {

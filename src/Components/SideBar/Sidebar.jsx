@@ -31,7 +31,7 @@ const Sidebar = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  console.log("NotificationCounts", NotificationCounts);
+  ("NotificationCounts", NotificationCounts);
 
   const [notifications, setNotifications] = useState({
     Home: NotificationCounts.home,
@@ -63,7 +63,7 @@ const Sidebar = () => {
           Home: data.home || 0,
           Projects: data.projects || 0,
         }));
-        console.log(data);
+        (data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

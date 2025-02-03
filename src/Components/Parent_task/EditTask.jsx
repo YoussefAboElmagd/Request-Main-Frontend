@@ -11,7 +11,7 @@ import { BiEdit } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
 
 export const EditTask = ({ task, onUpdateTask }) => {
-  console.log(task);
+  (task);
   const location = useLocation();
   const { members } = location.state || {};
 
@@ -38,7 +38,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
     total: task.price * task.quantity,
     unit: task.unit,
   });
-  console.log("form data :",  formData);
+  ("form data :",  formData);
   
 
   const [fieldErrors, setFieldErrors] = useState({});
@@ -162,13 +162,13 @@ export const EditTask = ({ task, onUpdateTask }) => {
         total: formData.price * formData.quantity,
         unit: task.unit,
       };
-      console.log(updatedTask);
+      (updatedTask);
       
       onUpdateTask(updatedTask);
 
       setIsOpen(false)
     } catch (err) {
-      console.log(err);
+      (err);
     } finally {
       setLoading(false);
     }

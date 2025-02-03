@@ -21,7 +21,7 @@ export const handleSignUp = createAsyncThunk(
     try {
       dispatch(startAuth());
       const response = await signUp(userData );
-      console.log("response ======>>>  ", response);
+      ("response ======>>>  ", response);
 
       dispatch(authSuccess({ user: response.results, token: response.token }));
       return response;
@@ -36,7 +36,7 @@ export const signInThunk = createAsyncThunk(
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await signIn({ email, password });
-      console.log("Response :: => ", response);
+      ("Response :: => ", response);
       localStorage.setItem("user", JSON.stringify(response.userData_login));
 
       dispatch(
@@ -85,7 +85,7 @@ export const handleUpdateUser = createAsyncThunk(
       const userId = user._id;
 
       const updateResponse = await updateUser(userId, updatedData, token);
-      console.log("Update Response =>", updateResponse);
+      ("Update Response =>", updateResponse);
 
       let userUpdated = { ...user, ...updatedData };
 

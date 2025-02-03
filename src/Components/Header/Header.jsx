@@ -71,7 +71,7 @@ const Header = () => {
           Home: data.home || 0,
           Projects: data.projects || 0,
         }));
-        console.log(data);
+        (data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

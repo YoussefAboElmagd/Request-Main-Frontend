@@ -204,7 +204,7 @@ const ProjectTeam = () => {
     setOpenAcc((prevOpen) => (prevOpen === idx ? null : idx));
   };
   useEffect(() => {
-    console.log("Current access list:", accessList);
+    ("Current access list:", accessList);
   }, [accessList]);
   useEffect(() => {
     const fetchData = async () => {
@@ -237,7 +237,7 @@ const ProjectTeam = () => {
         setTagsLoading(false);
 
         setMembersData(MembersRes);
-        console.log(membersData);
+        (membersData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -328,14 +328,14 @@ const ProjectTeam = () => {
         role: user.role._id,
         tags: SelectedTags.map((t) => t.value),
       };
-      console.log(payload);
+      (payload);
 
       await addMemberForProject(projectId, payload, token);
       clearFields();
       toast.success(t("toast.MemberAdded"));
       window.location.reload();
     } catch (error) {
-      console.log(error);
+      (error);
       setFieldErrors(error);
     }
   };
@@ -351,9 +351,9 @@ const ProjectTeam = () => {
         members: SelectedUserId,
       };
       const res = await deleteMemberFromProjectTeam(projectId, Member);
-      console.log("log from project team ", projectId, "/", Member);
+      ("log from project team ", projectId, "/", Member);
 
-      console.log("res : ", res);
+      ("res : ", res);
 
       toast.success(t("toast.userDeletedSuccessfully"));
       window.location.reload();

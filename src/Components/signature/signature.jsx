@@ -117,7 +117,7 @@ export function SignatureBtn({ onSignatureChange }) {
   const handleSaveSignature = () => {
     if (signaturePadRef.current) {
       const trimmedCanvas = signaturePadRef.current.getTrimmedCanvas();
-      console.log(trimmedCanvas);
+      (trimmedCanvas);
       const dataUrl = trimmedCanvas.toDataURL("image/png");
       setPreview(dataUrl);
       localStorage.setItem("Signature", dataUrl);
@@ -180,8 +180,8 @@ export function SignatureBtn({ onSignatureChange }) {
     throttle: 16,
     clearOnResize: true,
     backgroundColor: "#fff",
-    onBegin: () => console.log("Stroke began"),
-    onEnd: () => console.log("Stroke ended"),
+    onBegin: () => ("Stroke began"),
+    onEnd: () => ("Stroke ended"),
   };
 
   return (

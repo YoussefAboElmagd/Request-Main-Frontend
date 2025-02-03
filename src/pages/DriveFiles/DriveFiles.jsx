@@ -16,7 +16,7 @@ const DriveFiles = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const userId = user._id
-  console.log(userId);
+  (userId);
   
 
   const extractFileName = (url) => {
@@ -35,7 +35,7 @@ const DriveFiles = () => {
       try {
         const data = await getAllDocs(userId);
         setData(data.results);
-        console.log(data);
+        (data);
         
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -50,9 +50,9 @@ const DriveFiles = () => {
     setLoading(true); // Set loading to true when starting download
     try {
       const res = await downloadAllFiles(tagId);
-      console.log(tagId);
+      (tagId);
       
-      console.log("res from downloadAllFiles => ", res);
+      ("res from downloadAllFiles => ", res);
       
       const fileUrls = res.results.tasks;
 

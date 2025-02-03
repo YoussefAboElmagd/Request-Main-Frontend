@@ -70,11 +70,11 @@ const Inbox = () => {
   // ) => {
   //   setIsRecording(recordingState);
   //   setIsPaused(pausedState);
-  //   console.log(audioBlob);
+  //   (audioBlob);
 
   //   if (audioBlob) {
   //     setAudioData(audioBlob);
-  //     console.log(
+  //     (
   //       "Audio Blob:",
   //       URL.createObjectURL(audioBlob),
   //       audioBlob.size / 1024, // Convert bytes to KB
@@ -233,7 +233,7 @@ const Inbox = () => {
   //   if (!activeChat || !hasMoreMessages) return;
   //   try {
   //     const newOffset = offset + limit; // Update the offset
-  //     console.log("newOffset", newOffset);
+  //     ("newOffset", newOffset);
   //     const messagesData = await getMessagesBetweenUsers(
   //       token,
   //       activeChat.projectId,
@@ -257,7 +257,7 @@ const Inbox = () => {
 
   //  addAudioMessage log the data only
   const addAudioMessage = async () => {
-    console.log("Voice Added");
+    ("Voice Added");
   };
   const addAttachmentMessage = async () => {
     setFile(null);
@@ -279,7 +279,7 @@ const Inbox = () => {
       const res = await sendDocsAndVoiceNote(formData);
 
       if (res && res.docs) {
-        console.log("✅ Attachment uploaded successfully:", res);
+        ("✅ Attachment uploaded successfully:", res);
         setPreview(null);
         return res.docs; // Return the uploaded file path
       } else {
@@ -336,10 +336,10 @@ const Inbox = () => {
         newMessage.receiver = activeChat.member._id;
       }
 
-      console.log("newMessage from inbox:", newMessage);
+      ("newMessage from inbox:", newMessage);
 
       const res = await sendMessage(newMessage);
-      console.log("Message sent successfully:", res);
+      ("Message sent successfully:", res);
 
       // Reset state after message is sent
       setMessageInput("");
@@ -359,7 +359,7 @@ const Inbox = () => {
       return;
     }
 
-    console.log("Selected File:", selectedFile);
+    ("Selected File:", selectedFile);
 
     const fileUrl = URL.createObjectURL(selectedFile);
     const extension = selectedFile.name.split(".").pop().toLowerCase();

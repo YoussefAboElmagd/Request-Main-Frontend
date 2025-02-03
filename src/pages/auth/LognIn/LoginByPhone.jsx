@@ -30,7 +30,7 @@ const LoginByPhone = () => {
   //     // setLoading(true);
   //     navigate("/Otp");
   //   } catch (err) {
-  //     console.log(err);
+  //     (err);
   //   } finally {
   //     setLoading(false);
   //   }

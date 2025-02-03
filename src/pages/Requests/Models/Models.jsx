@@ -19,7 +19,7 @@ const Models = () => {
     TaskId,
     TaskName,
   } = location.state || {};
-  console.log(location.state);
+  (location.state);
 
   const [isReviewed, setIsReviewed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const Models = () => {
         if (TaskId) {
           const data = await getTaskDetails(TaskId);
           const task = data.results;
-          console.log(task);
+          (task);
           setLinks([
             {
               label: t("Approval of general documents"),
@@ -105,7 +105,7 @@ const Models = () => {
           ]);
         }
 
-        console.log(links);
+        (links);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

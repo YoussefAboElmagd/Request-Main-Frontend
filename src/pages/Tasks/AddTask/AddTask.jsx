@@ -102,7 +102,7 @@ const AddTask = () => {
             label: task.title,
           }))
         );
-        console.log(ParentTasks);
+        (ParentTasks);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -195,10 +195,10 @@ const AddTask = () => {
       }
 
       setLoading(true);
-      console.log("task data =>  ", taskData);
+      ("task data =>  ", taskData);
       const res = await addTask(taskData, lang);
       setTaskId(res.addedTasks?._id);
-      console.log(res);
+      (res);
       clearFormFields();
       if (!isSubtask) {
         navigate(`/Models`, {
@@ -217,7 +217,7 @@ const AddTask = () => {
         message: err.response ? err.response.data.message : err.message,
       });
 
-      console.log(err.err);
+      (err.err);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -225,7 +225,7 @@ const AddTask = () => {
   };
 
   const handleTagChange = (selectedOptions) => {
-    console.log("Selected options:", selectedOptions);
+    ("Selected options:", selectedOptions);
     setSelectedTag(selectedOptions || []);
   };
 

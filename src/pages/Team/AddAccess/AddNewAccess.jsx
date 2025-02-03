@@ -209,7 +209,7 @@ const AddNewAccess = () => {
     const lang = i18next.language;
 
   useEffect(() => {
-    console.log("Current access list:", accessList);
+    ("Current access list:", accessList);
   }, [accessList]);
   useEffect(() => {
     const fetchData = async () => {
@@ -326,13 +326,13 @@ const AddNewAccess = () => {
         role: user.role._id,
         tags: SelectedTags.map((t) => t.value),
       };
-      console.log(payload);
+      (payload);
 
       await updateTeam(token, user.team, payload, lang);
       clearFields();
       toast.success(t("toast.MemberAdded"));
     } catch (error) {
-      console.log(error);
+      (error);
       setFieldErrors(error);
     }
   };

@@ -117,15 +117,15 @@ const ContactUsLanding = () => {
         phone: Phone,
         message: trimmedMessage,
       };
-      console.log(formattedData);
+      (formattedData);
       
       const res = await sendEmailGetInTouch(formattedData);
-      console.log(res);
+      (res);
     toast.success(t("toast.MsgSentSuccess"));
       clearFields();
       setLoading(false);
     } catch (err) {
-      console.log(err);
+      (err);
       setError(err.message);
 
       setLoading(false);

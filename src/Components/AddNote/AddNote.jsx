@@ -18,7 +18,7 @@ import Empty from "../empty/empty";
 import { Image } from "../UI/Image/image";
 
 export const AddNote = ({ projectId,  taskId, Notes }) => {
-  console.log(projectId, taskId, Notes);
+  (projectId, taskId, Notes);
   
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
@@ -58,7 +58,7 @@ export const AddNote = ({ projectId,  taskId, Notes }) => {
       setMessageInput("");
   
     } catch (error) {
-      console.log(error);
+      (error);
     }
   };
 

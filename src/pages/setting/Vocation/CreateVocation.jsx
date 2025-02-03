@@ -46,10 +46,10 @@ const CreateVocation = () => {
         nameAR: voc.nameAR,
         createdBy: user._id,
       };
-      console.log("Sending voc to API:", payload);
+      ("Sending voc to API:", payload);
 
       const response = await addVocation(token, payload, lang);
-      console.log(`Voc added successfully:`, response);
+      (`Voc added successfully:`, response);
 
       toast.success(t("toast.VocCreatedSuccess"));
       window.location.reload();

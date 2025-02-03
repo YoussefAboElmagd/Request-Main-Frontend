@@ -29,7 +29,7 @@ const Notifications = () => {
         setLoading(true);
         const days = 90;
         const data = await getAllNotifications(token, userId, days);
-        console.log("Fetched notifications: ", data);
+        ("Fetched notifications: ", data);
 
         if (data?.results) {
           setNotifications(data.results);

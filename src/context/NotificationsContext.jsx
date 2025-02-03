@@ -12,7 +12,7 @@ export const NotificationsProvider = ({ children }) => {
 
     // Listen for new notifications from the server via socket
     socket.on("notification_", (data) => {
-      console.log("Data from socket:", data);
+      ("Data from socket:", data);
 
       if (data?.message) {
         const newNotification = {
@@ -24,11 +24,11 @@ export const NotificationsProvider = ({ children }) => {
       }
     });
 
-    console.log("Connected to notifications socket");
+    ("Connected to notifications socket");
 
     return () => {
       socket.off("notification_");
-      console.log("Disconnected from notifications socket");
+      ("Disconnected from notifications socket");
     };
   }, [socket]);
 
@@ -65,16 +65,16 @@ export const NotificationsProvider = ({ children }) => {
 //   });
 
 //   socket.on("notification_", (notification) => {
-//     console.log("New notification from socket: ", notification);
+//     ("New notification from socket: ", notification);
 //     addNotification(notification);
 //   });
 
 //   socket.on("connect", () => {
-//     console.log("Socket connected successfully");
+//     ("Socket connected successfully");
 //   });
 
 //   socket.on("disconnect", () => {
-//     console.log("Socket disconnected");
+//     ("Socket disconnected");
 //   });
 //   return () => {
 //     socket.disconnect();

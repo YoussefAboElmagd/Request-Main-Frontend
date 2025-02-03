@@ -42,7 +42,7 @@ const Otp = () => {
 
 
   useEffect(() => {
-    console.log("Otp : ", userData_login?.verificationCode);
+    ("Otp : ", userData_login?.verificationCode);
   }, [userData_login?.verificationCode]);
   
 
@@ -70,7 +70,7 @@ const Otp = () => {
       switch (true) {
         case !!forget_email:
           if (otp === forget.verificationCode) {
-            console.log(
+            (
               "otp ===  forget.verificationCode",
               otp,
               forget.verificationCode
@@ -92,10 +92,10 @@ const Otp = () => {
           break;
 
         case !!userData_login:
-          console.log("userData_login", userData_login);
+          ("userData_login", userData_login);
 
           if (otp === userData_login.verificationCode) {
-            console.log(
+            (
               "otp === userData_login.verificationCode",
               otp,
               userData_login.verificationCode
@@ -110,9 +110,9 @@ const Otp = () => {
 
         case !!userData_signUp:
           if (otp === userData_signUp.verificationCode) {
-            console.log(otp);
-            console.log(userData_signUp);
-            console.log(userData_signUp.verificationCode);
+            (otp);
+            (userData_signUp);
+            (userData_signUp.verificationCode);
             localStorage.setItem("user", JSON.stringify(userData_signUp));
             localStorage.setItem("token", token_signUp);
             navigate("/SignUp/createCompany");
@@ -145,21 +145,21 @@ const Otp = () => {
       // Handle resend OTP for different scenarios
       if (forget_email) {
         result = await forgetPassword(forget_email);
-        console.log(result);
-        console.log(result.verificationCode);
+        (result);
+        (result.verificationCode);
 
         forget.verificationCode = result.verificationCode;
       } else if (email_logIn) {
         result = await resendVerificationCode(email_logIn);
         userData_login.verificationCode = result.verificationCode;
-        console.log(
+        (
           "Updated verification code after login resend:",
           userData_login.verificationCode
         );
       } else if (email_signUp) {
         result = await resendVerificationCode(email_signUp);
         userData_signUp.verificationCode = result.verificationCode;
-        console.log(
+        (
           "Updated verification code after login resend:",
           userData_signUp.verificationCode
         );
@@ -167,7 +167,7 @@ const Otp = () => {
         throw new Error("Unable to resend OTP. Invalid request.");
       }
 
-      console.log("Resent OTP successfully", result);
+      ("Resent OTP successfully", result);
     } catch (error) {
       console.error("Error resending OTP:", error);
       setError(t("Error resending OTP. Please try again."));

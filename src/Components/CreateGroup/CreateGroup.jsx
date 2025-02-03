@@ -45,13 +45,13 @@ export const CreateGroup = ({ members, projectId }) => {
         project: projectId,
         isGroup: true,
       };
-      console.log("creating group with payload:", payload);
+      ("creating group with payload:", payload);
       const res = await createChatGroup(token, payload);
-      console.log(res);
+      (res);
       toast.success(t("toast.groupCreatedSuccess"));
       window.location.reload();
     } catch (err) {
-      console.log(err);
+      (err);
     } finally {
       setOpen(false);
     }

@@ -19,7 +19,7 @@ export const ChatProvider = ({ children }) => {
 
   // Function to handle incoming messages and add them to state
   const handleMessage = (data) => {
-    console.log("Received message via socket:", data);
+    ("Received message via socket:", data);
     const newMessage = {
       date: data?.createdAt,
       content: data?.content,
@@ -30,7 +30,7 @@ export const ChatProvider = ({ children }) => {
       voiceNote: data?.voiceNote,
       _id: data?.id,
     };
-    console.log("newMessage:", newMessage);
+    ("newMessage:", newMessage);
 
     // Add the new message if valid
     addMsg(newMessage);
@@ -107,10 +107,10 @@ export const ChatProvider = ({ children }) => {
       if (!activeChannels.has(channel)) {
         socket.on(channel, handleMessage);
         activeChannels.add(channel);
-        // console.log(`Listening to channel: ${channel}`);
+        // (`Listening to channel: ${channel}`);
       }
 
-      console.log(
+      (
         message.group
           ? `Listening to group: ${message.group._id}`
           : `Listening to chat between ${message.sender} & ${message.receiver}`
@@ -124,7 +124,7 @@ export const ChatProvider = ({ children }) => {
     return () => {
       activeChannels.forEach((channel) => {
         socket.off(channel, handleMessage);
-        // console.log(`Disconnected from channel: ${channel}`);
+        // (`Disconnected from channel: ${channel}`);
       });
     };
   }, [socket, messages]);

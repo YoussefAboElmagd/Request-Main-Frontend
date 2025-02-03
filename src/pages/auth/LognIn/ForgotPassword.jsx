@@ -26,15 +26,15 @@ const ForgotPassword = () => {
     setError("");
     try {
       if (forget_id) {
-        console.log("userId:", forget_id, "password:", password);
+        ("userId:", forget_id, "password:", password);
         const result = await updateUser(forget_id, {
            password,
         });
-        console.log(result);
+        (result);
         navigate("/LogIn/Mail");
       } else {
         const forget = await forgetPassword(email);
-        console.log(forget);
+        (forget);
         navigate("/Otp", { state: { forget_email: email, forget } });
       }
     } catch (err) {

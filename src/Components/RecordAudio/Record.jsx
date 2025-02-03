@@ -14,7 +14,7 @@ export const Record = ({
   const [timer, setTimer] = useState(0);
   let timerInterval = null;
   const onStop = (blob) => {
-    console.log("blob",blob);
+    ("blob",blob);
     
     setIsRecordingState(false);
     setIsPausedState(false);
@@ -22,7 +22,7 @@ export const Record = ({
     clearInterval(timerInterval);
   };
    const onData = (recordedBlob) => {
-     console.log("chunk of real-time data is: ", recordedBlob);
+     ("chunk of real-time data is: ", recordedBlob);
    };
 
   const handleStart = () => {

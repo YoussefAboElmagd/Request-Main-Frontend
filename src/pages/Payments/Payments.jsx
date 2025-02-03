@@ -52,7 +52,7 @@ const Payments = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("You have finished payment!");
+    ("You have finished payment!");
   };
 
   const { number, name, expiry, cvc, focused, issuer } = cardDetails;

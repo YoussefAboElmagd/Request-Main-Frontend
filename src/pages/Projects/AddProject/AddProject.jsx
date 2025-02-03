@@ -99,7 +99,7 @@ const AddProject = () => {
       };
 
       setLoading(true);
-      console.log("Project data =>  ", projectData);
+      ("Project data =>  ", projectData);
       const res = await addProject(token, projectData);
       toast.success(t("toast.ProjectSuccess"));
       clearFormFields();
@@ -113,7 +113,7 @@ const AddProject = () => {
       setError({
         message: err.response ? err.response.data.message : err.message,
       });
-      console.log(err);
+      (err);
       setLoading(false);
       return null; 
     } finally {

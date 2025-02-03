@@ -14,7 +14,7 @@ import Loader from "../../../Components/Loader/Loader";
 const AllSubTasks = () => {
   const location = useLocation();
   const { taskId, projectId, members } = location.state || {};
-  console.log(location.state);
+  (location.state);
   const [viewMode, setViewMode] = useState("board");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);

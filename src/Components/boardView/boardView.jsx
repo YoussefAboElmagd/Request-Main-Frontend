@@ -151,7 +151,7 @@ const BoardView = ({
 };
 
 export default memo(BoardView, (prevProps, nextProps) => {
-  // console.log("Checking for prop changes...");
+  // ("Checking for prop changes...");
   const arePropsEqual =
     prevProps.Tagname === nextProps.Tagname &&
     prevProps.NameOfTask === nextProps.NameOfTask &&
@@ -168,9 +168,9 @@ export default memo(BoardView, (prevProps, nextProps) => {
     prevProps.eDate === nextProps.eDate;
 
   // if (!arePropsEqual) {
-  //   console.log("Props changed, re-rendering...");
+  //   ("Props changed, re-rendering...");
   // } else {
-  //   console.log("Props are the same, preventing re-render...");
+  //   ("Props are the same, preventing re-render...");
   // }
 
   return arePropsEqual;

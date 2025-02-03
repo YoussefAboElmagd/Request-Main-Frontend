@@ -68,7 +68,7 @@ const Setting = () => {
   const saveGeneralChanges = () => {
     if (generalRef.current) {
       const settings = generalRef.current.handleSave();
-      console.log("General Settings Saved:", settings);
+      ("General Settings Saved:", settings);
       toast.success(t("toast.GeneralSettingSuccess"));
     }
   };
@@ -80,14 +80,14 @@ const Setting = () => {
   };
 
   const saveCompanyChanges = () => {
-    console.log("Saving Company Settings...");
+    ("Saving Company Settings...");
   };
 
   const saveSecurityChanges = () => {
-    console.log("Saving Security Settings...");
+    ("Saving Security Settings...");
   };
   const saveVocationChanges = () => {
-    console.log("Saving Vocation Settings...");
+    ("Saving Vocation Settings...");
   };
 
   const handleSaveChanges = () => {
@@ -100,10 +100,10 @@ const saveCreateTagChanges = async () => {
 
     const savePromises = tags.map(async (tag) => {
       try {
-        console.log(tag, user._id , lang);
+        (tag, user._id , lang);
         
         const response = await addTag(tag, user._id, lang);
-        console.log(`Tag added successfully:`, response);
+        (`Tag added successfully:`, response);
 
         return response;
       } catch (error) {
@@ -116,7 +116,7 @@ const saveCreateTagChanges = async () => {
     window.location.reload();
     toast.success(t("toast.TagsCreatedSuccess"));
 
-    console.log("All tags saved successfully:", results);
+    ("All tags saved successfully:", results);
   } catch (error) {
     console.error("Error saving tags:", error);
   }
@@ -126,7 +126,7 @@ const saveCreateTagChanges = async () => {
 
   // const saveCreateVocationChanges = async () => {
   //   try {
-  //     console.log("Saving all added Vocations:", Vocations);
+  //     ("Saving all added Vocations:", Vocations);
 
   //     const savePromises = Vocations.map(async (voc) => {
   //       try {
@@ -134,9 +134,9 @@ const saveCreateTagChanges = async () => {
   //           name: voc.name,
   //           createdBy: user._id,
   //         };
-  //         console.log("Sending voc to API:", payload);
+  //         ("Sending voc to API:", payload);
   //         const response = await addVocation(token, payload, lang);
-  //         console.log(`voc added successfully:`, response);
+  //         (`voc added successfully:`, response);
 
   //         return response;
   //       } catch (error) {
@@ -149,7 +149,7 @@ const saveCreateTagChanges = async () => {
   //     // window.location.reload();
   //     toast.success(t("toast.VocCreatedSuccess"));
 
-  //     console.log("All vocations saved successfully:", results);
+  //     ("All vocations saved successfully:", results);
   //   } catch (error) {
   //     console.error("Error saving tags:", error);
   //   }
@@ -160,7 +160,7 @@ const saveCreateTagChanges = async () => {
 
   // const handleVocationsChange = (updatedVocations) => {
   //   seVocations(updatedVocations);
-  //   console.log("Vocations:", updatedVocations);
+  //   ("Vocations:", updatedVocations);
   // };
 
   const buttons = [

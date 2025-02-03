@@ -38,12 +38,12 @@ if (trimmedMessage === "" ) {
     setLoading(true);
     const formattedData = { message: trimmedMessage };
     const res = await sendEmailContactUs(formattedData, userId);
-    console.log(res);
+    (res);
     toast.success(t("toast.MsgSentSuccess"));
     setLoading(false);
     setMessage("");
   } catch (err) {
-    console.log(err);
+    (err);
     setError(err.response?.data?.message || "An error occurred");
     setLoading(false);
     setMessage("");

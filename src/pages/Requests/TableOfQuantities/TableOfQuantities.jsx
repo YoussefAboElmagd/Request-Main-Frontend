@@ -123,8 +123,8 @@ const TableOfQuantities = () => {
   const [errors, setErrors] = useState({});
   const location = useLocation();
   const { projectId, taskType, members, projectName } = location.state || {};
-  console.log(location.state);
-  console.log("project id :", projectId);
+  (location.state);
+  ("project id :", projectId);
   
   const navigate = useNavigate();
 
@@ -156,7 +156,7 @@ const TableOfQuantities = () => {
       const res = await updateProject(projectId, {
         tableOfQuantities: true,
       });
-      console.log("res from update project => ", res);
+      ("res from update project => ", res);
     } catch (error) {
       console.error("Failed to update tasks:", error);
       toast.error(t("Failed to update tasks"));
@@ -172,7 +172,7 @@ const TableOfQuantities = () => {
         })
       );
       toast.success(t("toast.TaskSavedSuccess"));
-      console.log("All tasks saved:", tasks);
+      ("All tasks saved:", tasks);
       setTasks([]);
        navigate(`/`);
       if (!taskType) {

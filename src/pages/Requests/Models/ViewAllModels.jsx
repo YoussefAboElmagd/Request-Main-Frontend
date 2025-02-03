@@ -13,7 +13,7 @@ const ViewAllModels = () => {
   const token = useSelector((state) => state.auth.token);
   const { projectId, projectName, members, taskId, TaskName } =
     location.state || {};
-  console.log(location.state);
+  (location.state);
 
   const [loading, setLoading] = useState(false);
   const [Models, setModels] = useState([]);

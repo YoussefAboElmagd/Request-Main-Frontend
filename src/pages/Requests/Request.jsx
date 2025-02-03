@@ -127,7 +127,7 @@ const RequestForm = ({
         setReasons(ReasonsResponse.reasons);
         setProjects(projectsResponse.results);
         setMembersInProject(MemberInProject.admins);
-        console.log(MemberInProject);
+        (MemberInProject);
 
         setUnits(
           UnitsData.results.map((unit) => ({
@@ -151,19 +151,19 @@ const RequestForm = ({
 
   const handleUpdate = async () => {
     try {
-      console.log("ApproveTitle :", ApproveTitle);
+      ("ApproveTitle :", ApproveTitle);
       if (TaskId) {
         const res = await updateTask(token, TaskId, user._id, {
           [ApproveTitle]: true,
         });
 
-        console.log("res from update task => ", res);
+        ("res from update task => ", res);
       } else {
         const res = await updateProject(projectId, {
           [ApproveTitle]: true,
         });
 
-        console.log("res from update project => ", res);
+        ("res from update project => ", res);
       }
     } catch (error) {
       console.error("Failed to update tasks:", error);
@@ -172,8 +172,8 @@ const RequestForm = ({
   };
 
   useEffect(() => {
-    console.log("selectedDisciplines", selectedDisciplines);
-    console.log("selectedReasons", selectedReasons);
+    ("selectedDisciplines", selectedDisciplines);
+    ("selectedReasons", selectedReasons);
   }, [selectedDisciplines, selectedReasons]);
 
   const handleSubmit = async (e) => {
@@ -271,7 +271,7 @@ const RequestForm = ({
     addConditionalFields();
 
     // Debug the request data
-    console.log("Request Data:", requestData);
+    ("Request Data:", requestData);
 
     try {
       // Send request
@@ -683,7 +683,7 @@ const RequestForm = ({
                         label={t("Discipline")}
                         value={selectedDisciplines}
                         onChange={(e) => {
-                          console.log("Discipline Selected:", e);
+                          ("Discipline Selected:", e);
                           setSelectedDisciplines(e);
                         }}
                         className={`bg-white `}

@@ -27,7 +27,7 @@ const LoginByMail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
-  console.log("Error object:", error);
+  ("Error object:", error);
   const handleSubmit = async (e) => {
     e.preventDefault();
 

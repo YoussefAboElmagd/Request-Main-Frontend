@@ -43,7 +43,7 @@ const ProjectHistory = () => {
       try {
         const data = await getProjectHistory(Status, user._id);
         setData(data.results);
-        console.log("res with filter Status =", Status, "res => ", data);
+        ("res with filter Status =", Status, "res => ", data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

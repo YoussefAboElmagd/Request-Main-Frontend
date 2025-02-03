@@ -23,7 +23,7 @@ const CustomAudioPlayer = ({ audioSrc, className, progressClass }) => {
     const updateTime = () => setCurrentTime(audio.currentTime);
 
     const setAudioDuration = () => {
-      console.log(audio.duration);
+      (audio.duration);
       if (!isNaN(audio.duration)) {
         setDuration(audio.duration);
       }

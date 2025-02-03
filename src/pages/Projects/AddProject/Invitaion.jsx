@@ -23,7 +23,7 @@ const Invitation = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const lang = i18next.language;
-  console.log(lang);
+  (lang);
 
   useEffect(() => {
     if (!isAuth) {
@@ -42,7 +42,7 @@ const Invitation = () => {
         const data = await getDataForInvite(token, invitationId, userId);
         setData(data.results);
 
-        console.log("data:", data);
+        ("data:", data);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error(error.message);
@@ -68,7 +68,7 @@ const Invitation = () => {
         isApproved: true,
       };
       const res = await approveInvite(invitationId, payload);
-      console.log(res);
+      (res);
       toast.success(
         t("toast.you have been added to {{projectName}} successfully", {
           projectName: data.projectName,
@@ -85,7 +85,7 @@ const Invitation = () => {
     setError(null);
     try {
       const res = await cancelInvite(token, invitationId, lang);
-      console.log(res);
+      (res);
       toast.success(
         t(
           "toast.You have canceled the invitation to {{projectName}} successfully",

@@ -40,7 +40,7 @@ const DelegatedAccess = () => {
       try {
         const data = await delegatedTeam(token, user.team);
         setTeam(data.results);
-        console.log(data);
+        (data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -59,7 +59,7 @@ const DelegatedAccess = () => {
           selectedProjectId,
           selectedUserId
         );
-        console.log("res : ", res);
+        ("res : ", res);
 
         setTeam((prevTeam) =>
           prevTeam.map((project) => {

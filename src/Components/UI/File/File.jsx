@@ -11,9 +11,9 @@ const File = ({
   const downloadFile = async () => {
     try {
       const response = await fetch(documentUrl);
-      console.log("Document URL:", documentUrl);
+      ("Document URL:", documentUrl);
 
-       console.log("Response:", response);
+       ("Response:", response);
       const blob = await response.blob();
       const link = document.createElement("a"); 
       const url = window.URL.createObjectURL(blob); 

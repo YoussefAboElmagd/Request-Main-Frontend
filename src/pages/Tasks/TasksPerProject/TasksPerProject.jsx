@@ -66,7 +66,7 @@ const TasksPerProject = () => {
          ...task,
          progress: calculateProgress(task),
        }));
-       console.log(tasksWithProgress);
+       (tasksWithProgress);
        
        setData(tasksWithProgress);
       } catch (error) {

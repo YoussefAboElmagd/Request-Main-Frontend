@@ -50,7 +50,7 @@ const Home = () => {
       try {
         const projectsData = await getAllProjectsForUser(userId, token);
         setData(projectsData);
-        console.log(projectsData);
+        (projectsData);
       } catch (error) {
         console.error("Error fetching projects data:", error);
       } finally {

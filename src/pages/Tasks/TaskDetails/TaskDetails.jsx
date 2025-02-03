@@ -74,12 +74,12 @@ const TaskDetails = () => {
   const handleSave = async () => {
     try {
       const updatedFields = getUpdatedFields();
-      console.log("updatedFields", updatedFields);
+      ("updatedFields", updatedFields);
 
       const res = await updateTask(token, taskId, user._id, updatedFields);
 
       setIsEditing(false);
-      console.log("res from update task => ", res);
+      ("res from update task => ", res);
       toast.success(t("toast.TaskSavedSuccess"));
       const updatedTask = await getTaskDetails(taskId);
       setTask(updatedTask.results);

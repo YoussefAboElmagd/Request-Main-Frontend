@@ -88,10 +88,10 @@ const CreateCompany = () => {
         signature: signature,
         companyName: name,
       };
-      console.log(updatedData);
+      (updatedData);
 
       const res = await uploadCompanyFiles(userId, updatedData);
-      console.log(res);
+      (res);
 
       const updatedUser = { ...user, ...res.updates };
       localStorage.setItem("user", JSON.stringify(updatedUser));

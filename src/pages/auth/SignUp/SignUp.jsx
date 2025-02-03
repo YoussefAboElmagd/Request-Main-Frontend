@@ -32,7 +32,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { roleId } = location.state || {};
-  console.log("role id from state =>", roleId);
+  ("role id from state =>", roleId);
 
   const { isLoading, error } = useSelector((state) => state.auth);
 
@@ -98,12 +98,12 @@ const SignUp = () => {
       phone: trimmedPhone,
       role: roleId,
     };
-    console.log("userData :::: =>  ", userData);
+    ("userData :::: =>  ", userData);
     try {
       const result = await dispatch(handleSignUp(userData)).unwrap();
-      console.log("result -----> ", result);
-      console.log(result.results);
-      console.log(result.token);
+      ("result -----> ", result);
+      (result.results);
+      (result.token);
 
       const userData_signUp = result.results;
       const token_signUp = result.token;
