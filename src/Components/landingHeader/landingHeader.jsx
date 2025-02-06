@@ -50,15 +50,23 @@ const LandingHeader = () => {
       }`}
     >
       <header className="relative flex  justify-center items-center">
-        <img 
+      <img 
           src={logo} 
           alt="logo" 
-          className={`object-contain hidden md:block h-20 w-20 absolute ${isRTL ? "right-4" : "left-4"} top-3 z-10  backdrop-blur-md rounded-lg bg-transparent`}
+          className={`object-contain   hidden md:block h-20 w-20 absolute ${isRTL ? "right-4" : "left-4"} top-2 z-10  backdrop-blur-md rounded-lg bg-transparent`}
         />
       
+
         <div className="flex py-6 px-10 shadow-lg ring-1 mx-auto z-20 rounded-full border mt-5 transition-all duration-300 hover:shadow-xl">
           {/* mobile view items */}
-          
+          <img 
+          src={logo} 
+          alt="logo" 
+          onClick={openDrawer}
+          className={`object-contain  md:hidden h-20 w-20  z-10  backdrop-blur-md rounded-lg bg-transparent`}
+        />
+      
+
           <div className="block lg:hidden">
             <button 
               onClick={openDrawer}
@@ -67,42 +75,42 @@ const LandingHeader = () => {
               <FaBarsStaggered className="text-purple w-5 h-5" />
             </button>
             <Drawer open={open} onClose={closeDrawer} className="p-4">
-              <div className="mb-6 flex items-center">
+              <div className="mb-6 flex items-center justify-between">
                 <IconButton
                   variant="text"
                   color="blue-gray"
                   onClick={closeDrawer}
-                  className="transition-all duration-200 hover:bg-purple/10"
+                  className="transition-all duration-300 hover:bg-purple/10 hover:scale-110"
                 >
-                  <IoMdClose />
+                  <IoMdClose className="h-6 w-6" />
                 </IconButton>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col items-center gap-6 mt-10">
                 <Link
                   to={"/landing"}
-                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                  className="font-medium text-lg w-full text-center py-2 hover:text-purple focus:text-purple cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-purple/5 rounded-lg"
                 >
                   {t("Home")}
                 </Link>
                 <Link
                   to={"/landing/services"}
-                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                  className="font-medium text-lg w-full text-center py-2 hover:text-purple focus:text-purple cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-purple/5 rounded-lg"
                 >
                   {t("Services")}
                 </Link>
                 <Link
                   to={"/landing/seePlans"}
-                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                  className="font-medium text-lg w-full text-center py-2 hover:text-purple focus:text-purple cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-purple/5 rounded-lg"
                 >
                   {t("Price")}
                 </Link>
                 <Link
                   to={"/landing/ContactUs"}
-                  className="font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200"
+                  className="font-medium text-lg w-full text-center py-2 hover:text-purple focus:text-purple cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-purple/5 rounded-lg"
                 >
                   {t("Contact us")}
                 </Link>
-                <div className="flex items-center justify-between select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-colors duration-200">
+                <div className="flex items-center justify-between w-full px-4 py-2 select-none gap-1 font-medium text-lg hover:text-purple focus:text-purple cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-purple/5 rounded-lg">
                   <span>{t("language")}</span>
                   <CheckInput
                     checked={languageChecked}
