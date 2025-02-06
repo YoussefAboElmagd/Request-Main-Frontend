@@ -53,11 +53,12 @@ const LandingHeader = () => {
         <img 
           src={logo} 
           alt="logo" 
-          className={`object-contain h-20 w-20 absolute ${isRTL ? "right-4" : "left-4"} top-3 z-10  backdrop-blur-md rounded-lg bg-transparent`}
+          className={`object-contain hidden md:block h-20 w-20 absolute ${isRTL ? "right-4" : "left-4"} top-3 z-10  backdrop-blur-md rounded-lg bg-transparent`}
         />
       
         <div className="flex py-6 px-10 shadow-lg ring-1 mx-auto z-20 rounded-full border mt-5 transition-all duration-300 hover:shadow-xl">
           {/* mobile view items */}
+          
           <div className="block lg:hidden">
             <button 
               onClick={openDrawer}
