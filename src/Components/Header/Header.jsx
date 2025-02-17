@@ -186,7 +186,7 @@ const Header = () => {
         </div>
         <div className="mobile block md:hidden">
           <button onClick={openDrawer}>
-            <FaBarsStaggered className="text-purple" />
+            <FaBarsStaggered className="" />
           </button>
         </div>
         {/* <div className="search relative">
@@ -211,74 +211,74 @@ const Header = () => {
             </a>
           )}
           {/* {user.notifications && ( */}
-          <div className="notifications">
-            <button onClick={toggleNonfiction}>
-              <MdNotificationsNone className=" w-[34px] h-[34px] text-gray relative" />
-              {unreadNotifications.length !== 0 && (
-                <span className="bg-red w-[10px] h-[10px] absolute rounded-full top-4 ltr:right-4 rtl:left-4"></span>
-              )}
-            </button>
-            <div
-              className={`notification-dropdown ${
-                isOpen
-                  ? "opacity-100 visible translate-y-0"
-                  : "opacity-0 invisible -translate-y-2"
-              } absolute ltr:right-3 top-12 rtl:left-3 w-[350px] lg:w-[600px] h-[200px] lg:h-[300px] border border-gray bg-white shadow-lg rounded-md mt-3 transition-all duration-300 z-50 flex flex-col`}
-              onMouseLeave={() => setIsOpen(false)}
-            >
-              <div className="flex justify-between items-center m-2">
-                <span className="text-purple-dark text-base font-bold">
-                  {t("New for you")}
-                </span>
+            <div className="notifications">
+              <button onClick={toggleNonfiction}>
+                <MdNotificationsNone className=" w-[34px] h-[34px]  relative" />
                 {unreadNotifications.length !== 0 && (
-                  <button
-                    className="text-gray underline underline-offset-1 text-sm font-normal m-2"
-                    onClick={async () => {
-                      await markAllAsRead();
-                      setIsOpen(false);
-                    }}
+                  <span className="bg-red w-[10px] h-[10px] absolute rounded-full top-4 ltr:right-4 rtl:left-4"></span>
+                )}
+              </button>
+              <div
+                className={`notification-dropdown ${
+                  isOpen
+                    ? "opacity-100 visible translate-y-0"
+                    : "opacity-0 invisible -translate-y-2"
+                } absolute ltr:right-3 top-12 rtl:left-3 w-[350px] lg:w-[600px] h-[200px] lg:h-[300px] border border-gray bg-white shadow-lg rounded-md mt-3 transition-all duration-300 z-50 flex flex-col`}
+                onMouseLeave={() => setIsOpen(false)}
+              >
+                <div className="flex justify-between items-center m-2">
+                  <span className="text-purple-dark text-base font-bold">
+                    {t("New for you")}
+                  </span>
+                  {unreadNotifications.length !== 0 && (
+                    <button
+                      className="text-gray underline underline-offset-1 text-sm font-normal m-2"
+                      onClick={async () => {
+                        await markAllAsRead();
+                        setIsOpen(false);
+                      }}
+                    >
+                      {t("Make All Read")}
+                    </button>
+                  )}
+                </div>
+
+                <div className="relative flex-1 overflow-y-auto">
+                  {unreadNotifications.length === 0 && (
+                    <div className=" text-center mt-4">
+                      {t("no new notifications")}
+                    </div>
+                  )}
+                  {unreadNotifications
+                    .filter((notification) => notification?.message)
+                    .slice(0, 5)
+                    .map((notification, idx) => (
+                      <NotificationItem
+                        key={idx}
+                        type={notification?.type}
+                        message_en={notification?.message?.message_en}
+                        message_ar={notification?.message?.message_ar}
+                        timestamp={
+                          notification?.createdAt
+                            ? formatDate(notification?.createdAt)
+                            : new Date().toLocaleString()
+                        }
+                        isRead={notification?.isRead}
+                        showButtons={notification?.showButtons}
+                      />
+                    ))}
+                </div>
+
+                <div className="footer bg-linear_1 p-2 text-start rounded-t-xl">
+                  <Link
+                    to="/Notifications"
+                    className="text-white font-medium text-base"
                   >
-                    {t("Make All Read")}
-                  </button>
-                )}
-              </div>
-
-              <div className="relative flex-1 overflow-y-auto">
-                {unreadNotifications.length === 0 && (
-                  <div className="text-gray text-center mt-4">
-                    {t("no new notifications")}
-                  </div>
-                )}
-                {unreadNotifications
-                  .filter((notification) => notification?.message)
-                  .slice(0, 5)
-                  .map((notification, idx) => (
-                    <NotificationItem
-                      key={idx}
-                      type={notification?.type}
-                      message_en={notification?.message?.message_en}
-                      message_ar={notification?.message?.message_ar}
-                      timestamp={
-                        notification?.createdAt
-                          ? formatDate(notification?.createdAt)
-                          : new Date().toLocaleString()
-                      }
-                      isRead={notification?.isRead}
-                      showButtons={notification?.showButtons}
-                    />
-                  ))}
-              </div>
-
-              <div className="footer bg-linear_1 p-2 text-start rounded-t-xl">
-                <Link
-                  to="/Notifications"
-                  className="text-white font-medium text-base"
-                >
-                  {t("Previous notifications")}
-                </Link>
+                    {t("Previous notifications")}
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
           {/* )}  */}
         </div>
       </header>

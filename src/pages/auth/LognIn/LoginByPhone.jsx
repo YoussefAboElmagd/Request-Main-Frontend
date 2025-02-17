@@ -73,7 +73,7 @@ const LoginByPhone = () => {
                 </div>
               </div>
               {error && <p className="error text-red text-sm ">{error}</p>}
-              <Button className={"mt-5"}>{t("sendOtp")}</Button>
+              <Button onClick = {()=>console.log("ahmded")} className={"mt-5"}>{t("sendOtp")}</Button>
             </div>
           </div>
         </>

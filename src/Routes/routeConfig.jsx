@@ -53,7 +53,7 @@ export const publicRoutes = [
   { path: "/SignUp", component: <SignUp /> },
   { path: "/SignUp/ChooseRole", component: <Role /> },
   { path: "/SignUp/createCompany", component: <CreateCompany /> },
-  { path: "/ContactUs", component: <ContactUs /> },
+  
   {
     path: "*",
     component: <Navigate to="/404" replace />,
@@ -64,6 +64,7 @@ export const publicRoutes = [
 // Define protected routes
 export const protectedRoutes = [
   { path: "/", component: <Home /> },
+  { path: "/ContactUs", component: <ContactUs /> },
   { path: "/Settings/Profile", component: <Profile /> },
   { path: "/Settings", component: <Setting /> },
   { path: "/ProjectDetails/:id", component: <ProjectDetails /> },
@@ -98,7 +99,7 @@ export const protectedRoutes = [
   { path: "/Team", component: <Team /> },
   { path: "/SeePlans", component: <SeePlans /> },
   { path: "/PlansInfo", component: <PlansInfo /> },
-  { path: "/PlanDetails", component: <PlanDetails /> },
+  { path: "/PlanDetails/:type", component: <PlanDetails /> },
   { path: "/Payments", component: <Payments /> },
   { path: "/PerformanceEvaluation", component: <PerformanceEvaluation /> },
   { path: "/ProjectTeam", component: <ProjectTeam /> },

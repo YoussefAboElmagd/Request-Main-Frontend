@@ -27,7 +27,7 @@ const customStyles = {
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isSelected ? "#CCABDA66" : "white",
-    color: state.isSelected ? "var(--purple)" : "var(--gray)",
+    color: state.isSelected ? "var(--purple)" : "black",
     padding: "10px",
     borderRadius: "8px",
     cursor: "pointer",

@@ -18,8 +18,12 @@ import { handleLogout } from "../../redux/services/authServices";
 import avatar from "../../assets/images/Avatar.jpg";
 import { t } from "i18next";
 import { getNotificationCounts } from "../../Services/api";
-import { Dialog, DialogBody, DialogFooter, DialogHeader , 
-  Button as Btn
+import {
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  Button as Btn,
 } from "@material-tailwind/react";
 
 const Sidebar = () => {
@@ -31,7 +35,7 @@ const Sidebar = () => {
   const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-  ("NotificationCounts", NotificationCounts);
+  "NotificationCounts", NotificationCounts;
 
   const [notifications, setNotifications] = useState({
     Home: NotificationCounts.home,
@@ -63,7 +67,7 @@ const Sidebar = () => {
           Home: data.home || 0,
           Projects: data.projects || 0,
         }));
-        (data);
+        data;
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -150,7 +154,7 @@ const Sidebar = () => {
             to="/Settings"
             state={{ tabIndex: 1 }}
             onClick={handleProfileClick}
-            className="flex gap-2 items-center"
+            className="flex gap-2 items-center  "
           >
             <div className="relative">
               {user?.profilePic ? (
@@ -171,14 +175,16 @@ const Sidebar = () => {
             </div>
             {!Open && (
               <div className="flex flex-col">
-                <p className="name font-bold font-inter text-xs">{user?.name}</p>
+                <p className="name font-bold font-inter text-xs">
+                  {user?.name}
+                </p>
                 {user?.role && user?.role?.jobTitle && (
-                  <p className="role font-bold font-inter text-xs text-gray">
+                  <p className="role text-gray-500 font-bold font-inter text-xs text-gray">
                     {user?.role.jobTitle}
                   </p>
                 )}
                 {user?.companyName && (
-                  <p className="role font-bold font-inter text-xs text-gray">
+                  <p className="role font-bold text-gray-500 font-inter text-xs text-gray">
                     {user?.companyName}
                   </p>
                 )}
@@ -194,7 +200,7 @@ const Sidebar = () => {
               key={item.title}
               to={item.path}
               onClick={() => handleItemClick(index)}
-              className={`text-sm font-semibold font-inter text-gray transition-custom duration-custom flex items-center gap-3 py-5 px-5 ${
+              className={`text-sm font-semibold font-inter text-gray-500 transition-custom duration-custom flex items-center gap-3 py-5  px-5 ${
                 index === activeIndex ? "item_sidebar" : ""
               }
               ${item.path === window.location.pathname ? "item_sidebar" : ""}

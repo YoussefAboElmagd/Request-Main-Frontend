@@ -8,10 +8,24 @@ import Input from "../../Components/UI/Input/Input";
 import { Option, Select } from "@mui/joy";
 import masterCard from "../../assets/images/MasterCard.png";
 import { t } from "i18next";
+import { useParams } from "react-router-dom";
 
 const PlanDetails = () => {
-  const [selectedPlan, setSelectedPlan] = useState("Request");
-
+  const [selectedPlan, setSelectedPlan] = useState("");
+  let name = "";
+  const { type } = useParams();
+  console.log(type);
+  let price;
+  if (type == "Request") {
+    price = 8;
+  }
+  if (type == "Request Plus") {
+    price = 16;
+  }
+  if (type == "Request Full Plus") {
+    price = 99;
+  }
+  console.log(price);
   const plans = [
     {
       name: "Request",
@@ -21,7 +35,7 @@ const PlanDetails = () => {
       badgeColor: "bg-green text-white",
     },
     {
-      name:"Request Plus",
+      name: "Request Plus",
       price: "$16",
       description: t("Best for personal use"),
     },
@@ -84,23 +98,26 @@ const PlanDetails = () => {
           <h1 className="font-bold text-2xl my-1">
             {t("Starter - ")} Jan 2024
           </h1>
-          <p className="text-gray-md font-medium text-sm my-1">
+          <p className=" font-medium text-sm my-1">
             {t("You enjoy the benefits of the Request package")}
           </p>
-          <p className="flex items-center gap-2 font-medium text-sm text-gray my-1">
+          <p className="flex items-center gap-2 font-medium text-sm  my-1">
             <span>
               <IoInformationCircleOutline />
             </span>
-            {t("Next Payment:")} <span className="text-purple">$8 USD</span>{" "}
-            {t("on")} <span className="text-gray-dark">Feb 1, 2024</span>
+            {t("Next Payment:")}{" "}
+            <span className="text-purple">${price} USD</span> {t("on")}{" "}
+            <span className="">Feb 1, 2024</span>
           </p>
         </div>
         <div className="flex flex-col">
           <h6 className="text-xs font-bold my-3" style={{ color: "#919EAB" }}>
             {t("Yearly Payment")}
           </h6>
-          <span className="Price text-purple font-bold text-3xl">$8 USD</span>
-          <p className="underline underline-offset-1 text-gray font-medium text-xs">
+          <span className="Price text-purple font-bold text-3xl">
+            ${price} USD
+          </span>
+          <p className="underline underline-offset-1  font-medium text-xs">
             {t("Learn more about our membership policy")}
           </p>
           <Button className={"px-20 my-3 text-center"}>
@@ -206,13 +223,13 @@ const PlanDetails = () => {
                   type="radio"
                   id={plan.name}
                   name="plan"
-                  checked={selectedPlan === plan.name}
+                  checked={type === plan.name}
                   onChange={() => setSelectedPlan(plan.name)}
                   className="w-5 h-5 text-green focus:ring-green border-gray-300"
                 />
                 <div className="flex flex-col">
                   <span className="font-bold">{plan.name}</span>
-                  <span className="text-gray-600">{plan.description}</span>
+                  <span className="-600">{plan.description}</span>
                 </div>
               </div>
               <div className="flex items-center gap-1 md:gap-2">

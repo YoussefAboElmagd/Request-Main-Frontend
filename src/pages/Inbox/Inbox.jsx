@@ -279,7 +279,7 @@ const Inbox = () => {
       const res = await sendDocsAndVoiceNote(formData);
 
       if (res && res.docs) {
-        ("✅ Attachment uploaded successfully:", res);
+        "✅ Attachment uploaded successfully:", res;
         setPreview(null);
         return res.docs; // Return the uploaded file path
       } else {
@@ -336,10 +336,10 @@ const Inbox = () => {
         newMessage.receiver = activeChat.member._id;
       }
 
-      ("newMessage from inbox:", newMessage);
+      "newMessage from inbox:", newMessage;
 
       const res = await sendMessage(newMessage);
-      ("Message sent successfully:", res);
+      "Message sent successfully:", res;
 
       // Reset state after message is sent
       setMessageInput("");
@@ -355,11 +355,10 @@ const Inbox = () => {
     const selectedFile = event.target.files[0];
 
     if (!selectedFile) {
-      console.warn("No file selected.");
       return;
     }
 
-    ("Selected File:", selectedFile);
+    "Selected File:", selectedFile;
 
     const fileUrl = URL.createObjectURL(selectedFile);
     const extension = selectedFile.name.split(".").pop().toLowerCase();
@@ -935,20 +934,19 @@ const Inbox = () => {
                     )} */}
 
                     <input
+                      
                       type="file"
                       onChange={handleFileChange}
                       className="hidden"
                       id="fileInput"
                     />
 
-                    <button
-                      onClick={() =>
-                        document.getElementById("fileInput").click()
-                      }
+                    <label htmlFor="fileInput"
+                      
                       className={`${isRecording ? "hidden" : ""}`}
                     >
                       <IoAttach className="text-yellow w-8 h-8" />
-                    </button>
+                    </label>
                     <button type="submit" className="bg-purple p-2 rounded-md">
                       <IoIosSend className="text-white" />
                     </button>

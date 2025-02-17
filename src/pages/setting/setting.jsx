@@ -68,7 +68,7 @@ const Setting = () => {
   const saveGeneralChanges = () => {
     if (generalRef.current) {
       const settings = generalRef.current.handleSave();
-      ("General Settings Saved:", settings);
+      "General Settings Saved:", settings;
       toast.success(t("toast.GeneralSettingSuccess"));
     }
   };
@@ -94,33 +94,31 @@ const Setting = () => {
     const currentTab = buttons[selectedTab];
     currentTab.handleSave();
   };
-const saveCreateTagChanges = async () => {
-  try {
+  const saveCreateTagChanges = async () => {
+    try {
+      const savePromises = tags.map(async (tag) => {
+        try {
+          tag, user._id, lang;
 
+          const response = await addTag(tag, user._id, lang);
+          `Tag added successfully:`, response;
 
-    const savePromises = tags.map(async (tag) => {
-      try {
-        (tag, user._id , lang);
-        
-        const response = await addTag(tag, user._id, lang);
-        (`Tag added successfully:`, response);
+          return response;
+        } catch (error) {
+          console.error(`Error adding tag: ${tag.name}`, error);
+          throw error;
+        }
+      });
 
-        return response;
-      } catch (error) {
-        console.error(`Error adding tag: ${tag.name}`, error);
-        throw error;
-      }
-    });
+      const results = await Promise.all(savePromises);
+      window.location.reload();
+      toast.success(t("toast.TagsCreatedSuccess"));
 
-    const results = await Promise.all(savePromises);
-    window.location.reload();
-    toast.success(t("toast.TagsCreatedSuccess"));
-
-    ("All tags saved successfully:", results);
-  } catch (error) {
-    console.error("Error saving tags:", error);
-  }
-};
+      "All tags saved successfully:", results;
+    } catch (error) {
+      console.error("Error saving tags:", error);
+    }
+  };
 
   const debouncedSaveCreateTagChanges = debounce(saveCreateTagChanges, 1000);
 
@@ -235,8 +233,9 @@ const saveCreateTagChanges = async () => {
               </h2>
               <div className="divider h-px w-full bg-gray my-2"></div>
               <div className="flex flex-col justify-start items-start gap-3">
-                {buttons.map((button) => (
+                {buttons.map((button, index) => (
                   <button
+                    key={index}
                     className={`text-gray hover:text-purple my-2  font-medium ${
                       button.value === buttons[selectedTab].value
                         ? "text-purple"

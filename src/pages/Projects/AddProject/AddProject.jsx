@@ -183,7 +183,7 @@ const AddProject = () => {
               <Input
                 label={t("PName")}
                 placeholder={t("PName")}
-                className={`bg-white border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
+                className={`bg-white border border-purple text-black  border-solid focus:border   focus:border-purple  focus:border-solid ${
                   fieldErrors.Name && "border-red"
                 }`}
                 type={"name"}
@@ -210,7 +210,7 @@ const AddProject = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   className={`${
                     fieldErrors.Description && "border-red"
-                  } bg-white  w-full   rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid`}
+                  } bg-white  w-full   rounded-xl border border-purple focus:outline-none font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid`}
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
@@ -231,7 +231,7 @@ const AddProject = () => {
                     popoverClassName="!bg-purple-100"
                     popoverDirection="down"
                     toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-                    inputClassName={`bg-white  w-full   rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
+                    inputClassName={`bg-white  w-full focus:outline-none  rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
                       fieldErrors.sDate && "border-red"
                     }`}
                   />
@@ -253,7 +253,7 @@ const AddProject = () => {
                     popoverClassName="!bg-purple-100"
                     popoverDirection="down"
                     toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-                    inputClassName={`bg-white  w-full   rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
+                    inputClassName={`bg-white  w-full focus:outline-none   rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
                       fieldErrors.eDate && "border-red"
                     }`}
                   />
@@ -281,7 +281,7 @@ const AddProject = () => {
                   <Input
                     label={t("budget")}
                     placeholder={t("budget")}
-                    className={`bg-white border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
+                    className={`bg-white text-black border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
                       fieldErrors.Name && "border-red"
                     }`}
                     type={"number"}

@@ -200,7 +200,7 @@ const SignUp = () => {
                 {t("sign up To activate your business easily")}
               </h3>
               <p className="font-jost font-medium hidden md:block md:text-xl lg:text-2xl">
-                {t("if you don’t have an account you can")}
+                {t("if you don't have an account you can")}
                 <Link className="text-blue block" to={"/LogIn/Mail"}>{t("sign in here!")}</Link>
               </p>
             </div>
@@ -220,6 +220,7 @@ const SignUp = () => {
                     placeholder={t("yourName")}
                     type="text"
                     id="name"
+                    
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     autoFocus
@@ -258,7 +259,7 @@ const SignUp = () => {
                       value={phone}
                       maxlength={11}
                       placeholder={"+96244679900"}
-                      className="Input font-jost font-normal text-base py-2 !relative px-4 w-full"
+                      className="Input text-black font-jost font-normal text-base py-2 !relative px-4 w-full"
                     />
                     <Select
                       options={countryOptions}
@@ -355,7 +356,7 @@ const SignUp = () => {
                 </Link>
               </div>
               <p className="font-jost font-medium  text-lg text-center block md:hidden my-4">
-                {t("if you don’t have an account you can")}
+                {t("if you do not have an account you can")}
                 <Link to="/sign-up" className="text-blue block">
                   {t("Register here!")}
                 </Link>

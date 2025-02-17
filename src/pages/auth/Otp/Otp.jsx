@@ -42,6 +42,7 @@ const Otp = () => {
 
 
   useEffect(() => {
+   
     ("Otp : ", userData_login?.verificationCode);
   }, [userData_login?.verificationCode]);
   
@@ -65,6 +66,9 @@ const Otp = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
+    console.log("hi")
+    console.log(forget_email)
+    if(!forget_email) navigate("/forgotPassword")
 
     try {
       switch (true) {
@@ -138,6 +142,7 @@ const Otp = () => {
     setCanResend(false);
     setTimeLeft(60);
     setError("");
+    if(!forget_email) navigate("/forgotPassword")
 
     try {
       let result;

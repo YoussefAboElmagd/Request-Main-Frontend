@@ -85,13 +85,13 @@ const Home = () => {
           <div className="header grid grid-cols-8 gap-2">
             <div className="box col-span-8 md:col-span-5 lg:col-span-6 bg-white rounded-3xl shadow-sm p-3 flex items-center justify-between mx-2  ">
               <div className="content">
-                <h6 className="font-poppins font-normal text-lg md:text-xl text-gray m-2">
+                <h6 className="font-poppins font-normal text-lg md:text-xl text-gray-400 m-2">
                   {t("WelcomeTo")}
                 </h6>
                 <h5 className="font-poppins font-semibold text-lg md:text-xl lg:text-2xl text-purple-dark m-2">
                   {t("YourTaskManagementArea")}
                 </h5>
-                <p className="font-poppins font-light text-xs md:text-sm leading-5 m-2 text-gray-md">
+                <p className="font-poppins font-light text-xs md:text-sm leading-5 m-2 text-gray-400-md">
                   {t("headerDesc")}
                 </p>
                 {/* <button className="mt-3 mx-2 text-white font-Poppins py-3 px-5 rounded-3xl capitalize border bg-linear_1 text-sm md:text-base font-medium text-left">
@@ -111,7 +111,7 @@ const Home = () => {
               <div className="col-span-1 flex flex-col justify-center items-center gap-5">
                 <div className="box bg-linear_2 w-full py-4 px-2 rounded-3xl text-white flex items-center justify-center gap-1">
                   <span className="icon bg-white w-8 h-8 rounded-full flex justify-center items-center">
-                    <IoMdCheckmarkCircleOutline className="text-purple" />
+                    <IoMdCheckmarkCircleOutline className="text-red" />
                   </span>
                   <div className="flex flex-col font-poppins font-normal">
                     <span className="text-xl leading-6">
@@ -162,19 +162,19 @@ const Home = () => {
             <div className="GroupBtn flex items-center  mx-2 my-4">
               <button
                 onClick={() => handleViewChange("board")}
-                className="BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs text-gray-md"
+                className="BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs text-gray-400-md"
               >
                 <span>
-                  <RiGalleryView2 className="w-4  h-3  text-gray" />
+                  <RiGalleryView2 className="w-4  h-3  text-gray-400" />
                 </span>
                 {t("boardView")}
               </button>
               <button
                 onClick={() => handleViewChange("list")}
-                className="ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs text-gray-md"
+                className="ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs text-gray-400-md"
               >
                 <span>
-                  <FaBars className="w-4  h-4  text-gray" />
+                  <FaBars className="w-4  h-4  text-gray-400" />
                 </span>
                 {t("listView")}
               </button>

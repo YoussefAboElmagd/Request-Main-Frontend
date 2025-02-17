@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
 import "react-international-phone/style.css";
 import "../Input/Input.scss";
+import { useRef, useState, useEffect } from "react";
 import { InputAdornment, MenuItem, Select, Typography } from "@mui/material";
 import {
   defaultCountries,
@@ -11,7 +11,10 @@ import {
 import Input from "../Input/Input";
 
 export const TelPhone = ({ value, onChange = () => {}, ...restProps }) => {
-  const { inputValue, handlePhoneValueChange, inputRef, country, setCountry } =
+  const inputRef = useRef(null);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+
+  const { inputValue, handlePhoneValueChange, country, setCountry } =
     usePhoneInput({
       defaultCountry: "sa",
       value,
@@ -21,8 +24,16 @@ export const TelPhone = ({ value, onChange = () => {}, ...restProps }) => {
       },
     });
 
+  useEffect(() => {
+    if (inputRef.current) {
+      const rect = inputRef.current.getBoundingClientRect();
+      setMenuPosition({ top: rect.bottom + window.scrollY, left: rect.left });
+    }
+  }, [inputRef.current]);
+
   return (
-    <div className=" Input_wrapper ">
+    <div className="Input_wrapper">
+      {/* Input Field */}
       <Input
         className="phone_input Input"
         placeholder="Phone number"
@@ -32,6 +43,8 @@ export const TelPhone = ({ value, onChange = () => {}, ...restProps }) => {
         ref={inputRef}
         {...restProps}
       />
+
+      {/* Country Selector */}
       <InputAdornment
         position="end"
         className="Input_icon"
@@ -43,43 +56,33 @@ export const TelPhone = ({ value, onChange = () => {}, ...restProps }) => {
         }}
       >
         <Select
+          value={country.iso2}
+          onChange={(e) => setCountry(e.target.value)}
           MenuProps={{
-            style: {
-              height: "300px",
-              width: "360px",
-              top: "10px",
-              left: "-34px",
-            },
-            transformOrigin: {
-              vertical: "top",
-              horizontal: "left",
+            PaperProps: {
+              style: {
+                position: "absolute",
+                top: `${menuPosition.top}px`,
+                left: `${menuPosition.left}px`,
+                transform: "none",
+                zIndex: 1300, // Ensures it's above other elements
+              },
             },
           }}
           sx={{
             width: "max-content",
-            fieldset: {
-              display: "none",
-            },
+            fieldset: { display: "none" },
             '&.Mui-focused:has(div[aria-expanded="false"])': {
-              fieldset: {
-                display: "block",
-              },
+              fieldset: { display: "block" },
             },
-            ".MuiSelect-select": {
-              padding: "8px",
-              paddingRight: "24px !important",
-            },
-            svg: {
-              right: 0,
-            },
+            ".MuiSelect-select": { padding: "8px", paddingRight: "24px !important" },
+            svg: { right: 0 },
           }}
-          value={country.iso2}
-          onChange={(e) => setCountry(e.target.value)}
           renderValue={(value) => (
             <FlagImage iso2={value} style={{ display: "flex" }} />
           )}
         >
-          {defaultCountries.map((c) => {
+          {defaultCountries?.map((c) => {
             const country = parseCountry(c);
             return (
               <MenuItem key={country.iso2} value={country.iso2}>

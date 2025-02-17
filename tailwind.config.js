@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 module.exports = {
   mode: "jit",
-  purge: [
+  content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "./public/index.html",
     "./node_modules/@material-tailwind/react/components/**/*.{js,jsx,ts,tsx}",
@@ -14,17 +14,17 @@ module.exports = {
         red: "var(--red)",
         blue: "var(--blue)",
         gray: {
-          DEFAULT: "var(--gray)",
-          dark: "var(--gray-dark)",
-          md: "var(--gray-md)",
+          DEFAULT: "#080102",
+          dark: "#080102",
+          md: "#080102",
         },
         gold: "var(--gold)",
         yellow: "var(--yellow)",
         green: "var(--green)",
         light: "var(--light)",
         purple: {
-          DEFAULT: "var(--purple)",
-          dark: "var(--purple2)",
+          DEFAULT: "#080102",
+          dark: "#080102",
         },
       },
       backgroundImage: {

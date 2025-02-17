@@ -48,9 +48,9 @@ const ProjectDetails = () => {
           getProjectTagProgress(projectId, lang),
         ]);
 
-        setProject(ProjectData.results);
-        setOwner(ProjectData.results.owner);
-        setContractor(ProjectData.results.contractor[0]);
+        setProject(ProjectData?.results);
+        setOwner(ProjectData?.results?.owner);
+        setContractor(ProjectData?.results?.contractor[0]);
         setTags(tagsData.results);
         setLoading(false);
       } catch (error) {

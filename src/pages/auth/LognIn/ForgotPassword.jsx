@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import Loader from "../../../Components/Loader/Loader";
 import Input from "../../../Components/UI/Input/Input";
@@ -16,6 +16,7 @@ const ForgotPassword = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { forget_id } = location.state || {};
@@ -26,20 +27,21 @@ const ForgotPassword = () => {
     setError("");
     try {
       if (forget_id) {
-        ("userId:", forget_id, "password:", password);
+        "userId:", forget_id, "password:", password;
         const result = await updateUser(forget_id, {
-           password,
+          password,
         });
-        (result);
+        result;
         navigate("/LogIn/Mail");
       } else {
         const forget = await forgetPassword(email);
-        (forget);
-        navigate("/Otp", { state: { forget_email: email, forget } });
+        forget;
+        console.log("yes");
+        setSearchParams({"email":email})
+        navigate(`/Otp/`, { state: { forget_email: email, forget } });
       }
     } catch (err) {
-      console.error("Error processing request:", err);
-      setError(t("Failed to process your request. Please try again."));
+      setError(t("Email not found"));
     } finally {
       setLoading(false);
     }

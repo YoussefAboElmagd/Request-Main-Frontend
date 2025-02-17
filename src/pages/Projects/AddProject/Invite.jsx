@@ -100,7 +100,7 @@ const Invite = () => {
 
   const handleInviteChange = (index, field, value) => {
     const updatedInvites = invites.map((invite, i) =>
-      i === index ? { ...invite, [field]: value.trim() } : invite
+      i === index ? { ...invite, [field]: value } : invite
     );
     setInvites(updatedInvites);
   };

@@ -13,7 +13,7 @@ import {
 } from "../../../Services/api";
 import { useSelector } from "react-redux";
 import Select, { components, useStateManager } from "react-select";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import "../style.scss";
 import Button from "../../../Components/UI/Button/Button";
 import { Link } from "react-router-dom";
@@ -33,25 +33,27 @@ import i18next from "i18next";
 const customStyles = {
   control: (provided) => ({
     ...provided,
+    color:"red",
     backgroundColor: "white",
     border: "1px solid var(--gray)",
     borderRadius: "15px",
     padding: "5px",
     minHeight: "42px",
     boxShadow: "none",
+    
     "&:hover": { borderColor: "var(--gray)", value: false },
   }),
   placeholder: (provided) => ({ ...provided, color: "#999" }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: "var(--gray)",
+    color: "black",
     "&:hover": { color: "var(--gray)", value: false },
   }),
   indicatorSeparator: () => ({ display: "none" }),
   option: (provided, state) => ({
     ...provided,
     backgroundColor: "white",
-    color: "var(--gray)",
+    color: "black",
     padding: "10px",
     borderRadius: "8px",
     cursor: "pointer",
@@ -138,11 +140,11 @@ export function Input({
         maxLength={max}
         required={required}
         pattern={pattern}
-        className={`rounded-lg input relative px-3 py-2 border-gray border placeholder:font-medium placeholder:text-base placeholder:text-gray focus:bg-white ${getErrorClass(
+        className={`rounded-lg input relative px-3 py-2 border-gray border placeholder:font-medium placeholder:text-base placeholder:text-gray-400 focus:bg-white ${getErrorClass(
           hasError
         )} ${className}`}
       />
-      <span className="absolute ltr:right-2 rtl:left-2 top-8 w-6 h-6 text-gray">
+      <span className="absolute ltr:right-2 rtl:left-2 top-8 w-6 h-6 text-gray-400">
         {icon}
       </span>
       {isPassword && (
@@ -399,7 +401,7 @@ const AddNewAccess = () => {
         onSubmit={handleSubmit}
         className="form grid grid-cols-4 gap-2 max-w-5xl"
       >
-        <div className="col-span-4 md:col-span-2">
+        <div className="col-span-4 md:col-span-2  ">
           <Input
             type={"email"}
             name="email"

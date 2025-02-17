@@ -1,4 +1,5 @@
 {
+  
   "signIn": "تسجيل الدخول",
   "Register": "التسجيل",
   "PhoneNumber": "رقم الهاتف",
@@ -11,6 +12,8 @@
   "sign in To activate your business easily": "تسجيل الدخول لتفعيل عملك بسهولة",
   "sign up To activate your business easily": "التسجيل لتفعيل عملك بسهولة",
   "if you don't have an account you can": "إذا لم يكن لديك حساب يمكنك",
+  "if you do not have an account you can": "إذا لم يكن لديك حساب يمكنك",
+  "if you don’t have an account you can": "إذا لم يكن لديك حساب يمكنك",
   "Register here!": "سجل   هنا!",
   "logout": "تسجيل الخروج",
   "or": "أو تابع مع ",

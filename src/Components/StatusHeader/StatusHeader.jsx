@@ -28,7 +28,7 @@ const StatusHeader = ({
           {buttons.map((button, index) => (
             <button
               key={button.value}
-              className={`btn px-4 py-5 font-inter font-bold text-xs text-gray  md:w-20  ${
+              className={`btn px-4 py-5 font-inter font-bold text-xs text-gray-500  md:w-20  ${
                 selectedIndex === index ? `active_${button.value}` : ""
               }`}
               onClick={() => handleButtonClick(index)}

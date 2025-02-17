@@ -199,7 +199,7 @@ const SeePlans = () => {
                 "mt-8 space-y-3 text-sm leading-6 sm:mt-10"
               )}
             >
-              {tier.features.map((feature) => (
+              {tier.features.map((feature, index) => (
                 <li
                   key={feature.feature}
                   className={classNames(
@@ -221,7 +221,7 @@ const SeePlans = () => {
                 </li>
               ))}
             </ul>
-            <Link to={"/PlanDetails"}>
+            <Link to={`/PlanDetails/${tier.name}`}>
               <Button className={"mt-4 font-normal text-xs px-0  lg:px-8"}>
                 {t("Get Started")}
               </Button>

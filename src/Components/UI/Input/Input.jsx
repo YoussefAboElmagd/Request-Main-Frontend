@@ -42,7 +42,7 @@ const Input = ({
           {label}
         </label>
       )}
-      <div className="Input_wrapper flex items-center relative">
+      <div className="Input_wrapper flex items-center relative ">
         <input
           type={inputType}
           onChange={onChange}
@@ -54,7 +54,7 @@ const Input = ({
           required={required}
           
           value={value}
-          className={`Input font-jost font-normal text-base  my-2 py-2 px-4 ${className}`}
+          className={`Input  font-normal text-base text-black  my-2 py-2 px-4 ${className}`}
           {...rest}
         />
         {inputIcons.length > 0 && (

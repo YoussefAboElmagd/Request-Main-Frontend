@@ -67,35 +67,35 @@ const ProjectHistory = () => {
       </h1>
       <div className="GroupBtn flex items-center mx-2 my-4">
         <button
-          className={`BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs text-gray-md ${
+          className={`BoardView flex items-center gap-2 p-2 border border-gray border-solid rounded-s-md font-inter font-bold text-xs  ${
             viewMode === "board" ? "bg-gray-200" : ""
           }`}
           onClick={() => handleViewChange("board")}
         >
           <span>
-            <RiGalleryView2 className="w-4 h-3 text-gray" />
+            <RiGalleryView2 className="w-4 h-3" />
           </span>
           {t("boardView")}
         </button>
         <button
-          className={`ListView flex items-center gap-2 p-2 border border-gray border-solid font-inter font-bold text-xs text-gray-md ${
+          className={`ListView flex items-center gap-2 p-2 border border-gray border-solid font-inter font-bold text-xs  ${
             viewMode === "list" ? "bg-gray-200" : ""
           }`}
           onClick={() => handleViewChange("list")}
         >
           <span>
-            <FaBars className="w-4 h-4 text-gray" />
+            <FaBars className="w-4 h-4" />
           </span>
           {t("listView")}
         </button>
         <button
-          className={`ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs text-gray-md ${
+          className={`ListView flex items-center gap-2 p-2 border border-gray border-solid rounded-e-md font-inter font-bold text-xs  ${
             viewMode === "timeline" ? "bg-gray-200" : ""
           }`}
           onClick={() => handleViewChange("timeline")}
         >
           <span>
-            <FaBars className="w-4 h-4 text-gray" />
+            <FaBars className="w-4 h-4" />
           </span>
           {t("timeLineView")}
         </button>
