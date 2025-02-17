@@ -223,7 +223,7 @@ const Header = () => {
                   isOpen
                     ? "opacity-100 visible translate-y-0"
                     : "opacity-0 invisible -translate-y-2"
-                } absolute ltr:right-3 top-12 rtl:left-3 w-[350px] lg:w-[600px] h-[200px] lg:h-[300px] border border-gray bg-white shadow-lg rounded-md mt-3 transition-all duration-300 z-50 flex flex-col`}
+                } absolute ltr:right-3 top-12 rtl:left-3 w-[350px]  lg:w-[600px] h-[200px] lg:h-[300px] border border-gray bg-white shadow-lg rounded-xl mt-3 transition-all duration-300 z-50 flex flex-col`}
                 onMouseLeave={() => setIsOpen(false)}
               >
                 <div className="flex justify-between items-center m-2">
@@ -243,7 +243,7 @@ const Header = () => {
                   )}
                 </div>
 
-                <div className="relative flex-1 overflow-y-auto">
+                <div className="relative flex-1 overflow-y-auto ">
                   {unreadNotifications.length === 0 && (
                     <div className=" text-center mt-4">
                       {t("no new notifications")}
@@ -257,7 +257,7 @@ const Header = () => {
                         key={idx}
                         type={notification?.type}
                         message_en={notification?.message?.message_en}
-                        message_ar={notification?.message?.message_ar}
+                        message_ar={t(notification?.message?.message_ar)}
                         timestamp={
                           notification?.createdAt
                             ? formatDate(notification?.createdAt)
@@ -269,7 +269,7 @@ const Header = () => {
                     ))}
                 </div>
 
-                <div className="footer bg-linear_1 p-2 text-start rounded-t-xl">
+                <div className="footer bg-linear_1 p-2 text-start rounded-b-xl">
                   <Link
                     to="/Notifications"
                     className="text-white font-medium text-base"

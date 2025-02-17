@@ -114,7 +114,7 @@ const Invitation = () => {
             {t("You have been invited to")}
             <span className="font-bold"> {data?.projectName}</span> <br />{" "}
             {t("as a")}
-            <span className="font-bold"> {data?.role?.jobTitle}</span>
+            <span className="font-bold"> {t(data?.role?.jobTitle)}</span>
           </p>
           {data?.comment && (
             <p className="font-inter font-medium text-base md:text-lg lg:text-xl leading-8 ] text-center  text-gray-600">

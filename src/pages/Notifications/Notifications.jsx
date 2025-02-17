@@ -148,8 +148,8 @@ const Notifications = () => {
                     <NotificationItem
                       key={notification?._id}
                       type={notification?.type}
-                      message_en={notification?.message?.message_en}
-                      message_ar={notification?.message?.message_ar}
+                      message_en={t(notification?.message?.message_en)}
+                      message_ar={t(notification?.message?.message_ar)}
                       isRead={notification?.isRead}
                       timestamp={
                         notification?.createdAt

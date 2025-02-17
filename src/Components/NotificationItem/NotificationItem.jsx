@@ -18,6 +18,10 @@ const NotificationItem = ({
 }) => {
   const lang = i18n.language;
 
+  console.log(
+    message_ar
+      
+  );
   return (
     <div
       className={`notification-item  p-3 rounded-md flex items-center justify-start space-x-4 my-1 border-b border-solid border-gray  `}
@@ -38,7 +42,12 @@ const NotificationItem = ({
       </div>
       <div className="content flex-1">
         {lang === "ar" ? (
-          <p className="text-sm my-1">{message_ar}</p>
+          <p className="text-sm my-1">
+            {message_ar
+              .replace("owner", "مالك")
+              .replace("contractor", "مقاول")
+              .replace("consultant", "استشاري")}
+          </p>
         ) : (
           <p className="text-sm my-1">{message_en}</p>
         )}

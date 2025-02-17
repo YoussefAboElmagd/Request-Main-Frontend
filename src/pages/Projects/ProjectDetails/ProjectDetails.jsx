@@ -50,8 +50,8 @@ const ProjectDetails = () => {
 
         setProject(ProjectData?.results);
         setOwner(ProjectData?.results?.owner);
-        setContractor(ProjectData?.results?.contractor[0]);
-        setTags(tagsData.results);
+        setContractor(ProjectData?.results?.contractor?ProjectData?.results?.contractor[0]:"");
+        setTags(tagsData?.results);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching Project:", error);
