@@ -91,7 +91,7 @@ export const AddNewTask = ({ newTask, task }) => {
         setUnitsLoading(false);
 
         setMember(
-          MembersData.groupedMembers.map((member) => ({
+          MembersData?.groupedMembers?.map((member) => ({
             value: member._id,
             label: member.name,
           }))
