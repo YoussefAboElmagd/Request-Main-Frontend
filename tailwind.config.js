@@ -13,11 +13,7 @@ module.exports = {
       colors: {
         red: "var(--red)",
         blue: "var(--blue)",
-        gray: {
-          DEFAULT: "#080102",
-          dark: "#080102",
-          md: "#080102",
-        },
+        
         gold: "var(--gold)",
         yellow: "var(--yellow)",
         green: "var(--green)",
