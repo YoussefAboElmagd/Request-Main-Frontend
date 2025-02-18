@@ -63,7 +63,7 @@ const TaskRow = ({
         <Input
           type="number"
           min={0}
-          value={task.requiredQuantity}
+          value={task.quantity  }
           onChange={(e) => {
             const value = e.target.value;
             handleChange("requiredQuantity", value);

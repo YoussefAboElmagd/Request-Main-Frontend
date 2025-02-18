@@ -11,7 +11,7 @@ import { BiEdit } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
 
 export const EditTask = ({ task, onUpdateTask }) => {
-  (task);
+  
   const location = useLocation();
   const { members } = location.state || {};
 
@@ -39,6 +39,8 @@ export const EditTask = ({ task, onUpdateTask }) => {
     unit: task.unit,
   });
   ("form data :",  formData);
+
+  console.log(task)
   
 
   const [fieldErrors, setFieldErrors] = useState({});
@@ -126,7 +128,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
       sDate: !formData.sDate?.startDate,
       eDate: !formData.eDate?.endDate,
       priority: !formData.priority,
-      tag: !formData.tag,
+      // tag: !formData.tag,
       member: !formData.assignees,
       // requiredQuantity: formData.requiredQuantity < 0,
       // approvedQuantity: formData.approvedQuantity < 0,
@@ -212,7 +214,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
               <textarea
                 className={`bg-white border ${
                   fieldErrors.description ? "border-red" : "border-purple"
-                } border-solid focus:border focus:border-gray focus:border-solid Input font-jost font-normal text-base my-2 py-2 px-4`}
+                } border-solid focus:border focus:border-gray focus:border-solid Input text-black font-jost font-normal text-base my-2 py-2 px-4`}
                 id="desc"
                 name="description"
                 rows={4}

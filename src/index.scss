@@ -98,16 +98,16 @@ body[dir="rtl"] {
   background-color: var(--purple);
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-::-webkit-scrollbar-track{
-  background-color:#d1d5db;
+::-webkit-scrollbar-track {
+  background-color: #d1d5db;
   border-radius: 8px;
 }
-::-webkit-scrollbar-thumb{
-    background-color: #f3f4f6;
+::-webkit-scrollbar-thumb {
+  background-color: #f3f4f6;
   border-radius: 8px;
 }
 a {
@@ -189,23 +189,22 @@ option {
   display: flex;
   justify-content: center;
   align-items: center;
- 
+
   background-color: brown;
   color: #ffffff;
- 
+
   border-radius: 50%;
   font-weight: 800;
 }
 
-
-
-.Notification_success{
-  color: #05C398;
+.Notification_success {
+  color: #05c398;
 }
 
-.Notification_warning{
-  color: #F7BA1E;
+.Notification_warning {
+  color: #f7ba1e;
 }
-.Notification_3{
+.Notification_3 {
   color: var(--purple2);
 }
+

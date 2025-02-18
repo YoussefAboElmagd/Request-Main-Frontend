@@ -17,13 +17,14 @@ import i18n from "../../config/i18n";
 
 export const AddNewTask = ({ newTask, task }) => {
   const user = useSelector((state) => state.auth.user);
-  const lang = i18n.language
+  console.log(user)
+  const lang = i18n.language;
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId, taskType } = location.state || {};
-  (location.state);
-  ("projectId :", projectId);
-  
+  location.state;
+  "projectId :", projectId;
+
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
@@ -72,14 +73,13 @@ export const AddNewTask = ({ newTask, task }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      
       try {
         const [tagsData, UnitsData, MembersData] = await Promise.all([
           getAllTagsByProject(projectId, lang),
           getAllUnits(),
           getAllMembersByProject(projectId, lang),
         ]);
-
+        
         setTags(tagsData?.tags);
         setTagsLoading(false);
         setUnits(
@@ -89,7 +89,7 @@ export const AddNewTask = ({ newTask, task }) => {
           }))
         );
         setUnitsLoading(false);
-
+        
         setMember(
           MembersData?.groupedMembers?.map((member) => ({
             value: member._id,
@@ -97,6 +97,7 @@ export const AddNewTask = ({ newTask, task }) => {
           }))
         );
         setMemberLoading(false);
+        console.log(tagsData);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -148,7 +149,7 @@ export const AddNewTask = ({ newTask, task }) => {
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
       priority: !selectedPriority,
-      tag: !selectedTag,
+
       price: !Price || isNaN(Price),
       quantity: !Quantity || isNaN(Quantity),
       unit: !selectedUnit,
@@ -189,13 +190,13 @@ export const AddNewTask = ({ newTask, task }) => {
         total: Total,
       };
 
-      ("taskData", taskData);
+      "taskData", taskData;
       await newTask(taskData);
 
       clearFormFields();
     } catch (err) {
       setError(err.message);
-      (err);
+      err;
       setLoading(false);
     } finally {
       setLoading(false);

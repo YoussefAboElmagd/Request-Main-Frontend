@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { IoIosArrowDown, IoMdClose } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 import "./style.scss";
-import { FaBarsStaggered } from "react-icons/fa6";
+import { FaBars, FaBarsStaggered } from "react-icons/fa6";
 import { Drawer, IconButton, Typography } from "@material-tailwind/react";
 import { CheckInput } from "../../pages/setting/setting";
 import { useLanguage } from "../../context/LanguageContext";
@@ -53,28 +53,29 @@ const LandingHeader = () => {
       <img 
           src={logo} 
           alt="logo" 
-          className={`object-contain   hidden md:block h-20 w-20 absolute ${isRTL ? "right-4" : "left-4"} top-2 z-10  backdrop-blur-md rounded-lg bg-transparent`}
+          className={`object-contain me-3    md:block md:h-20 md:w-20 w-12 h-12 ${isRTL ? "right-4" : "left-4"} top-2 z-10  backdrop-blur-md rounded-lg bg-transparent`}
         />
       
 
-        <div className="flex py-6 px-10 shadow-lg ring-1 mx-auto z-20 rounded-full border mt-5 transition-all duration-300 hover:shadow-xl">
+        <div className="flex lg:mx-auto md:py-6 md:px-10 px-2 py-2 shadow-lg ring-1 me-auto z-20 rounded-full border my-4 transition-all duration-300 hover:shadow-xl">
           {/* mobile view items */}
-          <img 
+          {/* <img 
           src={logo} 
           alt="logo" 
           onClick={openDrawer}
           className={`object-contain  md:hidden h-20 w-20  z-10  backdrop-blur-md rounded-lg bg-transparent`}
-        />
+        /> */}
       
 
-          <div className="block lg:hidden">
+          <div className="block lg:hidden items-start">
             <button 
               onClick={openDrawer}
               className="transition-transform duration-200 hover:scale-110"
             >
-              <FaBarsStaggered className="text-purple w-5 h-5" />
+              <FaBars className="text-purple pt-1 text-xl  " />
             </button>
-            <Drawer open={open} onClose={closeDrawer} className="p-4">
+            
+            <Drawer open={open} onClose={closeDrawer} className="p-4  ">
               <div className="mb-6 flex items-center justify-between">
                 <IconButton
                   variant="text"
@@ -187,7 +188,7 @@ const LandingHeader = () => {
         </div>
         <div className="CTA flex items-center ">
           <Link to="/LogIn/Mail">
-            <button className="py-2 px-6 md:px-8 bg-linear_1 rounded-3xl text-light mx-2 font-semibold md:text-xl text-base transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center gap-2">
+            <button className=" px-5 py-3 sm:px-6  md:px-8 bg-linear_1 rounded-3xl text-light ms-1 font-semibold text-xs  md:text-xl  transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
@@ -195,7 +196,7 @@ const LandingHeader = () => {
             </button>
           </Link>
           <Link to="/SignUp/ChooseRole">
-            <button className="py-2 px-6 md:px-8 bg-light border-2 border-purple border-solid rounded-3xl text-purple mx-2 font-semibold md:text-xl text-base transition-all duration-200 hover:scale-105 hover:shadow-lg hover:bg-purple hover:text-white flex items-center gap-2">
+            <button className=" px-5 py-3 sm:px-6 md:px-8 bg-light border-2 border-purple border-solid rounded-3xl text-purple ms-1 font-semibold text-xs  md:text-xl  transition-all duration-200 hover:scale-105 hover:shadow-lg hover:bg-purple hover:text-white flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
               </svg>

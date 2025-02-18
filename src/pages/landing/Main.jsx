@@ -13,8 +13,9 @@ import { t } from "i18next";
 import { Link } from "react-router-dom";
 import { Carousel } from "@material-tailwind/react";
 import { IconButton } from "@mui/material";
+import { FaArrowLeft, FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
 const Main = () => {
-  const [Mode, setMode] = useState("Mode1");
+  let [Mode, setMode] = useState("Mode1");
   const [activeIndex, setActiveIndex] = useState(0);
 
   const intervalRef = useRef(null);
@@ -31,14 +32,15 @@ const Main = () => {
     return () => clearInterval(intervalRef.current);
   }, []);
   useEffect(() => {
-    if (activeIndex === 0) {
-      setMode("Mode1");
-    } else if (activeIndex === 1) {
-      setMode("Mode2");
-    } else if (activeIndex === 2) {
-      setMode("Mode3");
-    }
-  }, [activeIndex, Mode]); 
+    // if (activeIndex === 0) {
+    //   setMode("Mode1");
+    // } else if (activeIndex === 1) {
+    //   setMode("Mode2");
+    // } else if (activeIndex === 2) {
+    //   setMode("Mode3");
+    // }
+  }, [activeIndex, Mode]);
+  
 
   const handleSlideChange = (index) => {
     // Update activeIndex when slide changes
@@ -147,7 +149,7 @@ const Main = () => {
           />
         </div>
         <div
-          className={`box1 landing_box ${
+          className={`box1 landing_box cursor-default ${
             Mode === "Mode1" ? "active" : ""
           } bottom-28 left-32 transition-transform duration-500 ease-in-out hover:scale-105 fade-in`}
           onMouseEnter={() => handleMouseEnter("Mode1")}
@@ -156,7 +158,7 @@ const Main = () => {
           <img src={box1} alt="landing_box" loading="lazy" />
         </div>
         <div
-          className={`box2 landing_box ${
+          className={`box2 landing_box cursor-default ${
             Mode === "Mode2" ? "active" : ""
           } bottom-24 left-96 transition-transform duration-500 ease-in-out hover:scale-105 fade-in`}
           onMouseEnter={() => handleMouseEnter("Mode2")}
@@ -165,7 +167,7 @@ const Main = () => {
           <img src={box2} alt="landing_box" loading="lazy" />
         </div>
         <div
-          className={`box3 landing_box ${
+          className={`box3 landing_box cursor-default ${
             Mode === "Mode3" ? "active" : ""
           } bottom-10 left-[600px] transition-transform duration-500 ease-in-out hover:scale-105 fade-in`}
           onMouseEnter={() => handleMouseEnter("Mode3")}
@@ -176,46 +178,71 @@ const Main = () => {
       </div>
       {/* mobile view */}
       <div className="Main relative overflow-hidden lg:hidden block">
-        <div className="slider">
-          <Carousel
-            className="rounded-xl custom-carousel"
-            autoplay
-            autoplayDelay={4000}
-            loop
-            tabIndex={activeIndex}
-            onChange={(index) => {
-              setActiveIndex(index); // Update activeIndex when slide changes
+        <div className="slider  px-5 relative">
+          <p
+            onClick={() => {
+              if (Mode == "Mode1") {
+                setMode("Mode2");
+              }
+              if (Mode == "Mode2") {
+                setMode("Mode3");
+              }
+              if (Mode == "Mode3") {
+                setMode("Mode1");
+              }
             }}
-            navigation={({ setActiveIndex, activeIndex, length }) => (
-              <div className="absolute bottom-0 left-2/4 z-50 flex -translate-x-2/4 gap-2">
-                {new Array(length).fill("").map((_, i) => (
-                  <span
-                    key={i}
-                    className={`block h-3 w-3 cursor-pointer rounded-2xl transition-all content-[''] ${
-                      activeIndex === i ? "bg-purple" : "bg-gray-200"
-                    }`}
-                    onClick={() => setActiveIndex(i)}
-                  />
-                ))}
-              </div>
-            )}
+            className=" absolute top-[50%] right-0 bg-[#eee] cursor-pointer px-3 py-3 rounded-full"
           >
-            <img
-              src={landing6}
-              alt="image 1"
-              className="h-full w-full object-cover shadow-md rounded-2xl p-2 transition-transform duration-500 ease-in-out hover:scale-105 fade-in"
-            />
-            <img
-              src={landing2}
-              alt="image 2"
-              className="h-full w-full object-cover shadow-md rounded-2xl p-2 transition-transform duration-500 ease-in-out hover:scale-105 fade-in"
-            />
-            <img
-              src={landing3}
-              alt="image 3"
-              className="h-full w-full object-cover shadow-md rounded-2xl p-2 transition-transform duration-500 ease-in-out hover:scale-105 fade-in"
-            />
-          </Carousel>
+            <FaArrowRight />
+          </p>
+          <p
+            onClick={() => {
+              if (Mode == "Mode1") {
+                setMode("Mode3");
+              }
+              if (Mode == "Mode2") {
+                setMode("Mode1");
+              }
+              if (Mode == "Mode3") {
+                setMode("Mode2");
+              }
+            }}
+            className=" absolute top-[50%] left-0 bg-[#eee] cursor-pointer px-3 py-3 rounded-full"
+          >
+            <FaArrowLeft />
+          </p>
+          {Mode == "Mode1" && (
+            <img className="h-[300px] w-full" src={landing6} />
+          )}
+          {Mode == "Mode2" && (
+            <img className="h-[300px] w-full" src={landing2} />
+          )}
+          {Mode == "Mode3" && (
+            <img className="h-[300px] w-full" src={landing3} />
+          )}
+
+          <div className="flex justify-center gap-x-3 my-2">
+            <span
+              className={` py-1 px-1 rounded-full cursor-pointer 
+               ${Mode === "Mode1" ? "bg-black" : "bg-[#848383]"}
+              `}
+              onClick={() => setMode("Mode1")}
+            ></span>
+            <span
+              className={` py-1 px-1 rounded-full cursor-pointer ${
+                Mode == "Mode2" ? "bg-black" : "bg-[#848383]"
+              }`}
+              onClick={() => setMode("Mode2")}
+            ></span>
+            <span
+              className={` py-1 px-1 rounded-full cursor-pointer ${
+                Mode == "Mode3" ? "bg-black" : "bg-[#848383]"
+              }`}
+              onClick={() => setMode("Mode3")}
+            ></span>
+          </div>
+          {/* <img src={landing2} />
+         <img src={landing3} /> */}
         </div>
 
         <div className="flex items-center ltr:justify-start rtl:justify-end mt-10">

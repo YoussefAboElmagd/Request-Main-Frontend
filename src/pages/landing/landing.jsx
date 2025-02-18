@@ -1,4 +1,5 @@
 import LandingHeader from "../../Components/landingHeader/landingHeader";
+import ModifHeader from "../../Components/landingHeader/ModifiedHeader";
 import ContactUsLanding from "./ContactUsLanding";
 import Main from "./Main";
 import PlansDetailsLanding from "./PlansDetailsLanding";
