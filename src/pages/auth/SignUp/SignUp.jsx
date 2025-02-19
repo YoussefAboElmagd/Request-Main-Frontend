@@ -267,7 +267,7 @@ const SignUp = () => {
                   {!phone && (
                     <p
                       className={`text-rose-600 absolute text-lg  ${
-                        i18n.language == "en" ? "left-[-1%]" : "right-[-3%]"
+                        i18n.language == "en" ? "left-[-3%]" : "right-[-3%]"
                       }`}
                     >
                       *
