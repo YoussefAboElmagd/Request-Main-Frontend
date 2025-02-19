@@ -28,14 +28,15 @@ import { MdLockOutline } from "react-icons/md";
 import { handleSignUp } from "../../../redux/services/authServices";
 import { toast } from "react-toastify";
 import LandingHeader from "../../../Components/landingHeader/landingHeader";
+import { useTranslation } from "react-i18next";
 const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { roleId } = location.state || {};
-  ("role id from state =>", roleId);
+  "role id from state =>", roleId;
 
   const { isLoading, error } = useSelector((state) => state.auth);
-
+  const { i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -46,7 +47,7 @@ const SignUp = () => {
     value: "SA",
     label: "Saudi Arabia",
   });
-    const lang = i18next.language;
+  const lang = i18next.language;
   const navigate = useNavigate();
 
   const handleConfirmPasswordChange = (e) => {
@@ -98,12 +99,12 @@ const SignUp = () => {
       phone: trimmedPhone,
       role: roleId,
     };
-    ("userData :::: =>  ", userData);
+    "userData :::: =>  ", userData;
     try {
       const result = await dispatch(handleSignUp(userData)).unwrap();
-      ("result -----> ", result);
-      (result.results);
-      (result.token);
+      "result -----> ", result;
+      result.results;
+      result.token;
 
       const userData_signUp = result.results;
       const token_signUp = result.token;
@@ -201,7 +202,9 @@ const SignUp = () => {
               </h3>
               <p className="font-jost font-medium hidden md:block md:text-xl lg:text-2xl">
                 {t("if you don't have an account you can")}
-                <Link className="text-blue block" to={"/LogIn/Mail"}>{t("sign in here!")}</Link>
+                <Link className="text-blue block" to={"/LogIn/Mail"}>
+                  {t("sign in here!")}
+                </Link>
               </p>
             </div>
             <div className="LogIn_Image md:flex justify-center hidden -z-10">
@@ -215,12 +218,20 @@ const SignUp = () => {
             </div>
             <div className="form flex flex-col mt-14">
               <form onSubmit={handleSubmit}>
-                <div className="name">
+                <div className="name relative w-4/5 mx-auto md:w-full  ">
+                  {!name && (
+                    <p
+                      className={`text-rose-600 absolute text-lg  ${
+                        i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
+                      }`}
+                    >
+                      *
+                    </p>
+                  )}
                   <Input
                     placeholder={t("yourName")}
                     type="text"
                     id="name"
-                    
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     autoFocus
@@ -230,7 +241,16 @@ const SignUp = () => {
                     required
                   />
                 </div>
-                <div className="email">
+                <div className="email w-4/5 mx-auto md:w-full">
+                  {!email && (
+                    <p
+                      className={`text-rose-600 absolute text-lg  ${
+                        i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
+                      }`}
+                    >
+                      *
+                    </p>
+                  )}
                   <Input
                     placeholder="name@email.com"
                     type="email"
@@ -243,15 +263,24 @@ const SignUp = () => {
                     label={t("enter email")}
                   />
                 </div>
-                <div className="phone relative">
+                <div className="phone relative w-4/5 mx-auto md:w-full">
+                  {!phone && (
+                    <p
+                      className={`text-rose-600 absolute text-lg  ${
+                        i18n.language == "en" ? "left-[-1%]" : "right-[-3%]"
+                      }`}
+                    >
+                      *
+                    </p>
+                  )}
                   <label className="Input_label flex items-center gap-2 font-jost text-base font-medium">
                     <span className="label_icon w-4 h-4">
                       <FiPhone />
                     </span>
                     {t("PhoneNumber")}
                   </label>
-                  <div className="input flex items-center my-2">
-                    <PhoneInput
+                  <div className=" flex flex-row-reverse items-center my-2">
+                    {/* <PhoneInput
                       international
                       defaultCountry={country.value}
                       country={country.value}
@@ -260,18 +289,42 @@ const SignUp = () => {
                       maxlength={11}
                       placeholder={"+96244679900"}
                       className="Input text-black font-jost font-normal text-base py-2 !relative px-4 w-full"
+                      
+                    /> */}
+                    <input
+                      dir={i18n.language == "en" ? "ltr" : "rtl"}
+                      type="tel"
+                      country={country.value}
+                      placeholder={t("Phone number")}
+                      value={phone}
+                     
+                      onChange={(e) => setPhone(e.target.value)}
+                      className={` py-[6px] bg-[#EAF0F7] w-full focus:outline-none  px-2 ${
+                        i18n.language == "en"
+                          ? "rounded-l-none rounded-lg"
+                          : "rounded-r-none rounded-lg"
+                      }  `}
                     />
                     <Select
                       options={countryOptions}
                       value={country}
                       onChange={(option) => setCountry(option)}
                       className=""
-                      styles={customStyles}
+                     
                       classNamePrefix="select"
                     />
                   </div>
                 </div>
-                <div className="password">
+                <div className="password w-4/5 mx-auto md:w-full relative">
+                  {!password && (
+                    <p
+                      className={`text-rose-600 absolute text-lg  ${
+                        i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
+                      }`}
+                    >
+                      *
+                    </p>
+                  )}
                   <Input
                     type="password"
                     placeholder={"••••••••"}
@@ -296,14 +349,19 @@ const SignUp = () => {
                     ]}
                   />
                 </div>
-                <div className="confirmPassword">
-                  <label
-                    htmlFor="confirmPassword"
-                    className="font-inter confirmPassword_label font-normal text-xs absolute z-10 mx-2 bg-white p-1 rounded-3xl text-purple-dark"
-                  >
-                    {t("confirm password")}
-                  </label>
+                <div className="confirmPassword w-4/5 mx-auto md:w-full relative">
+                  {!confirmPassword && (
+                    <p
+                      className={`text-rose-600 absolute text-lg  ${
+                        i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
+                      }`}
+                    >
+                      *
+                    </p>
+                  )}
+
                   <Input
+                    label={t("confirm password")}
                     placeholder={"••••••••"}
                     type="password"
                     id="confirmPassword"
@@ -336,7 +394,7 @@ const SignUp = () => {
 
                 <Button
                   type="submit"
-                  className="mt-5 w-full  flex justify-center  items-center"
+                  className="mt-5   flex justify-center  items-center w-4/5 mx-auto md:w-full"
                 >
                   {t("Register")}
                 </Button>

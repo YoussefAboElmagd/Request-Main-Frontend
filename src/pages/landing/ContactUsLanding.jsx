@@ -171,7 +171,16 @@ const ContactUsLanding = () => {
           onSubmit={handleSubmit}
           className="form bg-white rounded-3xl  p-4  "
         >
-          <div className="Name my-2">
+          <div className="Name my-2 relative">
+            {!Name && (
+              <p
+                className={`text-rose-600 absolute text-lg  ${
+                  i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
+                }`}
+              >
+                *
+              </p>
+            )}
             <UiInput
               type="text"
               onFocus={() => setNameError(false)}
@@ -187,7 +196,16 @@ const ContactUsLanding = () => {
               }`}
             />
           </div>
-          <div className="Email my-2">
+          <div className="Email my-2 relative">
+            {!Email && (
+              <p
+                className={`text-rose-600 absolute text-lg  ${
+                  i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
+                }`}
+              >
+                *
+              </p>
+            )}
             <UiInput
               onFocus={() => setEmailError(false)}
               type="text"
@@ -262,13 +280,25 @@ const ContactUsLanding = () => {
                   className: "min-w-0",
                 }}
               /> */}
+              {!Phone && (
+                <p
+                  className={`text-rose-600 absolute text-lg  ${
+                    i18n.language == "en"
+                      ? "left-[-2%] bottom-9 "
+                      : "right-[-2%] bottom-9"
+                  }`}
+                >
+                  *
+                </p>
+              )}
               <input
+                dir={i18n.language == "en" ? "ltr" : "rtl"}
                 type="tel"
                 placeholder={t("Phone number")}
                 value={Phone}
                 onFocus={() => setPhoneError(false)}
                 onChange={handlePhoneChange}
-                className={`w-full focus:outline-none border-[1px] border-black  px-2 ${
+                className={` rtl w-full focus:outline-none border-[1px] border-black  px-2 ${
                   i18n.language == "en"
                     ? "rounded-l-none rounded-lg"
                     : "rounded-r-none rounded-lg"
@@ -276,7 +306,19 @@ const ContactUsLanding = () => {
               />
             </div>
           </div>
-          <div className="message">
+          <div className="message relative">
+            {!Message && (
+              <p
+                className={`text-rose-600 absolute text-lg  ${
+                  i18n.language == "en"
+                    ? "left-[-2%] top-2"
+                    : "right-[-2%] top-2"
+                }}`}
+              >
+                *
+              </p>
+            )}
+
             <label
               htmlFor="message"
               className="flex items-center gap-2 font-jost text-base font-medium "
@@ -286,7 +328,7 @@ const ContactUsLanding = () => {
             <textarea
               name="message"
               id="message"
-              placeholder={t("Type something")}
+              placeholder={t("How can we assist you?")}
               rows={6}
               onFocus={() => setMessageError(false)}
               value={Message}
