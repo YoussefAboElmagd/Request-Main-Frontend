@@ -158,10 +158,10 @@ const SeePlans = () => {
             className={classNames(
               "rounded-3xl col-span-6 md:col-span-3 lg:col-span-2  p-8 ring-1 ring-gray-900/10 sm:p-10 bg-white/60 border-t-4 ",
               tierIdx === 0
-                ? "border-yellow h-[550px] mt-10"
+                ? "border-yellow  mt-10"
                 : tierIdx === 1
-                ? "border-green h-[580px] mt-5"
-                : "border-purple-dark h-[550px] mt-10"
+                ? "border-green  mt-10"
+                : "border-purple-dark  mt-10"
             )}
           >
             <h3
@@ -231,7 +231,7 @@ const SeePlans = () => {
       </div>
       <Link
         to={"/PlansInfo"}
-        className="text-gold underline underline-offset-1"
+        className="text-gold underline underline-offset-1 relative my-4 z-50"
       >
         {t("More Details")}
       </Link>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./Input.scss";
 
 const UiInput = ({
+  onFocus,
   type,
   onChange,
   className = "",
@@ -30,6 +31,7 @@ const UiInput = ({
         </label>
       )}
       <input
+        onFocus={onFocus}
         type={type}
         onChange={onChange}
         autoComplete={autoComplete}

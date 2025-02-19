@@ -27,8 +27,13 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { useCountries } from "use-react-countries";
+import { useTranslation } from "react-i18next";
 
 const ContactUsLanding = () => {
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+  const [messageError, setMessageError] = useState(false);
   const [Name, setName] = useState("");
   const [Email, setEmail] = useState("");
   const [Message, setMessage] = useState("");
@@ -45,6 +50,8 @@ const ContactUsLanding = () => {
     Message: false,
   });
 
+  const { i18n } = useTranslation();
+  console.log(i18n.language);
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     // Remove non-digit characters
@@ -90,6 +97,23 @@ const ContactUsLanding = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!localStorage.getItem("token")) {
+      toast.error("please login first");
+      return;
+    }
+
+    if (!Name) {
+      setNameError(true);
+    }
+    if (!Phone) {
+      setPhoneError(true);
+    }
+    if (!Email) {
+      setEmailError(true);
+    }
+    if (!Message) {
+      setMessageError(true);
+    }
     // Trim the message input
     // Trim inputs
     const trimmedName = Name.trim();
@@ -117,15 +141,17 @@ const ContactUsLanding = () => {
         phone: Phone,
         message: trimmedMessage,
       };
-      (formattedData);
-      
+      formattedData;
+
       const res = await sendEmailGetInTouch(formattedData);
-      (res);
-    toast.success(t("toast.MsgSentSuccess"));
+      res;
+
+      toast.success(t("toast.MsgSentSuccess"));
+
       clearFields();
       setLoading(false);
     } catch (err) {
-      (err);
+      err;
       setError(err.message);
 
       setLoading(false);
@@ -148,6 +174,7 @@ const ContactUsLanding = () => {
           <div className="Name my-2">
             <UiInput
               type="text"
+              onFocus={() => setNameError(false)}
               id="name"
               label={t("yourName")}
               value={Name}
@@ -155,18 +182,23 @@ const ContactUsLanding = () => {
               placeholder={t("yourName")}
               className={`border border-solid ${
                 fieldErrors.Name ? "border-red" : "border-purple"
-              } focus:border focus:border-solid focus:border-purple`}
+              } focus:border focus:border-solid focus:border-purple ${
+                nameError ? "border-[1px] border-rose-500" : ""
+              }`}
             />
           </div>
           <div className="Email my-2">
             <UiInput
+              onFocus={() => setEmailError(false)}
               type="text"
               id="Email"
               label={t("Email")}
               value={Email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("Email")}
-              className="border border-solid  border-purple focus:border focus:border-solid  focus:border-purple"
+              className={`border border-solid  border-purple focus:border focus:border-solid  focus:border-purple ${
+                emailError ? "border-[1px] border-rose-500" : ""
+              }`}
             />
           </div>
           <div className="phone">
@@ -216,18 +248,31 @@ const ContactUsLanding = () => {
                   )}
                 </MenuList>
               </Menu>
-              <MaterialInput
+              {/* border-2 border-gray-500 border-t-4 border-t-black focus:border-[1px] focus:border-t-black */}
+              {/* <MaterialInput
                 type="tel"
                 value={Phone}
                 onChange={handlePhoneChange}
                 placeholder={t("Phone number")}
-                className="ltr:rounded-l-none rtl:rounded-r-none border border-solid !border-gray focus:!border-gray"
+                className="   "
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
                 containerProps={{
                   className: "min-w-0",
                 }}
+              /> */}
+              <input
+                type="tel"
+                placeholder={t("Phone number")}
+                value={Phone}
+                onFocus={() => setPhoneError(false)}
+                onChange={handlePhoneChange}
+                className={`w-full focus:outline-none border-[1px] border-black  px-2 ${
+                  i18n.language == "en"
+                    ? "rounded-l-none rounded-lg"
+                    : "rounded-r-none rounded-lg"
+                }  ${phoneError ? "border-[1px] border-rose-500" : ""} `}
               />
             </div>
           </div>
@@ -243,10 +288,12 @@ const ContactUsLanding = () => {
               id="message"
               placeholder={t("Type something")}
               rows={6}
-              required={true}
+              onFocus={() => setMessageError(false)}
               value={Message}
               onChange={(e) => setMessage(e.target.value)}
-              className={`   bg-white  w-full   rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid`}
+              className={` ${
+                messageError ? "border-[1px] border-rose-500" : ""
+              }  bg-white  w-full   rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid`}
             />
           </div>
 

@@ -1,11 +1,12 @@
+import { toast } from "react-toastify";
 import axiosInstance from "./axiosInstance";
 
 // Sign up
 export const signUp = async (userData) => {
   try {
     const response = await axiosInstance.post(`auth/signup`, userData);
-    ("Response => ", response);
-    ("Response => ", response.data);
+    "Response => ", response;
+    "Response => ", response.data;
 
     return response.data;
   } catch (error) {
@@ -18,7 +19,7 @@ export const signUp = async (userData) => {
 export const signIn = async (userData) => {
   try {
     const response = await axiosInstance.post(`auth/signin`, userData);
-    ("Response => ", response);
+    "Response => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -34,7 +35,7 @@ export const signIn = async (userData) => {
 export const resendVerificationCode = async (email) => {
   try {
     const response = await axiosInstance.post("auth/resend", { email });
-    ("Response => ", response);
+    "Response => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -50,7 +51,7 @@ export const resendVerificationCode = async (email) => {
 export const forgetPassword = async (email) => {
   try {
     const response = await axiosInstance.post("auth/forget/", { email });
-    ("Response => ", response);
+    "Response => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -71,7 +72,7 @@ export const updateUser = async (userId, userData, token) => {
       },
     });
 
-    ("Response from update => ", response);
+    "Response from update => ", response;
     return response.data;
   } catch (error) {
     console.error("Update user error: ", error.response?.data || error.message);
@@ -90,7 +91,7 @@ export const uploadCompanyFiles = async (userId, updatedData) => {
       }
     );
 
-    ("Response from update => ", response);
+    "Response from update => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -119,7 +120,7 @@ export const uploadAvatar = async (userId, profilePic, token) => {
       }
     );
 
-    ("Response from avatar upload => ", response);
+    "Response from avatar upload => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -140,7 +141,7 @@ export const getAllRoles = async (token) => {
       },
     });
 
-    ("Response from roles => ", response);
+    "Response from roles => ", response;
     return response.data;
   } catch (error) {
     console.error("Get roles error: ", error.response?.data || error.message);
@@ -158,7 +159,7 @@ export const getAllProjectsForUser = async (userId, token) => {
       },
     });
 
-    ("Response from projects => ", response);
+    "Response from projects => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -181,7 +182,7 @@ export const getProjectHistory = async (Status, userId, token) => {
       }
     );
 
-    ("Response from project history => ", response);
+    "Response from project history => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -205,7 +206,7 @@ export const getAnalysis = async (UserId, token) => {
       }
     );
 
-    ("Response from analysis => ", response);
+    "Response from analysis => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -222,7 +223,7 @@ export const getProjectDetails = async (projectId) => {
   try {
     const response = await axiosInstance.get(`project/${projectId}`);
 
-    ("Response from project details => ", response);
+    "Response from project details => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -247,7 +248,7 @@ export const updateProject = async (projectId, updatedData) => {
       }
     );
 
-    ("Response from update project => ", response);
+    "Response from update project => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -261,7 +262,7 @@ export const updateProject = async (projectId, updatedData) => {
 // add Project
 
 export const addProject = async (token, projectData) => {
-  (projectData);
+  projectData;
   try {
     const response = await axiosInstance.post(`project`, projectData, {
       headers: {
@@ -270,7 +271,7 @@ export const addProject = async (token, projectData) => {
       },
     });
 
-    ("Response from add project => ", response);
+    "Response from add project => ", response;
     return response.data;
   } catch (error) {
     console.error("Add project error: ", error.response?.data || error.message);
@@ -289,7 +290,7 @@ export const getAllTasksPerProject = async (projectId, Status) => {
       `task/project/${projectId}?status=${Status}`
     );
 
-    ("Response from tasks => ", response);
+    "Response from tasks => ", response;
     return response.data;
   } catch (error) {
     console.error("Get tasks error: ", error.response?.data || error.message);
@@ -303,7 +304,7 @@ export const getTaskDetails = async (taskId) => {
   try {
     const response = await axiosInstance.get(`task/${taskId}`);
 
-    ("Response from task details => ", response);
+    "Response from task details => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -324,7 +325,7 @@ export const getAllOwners = async (token) => {
       },
     });
 
-    ("Response from owners => ", response);
+    "Response from owners => ", response;
     return response.data;
   } catch (error) {
     console.error("Get owners error: ", error.response?.data || error.message);
@@ -342,7 +343,7 @@ export const getAllConsultants = async (token) => {
       },
     });
 
-    ("Response from consultants => ", response);
+    "Response from consultants => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -363,7 +364,7 @@ export const getAllContractors = async (token) => {
       },
     });
 
-    ("Response from contractors => ", response);
+    "Response from contractors => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -383,7 +384,7 @@ export const addTask = async (taskData, lang) => {
       },
     });
 
-    ("Response from add task => ", response);
+    "Response from add task => ", response;
     return response.data;
   } catch (error) {
     console.error("Add task error: ", error.response?.data || error.message);
@@ -397,7 +398,7 @@ export const getAllTagsByUser = async (userId) => {
   try {
     const response = await axiosInstance.get(`tags/user/${userId}`);
 
-    ("Response from tags => ", response);
+    "Response from tags => ", response;
     return response.data;
   } catch (error) {
     console.error("Get tags error: ", error.response?.data || error.message);
@@ -408,13 +409,13 @@ export const getAllTagsByUser = async (userId) => {
 //  Add  Tag
 export const addTag = async (tag, userId, lang) => {
   try {
-    (`tags/${userId}`, "tag", tag);
+    `tags/${userId}`, "tag", tag;
     const response = await axiosInstance.post(
       `tags/${userId}?lang=${lang}`,
       tag
     );
 
-    ("Response from add tag => ", response);
+    "Response from add tag => ", response;
     return response.data;
   } catch (error) {
     console.error("Add tag error: ", error.response?.data || error.message);
@@ -431,7 +432,7 @@ export const sendEmailContactUs = async (contactData, userId) => {
       contactData
     );
 
-    ("Response from send email contact us => ", response);
+    "Response from send email contact us => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -443,10 +444,22 @@ export const sendEmailContactUs = async (contactData, userId) => {
 };
 
 export const sendEmailGetInTouch = async (contactData) => {
+  if (!localStorage.getItem("token")) {
+    toast.error("please login first");
+    return
+  }
   try {
-    const response = await axiosInstance.post(`users/getInTouch/`, contactData);
+    const response = await axiosInstance.post(
+      `users/getInTouch/`,
+      contactData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
 
-    ("Response from send email contact us => ", response);
+    "Response from send email contact us => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -461,7 +474,7 @@ export const sendEmailGetInTouch = async (contactData) => {
 export const getAllDocs = async (userId) => {
   try {
     const response = await axiosInstance.get(`project/user/files/${userId}`);
-    ("Response from docs => ", response);
+    "Response from docs => ", response;
     return response.data;
   } catch (error) {
     console.error("Get docs error: ", error.response?.data || error.message);
@@ -477,7 +490,7 @@ export const getFilesPerTag = async (tagId, projectId) => {
       `project/files/${tagId}/${projectId}`
     );
 
-    ("Response from files per tag => ", response);
+    "Response from files per tag => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -494,7 +507,7 @@ export const downloadAllFiles = async (tagId) => {
   try {
     const response = await axiosInstance.get(`project/download/${tagId}`);
 
-    ("Response from download all files => ", response);
+    "Response from download all files => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -511,7 +524,7 @@ export const getAllDiscipline = async () => {
   try {
     const response = await axiosInstance.get(`discipline`);
 
-    ("Response from discipline => ", response);
+    "Response from discipline => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -528,7 +541,7 @@ export const getAllActionCodes = async () => {
   try {
     const response = await axiosInstance.get(`action`);
 
-    ("Response from action codes => ", response);
+    "Response from action codes => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -545,7 +558,7 @@ export const getAllReasons = async () => {
   try {
     const response = await axiosInstance.get(`reason`);
 
-    ("Response from reasons => ", response);
+    "Response from reasons => ", response;
     return response.data;
   } catch (error) {
     console.error("Get reasons error: ", error.response?.data || error.message);
@@ -564,7 +577,7 @@ export const sendRequest = async (token, requestData) => {
       },
     });
 
-    ("Response from send request => ", response);
+    "Response from send request => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -585,7 +598,7 @@ export const addTasksTable = async (tasksTableData) => {
       },
     });
 
-    ("Response from add task table => ", response);
+    "Response from add task table => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -602,7 +615,7 @@ export const getAllUnits = async () => {
   try {
     const response = await axiosInstance.get(`units`);
 
-    ("Response from units => ", response);
+    "Response from units => ", response;
     return response.data;
   } catch (error) {
     console.error("Get units error: ", error.response?.data || error.message);
@@ -619,7 +632,7 @@ export const getUserGroup = async (token) => {
       },
     });
 
-    ("Response from user-group => ", response);
+    "Response from user-group => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -637,7 +650,7 @@ export const getAllVocations = async (userId, lang) => {
       `vocation/user/${userId}?lang=${lang}`
     );
 
-    ("Response from vocations => ", response);
+    "Response from vocations => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -663,7 +676,7 @@ export const updateTeam = async (token, teamId, teamData, lang) => {
       }
     );
 
-    ("Response from update team => ", response);
+    "Response from update team => ", response;
     return response.data;
   } catch (error) {
     console.error("Update team error: ", error.response?.data || error.message);
@@ -682,7 +695,7 @@ export const delegatedTeam = async (token, teamId) => {
       },
     });
 
-    ("Response from delegated team => ", response);
+    "Response from delegated team => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -704,7 +717,7 @@ export const deleteUserFromProject = async (token, project, userId) => {
       data: { project },
     });
 
-    ("Response from delete user from project => ", response);
+    "Response from delete user from project => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -721,7 +734,7 @@ export const getAllParentTasks = async (userId, projectId) => {
     const response = await axiosInstance.get(
       `task/parentTasks/${userId}/${projectId}`
     );
-    ("Response from parent tasks => ", response);
+    "Response from parent tasks => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -738,7 +751,7 @@ export const getAllSubTasksByParentTask = async (parentTaskId) => {
   try {
     const response = await axiosInstance.get(`task/sub/${parentTaskId}`);
 
-    ("Response from sub tasks by parent task => ", response);
+    "Response from sub tasks by parent task => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -755,7 +768,7 @@ export const getTeamCount = async (teamId) => {
   try {
     const response = await axiosInstance.get(`team/count/${teamId}`);
 
-    ("Response from team count => ", response);
+    "Response from team count => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -769,12 +782,12 @@ export const getTeamCount = async (teamId) => {
 // get members by project
 
 export const getMembersByProject = async (projectId) => {
-  ("projectId from Api => ", projectId);
+  "projectId from Api => ", projectId;
 
   try {
     const response = await axiosInstance.get(`project/members/${projectId}`);
 
-    ("Response from members by project => ", response);
+    "Response from members by project => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -788,7 +801,7 @@ export const getMembersByProject = async (projectId) => {
 // add member for project
 
 export const addMemberForProject = async (projectId, MemberData, token) => {
-  (projectId);
+  projectId;
 
   try {
     const response = await axiosInstance.put(
@@ -802,7 +815,7 @@ export const addMemberForProject = async (projectId, MemberData, token) => {
       }
     );
 
-    ("Response from add member for project => ", response);
+    "Response from add member for project => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -816,7 +829,7 @@ export const addMemberForProject = async (projectId, MemberData, token) => {
 //  delete member from project team
 
 export const deleteMemberFromProjectTeam = async (projectId, Member) => {
-  (Member, "-----", projectId);
+  Member, "-----", projectId;
   try {
     const response = await axiosInstance.put(
       `project/pull/${projectId}`,
@@ -828,7 +841,7 @@ export const deleteMemberFromProjectTeam = async (projectId, Member) => {
       }
     );
 
-    ("Response from delete member from project team => ", response);
+    "Response from delete member from project team => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -854,7 +867,7 @@ export const updateTask = async (token, taskId, userId, taskData) => {
       }
     );
 
-    ("Response from update task => ", response);
+    "Response from update task => ", response;
     return response.data;
   } catch (error) {
     console.error("Update task error: ", error.response?.data || error.message);
@@ -872,7 +885,7 @@ export const getNotificationCounts = async (token, userId) => {
       },
     });
 
-    ("Response from notification counts => ", response);
+    "Response from notification counts => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -893,7 +906,7 @@ export const getTaskHistory = async (token, taskId) => {
       },
     });
 
-    ("Response from task history => ", response);
+    "Response from task history => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -914,7 +927,7 @@ export const sendInvite = async (token, invitationData) => {
       },
     });
 
-    ("Response from send invite => ", response);
+    "Response from send invite => ", response;
     return response.data;
   } catch (error) {
     console.error("Send invite error: ", error.response?.data || error.message);
@@ -934,7 +947,7 @@ export const getDataForInvite = async (token, invitationId, userId) => {
       }
     );
 
-    ("Response from get data for invite => ", response);
+    "Response from get data for invite => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -948,14 +961,14 @@ export const getDataForInvite = async (token, invitationId, userId) => {
 //   approve invite
 export const approveInvite = async (inviteId, inviteData) => {
   try {
-    (inviteData, inviteId);
+    inviteData, inviteId;
 
     const response = await axiosInstance.put(
       `users/invite/${inviteId}`,
       inviteData
     );
 
-    ("Response from approve invite => ", response);
+    "Response from approve invite => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -975,7 +988,7 @@ export const cancelInvite = async (token, inviteId) => {
       },
     });
 
-    ("Response from cancel invite => ", response);
+    "Response from cancel invite => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -995,7 +1008,7 @@ export const getModelsByProject = async (token, projectId) => {
       },
     });
 
-    ("Response from get models => ", response);
+    "Response from get models => ", response;
     return response.data;
   } catch (error) {
     console.error("Get models error: ", error.response?.data || error.message);
@@ -1012,7 +1025,7 @@ export const getModelById = async (token, ReqId) => {
       },
     });
 
-    ("Response from get model by id => ", response);
+    "Response from get model by id => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -1033,7 +1046,7 @@ export const updateModel = async (token, ReqId, modelData) => {
         "Content-Type": "application/json",
       },
     });
-    ("Response from update model => ", response);
+    "Response from update model => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -1047,14 +1060,14 @@ export const updateModel = async (token, ReqId, modelData) => {
 // get all members by project
 
 export const getAllMembersByProject = async (projectId, lang) => {
-  ("projectId from Api => ", projectId);
+  "projectId from Api => ", projectId;
 
   try {
     const response = await axiosInstance.get(
       `project/members/${projectId}?lang=${lang}`
     );
 
-    ("Response from members by project => ", response);
+    "Response from members by project => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -1079,9 +1092,9 @@ export const addVocation = async (token, vocationData, lang) => {
         },
       }
     );
-    (`vocation?lang=${lang}`);
+    `vocation?lang=${lang}`;
 
-    ("Response from add vocation => ", response);
+    "Response from add vocation => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -1100,7 +1113,7 @@ export const getAllTagsByProject = async (projectId, lang) => {
       `tags/project/${projectId}?lang=${lang}`
     );
 
-    ("Response from tags by project => ", response);
+    "Response from tags by project => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -1119,7 +1132,7 @@ export const getProjectTagProgress = async (projectId, lang) => {
       `project/tags/progress/${projectId}?lang=${lang}`
     );
 
-    ("Response from get project tag progress => ", response);
+    "Response from get project tag progress => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -1138,7 +1151,7 @@ export const getAllNotifications = async (token, userId, days) => {
       `notification/${userId}?days=${days}`
     );
 
-    ("Response from get all notifications => ", response);
+    "Response from get all notifications => ", response;
     return response.data;
   } catch (error) {
     console.error(
@@ -1163,7 +1176,7 @@ export const updateNotification = async (token, NotifiId, NotifiData) => {
         },
       }
     );
-    ("Response from update notification =>", response.data);
+    "Response from update notification =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1186,7 +1199,7 @@ export const MakeAllRead = async (token, userId, NotifiData) => {
         },
       }
     );
-    ("Response from update notifications =>", response.data);
+    "Response from update notifications =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1204,7 +1217,7 @@ export const getAllGroupsAndMembers = async (token, projectId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    ("Response from get all groups and members =>", response.data);
+    "Response from get all groups and members =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1223,7 +1236,7 @@ export const createChatGroup = async (token, chatGroupData) => {
         "Content-Type": "application/json",
       },
     });
-    ("Response from create chat group =>", response.data);
+    "Response from create chat group =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1249,10 +1262,7 @@ export const getMessagesBetweenUsers = async (
         },
       }
     );
-    (
-      "Response from get messages between two users =>",
-      response.data
-    );
+    "Response from get messages between two users =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1271,7 +1281,7 @@ export const getAllProjectsByUser = async (token, userId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    ("Response from get all projects by user =>", response.data);
+    "Response from get all projects by user =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1290,7 +1300,7 @@ export const sendMessage = async (msgData) => {
         "Content-Type": "application/json",
       },
     });
-    ("Response from send msg =>", response.data);
+    "Response from send msg =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1308,7 +1318,7 @@ export const sendDocsAndVoiceNote = async (msgData) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    ("✅ Response from send docs & VoiceNote:", response.data);
+    "✅ Response from send docs & VoiceNote:", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1330,7 +1340,7 @@ export const getGroupData = async (token, projectId, groupId) => {
         },
       }
     );
-    ("Response from get group data =>", response.data);
+    "Response from get group data =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1349,7 +1359,7 @@ export const getGroupDataById = async (token, groupId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    ("Response from get group data by id =>", response.data);
+    "Response from get group data by id =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1371,7 +1381,7 @@ export const getUsersToAddMember = async (token, projectId, groupId) => {
         },
       }
     );
-    ("Response from get users to add new member =>", response.data);
+    "Response from get users to add new member =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
@@ -1391,7 +1401,7 @@ export const updateGroupData = async (token, groupId, data) => {
         "Content-Type": "application/json",
       },
     });
-    ("Response from update group =>", response.data);
+    "Response from update group =>", response.data;
     return response.data;
   } catch (error) {
     const errorMessage =
