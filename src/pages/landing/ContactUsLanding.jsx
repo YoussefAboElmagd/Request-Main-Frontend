@@ -97,10 +97,10 @@ const ContactUsLanding = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!localStorage.getItem("token")) {
-      toast.error("please login first");
-      return;
-    }
+    // if (!localStorage.getItem("token")) {
+    //   toast.error("please login first");
+    //   return;
+    // }
 
     if (!Name) {
       setNameError(true);
@@ -358,19 +358,19 @@ const ContactUsLanding = () => {
             <span>
               <CiLocationOn className="text-purple w-5 h-5" />
             </span>
-            545 Mavis Island, IL 99191
+            Saudi Arabia
           </p>
           <p className="flex items-center gap-2 text-base font-medium">
             <span>
               <FiPhone className="text-purple w-5 h-5" />
             </span>
-            +2034 4040 3030
+            966569949865
           </p>
           <p className="flex items-center gap-2 text-base font-medium">
             <span>
               <CiMail className="text-purple w-5 h-5" />
             </span>
-            hello@gmail.com
+            info@request-sa.com
           </p>
         </div>
       </div>

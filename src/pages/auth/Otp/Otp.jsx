@@ -40,12 +40,9 @@ const Otp = () => {
     email_signUp,
   } = location.state || {};
 
-
   useEffect(() => {
-   
-    ("Otp : ", userData_login?.verificationCode);
+    "Otp : ", userData_login?.verificationCode;
   }, [userData_login?.verificationCode]);
-  
 
   const dispatch = useDispatch();
 
@@ -66,19 +63,15 @@ const Otp = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    console.log("hi")
-    console.log(forget_email)
-    if(!forget_email) navigate("/forgotPassword")
+    console.log("hi");
+    console.log(forget_email);
+    if (!forget_email) navigate("/forgotPassword");
 
     try {
       switch (true) {
         case !!forget_email:
           if (otp === forget.verificationCode) {
-            (
-              "otp ===  forget.verificationCode",
-              otp,
-              forget.verificationCode
-            );
+            "otp ===  forget.verificationCode", otp, forget.verificationCode;
             navigate("/forgotPassword", { state: { forget_id: forget.id } });
           } else {
             setError(t("OTP is incorrect"));
@@ -96,14 +89,12 @@ const Otp = () => {
           break;
 
         case !!userData_login:
-          ("userData_login", userData_login);
+          "userData_login", userData_login;
 
           if (otp === userData_login.verificationCode) {
-            (
-              "otp === userData_login.verificationCode",
+            "otp === userData_login.verificationCode",
               otp,
-              userData_login.verificationCode
-            );
+              userData_login.verificationCode;
             localStorage.setItem("user", JSON.stringify(userData_login));
             localStorage.setItem("token", token);
             navigate("/");
@@ -114,9 +105,9 @@ const Otp = () => {
 
         case !!userData_signUp:
           if (otp === userData_signUp.verificationCode) {
-            (otp);
-            (userData_signUp);
-            (userData_signUp.verificationCode);
+            otp;
+            userData_signUp;
+            userData_signUp.verificationCode;
             localStorage.setItem("user", JSON.stringify(userData_signUp));
             localStorage.setItem("token", token_signUp);
             navigate("/SignUp/createCompany");
@@ -142,7 +133,7 @@ const Otp = () => {
     setCanResend(false);
     setTimeLeft(60);
     setError("");
-    if(!forget_email) navigate("/forgotPassword")
+    if (!forget_email) navigate("/forgotPassword");
 
     try {
       let result;
@@ -150,29 +141,25 @@ const Otp = () => {
       // Handle resend OTP for different scenarios
       if (forget_email) {
         result = await forgetPassword(forget_email);
-        (result);
-        (result.verificationCode);
+        result;
+        result.verificationCode;
 
         forget.verificationCode = result.verificationCode;
       } else if (email_logIn) {
         result = await resendVerificationCode(email_logIn);
         userData_login.verificationCode = result.verificationCode;
-        (
-          "Updated verification code after login resend:",
-          userData_login.verificationCode
-        );
+        "Updated verification code after login resend:",
+          userData_login.verificationCode;
       } else if (email_signUp) {
         result = await resendVerificationCode(email_signUp);
         userData_signUp.verificationCode = result.verificationCode;
-        (
-          "Updated verification code after login resend:",
-          userData_signUp.verificationCode
-        );
+        "Updated verification code after login resend:",
+          userData_signUp.verificationCode;
       } else {
         throw new Error("Unable to resend OTP. Invalid request.");
       }
 
-      ("Resent OTP successfully", result);
+      "Resent OTP successfully", result;
     } catch (error) {
       console.error("Error resending OTP:", error);
       setError(t("Error resending OTP. Please try again."));
@@ -280,10 +267,11 @@ const Otp = () => {
                     border: "1px solid var(--purple)",
                     borderRadius: "8px",
                     padding: "0 10px",
-                    margin: "30px 10px",
+                    margin: "20px 10px",
                   }}
                 />
               </div>
+                  <p className="text-red my-3">{t("' Check spam? My message might be there '")}</p>
               <p>
                 {t("Code Sent. Resend Code in")}
                 <span className="text-red">
@@ -292,6 +280,7 @@ const Otp = () => {
                     : ""}
                 </span>
               </p>
+
 
               <button
                 disabled={!canResend}

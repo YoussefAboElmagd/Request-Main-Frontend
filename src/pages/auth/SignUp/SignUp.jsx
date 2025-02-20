@@ -50,11 +50,29 @@ const SignUp = () => {
   const lang = i18next.language;
   const navigate = useNavigate();
 
+  // if (confirmPassword != password) {
+  //   setPasswordError("Passwords do not match")
+  // }
+
+  function checkMatch(e) {
+    if (e.target.value != password) {
+      setPasswordError("Passwords do not match");
+    } else {
+      setPasswordError("");
+    }
+  }
+  function checkMatch1(e) {
+    if (e.target.value != confirmPassword) {
+      setPasswordError("Passwords do not match");
+    } else {
+      setPasswordError("");
+    }
+  }
   const handleConfirmPasswordChange = (e) => {
     const confirmPasswordValue = e.target.value;
     setConfirmPassword(confirmPasswordValue);
 
-    if (confirmPasswordValue !== password) {
+    if (confirmPasswordValue != password) {
       setPasswordError("Passwords do not match");
     } else {
       setPasswordError("");
@@ -65,10 +83,10 @@ const SignUp = () => {
     e.preventDefault();
 
     const trimmedEmail = email.trim();
-    const trimmedPassword = password.trim();
+    const trimmedPassword = password;
     const trimmedName = name.trim();
     const trimmedPhone = phone.trim();
-    const trimmedConfirmPassword = confirmPassword.trim();
+    const trimmedConfirmPassword = confirmPassword;
 
     if (
       trimmedEmail === "" ||
@@ -92,6 +110,9 @@ const SignUp = () => {
       return;
     }
 
+    if (password != confirmPassword) {
+      return;
+    }
     const userData = {
       email: trimmedEmail,
       password: trimmedPassword,
@@ -201,7 +222,7 @@ const SignUp = () => {
                 {t("sign up To activate your business easily")}
               </h3>
               <p className="font-jost font-medium hidden md:block md:text-xl lg:text-2xl">
-                {t("if you don't have an account you can")}
+                {t("if you have an account you can")}
                 <Link className="text-blue block" to={"/LogIn/Mail"}>
                   {t("sign in here!")}
                 </Link>
@@ -241,11 +262,11 @@ const SignUp = () => {
                     required
                   />
                 </div>
-                <div className="email w-4/5 mx-auto md:w-full">
+                <div className="email w-4/5 mx-auto md:w-full relative">
                   {!email && (
                     <p
                       className={`text-rose-600 absolute text-lg  ${
-                        i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
+                        i18n.language == "en" ? "left-[-2%]" : "right-[-2%]"
                       }`}
                     >
                       *
@@ -294,10 +315,10 @@ const SignUp = () => {
                     <input
                       dir={i18n.language == "en" ? "ltr" : "rtl"}
                       type="tel"
+                      maxLength={15}
                       country={country.value}
                       placeholder={t("Phone number")}
                       value={phone}
-                     
                       onChange={(e) => setPhone(e.target.value)}
                       className={` py-[6px] bg-[#EAF0F7] w-full focus:outline-none  px-2 ${
                         i18n.language == "en"
@@ -310,7 +331,12 @@ const SignUp = () => {
                       value={country}
                       onChange={(option) => setCountry(option)}
                       className=""
-                     
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          backgroundColor: "#E8F0FE", // Set the background color to red
+                        }),
+                      }}
                       classNamePrefix="select"
                     />
                   </div>
@@ -335,7 +361,10 @@ const SignUp = () => {
                     value={password}
                     label={t("Enter password")}
                     labelIcon={<MdLockOutline />}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      checkMatch1(e);
+                    }}
                     minLength={8}
                     inputIcons={[
                       {
@@ -368,8 +397,12 @@ const SignUp = () => {
                     autoComplete="password"
                     className="confirmPassword_input border-purple-dark border focus:!border relative placeholder:font-normal placeholder:text-xl placeholder:font-inter"
                     required
+                    labelIcon={<MdLockOutline />}
                     value={confirmPassword}
-                    onChange={handleConfirmPasswordChange}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      checkMatch(e);
+                    }}
                     minLength={8}
                     inputIcons={[
                       {

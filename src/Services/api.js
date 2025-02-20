@@ -80,6 +80,8 @@ export const updateUser = async (userId, userData, token) => {
   }
 };
 export const uploadCompanyFiles = async (userId, updatedData) => {
+  console.log(updatedData);
+
   try {
     const response = await axiosInstance.put(
       `users/company/${userId}`,
@@ -444,10 +446,10 @@ export const sendEmailContactUs = async (contactData, userId) => {
 };
 
 export const sendEmailGetInTouch = async (contactData) => {
-  if (!localStorage.getItem("token")) {
-    toast.error("please login first");
-    return
-  }
+  // if (!localStorage.getItem("token")) {
+  //   toast.error("please login first");
+  //   return
+  // }
   try {
     const response = await axiosInstance.post(
       `users/getInTouch/`,

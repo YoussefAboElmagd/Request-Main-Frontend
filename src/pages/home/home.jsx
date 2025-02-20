@@ -22,8 +22,10 @@ import ListView from "../../Components/ListView/listView";
 
 const Home = () => {
   const user = useSelector((state) => state.auth.user);
+ 
   const token = useSelector((state) => state.auth.token);
-  const userId = user._id;
+  const userId = user?._id;
+ 
 
   const [data, setData] = useState({ results: [] });
   const [analysis, setAnalysis] = useState({});
@@ -69,7 +71,7 @@ const Home = () => {
  };  
   
   // Filter projects that have tasks more than 0
-  const filteredProjects = data.results?.filter(
+  const filteredProjects = data?.results?.filter(
     (project) => project.tasks && project.tasks.length > 0
   );
 
@@ -181,7 +183,7 @@ const Home = () => {
             </div>
 
 
-            {filteredProjects.length > 0 ? (
+            {filteredProjects?.length > 0 ? (
               filteredProjects.map((project) => {
                 return (
                   <div className="project" key={project._id}>

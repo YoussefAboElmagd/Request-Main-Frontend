@@ -12,7 +12,7 @@ const Role = () => {
   const [selectedRoleId, setSelectedRoleId] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  
   const { isLoading } = useSelector((state) => state.auth);
 
   // Static roles
@@ -79,7 +79,7 @@ const Role = () => {
                     selectedRoleId === role._id ? "selected" : ""
                   }`}
                   onClick={() => handleRoleSelect(role._id)}
-                  disabled={selectedRoleId && selectedRoleId !== role._id}
+                 
                 >
                   {role.label}
                 </button>

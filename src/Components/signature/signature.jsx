@@ -69,9 +69,9 @@ export function SignatureBtn({ onSignatureChange }) {
   useEffect(() => {
     if (open && signaturePadRef.current && isDrawnSignature) {
       const savedSignature = localStorage.getItem("Signature");
-      if (savedSignature) {
-        signaturePadRef.current.fromDataURL(savedSignature);
-      }
+      // if (savedSignature) {
+      //   signaturePadRef.current.fromDataURL(savedSignature);
+      // }
     }
   }, [open, isDrawnSignature]);
 
@@ -96,7 +96,8 @@ export function SignatureBtn({ onSignatureChange }) {
   };
 
   // Handle signature edit - load the saved signature back into the pad
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    e.preventDefault()
     handleOpen();
     if (signaturePadRef.current) {
       const savedSignature = localStorage.getItem("Signature");

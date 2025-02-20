@@ -28,7 +28,7 @@ const CreateCompany = () => {
   const [loading, setLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
-
+  
   // Function to handle image change and set preview for logo
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
@@ -88,8 +88,10 @@ const CreateCompany = () => {
         signature: signature,
         companyName: name,
       };
-      (updatedData);
 
+      
+      (updatedData);
+      
       const res = await uploadCompanyFiles(userId, updatedData);
       (res);
 
