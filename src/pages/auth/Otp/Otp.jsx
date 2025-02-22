@@ -40,11 +40,19 @@ const Otp = () => {
     email_signUp,
   } = location.state || {};
 
+  // const navigate = useNavigate();
+
   useEffect(() => {
     "Otp : ", userData_login?.verificationCode;
   }, [userData_login?.verificationCode]);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      return navigate("/");
+    }
+  }, []);
 
   // Countdown timer logic
   useEffect(() => {
@@ -245,6 +253,7 @@ const Otp = () => {
               </div>
               <div dir="ltr">
                 <OTPInput
+                inputType="tel"
                   value={otp}
                   onChange={setOtp}
                   numInputs={4}
@@ -271,7 +280,9 @@ const Otp = () => {
                   }}
                 />
               </div>
-                  <p className="text-red my-3">{t("' Check spam? My message might be there '")}</p>
+              <p className="text-red my-3">
+                {t("' Check spam? My message might be there '")}
+              </p>
               <p>
                 {t("Code Sent. Resend Code in")}
                 <span className="text-red">
@@ -280,7 +291,6 @@ const Otp = () => {
                     : ""}
                 </span>
               </p>
-
 
               <button
                 disabled={!canResend}

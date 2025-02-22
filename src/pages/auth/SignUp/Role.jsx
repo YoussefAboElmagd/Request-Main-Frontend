@@ -12,7 +12,7 @@ const Role = () => {
   const [selectedRoleId, setSelectedRoleId] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  
+
   const { isLoading } = useSelector((state) => state.auth);
 
   // Static roles
@@ -29,7 +29,11 @@ const Role = () => {
       label: t("consultant"),
     },
   ];
-
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      return navigate("/");
+    }
+  }, []);
   const handleRoleSelect = (roleId) => {
     if (selectedRoleId === roleId) {
       setSelectedRoleId("");
@@ -79,7 +83,6 @@ const Role = () => {
                     selectedRoleId === role._id ? "selected" : ""
                   }`}
                   onClick={() => handleRoleSelect(role._id)}
-                 
                 >
                   {role.label}
                 </button>

@@ -10,11 +10,10 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-
 const AddProject = () => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
-    const lang = i18next.language;
+  const lang = i18next.language;
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -99,7 +98,7 @@ const AddProject = () => {
       };
 
       setLoading(true);
-      ("Project data =>  ", projectData);
+      "Project data =>  ", projectData;
       const res = await addProject(token, projectData);
       toast.success(t("toast.ProjectSuccess"));
       clearFormFields();
@@ -113,9 +112,9 @@ const AddProject = () => {
       setError({
         message: err.response ? err.response.data.message : err.message,
       });
-      (err);
+      err;
       setLoading(false);
-      return null; 
+      return null;
     } finally {
       setLoading(false);
     }
@@ -150,9 +149,6 @@ const AddProject = () => {
     }
   };
 
-
-
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Enter") {
@@ -175,15 +171,15 @@ const AddProject = () => {
         </div>
       ) : (
         <>
-          <h1 className="title font-inter font-bold text-3xl text-black m-2 rtl:hidden">
+          <h1 className="title ps-1 font-inter font-bold text-3xl text-black m-2 rtl:hidden ">
             {t("AddProject")}
           </h1>
-          <div className="wrapper bg-white rounded-3xl p-3 m-2 ">
+          <div className="wrapper bg-white rounded-3xl p-3  ">
             <form action="submit">
               <Input
                 label={t("PName")}
                 placeholder={t("PName")}
-                className={`bg-white border border-purple text-black  border-solid focus:border   focus:border-purple  focus:border-solid ${
+                className={`bg-white border border-purple text-black w-full   sm:w-full border-solid focus:border   focus:border-purple  focus:border-solid ${
                   fieldErrors.Name && "border-red"
                 }`}
                 type={"name"}
@@ -197,7 +193,7 @@ const AddProject = () => {
               <div className="desc">
                 <label
                   htmlFor="description"
-                  className="flex items-center gap-2 font-jost text-base font-medium "
+                  className="flex items-center gap-2  font-jost text-base font-medium "
                 >
                   {t("desc")}
                 </label>
@@ -210,14 +206,14 @@ const AddProject = () => {
                   onChange={(e) => setDescription(e.target.value)}
                   className={`${
                     fieldErrors.Description && "border-red"
-                  } bg-white  w-full   rounded-xl border border-purple focus:outline-none font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid`}
+                  } bg-white w-full   sm:w-full  rounded-xl border border-purple focus:outline-none font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid`}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex flex-col my-2 col-span-1">
+              <div className="flex flex-wrap gap-x-2 ">
+                <div className="flex flex-col my-2 sm:w-[49%] w-full ">
                   <label
                     htmlFor="sDate"
-                    className="flex items-center gap-2 font-jost text-base font-medium "
+                    className="flex ps-1   items-center gap-2 font-jost text-base font-medium "
                   >
                     {t("sDate")}
                   </label>
@@ -231,15 +227,15 @@ const AddProject = () => {
                     popoverClassName="!bg-purple-100"
                     popoverDirection="down"
                     toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-                    inputClassName={`bg-white  w-full focus:outline-none  rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
+                    inputClassName={`bg-white   w-full focus:outline-none  rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
                       fieldErrors.sDate && "border-red"
                     }`}
                   />
                 </div>
-                <div className="flex flex-col my-2 col-span-1">
+                <div className="flex flex-col my-2 sm:w-[49%]  w-full ">
                   <label
                     htmlFor="dDate"
-                    className="flex items-center gap-2 font-jost text-base font-medium "
+                    className="flex  items-center gap-2 font-jost text-base  font-medium "
                   >
                     {t("dDate")}
                   </label>
@@ -259,8 +255,8 @@ const AddProject = () => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex flex-col my-2 col-span-1">
+              <div className="flex flex-wrap">
+                <div className="flex flex-col mt-1 w-full  sm:w-[49%]">
                   <Select
                     label={t("Priority")}
                     isClearable
@@ -277,7 +273,7 @@ const AddProject = () => {
                     onChange={(value) => setPriority(value)}
                   />
                 </div>
-                <div className="flex flex-col my-2 col-span-1">
+                <div className="flex flex-col  w-full ms-2   sm:w-[49%]">
                   <Input
                     label={t("budget")}
                     placeholder={t("budget")}
@@ -300,16 +296,25 @@ const AddProject = () => {
                   <p className="error text-red">{error.message}</p>
                 </div>
               )}
-              <div className="btn flex items-center justify-center md:justify-end my-3 gap-2">
+              <div className="btn flex flex-wrap items-center justify-center md:justify-end my-3 gap-2">
                 <button
                   className={
-                    "bg-white text-purple border border-purple border-solid font-jost py-3 px-32 rounded-xl capitalize   opacity-100  disabled:opacity-50 text-base font-medium text-left"
+                    "bg-white w-1/3 text-purple border border-purple border-solid font-jost py-3  rounded-xl capitalize   opacity-100  disabled:opacity-50 text-base font-medium "
                   }
                   onClick={handleInvite}
                 >
                   {t("invite")}
                 </button>
-                <Button onClick={handlePublic}>{t("Public")}</Button>
+               
+                  <button
+                    className={
+                      "bg-[#C7B0DA] text-white border-0 border border-purple border-solid font-jost py-3 w-1/3  rounded-xl capitalize   opacity-100  disabled:opacity-50 text-base font-medium "
+                    }
+                    onClick={handlePublic}
+                  >
+                    {t("Public")}
+                  </button>
+               
               </div>
             </form>
           </div>
@@ -320,6 +325,3 @@ const AddProject = () => {
 };
 
 export default AddProject;
-
-
-

@@ -4,7 +4,7 @@ import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import image from "../../../assets/images/LogInByPhone.png";
 import "./style.scss";
 import Button from "../../../Components/UI/Button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../../../Components/Loader/Loader";
 import { t } from "i18next";
 import { FiPhone } from "react-icons/fi";
@@ -22,7 +22,11 @@ const LoginByPhone = () => {
   const navigate = useNavigate();
   const { phone, error } = useSelector((state) => state.auth);
   const [phoneNumber, setPhoneNumber] = useState(phone);
-
+ useEffect(() => {
+    if (localStorage.getItem("token")) {
+      return navigate("/");
+    }
+  }, []);
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   try {
@@ -47,21 +51,21 @@ const LoginByPhone = () => {
       ) : (
         <>
           <LandingHeader />
-          <div className="Wrapper flex items-center justify-between">
-            <div className="w-96 my-40 ">
-              <h3 className="font-workSans  font-bold text-5xl">
+          <div className="Wrapper flex items-center justify-between flex-wrap ">
+            <div className="w-96 my-20 mx-auto sm:mx-0 ">
+              <h3 className="font-workSans  font-bold md:text-5xl">
                 {t("sign in To activate your business easily")}
               </h3>
-              <p className="font-jost  font-medium text-2xl">
+              <p className="font-jost  mx-auto sm:mx-0  font-medium md:text-2xl">
                 {t("if you don’t have an account you can")}
-                <Link className="text-blue block">{t("Register here!")}</Link>
+                <Link to={"/SignUp/ChooseRole"} className="text-blue block ">{t("Register here!")}</Link>
               </p>
             </div>
-            <div className=" LogIn_Image  flex justify-center -z-10">
+            <div className=" LogIn_Image  flex justify-center ">
               <img src={image} alt="image" width={400} loading="lazy" />
             </div>
-            <div className="form flex flex-col">
-              <div className="phone relative">
+            <div className="form flex flex-col mx-auto">
+              <div className="phone relative w-full">
                 <label className="Input_label flex items-center  gap-2 font-jost text-base font-medium ">
                   <span className="label_icon w-4 h-4 ">
                     <FiPhone />

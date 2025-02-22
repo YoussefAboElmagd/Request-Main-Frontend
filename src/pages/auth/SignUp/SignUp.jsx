@@ -15,7 +15,7 @@ import {
   authSuccess,
   authFailure,
 } from "../../../redux/slices/authSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../../../Components/Loader/Loader";
 import PhoneInput from "react-phone-number-input/input";
 import "react-phone-number-input/style.css";
@@ -49,7 +49,11 @@ const SignUp = () => {
   });
   const lang = i18next.language;
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      return navigate("/");
+    }
+  }, []);
   // if (confirmPassword != password) {
   //   setPasswordError("Passwords do not match")
   // }

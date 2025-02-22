@@ -3,7 +3,7 @@ import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import image from "../../../assets/images/LogInMail.png";
 import "./style.scss";
 import Button from "../../../Components/UI/Button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../../../Components/Loader/Loader";
 import { t } from "i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,9 +28,15 @@ const LoginByMail = () => {
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
   ("Error object:", error);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      return navigate("/");
+    }
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+   
     // Trim values from the input fields
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();

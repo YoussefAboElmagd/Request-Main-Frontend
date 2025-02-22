@@ -134,7 +134,7 @@ const Select = ({
     <div className={`Input_container flex flex-col ${className}`}>
       {label && (
         <label
-          className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
+          className="Input_label mb-1 flex items-center justify-start gap-2 font-jost text-base font-medium mx-2"
           htmlFor={id}
         >
           {label}

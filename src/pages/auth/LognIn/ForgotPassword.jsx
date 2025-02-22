@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import Loader from "../../../Components/Loader/Loader";
@@ -20,6 +20,12 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { forget_id } = location.state || {};
+
+   useEffect(() => {
+      if (localStorage.getItem("token")) {
+        return navigate("/");
+      }
+    }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

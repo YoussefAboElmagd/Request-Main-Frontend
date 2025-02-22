@@ -28,7 +28,7 @@ const CreateCompany = () => {
   const [loading, setLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const navigate = useNavigate();
-  
+
   // Function to handle image change and set preview for logo
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
@@ -38,6 +38,11 @@ const CreateCompany = () => {
     setLogo(file);
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      return navigate("/");
+    }
+  }, []);
   // Function to handle image change and set preview for stamp
   const handleStampChange = (e) => {
     const file = e.target.files[0];
@@ -89,15 +94,14 @@ const CreateCompany = () => {
         companyName: name,
       };
 
-      
-      (updatedData);
-      
+      updatedData;
+
       const res = await uploadCompanyFiles(userId, updatedData);
-      (res);
+      res;
 
       const updatedUser = { ...user, ...res.updates };
       localStorage.setItem("user", JSON.stringify(updatedUser));
-      setLoading(false); 
+      setLoading(false);
       toast.success(t("toast.userCreatedSuccessfully"));
       clearFields();
       navigate("/");

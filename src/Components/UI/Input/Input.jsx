@@ -32,7 +32,7 @@ const Input = ({
     <div className="Input_container">
       {label && (
         <label
-          className={`Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 ${label_class}`}
+          className={`Input_label flex items-center   justify-start gap-2 font-jost text-base font-medium  ${label_class}`}
           htmlFor={id}
         >
           {labelIcon && (
@@ -54,7 +54,7 @@ const Input = ({
           required={required}
           
           value={value}
-          className={`Input  font-normal text-base text-black  my-2 py-2 px-4 ${className}`}
+          className={`Input   font-normal text-base text-black  my-2 py-2 px-4 ${className}`}
           {...rest}
         />
         {inputIcons.length > 0 && (

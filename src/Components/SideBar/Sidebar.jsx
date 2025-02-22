@@ -200,7 +200,7 @@ const Sidebar = () => {
               key={item.title}
               to={item.path}
               onClick={() => handleItemClick(index)}
-              className={`text-sm font-semibold font-inter text-gray-500 transition-custom duration-custom flex items-center gap-3 py-5  px-5 ${
+              className={`text-sm font-semibold font-inter text-gray-500 transition-custom duration-custom flex items-center gap-3 py-3  px-5 ${
                 index === activeIndex ? "item_sidebar" : ""
               }
               ${item.path === window.location.pathname ? "item_sidebar" : ""}
