@@ -286,52 +286,54 @@ const Header = () => {
       </header>
 
       {/* mobile view (sidebar) */}
-      <Drawer open={open} onClose={closeDrawer} className={`p-2 `}>
-        <div className="mb-6 flex items-center justify-between ">
-          <div className="logo flex items-center gap-2">
-            <img
-              src={logo}
-              alt="logo"
-              width={31}
-              height={31}
-              className="rounded-md "
-            />
-            <span className="font-inter font-bold text-sm ">Request</span>
+      
+        <Drawer open={open} onClose={closeDrawer} className={`p-2 `}>
+          <div className="mb-6 flex items-center justify-between ">
+            <div className="logo flex items-center gap-2">
+              <img
+                src={logo}
+                alt="logo"
+                width={31}
+                height={31}
+                className="rounded-md "
+              />
+              <span className="font-inter font-bold text-sm ">Request</span>
+            </div>
+            <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
+              <IoMdClose />
+            </IconButton>
           </div>
-          <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
-            <IoMdClose />
-          </IconButton>
-        </div>
-        <div className="items flex flex-col gap-3">
-          {items.map((item, index) => (
-            <Link
-              key={item.title}
-              to={item.path}
-              onClick={() => handleItemClick(index)}
-              className={`text-sm font-semibold font-inter text-gray transition-custom duration-custom flex items-center gap-3 py-5 px-5 ${
-                index === activeIndex ? "item_sidebar" : ""
-              }
+          <div className="items flex flex-col gap-3">
+            {items.map((item, index) => (
+              <Link
+                key={item.title}
+                to={item.path}
+                onClick={() => handleItemClick(index)}
+                className={`text-sm font-semibold font-inter text-gray transition-custom duration-custom flex items-center gap-3 py-5 px-5 ${
+                  index === activeIndex ? "item_sidebar" : ""
+                }
               ${item.path === window.location.pathname ? "item_sidebar" : ""}
                `}
-            >
-              <span
-                className={`${index === activeIndex ? "icon" : ""}    ${
-                  item.path === window.location.pathname ? "icon" : ""
-                }`}
               >
-                {item.icon}
-              </span>
-              <p> {item.title}</p>
-              {item.notificationCount > 0 && (
-                <span className="Notifications rounded-full ltr:right-4 rtl:left-4 absolute w-8 h-8 bg-red-500 !text-red flex items-center justify-center">
-                  {item.notificationCount}
+                <span
+                  className={`${index === activeIndex ? "icon" : ""}    ${
+                    item.path === window.location.pathname ? "icon" : ""
+                  }`}
+                >
+                  {item.icon}
                 </span>
-              )}
-            </Link>
-          ))}
-        </div>
-      </Drawer>
-    </div>
+                <p> {item.title}</p>
+                {item.notificationCount > 0 && (
+                  <span className="Notifications rounded-full ltr:right-4 rtl:left-4 absolute w-8 h-8 bg-red-500 !text-red flex items-center justify-center">
+                    {item.notificationCount}
+                  </span>
+                )}
+              </Link>
+            ))}
+          </div>
+        </Drawer>
+      </div>
+   
   );
 };
 

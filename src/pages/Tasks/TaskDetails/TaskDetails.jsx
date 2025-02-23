@@ -46,6 +46,7 @@ const TaskDetails = () => {
     };
     fetchTask();
   }, [taskId]);
+  // console.log(Task.project._id)
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
@@ -331,7 +332,7 @@ const TaskDetails = () => {
               <FaFileLines className="text-purple-dark h-7 w-7" />
             </button>
 
-            <AddNote taskId={Task._id} Notes={Task.notes} />
+            <AddNote taskId={Task?._id} projectId={Task?.project?._id} Notes={Task.notes} />
           </div>
           {/* {IsToq && Task.parentTask === null && ( */}
           {isEditing ? (

@@ -14,7 +14,6 @@ import "./style.scss";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { t } from "i18next";
-import { Box, CircularProgress } from "@mui/joy";
 import { Typography } from "@material-tailwind/react";
 import { MdAlarmAdd } from "react-icons/md";
 import { RiProgress4Line } from "react-icons/ri";
@@ -25,7 +24,8 @@ const Home = () => {
  
   const token = useSelector((state) => state.auth.token);
   const userId = user?._id;
- 
+
+  
 
   const [data, setData] = useState({ results: [] });
   const [analysis, setAnalysis] = useState({});

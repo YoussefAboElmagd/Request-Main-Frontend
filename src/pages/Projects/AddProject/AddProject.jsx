@@ -193,7 +193,7 @@ const AddProject = () => {
               <div className="desc">
                 <label
                   htmlFor="description"
-                  className="flex items-center gap-2  font-jost text-base font-medium "
+                  className="flex items-center gap-2 capitalize  font-jost text-base font-medium "
                 >
                   {t("desc")}
                 </label>
@@ -213,7 +213,7 @@ const AddProject = () => {
                 <div className="flex flex-col my-2 sm:w-[49%] w-full ">
                   <label
                     htmlFor="sDate"
-                    className="flex ps-1   items-center gap-2 font-jost text-base font-medium "
+                    className="flex ps-1  capitalize  items-center gap-2 font-jost text-base font-medium "
                   >
                     {t("sDate")}
                   </label>
@@ -222,12 +222,17 @@ const AddProject = () => {
                     asSingle={true}
                     inputId="sDate"
                     value={sDate}
-                    onChange={(date) => setSDate(date)}
+                    onChange={(date) => {
+                      setSDate(date);
+                      if (date.startDate > eDate.startDate) {
+                        setEDate(date); // Reset eDate to sDate if it becomes invalid
+                      }
+                    }}
                     primaryColor={"purple"}
                     popoverClassName="!bg-purple-100"
                     popoverDirection="down"
                     toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-                    inputClassName={`bg-white   w-full focus:outline-none  rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
+                    inputClassName={`bg-white w-full focus:outline-none rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
                       fieldErrors.sDate && "border-red"
                     }`}
                   />
@@ -244,12 +249,13 @@ const AddProject = () => {
                     asSingle={true}
                     primaryColor={"purple"}
                     value={eDate}
+                    minDate={sDate.startDate} // Prevent selection of dates before sDate
                     onChange={(date) => setEDate(date)}
                     inputId="dDate"
                     popoverClassName="!bg-purple-100"
                     popoverDirection="down"
                     toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
-                    inputClassName={`bg-white  w-full focus:outline-none   rounded-xl border border-purple font-jost font-normal text-base  my-2 py-2 px-4  border-solid  focus:border   focus:border-purple  focus:border-solid ${
+                    inputClassName={`bg-white w-full focus:outline-none rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
                       fieldErrors.eDate && "border-red"
                     }`}
                   />
@@ -305,16 +311,15 @@ const AddProject = () => {
                 >
                   {t("invite")}
                 </button>
-               
-                  <button
-                    className={
-                      "bg-[#C7B0DA] text-white border-0 border border-purple border-solid font-jost py-3 w-1/3  rounded-xl capitalize   opacity-100  disabled:opacity-50 text-base font-medium "
-                    }
-                    onClick={handlePublic}
-                  >
-                    {t("Public")}
-                  </button>
-               
+
+                <button
+                  className={
+                    "bg-[#C7B0DA] text-white border-0 border border-purple border-solid font-jost py-3 w-1/3  rounded-xl capitalize   opacity-100  disabled:opacity-50 text-base font-medium "
+                  }
+                  onClick={handlePublic}
+                >
+                  {t("Public")}
+                </button>
               </div>
             </form>
           </div>

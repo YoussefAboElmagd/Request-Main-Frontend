@@ -554,11 +554,11 @@ const AddTask = () => {
                   {t(error.message)}
                 </div>
               )}
-              {!isRecurringTask && (
-                <div className="btn flex items-center justify-center md:justify-end my-3">
+             
+                <div className="btn  flex items-center justify-center md:justify-end my-3">
                   <Button onClick={handleSubmit}>{t("Next")}</Button>
                 </div>
-              )}
+             
             </form>
           </div>
         </>

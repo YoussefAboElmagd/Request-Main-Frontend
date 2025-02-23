@@ -17,18 +17,17 @@ import ProfileAvatar from "../UI/profilePic/profilePic";
 import Empty from "../empty/empty";
 import { Image } from "../UI/Image/image";
 
-export const AddNote = ({ projectId,  taskId, Notes }) => {
-  (projectId, taskId, Notes);
-  
+export const AddNote = ({ projectId, taskId, Notes }) => {
+  console.log(projectId, taskId, Notes);
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const [open, setOpen] = useState(false);
   const [messageInput, setMessageInput] = useState("");
   const [notes, setNotes] = useState(Notes || []);
-
+  // console.log()
   const handleAddNote = async () => {
     if (!messageInput.trim()) return;
-   
+
     try {
       const payload = {
         notes: {
@@ -36,51 +35,53 @@ export const AddNote = ({ projectId,  taskId, Notes }) => {
           postedBy: user._id,
         },
       };
-    let res;
-    if (taskId) {
-      res = await updateTask(token, taskId, payload);
-      setNotes(res.updatedTask.notes);
-    } else if (projectId) {
-      res = await updateProject(projectId, payload);
-      setNotes(res.updatedProject.notes);
-    }
-      const newNote = {   
+      let data = {
+        notes: messageInput,
+      };
+      let res;
+      if (taskId) {
+        res = await updateTask(token, taskId, user._id, data);
+        setNotes(res.updatedTask.notes);
+      } else if (projectId) {
+        res = await updateProject(projectId, payload);
+        setNotes(res.updatedProject.notes);
+      }
+      const newNote = {
         content: messageInput,
         postedBy: {
           _id: user._id,
           name: user.name,
           avatar: user.avatar || avatar,
         },
-        createdAt: new Date().toISOString(), 
+        createdAt: new Date().toISOString(),
       };
 
       setNotes([newNote, ...notes]);
       setMessageInput("");
-  
     } catch (error) {
-      (error);
+      error;
     }
   };
 
- const formatDate = (dateString) => {
-   const date = new Date(dateString);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
 
-   // Format time as HH.MM AM/PM
-   const time = date
-     .toLocaleTimeString("en-US", {
-       hour: "numeric",
-       minute: "2-digit",
-       hour12: true,
-     })
-     .replace(":", "."); // Replace ":" with "."
+    // Format time as HH.MM AM/PM
+    const time = date
+      .toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .replace(":", "."); // Replace ":" with "."
 
-   // Format date as DD-MM-YYYY
-   const formattedDate = `${date.getDate()}-${
-     date.getMonth() + 1
-   }-${date.getFullYear()}`;
+    // Format date as DD-MM-YYYY
+    const formattedDate = `${date.getDate()}-${
+      date.getMonth() + 1
+    }-${date.getFullYear()}`;
 
-   return `${time} ${formattedDate}`;
- };
+    return `${time} ${formattedDate}`;
+  };
 
   const handleOpen = () => setOpen(!open);
   return (
