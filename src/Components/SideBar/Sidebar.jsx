@@ -135,7 +135,7 @@ const Sidebar = () => {
   return (
     <div className="Sidebar rtl:left-0">
       <div
-        className={`bg-white h-full py-5 pt-8 relative transition-custom duration-500 hidden lg:flex flex-col ${
+        className={`bg-white h-[100vh] py-5 pt-8 relative transition-custom duration-500 hidden lg:flex flex-col ${
           !Open ? "w-72" : "w-24"
         }`}
       >
@@ -159,7 +159,7 @@ const Sidebar = () => {
             <div className="relative">
               {user?.profilePic ? (
                 <img
-                  src={user?.profilePic}
+                  src={`https://api.request-sa.com/${user?.profilePic}`}
                   alt="avatar"
                   className="rounded-full  w-12 h-12 object-contain relative border border-solid  border-gray p-2"
                 />

@@ -33,14 +33,14 @@ import i18next from "i18next";
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    color:"red",
+    color: "red",
     backgroundColor: "white",
     border: "1px solid var(--gray)",
     borderRadius: "15px",
     padding: "5px",
     minHeight: "42px",
     boxShadow: "none",
-    
+
     "&:hover": { borderColor: "var(--gray)", value: false },
   }),
   placeholder: (provided) => ({ ...provided, color: "#999" }),
@@ -208,10 +208,10 @@ const AddNewAccess = () => {
     access: false,
     Tag: false,
   });
-    const lang = i18next.language;
+  const lang = i18next.language;
 
   useEffect(() => {
-    ("Current access list:", accessList);
+    "Current access list:", accessList;
   }, [accessList]);
   useEffect(() => {
     const fetchData = async () => {
@@ -226,7 +226,7 @@ const AddNewAccess = () => {
         );
 
         setVocations(vocationResponse.results);
-        setVocationLoading(false)
+        setVocationLoading(false);
 
         setProjects(projectsResponse.results);
         setTags(
@@ -283,13 +283,13 @@ const AddNewAccess = () => {
     setPhone("");
     setSelectedProject(null);
     setSelectedVocation([]);
-     setSelectedTags([]);
-     setAccessList({
-       delete: false,
-       create: false,
-       edit: false,
-       read: false,
-     });
+    setSelectedTags([]);
+    setAccessList({
+      delete: false,
+      create: false,
+      edit: false,
+      read: false,
+    });
     // setSelectedAccess([]);
     setFieldErrors({});
   };
@@ -309,6 +309,7 @@ const AddNewAccess = () => {
       Tags: !SelectedTags,
     };
 
+    console.log(newFieldErrors)
     setFieldErrors(newFieldErrors);
 
     if (Object.values(newFieldErrors).some((hasError) => hasError)) {
@@ -328,13 +329,13 @@ const AddNewAccess = () => {
         role: user.role._id,
         tags: SelectedTags.map((t) => t.value),
       };
-      (payload);
-
+      payload;
+      
       await updateTeam(token, user.team, payload, lang);
       clearFields();
       toast.success(t("toast.MemberAdded"));
     } catch (error) {
-      (error);
+      error;
       setFieldErrors(error);
     }
   };
@@ -395,6 +396,8 @@ const AddNewAccess = () => {
     );
   }
 
+ 
+
   return (
     <div className="AddNewAccess bg-white rounded-3xl m-2 p-4">
       <form
@@ -442,14 +445,14 @@ const AddNewAccess = () => {
             icon={<MdOutlinePerson />}
           />
         </div>
-        <div className="col-span-4 md:col-span-2 relative flex mt-5  w-full ">
+        <div className="col-span-4 md:col-span-2  focus:border-2  focus:border-rose-500 relative flex mt-5  w-full ">
           <Menu placement="bottom-start">
             <MenuHandler>
               <Btn
                 ripple={false}
                 variant="text"
                 color="blue-gray"
-                className="flex h-10 items-center gap-2  ltr:rounded-r-none rtl:rounded-l-none border ltr:border-r-0 rtl:border-l-0 border-gray border-solid pl-3"
+                className="flex h-10 items-center gap-2  ltr:rounded-r-none rtl:rounded-l-none border ltr:border-r-0 rtl:border-l-0 border-[#EeEE] focus:border-black focus:border-2 border-solid pl-3"
               >
                 <img
                   src={flags.svg}
@@ -465,7 +468,7 @@ const AddNewAccess = () => {
                   <MenuItem
                     key={name}
                     value={name}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 "
                     onClick={() => setCountryIndex(index)}
                   >
                     <img
@@ -479,7 +482,7 @@ const AddNewAccess = () => {
               })}
             </MenuList>
           </Menu>
-          <MaterialInput
+          {/* <MaterialInput
             type="tel"
             value={Phone}
             onChange={handlePhoneChange}
@@ -491,6 +494,20 @@ const AddNewAccess = () => {
             containerProps={{
               className: "min-w-0",
             }}
+          /> */}
+          <input
+            dir={lang == "en" ? "ltr" : "rtl"}
+            type="tel"
+            maxLength={15}
+            // country={country.value}
+            placeholder={t("Phone number")}
+            value={Phone}
+            onChange={handlePhoneChange}
+            className={` mb-[1.5px] border-[1px]  w-full focus:outline-none  px-2 ${
+              lang == "en"
+                ? "rounded-l-none rounded-lg"
+                : "rounded-r-none rounded-lg"
+            }  `}
           />
         </div>
         <div className="col-span-4">
@@ -633,7 +650,9 @@ const AddNewAccess = () => {
           </div>
         )}
         <div className="btn flex items-center justify-center md:justify-end col-span-4 mt-5">
-          <Button onClick={handleSubmit} className={"px-0 text-sm"}>{t("add")}</Button>
+          <Button onClick={handleSubmit} className={"px-0 text-sm"}>
+            {t("add")}
+          </Button>
         </div>
       </form>
     </div>

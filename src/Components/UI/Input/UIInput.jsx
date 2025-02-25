@@ -41,7 +41,7 @@ const UiInput = ({
         placeholder={placeholder}
         required={required}
         value={value}
-        className={`Input_UI p-2 border border-gray-300 rounded-xl ${className}`}
+        className={`Input_UI p-2 border border-gray-300  placeholder:text-black rounded-xl ${className}`}
         {...rest}
       />
     </div>

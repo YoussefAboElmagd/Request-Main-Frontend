@@ -1,5 +1,9 @@
 import { MdDelete } from "react-icons/md";
-import { delegatedTeam, deleteUserFromProject } from "../../../Services/api";
+import {
+  delegatedTeam,
+  deleteUserFromProject,
+  deleteUserFromUsers,
+} from "../../../Services/api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../../Components/Loader/Loader";
@@ -40,7 +44,7 @@ const DelegatedAccess = () => {
       try {
         const data = await delegatedTeam(token, user.team);
         setTeam(data.results);
-        (data);
+        data;
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -50,6 +54,9 @@ const DelegatedAccess = () => {
     fetchData();
   }, [token, user.team]);
 
+  async function deleteUSERFROMUSERTABLE() {
+    await deleteUserFromUsers(selectedUserId);
+  }
   const handleDelete = async () => {
     if (selectedUserId && selectedProjectId) {
       setLoading(true);
@@ -59,7 +66,7 @@ const DelegatedAccess = () => {
           selectedProjectId,
           selectedUserId
         );
-        ("res : ", res);
+        "res : ", res;
 
         setTeam((prevTeam) =>
           prevTeam.map((project) => {
@@ -94,7 +101,7 @@ const DelegatedAccess = () => {
       </div>
     );
   }
-
+  // console.log(selectedProjectId);
   return (
     <>
       <div className="DelegatedAccess bg-white rounded-3xl m-2 p-4 relative overflow-x-auto hidden lg:block">
@@ -200,7 +207,13 @@ const DelegatedAccess = () => {
               <Button variant="text" color="red" onClick={handleOpen}>
                 Cancel
               </Button>
-              <Button variant="gradient" onClick={handleDelete}>
+              <Button
+                variant="gradient"
+                onClick={() => {
+                  handleDelete();
+                  deleteUSERFROMUSERTABLE();
+                }}
+              >
                 Yes, delete
               </Button>
             </DialogFooter>

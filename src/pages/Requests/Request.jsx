@@ -82,7 +82,7 @@ const RequestForm = ({
     ReqTitle === "Request For Material"
   );
   const [IsReqForDocumentSubmittal, setIsReqForDocumentSubmittal] = useState(
-    ReqTitle === "Request For DocumentSubmittal"
+    ReqTitle === "Request For Document Submittal"
   );
   const [IsRfiReq, setIsRfiReq] = useState(
     ReqTitle === "Request For Inspection(RFI)"
@@ -374,6 +374,7 @@ const RequestForm = ({
   //   }),
   // };
 
+  console.log(signature)
   return (
     <div className="RequestForm">
       {loading ? (
@@ -414,7 +415,7 @@ const RequestForm = ({
                       <>
                         <ProfileAvatar
                           name={"ConsultantName"}
-                          profilePic={avatar}
+                          profilePic={null}
                           className={`!w-16 !h-16`}
                         />
                         <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">
@@ -440,7 +441,7 @@ const RequestForm = ({
                       <>
                         <ProfileAvatar
                           name={"ContractorName"}
-                          profilePic={avatar}
+                          profilePic={null}
                           className={`!w-16 !h-16`}
                         />
                         <span className="text-purple-dark  underline underline-offset-1 font-bold  text-sm">

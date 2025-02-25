@@ -287,7 +287,7 @@ const Header = () => {
 
       {/* mobile view (sidebar) */}
       
-        <Drawer open={open} onClose={closeDrawer} className={`p-2 `}>
+        <Drawer open={open} onClose={closeDrawer} className={`p-2  `}>
           <div className="mb-6 flex items-center justify-between ">
             <div className="logo flex items-center gap-2">
               <img

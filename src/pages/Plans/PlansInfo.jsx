@@ -93,28 +93,30 @@ const tableData = [
 
 const PlansInfo = () => {
   return (
-    <div className="PlansInfo">
-      <div className="header flex flex-col  gap-3 md:flex-row md:justify-between md:items-center mb-4">
+    <div className="">
+      <div className="header flex flex-col  gap-3 lg:flex-row justify-between items-center mb-4">
         <div className="content">
-          <h2 className="font-bold text-xl">{t("Feature Table")}</h2>
-          <p className="text-base text-gray-500">
+          <h2 className="font-bold text-xl ps-5 lg:ps-0">{t("Feature Table")}</h2>
+          <p className="text-base text-gray-500 ps-5 lg:ps-0">
             {t("Choose the perfect plan for your business needs")}
           </p>
         </div>
         <div className="switch flex flex-col lg:flex-row  gap-2  lg:items-center ">
-          <span className="text-purple-dark">
+          <span className="text-purple-dark ps-1 lg:ps-0">
             {t("Save 15% on yearly plan!")}
           </span>
-          <SwitchTabs
-            data={[t("Yearly"), t("Monthly")]}
-            main_style={"bg-white"}
-            activeTab_style={"!text-white"}
-            movingBg_style={"bg-linear_1"}
-          />
+          <div className="md:w-auto w-2/3">
+            <SwitchTabs
+              data={[t("Yearly"), t("Monthly")]}
+              main_style={"bg-white"}
+              activeTab_style={"!text-white"}
+              movingBg_style={"bg-linear_1"}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="plans flex flex-col md:flex-row  justify-between items-center w-full lg:hidden gap-4  mt-6">
+      {/* <div className="plans flex flex-col md:flex-row  justify-between items-center w-full lg:hidden gap-4  mt-6">
         {["Request", "Request Plus", "Request Full Plus"].map((plan, idx) => (
           <div
             key={idx}
@@ -147,68 +149,51 @@ const PlansInfo = () => {
             </Link>
           </div>
         ))}
+      </div> */}
+      <div className="flex gap-x-5 flex-wrap flex-col lg:flex-row items-center justify-around mt-24 gap-y-5 ">
+        <div className="bg-white px-4 py-5 flex flex-col gap-4  rounded-2xl lg:w-[300px] w-[330px] sm:w-[400px] shadow-lg ">
+          <p className="font-semibold text-xl">Request</p>
+          <p className="text-gold font-semibold text-sm">14 day trial</p>
+          <p>
+            <span className="font-semibold text-lg"> 8$ </span>/month
+          </p>
+          <button className="bg-linear_1 px-3 py-3 rounded-lg text-white ">
+            get started
+          </button>
+        </div>
+        <div className="bg-white px-4 py-5 flex flex-col gap-4  rounded-2xl lg:w-[300px] w-[330px] sm:w-[400px] shadow-lg ">
+          <p className="font-semibold text-xl">Request Plus</p>
+          <p className="text-gold font-semibold text-sm">14 day trial</p>
+          <p>
+            <span className="font-semibold text-lg"> 16$ </span>/month
+          </p>
+          <button className="bg-linear_1 px-3 py-3 rounded-lg text-white ">
+            get started
+          </button>
+        </div>
+        <div className="bg-white px-4 py-5 flex flex-col gap-4  rounded-2xl lg:w-[300px] w-[330px] sm:w-[400px] shadow-lg ">
+          <p className="font-semibold text-xl">Request Full Plus</p>
+          <p className="text-gold font-semibold text-sm">14 day trial</p>
+          <p className="font-semibold">Custom</p>
+          <button className="bg-linear_1 px-3 py-3 rounded-lg text-white ">
+            get started
+          </button>
+        </div>
       </div>
-
       <table
-        className={`table w-full table-auto border-separate border-spacing-4 mt-8  `}
+        className={`table w-full table-auto border-separate border-spacing-2 md:border-spacing-4 mt-8  `}
       >
         <thead>
           <tr className=" my-2 hidden lg:table-row">
-            <th></th>
-            <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
-              <div className="flex flex-col">
-                <h3 className="font-bold text-lg mb-2 text-start">Request</h3>
-                <span className="text-gold font-bold text-sm mb-2 text-start">
-                  {t("14 day trial")}
-                </span>
-                <p className="flex items-center gap-1 text-start">
-                  <span className="text-purple text-2xl font-bold">8$</span>
-                  <span className="text-base font-normal">/{t("month")}</span>
-                </p>
-                <Link to={"/PlanDetails"}>
-                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
-                </Link>
-              </div>
-            </th>
-            <th className="bg-white rounded-3xl p-4 shadow-lg  border-green-400">
-              <div className="flex flex-col">
-                <h3 className="font-bold text-lg mb-2 text-start">
-                  Request Plus
-                </h3>
-                <span className="text-gold font-bold text-sm mb-2 text-start">
-                  {t("14 day trial")}
-                </span>
-                <p className="flex items-center gap-1 text-start">
-                  <span className="text-purple text-2xl font-bold">16$</span>
-                  <span className="text-base font-normal">/{t("month")}</span>
-                </p>
-                <Link to={"/PlanDetails"}>
-                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
-                </Link>
-              </div>
-            </th>
-            <th className="bg-white rounded-3xl p-4 shadow-lg  border-purple-400">
-              <div className="flex flex-col">
-                <h3 className="font-bold text-lg mb-2 text-start">
-                  Request Full Plus
-                </h3>
-                <span className="text-gold font-bold text-sm mb-2 text-start">
-                  {t("14 day trial")}
-                </span>
-                <p className="flex items-center gap-1">
-                  <span className="text-purple text-2xl font-bold">Custom</span>
-                </p>
-                <Link to={"/PlanDetails"}>
-                  <Button className="mt-4 !px-24"> {t("Get Started")}</Button>
-                </Link>
-              </div>
-            </th>
+            
+       
+            
           </tr>
           <tr>
             <th className="font-bold "></th>
-            <th className="font-bold  text-center">{t("Request")}</th>
-            <th className="font-bold text-center">{t("RequestPlus")}</th>
-            <th className="font-bold text-center">{t("RequestPlusFull")}</th>
+            <th className="font-bold  text-sm sm:text-base  text-center">{t("Request")}</th>
+            <th className="font-bold  text-sm sm:text-base text-center">{t("RequestPlus")}</th>
+            <th className="font-bold  text-sm sm:text-base text-center">{t("RequestPlusFull")}</th>
           </tr>
         </thead>
 
@@ -218,17 +203,17 @@ const PlansInfo = () => {
               <tr key={`section-${secIdx}`}>
                 <td
                   colSpan={4}
-                  className="p-3 font-semibold text-lg bg-gray-200  "
+                  className="ps-3 py-3 font-semibold md:text-lg bg-gray-200  "
                 >
                   {section.section}
                 </td>
               </tr>
               {section.features.map((feature, featureIndex) => (
                 <tr key={`feature-${featureIndex}`}>
-                  <td className={`border-b border-gray-300 p-2  `}>
+                  <td className={`border-b border-gray-300   `}>
                     {feature.name}
                   </td>
-                  <td className="border-b border-gray-300 p-2   text-center">
+                  <td className="border-b border-gray-300    text-center">
                     {typeof feature.request === "boolean" ? (
                       feature.request ? (
                         <div className="flex justify-center items-center">
@@ -241,7 +226,7 @@ const PlansInfo = () => {
                       feature.request
                     )}
                   </td>
-                  <td className="border-b border-gray-300 p-2 text-center ">
+                  <td className="border-b border-gray-300  text-center ">
                     {typeof feature.requestPlus === "boolean" ? (
                       feature.requestPlus ? (
                         <div className="flex justify-center items-center">
@@ -278,5 +263,3 @@ const PlansInfo = () => {
 };
 
 export default PlansInfo;
-
-

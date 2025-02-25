@@ -208,7 +208,7 @@ const Setting = () => {
 
   return (
     <div className="Settings">
-      <div className="wrapper bg-white rounded-xl p-4 m-2">
+      <div className="wrapper bg-white rounded-xl p-4 mx-auto   lg:max-w-2xl ">
         <div className="head flex justify-between items-center">
           <p className="font-semibold text-base">
             {buttons[selectedTab].label}
@@ -253,13 +253,13 @@ const Setting = () => {
           </div>
         </div>
         <div className="divider h-px w-full bg-gray my-2"></div>
-        <div className="switchTabs my-2 hidden lg:block">
+        <div className="switchTabs  my-2 hidden text-sm lg:block">
           <SwitchTabs
             data={buttons.map((button) => button.label)}
             onTabChange={handleTabChange}
             Tab={selectedTab}
-            movingBg_style={`!w-[180px]`}
-            tab_style={`!w-[180px]`}
+            movingBg_style={`!w-[110px]`}
+            tab_style={`!w-[110px] `}
           />
         </div>
         <div className="content mt-4">{buttons[selectedTab].component}</div>

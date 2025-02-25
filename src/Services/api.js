@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import axiosInstance from "./axiosInstance";
+import axios from "axios";
 
 // Sign up
 export const signUp = async (userData) => {
@@ -1412,3 +1413,14 @@ export const updateGroupData = async (token, groupId, data) => {
     throw new Error(errorMessage);
   }
 };
+
+export async function deleteUserFromUsers(userId) {
+  await axios
+    .delete(`https://api.request-sa.com/api/v1/users/${userId}`)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err, "err");
+    });
+}

@@ -25,7 +25,7 @@ const Home = () => {
   const token = useSelector((state) => state.auth.token);
   const userId = user?._id;
 
-  
+  console.log(user.profilePic)
 
   const [data, setData] = useState({ results: [] });
   const [analysis, setAnalysis] = useState({});
@@ -281,6 +281,8 @@ const Home = () => {
           </div>
         </>
       )}
+        {/* <img className="w-[300px] h-[300px]" src={`https://api.request-sa.com/${user?.profilePic}`} alt=""/> */}
+      
     </div>
   );
 };

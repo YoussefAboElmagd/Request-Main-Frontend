@@ -35,7 +35,7 @@ const SwitchTabs = ({
 
   return (
     <div className={`switchingTabs ${main_style} p-1`}>
-      <div className="tabItems  flex items-center relative">
+      <div className="tabItems  flex justify-around items-center relative">
         {data.map((tab, index) => (
           <span
             key={index}

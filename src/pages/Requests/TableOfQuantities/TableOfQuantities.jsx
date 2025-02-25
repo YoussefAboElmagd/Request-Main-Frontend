@@ -27,15 +27,17 @@ const TaskRow = ({
   UnitsLoading,
   errors,
 }) => {
+  
   const handleChange = (field, value) => {
     onChange(index, field, value);
   };
-
+  
   const calculateTotal = (price, requiredQuantity) => {
     const total = Number(price || 0) * Number(requiredQuantity || 0);
     handleChange("total", total);
   };
-
+  
+  console.log(task);
   return (
     <tr>
       <td className="w-1/3">
@@ -63,7 +65,7 @@ const TaskRow = ({
         <Input
           type="number"
           min={0}
-          value={task.quantity  }
+          value={task.quantity}
           onChange={(e) => {
             const value = e.target.value;
             handleChange("requiredQuantity", value);
@@ -123,9 +125,9 @@ const TableOfQuantities = () => {
   const [errors, setErrors] = useState({});
   const location = useLocation();
   const { projectId, taskType, members, projectName } = location.state || {};
-  (location.state);
-  ("project id :", projectId);
-  
+  location.state;
+  "project id :", projectId;
+
   const navigate = useNavigate();
 
   const handleNewTask = (task) => {
@@ -156,7 +158,7 @@ const TableOfQuantities = () => {
       const res = await updateProject(projectId, {
         tableOfQuantities: true,
       });
-      ("res from update project => ", res);
+      "res from update project => ", res;
     } catch (error) {
       console.error("Failed to update tasks:", error);
       toast.error(t("Failed to update tasks"));
@@ -172,9 +174,9 @@ const TableOfQuantities = () => {
         })
       );
       toast.success(t("toast.TaskSavedSuccess"));
-      ("All tasks saved:", tasks);
+      "All tasks saved:", tasks;
       setTasks([]);
-       navigate(`/`);
+      navigate(`/`);
       if (!taskType) {
         handleUpdateProject();
         navigate("/Models", {

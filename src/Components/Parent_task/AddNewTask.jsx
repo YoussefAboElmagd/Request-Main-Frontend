@@ -17,7 +17,7 @@ import i18n from "../../config/i18n";
 
 export const AddNewTask = ({ newTask, task }) => {
   const user = useSelector((state) => state.auth.user);
-  console.log(user)
+  
   const lang = i18n.language;
   const navigate = useNavigate();
   const location = useLocation();
@@ -97,7 +97,7 @@ export const AddNewTask = ({ newTask, task }) => {
           }))
         );
         setMemberLoading(false);
-        console.log(tagsData);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -278,7 +278,11 @@ export const AddNewTask = ({ newTask, task }) => {
                   asSingle={true}
                   inputId="sDate"
                   value={sDate}
-                  onChange={(date) => setSDate(date)}
+                  onChange={(date) => {setSDate(date)
+                    if (date.startDate > eDate.startDate) {
+                      setEDate(date); // Reset eDate to sDate if it becomes invalid
+                    }
+                  }}
                   primaryColor={"purple"}
                   popoverClassName="!bg-white !border-gray-300 !shadow-md"
                   popoverDirection="down"
@@ -300,6 +304,7 @@ export const AddNewTask = ({ newTask, task }) => {
                   asSingle={true}
                   primaryColor={"purple"}
                   value={eDate}
+                   minDate={sDate.startDate} // Prevent selection of dates before sDate
                   onChange={(date) => setEDate(date)}
                   inputId="dDate"
                   popoverClassName="!bg-white !border-gray-300 !shadow-md"

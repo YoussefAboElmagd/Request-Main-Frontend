@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-
+import ano from "../../../assets/images/anonymous.jpg";
 const colors = [
   "#FFADAD",
   "#FFD6A5",
@@ -31,20 +31,13 @@ const renderInitials = (name) => {
 
 const ProfileAvatar = ({ name, profilePic, className }) => {
   const randomColor = useMemo(() => getRandomColor(), []);
-
-  return profilePic ? (
+ 
+  return (
     <img
-      src={`https://api.request-sa.com/${profilePic}`}
+      src={profilePic ? "https://api.request-sa.com/" + profilePic : ano}
       alt="avatar"
       className={`rounded-full   w-9 h-9 ${className} object-cover`}
     />
-  ) : (
-    <div
-      className={`user-profile-image flex items-center justify-center w-9 h-9 ${className} rounded-lg text-white font-bold`}
-      style={{ backgroundColor: randomColor }}
-    >
-      {renderInitials(name)}
-    </div>
   );
 };
 

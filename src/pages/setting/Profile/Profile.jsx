@@ -15,6 +15,7 @@ import Loader from "../../../Components/Loader/Loader";
 const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  console.log(user);
 
   const [dob, setDob] = useState(user.dateOfBirth);
   const [Name, setName] = useState(user.name);
@@ -32,7 +33,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0]; // Access the first file in the FileList
     if (file) {
-      ("Selected file:", file); // Debugging: Check if file is selected correctly
+      "Selected file:", file; // Debugging: Check if file is selected correctly
       setProfilePic(file); // Set the selected file
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -52,6 +53,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
     return `${year}-${month}-${day}`;
   };
 
+  console.log(formatDate(dob.endDate));
   const handleUpdate = () => {
     if (isUpdating || loading) return;
     setLoading(true);
@@ -66,7 +68,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
       presentaddress: presentAddress,
       city: city,
       country: country,
-      dateOfBirth: formattedDate,
+      dateOfBirth: dob,
     };
 
     const updateAction = profilePic
@@ -94,9 +96,6 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
     handleUpdate,
   }));
 
-
-
-
   const nameParts = Name.split(" ");
   const firstNameInitial = nameParts[0] ? nameParts[0][0] : "";
   const lastNameInitial = nameParts[1] ? nameParts[1][0] : "";
@@ -116,7 +115,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
           <div className="avatar  my-2 col-span-2 relative ">
             {preview ? (
               <img
-                src={preview}
+                src={`https://api.request-sa.com/${user.profilePic}`}
                 alt="avatar"
                 className="rounded-full  w-24 h-24 object-contain relative border border-solid  border-gray p-2"
               />
@@ -179,13 +178,14 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
             </div>
             <div className="flex flex-col my-2 col-span-2">
               <UiInput
-                type="tel"
+                type={"tel"}
                 id="phoneNumber"
                 label={t("PhoneNumber")}
                 value={tel}
                 onChange={(e) => setTel(e.target.value)}
                 placeholder="+0753235789"
               />
+              
             </div>
             <div className="flex flex-col my-2 col-span-2">
               <label
@@ -197,16 +197,29 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
               <Datepicker
                 useRange={false}
                 asSingle={true}
-                value={dob}
-                placeholder={formatDate(user.dateOfBirth)}
+                value={
+                  dob
+                    ? formatDate(dob.startDate)
+                    : formatDate(user.dateOfBirth.startDate)
+                }
+                maxDate={
+                  new Date(
+                    new Date().setFullYear(new Date().getFullYear() - 18)
+                  )
+                } // Minimum date is 18 years ago
+                placeholder={
+                  dob
+                    ? formatDate(dob.startDate)
+                    : formatDate(user.dateOfBirth.startDate)
+                }
                 primaryColor={"purple"}
                 popoverDirection="up"
                 toggleClassName="text-yellow absolute top-3 ltr:right-4 rtl:left-4"
-                inputClassName="Input_UI p-2 border border-gray-300 rounded-xl w-full"
+                inputClassName="Input_UI p-2 border border-gray-300 rounded-xl w-full placeholder-gray-500"
                 onChange={(e) => setDob(e)}
               />
             </div>
-            <div className="flex flex-col my-2 col-span-2">
+            <div className="flex flex-col my-2 col-span-2 ">
               <UiInput
                 type="text"
                 id="address"
