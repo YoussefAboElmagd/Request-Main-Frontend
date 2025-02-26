@@ -21,6 +21,7 @@ const StatusHeader = ({
     onFilterChange(buttons[index].value);
   };
 
+  console.log(activePosition)
   return (
     <div className={`StatusHeader my-2 bg-light ${className}`}>
       <div className="flex">
@@ -45,7 +46,7 @@ const StatusHeader = ({
           style={{
             ...(isRTL
               ? { right: `${activePosition}px` }
-              : { left: `${activePosition}px` }),
+              : { left: `${activePosition == 240 ? activePosition+10 :activePosition+2}px` }),
           }}
         ></span>
       </div>

@@ -110,9 +110,7 @@ const Inbox = () => {
   };
 
   const fetchMessagesData = async () => {
-    if (!activeChat) return;
-
-    setChatLoading(true);
+    // setChatLoading(true);
     const { projectId, member } = activeChat;
 
     try {
@@ -224,10 +222,8 @@ const Inbox = () => {
 
   // Fetch group or direct messages based on the active chat type
   useEffect(() => {
-    if (activeChat) {
-      fetchMessagesData();
-    }
-  }, [activeChat, IsGroup, token, userId]);
+    fetchMessagesData();
+  }, [messageInput, IsGroup, token, userId]);
 
   // const loadMoreMessages = async () => {
   //   if (!activeChat || !hasMoreMessages) return;
@@ -348,6 +344,8 @@ const Inbox = () => {
     } catch (error) {
       console.error("❌ Error sending message:", error.message || error);
       toast.error("Failed to send message. Please try again.");
+    } finally {
+      fetchMessagesData();
     }
   };
 
@@ -849,7 +847,7 @@ const Inbox = () => {
 
                 {/* </InfiniteScroll> */}
               </div>
-              <div className="preview relative flex items-center justify-center">
+              <div className="preview  relative flex items-center justify-center">
                 {preview && preview.type === "image" && (
                   <div className=" -bottom-3 p-2 absolute bg-gray-100  rounded-md">
                     <img
@@ -934,15 +932,14 @@ const Inbox = () => {
                     )} */}
 
                     <input
-                      
                       type="file"
                       onChange={handleFileChange}
                       className="hidden"
                       id="fileInput"
                     />
 
-                    <label htmlFor="fileInput"
-                      
+                    <label
+                      htmlFor="fileInput"
                       className={`${isRecording ? "hidden" : ""}`}
                     >
                       <IoAttach className="text-yellow w-8 h-8" />

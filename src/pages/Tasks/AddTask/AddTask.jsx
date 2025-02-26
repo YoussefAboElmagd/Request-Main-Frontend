@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { CiSquarePlus } from "react-icons/ci";
 import { HiX } from "react-icons/hi";
 import i18next from "i18next";
+import axios from "axios";
 
 const AddTask = () => {
   const { ProjectId } = useParams();
@@ -34,6 +35,7 @@ const AddTask = () => {
   const [isRecurringTask, setIsRecurringTask] = useState(
     taskType === "recurring"
   );
+  const [project, setProject] = useState("");
   const [Name, setName] = useState("");
   const [Description, setDescription] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
@@ -78,6 +80,13 @@ const AddTask = () => {
     parentTask: false,
   });
 
+  
+  async function getProjectbyId() {
+    await axios.get(`https://api.request-sa.com/api/v1/project/${projectId}`).then((res)=>setProject(res.data.results)).catch(err=>console.log(err));
+  }
+  useEffect(()=>{
+    getProjectbyId()
+  },[projectId])
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -102,7 +111,7 @@ const AddTask = () => {
             label: task.title,
           }))
         );
-        (ParentTasks);
+        ParentTasks;
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -195,10 +204,10 @@ const AddTask = () => {
       }
 
       setLoading(true);
-      ("task data =>  ", taskData);
+      "task data =>  ", taskData;
       const res = await addTask(taskData, lang);
       setTaskId(res.addedTasks?._id);
-      (res);
+      res;
       clearFormFields();
       if (!isSubtask) {
         navigate(`/Models`, {
@@ -217,7 +226,7 @@ const AddTask = () => {
         message: err.response ? err.response.data.message : err.message,
       });
 
-      (err.err);
+      err.err;
       setLoading(false);
     } finally {
       setLoading(false);
@@ -225,7 +234,7 @@ const AddTask = () => {
   };
 
   const handleTagChange = (selectedOptions) => {
-    ("Selected options:", selectedOptions);
+    "Selected options:", selectedOptions;
     setSelectedTag(selectedOptions || []);
   };
 
@@ -250,6 +259,8 @@ const AddTask = () => {
     updatedDates[index][type] = date;
     setRecurringDates(updatedDates);
   };
+
+  console.log(formatDate(project.sDate))
   return (
     <div className="AddTask mx-1 relative">
       {Loading ? (
@@ -302,7 +313,7 @@ const AddTask = () => {
                     <div className="flex flex-col my-2 col-span-2">
                       <label
                         htmlFor="sDate"
-                        className="flex items-center gap-2 font-jost text-base font-medium "
+                        className="flex items-center gap-2 ps-1 font-jost text-base font-medium "
                       >
                         {t("sDate")}
                       </label>
@@ -311,11 +322,17 @@ const AddTask = () => {
                         asSingle={true}
                         inputId="sDate"
                         value={sDate}
-                        onChange={(date) => setSDate(date)}
+                        
+                        onChange={(date) => {
+                          setSDate(date);
+                          if (date.startDate > eDate.startDate) {
+                            setEDate(date); // Reset eDate to sDate if it becomes invalid
+                          }
+                        }}
                         primaryColor={"purple"}
                         popoverClassName="!bg-white !border-gray-300 !shadow-md"
                         popoverDirection="up"
-                        toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                        toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
                         inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                           fieldErrors.sDate ? "border-red border" : ""
                         }`}
@@ -334,11 +351,12 @@ const AddTask = () => {
                           asSingle={true}
                           primaryColor={"purple"}
                           value={eDate}
+                          minDate={sDate.startDate} // Prevent selection of dates before sDate
                           onChange={(date) => setEDate(date)}
                           inputId="dDate"
                           popoverClassName="!bg-white !border-gray-300 !shadow-md"
                           popoverDirection="down"
-                          toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                          toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
                           inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
                             fieldErrors.eDate && "border-red border"
                           }`}
@@ -375,7 +393,7 @@ const AddTask = () => {
                       primaryColor={"purple"}
                       popoverClassName="!bg-white !border-gray-300 !shadow-md"
                       popoverDirection="down"
-                      toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                      toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
                       inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                         fieldErrors.sDate ? "border-red border" : ""
                       }`}
@@ -398,7 +416,7 @@ const AddTask = () => {
                         inputId="dDate"
                         popoverClassName="!bg-white !border-gray-300 !shadow-md"
                         popoverDirection="down"
-                        toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                        toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
                         inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
                           fieldErrors.eDate && "border-red border"
                         }`}
@@ -554,11 +572,10 @@ const AddTask = () => {
                   {t(error.message)}
                 </div>
               )}
-             
-                <div className="btn  flex items-center justify-center md:justify-end my-3">
-                  <Button onClick={handleSubmit}>{t("Next")}</Button>
-                </div>
-             
+
+              <div className="btn  flex items-center justify-center md:justify-end my-3">
+                <Button onClick={handleSubmit}>{t("Next")}</Button>
+              </div>
             </form>
           </div>
         </>

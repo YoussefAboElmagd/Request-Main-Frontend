@@ -228,10 +228,10 @@ export const AddNewTask = ({ newTask, task }) => {
         open={isOpen}
         size="lg"
         handler={handleOpen}
-        className="overflow-y-scroll"
+        className="overflow-y-scroll  h-[80vh]"
       >
         <DialogBody>
-          <form action="submit">
+          <form action="submit" className="">
             <Input
               label={t("TaskName")}
               placeholder={t("TaskName")}
@@ -269,7 +269,7 @@ export const AddNewTask = ({ newTask, task }) => {
               <div className="flex flex-col my-2 col-span-1">
                 <label
                   htmlFor="sDate"
-                  className="flex items-center gap-2 font-jost text-base font-medium "
+                  className="flex items-center ps-1 gap-2 font-jost text-base font-medium "
                 >
                   {t("sDate")}
                 </label>
@@ -286,7 +286,7 @@ export const AddNewTask = ({ newTask, task }) => {
                   primaryColor={"purple"}
                   popoverClassName="!bg-white !border-gray-300 !shadow-md"
                   popoverDirection="down"
-                  toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                  toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
                   inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                     fieldErrors.sDate ? "border-red border" : ""
                   }`}
@@ -295,7 +295,7 @@ export const AddNewTask = ({ newTask, task }) => {
               <div className="flex flex-col my-2 col-span-1">
                 <label
                   htmlFor="dDate"
-                  className="flex items-center gap-2 font-jost text-base font-medium "
+                  className="flex items-center ps-1 gap-2 font-jost text-base font-medium "
                 >
                   {t("dDate")}
                 </label>
@@ -309,7 +309,7 @@ export const AddNewTask = ({ newTask, task }) => {
                   inputId="dDate"
                   popoverClassName="!bg-white !border-gray-300 !shadow-md"
                   popoverDirection="down"
-                  toggleClassName="text-yellow absolute top-4 ltr:right-4 rtl:left-4"
+                  toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
                   inputClassName={`bg-white w-full rounded-xl border border-purple font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border focus:border-purple focus:border-solid ${
                     fieldErrors.eDate && "border-red border"
                   }`}
@@ -382,7 +382,7 @@ export const AddNewTask = ({ newTask, task }) => {
               />
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2  ps-2 lg:grid-cols-4 gap-x-4 mt-3">
               <Input
                 type="number"
                 min={0}
@@ -438,7 +438,7 @@ export const AddNewTask = ({ newTask, task }) => {
 
             {error && (
               <div className="text-red font-bold text-center p-2">
-                {t(error)}
+                {t("all fields are required")}
               </div>
             )}
             <div className="btn flex items-center justify-center md:justify-end my-3">

@@ -7,7 +7,7 @@ const customStyles = {
   control: (provided) => ({
     ...provided,
     backgroundColor: "white",
-    border: "1px solid var(--purple)",
+    border: "1px solid black",
     borderRadius: "15px",
     padding: "5px",
     minHeight: "42px",
@@ -20,8 +20,8 @@ const customStyles = {
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: "#FFDD94",
-    "&:hover": { color: "#FFDD94" },
+    color: "black",
+    "&:hover": { color: "black" },
   }),
   indicatorSeparator: () => ({ display: "none" }),
   option: (provided, state) => ({

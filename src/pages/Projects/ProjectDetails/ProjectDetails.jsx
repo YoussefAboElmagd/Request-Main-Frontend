@@ -243,12 +243,12 @@ const ProjectDetails = () => {
 
                 <div className="Badges flex items-center  justify-around gap-2">
                   <span
-                    className={`${Project.status} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
+                    className={`${Project.status} w-full capitalize text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
                   >
                     {Project.status}
                   </span>
                   <span
-                    className={`${Project.projectPriority} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
+                    className={`${Project.projectPriority} w-full capitalize text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
                   >
                     {Project.projectPriority}
                   </span>

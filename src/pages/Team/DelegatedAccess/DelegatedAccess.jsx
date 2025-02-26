@@ -38,6 +38,8 @@ const DelegatedAccess = () => {
   const handleOpenAccordion = (projectId) => {
     setOpenAcc((prevOpen) => (prevOpen === projectId ? null : projectId));
   };
+
+ 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -54,9 +56,7 @@ const DelegatedAccess = () => {
     fetchData();
   }, [token, user.team]);
 
-  async function deleteUSERFROMUSERTABLE() {
-    await deleteUserFromUsers(selectedUserId);
-  }
+
   const handleDelete = async () => {
     if (selectedUserId && selectedProjectId) {
       setLoading(true);
@@ -211,7 +211,7 @@ const DelegatedAccess = () => {
                 variant="gradient"
                 onClick={() => {
                   handleDelete();
-                  deleteUSERFROMUSERTABLE();
+                  
                 }}
               >
                 Yes, delete

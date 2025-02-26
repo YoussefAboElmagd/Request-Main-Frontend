@@ -16,6 +16,8 @@ import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
 import { MdOutlinePanoramaHorizontal } from "react-icons/md";
 import { t } from "i18next";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 // Point component for swatch
 function Point({ color, checked }) {
@@ -44,7 +46,6 @@ function SwatchComponent({ color, onChange }) {
           width: 24,
           height: 24,
           borderRadius: "4px",
-
         },
       }}
       onChange={(hsvColor) => {
@@ -56,7 +57,7 @@ function SwatchComponent({ color, onChange }) {
 }
 
 // Signature Button Component
-export function SignatureBtn({ onSignatureChange }) {
+export function SignatureBtn({ onSignatureChange, company }) {
   const [open, setOpen] = useState(false);
   const [color, setColor] = useState("#000");
   const [fontWeight, setFontWeight] = useState("normal");
@@ -64,6 +65,7 @@ export function SignatureBtn({ onSignatureChange }) {
   const [isDrawnSignature, setIsDrawnSignature] = useState(true);
   const [preview, setPreview] = useState(null);
   const signaturePadRef = useRef(null);
+  const user = useSelector((state) => state.auth.user);
 
   // Load saved signature from local storage
   useEffect(() => {
@@ -97,7 +99,7 @@ export function SignatureBtn({ onSignatureChange }) {
 
   // Handle signature edit - load the saved signature back into the pad
   const handleEdit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     handleOpen();
     if (signaturePadRef.current) {
       const savedSignature = localStorage.getItem("Signature");
@@ -118,7 +120,7 @@ export function SignatureBtn({ onSignatureChange }) {
   const handleSaveSignature = () => {
     if (signaturePadRef.current) {
       const trimmedCanvas = signaturePadRef.current.getTrimmedCanvas();
-      (trimmedCanvas);
+      trimmedCanvas;
       const dataUrl = trimmedCanvas.toDataURL("image/png");
       setPreview(dataUrl);
       localStorage.setItem("Signature", dataUrl);
@@ -133,20 +135,35 @@ export function SignatureBtn({ onSignatureChange }) {
     }
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     setPreview(reader.result);
+    //     setIsDrawnSignature(false);
+    //     localStorage.setItem("Signature", reader.result);
+    //     if (onSignatureChange) {
+    //       onSignatureChange(reader.result);
+    //     }
+    //   };
+    //   reader.readAsDataURL(file);
+    // }
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreview(reader.result);
-        setIsDrawnSignature(false);
-        localStorage.setItem("Signature", reader.result);
-        if (onSignatureChange) {
-          onSignatureChange(reader.result);
+      const formData = new FormData();
+      formData.append("signature", file);
+      await axios.put(
+        `https://api.request-sa.com/api/v1/users/company/${user._id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
-      };
-      reader.readAsDataURL(file);
+      ).then(res=>console.log(res)).catch(err=>console.log(err));
     }
+    // console.log(file);
     setOpen(false);
   };
 
@@ -181,8 +198,8 @@ export function SignatureBtn({ onSignatureChange }) {
     throttle: 16,
     clearOnResize: true,
     backgroundColor: "#fff",
-    onBegin: () => ("Stroke began"),
-    onEnd: () => ("Stroke ended"),
+    onBegin: () => "Stroke began",
+    onEnd: () => "Stroke ended",
   };
 
   return (
@@ -198,10 +215,10 @@ export function SignatureBtn({ onSignatureChange }) {
           >
             <PiSignatureBold className="text-purple w-6 h-6" />
           </span>
-          {preview ? (
+          {company?.signature ? (
             <img
               className="w-[66px] h-[62px] object-contain"
-              src={preview}
+              src={`https://api.request-sa.com/${company.signature}`}
               alt="Signature"
             />
           ) : (

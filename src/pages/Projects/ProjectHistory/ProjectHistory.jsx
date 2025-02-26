@@ -33,7 +33,7 @@ const ProjectHistory = () => {
   const buttonData = [
     { label: t("All"), value: "all" },
     { label: t("Waiting"), value: "waiting" },
-    { label: t("working"), value: "working" },
+    { label: t("Working"), value: "working" },
     { label: t("completed"), value: "completed" },
     { label: t("Delayed"), value: "delayed" },
   ];

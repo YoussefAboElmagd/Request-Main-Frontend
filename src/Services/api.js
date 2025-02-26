@@ -81,12 +81,18 @@ export const updateUser = async (userId, userData, token) => {
   }
 };
 export const uploadCompanyFiles = async (userId, updatedData) => {
-  console.log(updatedData);
+  const formData = new FormData();
+  formData.append("name", updatedData.name);
+  formData.append("companyLogo", updatedData.companyLogo);
+  formData.append("electronicStamp",updatedData.electronicStamp);
+  formData.append("signature", updatedData.signature);
+  formData.append("companyName", updatedData.companyName);
+    console.log(userId,updatedData)
 
   try {
     const response = await axiosInstance.put(
       `users/company/${userId}`,
-      updatedData,
+      formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",

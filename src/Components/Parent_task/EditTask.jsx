@@ -292,7 +292,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
                   label={t("tag")}
                   id="tag"
                   isMulti={false}
-                  value={formData.tag}
+                  value={task.tag}
                   loading={TagLoading}
                   InputClassName={`${
                     fieldErrors.tag ? "border  border-red rounded-2xl " : ""
@@ -309,7 +309,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
                   label={t("Responsible Person")}
                   id="assignees"
                   isMulti={false}
-                  value={formData.assignees}
+                  value={task.assignees}
                   InputClassName={` ${
                     fieldErrors.member && "border-red  border rounded-2xl"
                   }`}
@@ -432,7 +432,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
                   name="quantity"
                   placeholder={t("Quantity")}
                   a
-                  value={formData.quantity}
+                  value={task.requiredQuantity}
                   onChange={handleChange}
                 />
               </div>
@@ -450,7 +450,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
                   id="Total"
                   name="Total"
                   placeholder={t("Total")}
-                  value={formData.total}
+                  value={task.total}
                   disabled
                   onChange={handleChange}
                 />

@@ -37,7 +37,7 @@ const TaskRow = ({
     handleChange("total", total);
   };
   
-  console.log(task);
+  console.log("task");
   return (
     <tr>
       <td className="w-1/3">
@@ -65,7 +65,7 @@ const TaskRow = ({
         <Input
           type="number"
           min={0}
-          value={task.quantity}
+          value={task.requiredQuantity}
           onChange={(e) => {
             const value = e.target.value;
             handleChange("requiredQuantity", value);

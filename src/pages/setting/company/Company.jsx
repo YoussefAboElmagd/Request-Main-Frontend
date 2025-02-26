@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiCamera } from "react-icons/ci";
 import { useSelector, useDispatch } from "react-redux";
 import Input from "../../../Components/UI/Input/Input";
@@ -9,11 +9,12 @@ import Button from "../../../Components/UI/Button/Button";
 import { toast } from "react-toastify";
 import { uploadCompanyFiles } from "../../../Services/api";
 import { Image } from "../../../Components/UI/Image/image";
+import axios from "axios";
 
 const Company = () => {
   const user = useSelector((state) => state.auth.user);
   const userId = user._id;
-  (userId);
+  userId;
 
   const [preview, setPreview] = useState("");
   const [logo, setLogo] = useState(user?.companyLogo);
@@ -23,7 +24,7 @@ const Company = () => {
   const [signature, setSignature] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [company,setCompany] = useState("")
   const handleStampChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -33,6 +34,7 @@ const Company = () => {
   };
 
   const handleSignatureChange = (dataUrl) => {
+    
     setSignature(dataUrl);
   };
 
@@ -59,14 +61,14 @@ const Company = () => {
       signature: signature,
       companyName: name,
     };
-    ("Updated data:", updatedData);
+    "Updated data:", updatedData;
 
     try {
       const res = await uploadCompanyFiles(userId, updatedData);
-      ("Response from server:", res);
+      "Response from server:", res;
 
       const updatedUser = { ...user, ...res.updates };
-      ("Updated user data:", updatedUser);
+      "Updated user data:", updatedUser;
 
       // Save to local storage
       localStorage.setItem("user", JSON.stringify(updatedUser));
@@ -81,6 +83,20 @@ const Company = () => {
       setLoading(false);
     }
   };
+
+  
+
+  async function getcomanyINfo() {
+    await axios
+      .get(`https://api.request-sa.com/api/v1/users/companyDetails/${user._id}`)
+      .then((res) => setCompany(res.data.results))
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+
+    getcomanyINfo()
+  }, []);
 
   return (
     <div className="Company">
@@ -114,7 +130,7 @@ const Company = () => {
               type="text"
               id="companyName"
               name="companyName"
-              placeholder={name}
+              placeholder={"Company Name"}
               value={name}
               required
               onChange={(e) => setName(e.target.value)}
@@ -154,7 +170,7 @@ const Company = () => {
             />
           </div>
           <div className="signature">
-            <SignatureBtn onSignatureChange={handleSignatureChange} />
+            <SignatureBtn company={company} onSignatureChange={handleSignatureChange} />
           </div>
         </div>
         {error && <div className="error text-red text-center">{error}</div>}
