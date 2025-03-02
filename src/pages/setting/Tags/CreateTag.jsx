@@ -134,14 +134,14 @@ const CreateTag = ({ onTagsChange }) => {
         <div className="wrapper bg-white rounded-3xl p-3 m-2">
           <h6 className="font-semibold text-sm leading-4">{t("Tags")}</h6>
           {tags.length > 0 ? (
-            <div className="PreviousTags grid grid-cols-2 md:grid-col-4 lg:grid-cols-6 gap-2 bg-white rounded-3xl p-4 shadow-lg">
+            <div className="PreviousTags  flex flex-wrap bg-white rounded-3xl p-4 shadow-lg">
               {tags.map((tag, index) => (
                 <div
                   key={index}
-                  className={`tag col-span-1 rounded-3xl p-1 text-center relative`}
+                  className={`tag col-span-1 rounded-3xl p-1 px-3 py-2 text-center relative`}
                   style={{
-                    background: `${tag.colorCode}40`, // Opacity 25%
-                    color: tag.colorCode,
+                    background: `${tag.colorCode}30`, // Opacity 25%
+                    color: "black",
                   }}
                 >
                   {tag.name}
@@ -167,10 +167,7 @@ const CreateTag = ({ onTagsChange }) => {
             </div>
           )}
 
-          <h6 className="font-semibold text-sm leading-4 my-4">
-            {t("+ Add new tag")}
-          </h6>
-
+          
           <form onSubmit={handleAddTag} className="py-5 px-3 lg:px-8">
             <Input
               label={t("TName")}

@@ -152,8 +152,8 @@ const Company = () => {
               </div>
               <img
                 src={
-                  preview
-                    ? `${stampPreview}`
+                  user?.electronicStamp
+                    ? `https://api.request-sa.com/${user?.electronicStamp}`
                     : `https://api.request-sa.com/${stamp}`
                 }
                 alt="Stamp Preview"

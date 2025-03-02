@@ -4,6 +4,7 @@ import Input from "../UI/Input/Input";
 import Datepicker from "react-tailwindcss-datepicker";
 import Select from "../UI/Select/Select";
 import {
+  addTask,
   getAllMembersByProject,
   getAllTagsByProject,
   getAllTagsByUser,
@@ -17,13 +18,14 @@ import i18n from "../../config/i18n";
 
 export const AddNewTask = ({ newTask, task }) => {
   const user = useSelector((state) => state.auth.user);
-  
+
   const lang = i18n.language;
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId, taskType } = location.state || {};
   location.state;
   "projectId :", projectId;
+  
 
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -96,6 +98,8 @@ export const AddNewTask = ({ newTask, task }) => {
             label: member.name,
           }))
         );
+
+        setMember(prev=>prev.filter(member=>member.value != user._id))
         setMemberLoading(false);
         
       } catch (error) {
@@ -183,7 +187,7 @@ export const AddNewTask = ({ newTask, task }) => {
         assignees: SelectedMember,
         createdBy: user._id,
         tags: selectedTag,
-        type: "tableOfQuantity",
+        type: "toq",
         price: Price,
         requiredQuantity: Quantity,
         unit: selectedUnit,
@@ -191,7 +195,8 @@ export const AddNewTask = ({ newTask, task }) => {
       };
 
       "taskData", taskData;
-      await newTask(taskData);
+      
+      await addTask(taskData);
 
       clearFormFields();
     } catch (err) {
@@ -216,6 +221,7 @@ export const AddNewTask = ({ newTask, task }) => {
     setTotal(Total);
   };
 
+  console.log(Member)
   return (
     <div className="AddNewTask">
       <button

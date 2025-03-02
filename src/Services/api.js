@@ -864,6 +864,7 @@ export const deleteMemberFromProjectTeam = async (projectId, Member) => {
 // update task
 
 export const updateTask = async (token, taskId, userId, taskData) => {
+  // console.log(token, taskId, userId, taskData)
   try {
     const response = await axiosInstance.put(
       `task/${taskId}?id=${userId}`,

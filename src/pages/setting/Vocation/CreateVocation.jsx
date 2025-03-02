@@ -8,7 +8,7 @@ import Loader from "../../../Components/Loader/Loader";
 import { addVocation, getAllVocations } from "../../../Services/api";
 import { toast } from "react-toastify";
 
-const CreateVocation = () => {
+const  CreateVocation = () => {
   const lang = i18n.language;
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
@@ -148,7 +148,7 @@ const CreateVocation = () => {
                 <Input
                   label={t("VName")}
                   placeholder={t("Enter vocation name in English")}
-                  className="bg-white border border-purple mx-2 border-solid focus:border focus:border-purple focus:border-solid"
+                  className="bg-white border placeholder:text-xs  border-purple mx-2 border-solid focus:border focus:border-purple focus:border-solid"
                   type="text"
                   required={true}
                   value={voc.nameEN}
@@ -161,7 +161,7 @@ const CreateVocation = () => {
                 <Input
                   label={t("VName")}
                   placeholder={t("Enter vocation name in Arabic")}
-                  className="bg-white text-start border border-purple mx-2 border-solid focus:border focus:border-purple focus:border-solid"
+                  className="bg-white text-start border placeholder:text-xs  border-purple mx-2 border-solid focus:border focus:border-purple focus:border-solid"
                   type="text"
                   label_class={""}
                   required={true}

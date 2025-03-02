@@ -4,8 +4,10 @@ import { BiTrash } from "react-icons/bi";
 import {
   addTask,
   addTasksTable,
+  getAllTasksPerProject,
   getAllUnits,
   updateProject,
+  updateTask,
 } from "../../../Services/api";
 import Empty from "../../../Components/empty/empty";
 import Input from "../../../Components/UI/Input/Input";
@@ -15,6 +17,8 @@ import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AddNewTask } from "../../../Components/Parent_task/AddNewTask";
 import { EditTask } from "../../../Components/Parent_task/EditTask";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 // TaskRow Component
 const TaskRow = ({
@@ -27,17 +31,15 @@ const TaskRow = ({
   UnitsLoading,
   errors,
 }) => {
-  
   const handleChange = (field, value) => {
     onChange(index, field, value);
   };
-  
+
   const calculateTotal = (price, requiredQuantity) => {
     const total = Number(price || 0) * Number(requiredQuantity || 0);
     handleChange("total", total);
   };
-  
-  console.log("task");
+
   return (
     <tr>
       <td className="w-1/3">
@@ -82,7 +84,7 @@ const TaskRow = ({
           className="bg-white border rounded-2xl p-2 border-gray mx-2"
           type="number"
           min={0}
-          value={task.total}
+          value={task.price * task.requiredQuantity}
           disabled
         />
       </td>
@@ -127,9 +129,9 @@ const TableOfQuantities = () => {
   const { projectId, taskType, members, projectName } = location.state || {};
   location.state;
   "project id :", projectId;
-
+ 
   const navigate = useNavigate();
-
+  const user = useSelector((state) => state.auth.user);
   const handleNewTask = (task) => {
     setTasks((prevTasks) => [...prevTasks, task]);
   };
@@ -142,15 +144,27 @@ const TableOfQuantities = () => {
   };
 
   // Handle task removal
-  const handleTaskRemove = (index) => {
+  const handleTaskRemove = async (index) => {
     setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+    await axios
+      .delete(`https://api.request-sa.com/api/v1/task/${tasks[index]._id}`)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   // Handle task update
-  const handleUpdateTask = (updatedTask, index) => {
+  const handleUpdateTask = async (updatedTask, index) => {
     const updatedTasks = [...tasks];
     updatedTasks[index] = { ...updatedTasks[index], ...updatedTask };
     setTasks(updatedTasks);
+
+    await updateTask(
+      localStorage.getItem("token"),
+      tasks[index]._id,
+      user._id,
+      updatedTask
+    );
+    
   };
 
   const handleUpdateProject = async () => {
@@ -192,6 +206,18 @@ const TableOfQuantities = () => {
     }
   };
 
+  async function getTasksbyProject() {
+    await axios
+      .get(
+        `https://api.request-sa.com/api/v1/task/project/${projectId}?status=all`
+      )
+      .then((res) => setTasks(res.data.results))
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    getTasksbyProject();
+  }, []);
   return (
     <div className="TableOfQuantities">
       <div className="header bg-white p-4 rounded-l-3xl flex items-center justify-between">

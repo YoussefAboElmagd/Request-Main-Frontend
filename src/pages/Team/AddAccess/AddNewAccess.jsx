@@ -174,6 +174,9 @@ const AddNewAccess = () => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const countries = useCountries().countries;
+  const [phoneError, setPhoneError] = useState(false);
+  const [accessError,SetAccessError] = useState(false)
+  const [NameError, setNameError] = useState(false);
   const [countryIndex, setCountryIndex] = useState(230);
   const { name, flags, countryCallingCode } = countries[countryIndex];
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -198,6 +201,7 @@ const AddNewAccess = () => {
   const [isSelectOpen, setIsSelectOpen] = useState(true);
   const [TagsLoading, setTagsLoading] = useState(true);
   const [VocationLoading, setVocationLoading] = useState(true);
+
   const [fieldErrors, setFieldErrors] = useState({
     Name: false,
     Email: false,
@@ -294,6 +298,16 @@ const AddNewAccess = () => {
     setFieldErrors({});
   };
 
+  useEffect(() => {
+    setPhoneError(false);
+  }, [Phone]);
+  useEffect(() => {
+    setNameError(false);
+  }, [Name]);
+  useEffect(() => {
+    SetAccessError(false);
+  }, [accessList12w]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFieldErrors({});
@@ -309,7 +323,6 @@ const AddNewAccess = () => {
       Tags: !SelectedTags,
     };
 
-    console.log(newFieldErrors)
     setFieldErrors(newFieldErrors);
 
     if (Object.values(newFieldErrors).some((hasError) => hasError)) {
@@ -317,6 +330,22 @@ const AddNewAccess = () => {
       return;
     }
     const fullPhoneNum = `${countryCallingCode}${Phone}`;
+
+    if (fullPhoneNum.length < 11) {
+      setPhoneError(true);
+      console.log("in valid phone number", fullPhoneNum);
+      return;
+    }
+    if (Name.length < 3) {
+      setNameError(true);
+      console.log("in valid phone number", fullPhoneNum);
+      return;
+    }
+
+    if (Object.values(accessList).every((value) => value === false)) {
+      SetAccessError(true)
+      return;
+    }
     try {
       const payload = {
         name: Name,
@@ -330,7 +359,7 @@ const AddNewAccess = () => {
         tags: SelectedTags.map((t) => t.value),
       };
       payload;
-      
+
       await updateTeam(token, user.team, payload, lang);
       clearFields();
       toast.success(t("toast.MemberAdded"));
@@ -396,8 +425,6 @@ const AddNewAccess = () => {
     );
   }
 
- 
-
   return (
     <div className="AddNewAccess bg-white rounded-3xl m-2 p-4">
       <form
@@ -411,13 +438,14 @@ const AddNewAccess = () => {
             label={t("Email")}
             placeholder={t("Email")}
             autoComplete={"email"}
-            pattern={"/^[^s@]+@[^s@]+.[^s@]+$/"}
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
             onChange={(e) => setEmail(e.target.value)}
             value={Email}
             hasError={fieldErrors.Email}
             icon={<CiMail />}
           />
         </div>
+
         <div className="col-span-4 md:col-span-2">
           <Input
             type={isPasswordVisible ? "text" : "password"}
@@ -433,6 +461,7 @@ const AddNewAccess = () => {
             togglePasswordVisibility={togglePasswordVisibility}
           />
         </div>
+
         <div className="col-span-4 md:col-span-2 ">
           <Input
             type="text"
@@ -445,6 +474,7 @@ const AddNewAccess = () => {
             icon={<MdOutlinePerson />}
           />
         </div>
+
         <div className="col-span-4 md:col-span-2  focus:border-2  focus:border-rose-500 relative flex mt-5  w-full ">
           <Menu placement="bottom-start">
             <MenuHandler>
@@ -498,6 +528,8 @@ const AddNewAccess = () => {
           <input
             dir={lang == "en" ? "ltr" : "rtl"}
             type="tel"
+            min={11}
+            minLength={11}
             maxLength={15}
             // country={country.value}
             placeholder={t("Phone number")}
@@ -510,6 +542,7 @@ const AddNewAccess = () => {
             }  `}
           />
         </div>
+
         <div className="col-span-4">
           <label
             className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
@@ -649,7 +682,22 @@ const AddNewAccess = () => {
             {t(fieldErrors.message)}
           </div>
         )}
-        <div className="btn flex items-center justify-center md:justify-end col-span-4 mt-5">
+        {phoneError && (
+          <div className="text-red font-bold text-center p-2">
+            phone number is not valid
+          </div>
+        )}
+        {NameError && (
+          <div className="text-red font-bold text-center p-2">
+            name must be at least 3 characters
+          </div>
+        )}
+        {accessError && (
+          <div className="text-red font-bold text-center p-2">
+            You must select the member access type
+          </div>
+        )}
+        <div className="btn flex items-center justify-center md:justify-between col-span-4 mt-5">
           <Button onClick={handleSubmit} className={"px-0 text-sm"}>
             {t("add")}
           </Button>

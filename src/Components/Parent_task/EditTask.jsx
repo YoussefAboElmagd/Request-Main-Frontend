@@ -36,11 +36,11 @@ export const EditTask = ({ task, onUpdateTask }) => {
     price: task.price,
     quantity: task.quantity,
     total: task.price * task.quantity,
-    unit: task.unit,
+    unit: task.unit.name,
   });
   ("form data :",  formData);
 
-  console.log(task)
+  
   
 
   const [fieldErrors, setFieldErrors] = useState({});
@@ -175,6 +175,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
       setLoading(false);
     }
   };
+  
   return (
     <div className="EditSub">
       <button
@@ -309,7 +310,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
                   label={t("Responsible Person")}
                   id="assignees"
                   isMulti={false}
-                  value={task.assignees}
+                  value={task?.assignees[0]?.name}
                   InputClassName={` ${
                     fieldErrors.member && "border-red  border rounded-2xl"
                   }`}
@@ -450,7 +451,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
                   id="Total"
                   name="Total"
                   placeholder={t("Total")}
-                  value={task.total}
+                  value={task.price * task.requiredQuantity}
                   disabled
                   onChange={handleChange}
                 />
