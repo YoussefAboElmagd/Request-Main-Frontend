@@ -221,7 +221,7 @@ export const AddNewTask = ({ newTask, task }) => {
     setTotal(Total);
   };
 
-  console.log(Member)
+  
   return (
     <div className="AddNewTask">
       <button

@@ -18,13 +18,14 @@ const getStatusDisplay = (status) => {
 };
 
 const AvatarList = memo(({ avatars }) => {
+  console.log(avatars)
   const displayedAvatars = useMemo(() => avatars.slice(0, 5), [avatars]);
   return (
     <div className="members flex -space-x-2">
       {displayedAvatars.map((avatar, index) => (
         <img
           key={index}
-          src={avatar}
+          src={`https://api.request-sa.com/${avatar}`}
           alt="avatar"
           className="w-8 h-8 border-2 border-white rounded-full m-1"
         />

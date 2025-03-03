@@ -119,11 +119,11 @@ const Invite = () => {
           {invites.map((invite, index) => (
             <div
               key={index}
-              className="invite-item grid grid-cols-2 lg:grid-cols-6 gap-3 mb-2"
+              className="invite-item flex flex-col justify-around lg:flex-row gap-x-4 mb-2 "
             >
-              <div className="col-span-2">
+              <div className="lg:w-1/4 w-2/3 mx-auto">
                 <Input
-                  className="bg-white border border-purple border-solid focus:border-purple focus:border focus:border-solid"
+                  className="bg-white border   border-purple border-solid focus:border-purple focus:border focus:border-solid"
                   label={t("invite")}
                   placeholder={t("Email")}
                   type={"email"}
@@ -135,7 +135,7 @@ const Invite = () => {
                   }
                 />
               </div>
-              <div className="col-span-2">
+              <div className="lg:w-1/4 w-2/3 mx-auto">
                 <Input
                   className="bg-white border border-purple border-solid focus:border-purple focus:border focus:border-solid"
                   label={`${t("Comment")} ${t("(not required)")}`}
@@ -149,7 +149,7 @@ const Invite = () => {
                   }
                 />
               </div>
-              <div className="col-span-1">
+              <div className="lg:w-1/4 w-2/3 mx-auto">
                 <Select
                   label={t("type")}
                   options={roles.map((role) => ({
@@ -162,15 +162,16 @@ const Invite = () => {
                 />
               </div>
 
-              <div className="col-span-1 flex items-center gap-2 mt-3">
+              <div className=" flex items-center justify-center gap-2 mt-3 w-full lg:w-10 ">
                 {index === 0 && (
                   <button
                     type="button"
                     disabled={invites.length === 5}
                     onClick={addNewInvite}
+                    className=" w-2/3 lg:w-10"
                   >
                     <CiSquarePlus
-                      className={`w-10 h-10 bg-yellow ${
+                      className={`w-full lg:w-10 h-10 bg-yellow ${
                         invites.length === 5 ? "opacity-45 " : ""
                       }  text-white rounded-lg`}
                     />
