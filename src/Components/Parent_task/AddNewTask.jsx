@@ -15,6 +15,7 @@ import { t } from "i18next";
 import Button from "../UI/Button/Button";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import i18n from "../../config/i18n";
+import axios from "axios";
 
 export const AddNewTask = ({ newTask, task }) => {
   const user = useSelector((state) => state.auth.user);
@@ -25,8 +26,16 @@ export const AddNewTask = ({ newTask, task }) => {
   const { projectId, taskType } = location.state || {};
   location.state;
   "projectId :", projectId;
-  
 
+  console.log(projectId);
+  const formatDate = (date) => {
+    if (!date) return "";
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
   const [Loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [TaskType, setTaskType] = useState(taskType);
@@ -48,13 +57,15 @@ export const AddNewTask = ({ newTask, task }) => {
   const [SelectedMember, setSelectedMember] = useState("");
   const [tagsLoading, setTagsLoading] = useState(true);
   const [TaskId, setTaskId] = useState(false);
+  const [project, setProject] = useState("");
   const [sDate, setSDate] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-  });
+    startDate:"",
+    endDate:"",
+});
+  
   const [eDate, setEDate] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate:"",
+    endDate:"",
   });
   const [fieldErrors, setFieldErrors] = useState({
     Name: false,
@@ -69,6 +80,18 @@ export const AddNewTask = ({ newTask, task }) => {
     member: false,
   });
 
+ 
+  async function getProjectById() {
+    await axios
+      .get(`https://api.request-sa.com/api/v1/project/${projectId}`)
+      .then((res) => setProject(res.data.results))
+      .catch((err) => console.log(err));
+  }
+
+  console.log(project)
+  useEffect(() => {
+    getProjectById();
+  }, [projectId]);
   useEffect(() => {
     setIsSubtask(TaskType === "sub");
   }, [TaskType]);
@@ -81,7 +104,7 @@ export const AddNewTask = ({ newTask, task }) => {
           getAllUnits(),
           getAllMembersByProject(projectId, lang),
         ]);
-        
+
         setTags(tagsData?.tags);
         setTagsLoading(false);
         setUnits(
@@ -91,7 +114,7 @@ export const AddNewTask = ({ newTask, task }) => {
           }))
         );
         setUnitsLoading(false);
-        
+
         setMember(
           MembersData?.groupedMembers?.map((member) => ({
             value: member._id,
@@ -99,9 +122,8 @@ export const AddNewTask = ({ newTask, task }) => {
           }))
         );
 
-        setMember(prev=>prev.filter(member=>member.value != user._id))
+        setMember((prev) => prev.filter((member) => member.value != user._id));
         setMemberLoading(false);
-        
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -117,25 +139,18 @@ export const AddNewTask = ({ newTask, task }) => {
     { value: "high", label: t("high") },
   ];
 
-  const formatDate = (date) => {
-    if (!date) return "";
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
+  
 
   const clearFormFields = () => {
     setName("");
     setDescription("");
     setSDate({
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate:"",
+      endDate:"",
     });
     setEDate({
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate:"",
+      endDate:"",
     });
 
     setPrice(0);
@@ -195,7 +210,7 @@ export const AddNewTask = ({ newTask, task }) => {
       };
 
       "taskData", taskData;
-      
+
       await addTask(taskData);
 
       clearFormFields();
@@ -221,12 +236,13 @@ export const AddNewTask = ({ newTask, task }) => {
     setTotal(Total);
   };
 
-  
+  console.log(formatDate(project.sDate));
+
   return (
     <div className="AddNewTask">
       <button
         onClick={handleOpen}
-        className=" font-bold text-lg text-purple underline underline-offset-1"
+        className=" font-bold text-sm sm:text-lg text-purple underline underline-offset-1"
       >
         {t("+add new")}
       </button>
@@ -283,8 +299,10 @@ export const AddNewTask = ({ newTask, task }) => {
                   useRange={false}
                   asSingle={true}
                   inputId="sDate"
+                  minDate={new Date(formatDate(project.sDate))}
                   value={sDate}
-                  onChange={(date) => {setSDate(date)
+                  onChange={(date) => {
+                    setSDate(date);
                     if (date.startDate > eDate.startDate) {
                       setEDate(date); // Reset eDate to sDate if it becomes invalid
                     }
@@ -310,7 +328,7 @@ export const AddNewTask = ({ newTask, task }) => {
                   asSingle={true}
                   primaryColor={"purple"}
                   value={eDate}
-                   minDate={sDate.startDate} // Prevent selection of dates before sDate
+                  minDate={sDate.startDate} // Prevent selection of dates before sDate
                   onChange={(date) => setEDate(date)}
                   inputId="dDate"
                   popoverClassName="!bg-white !border-gray-300 !shadow-md"

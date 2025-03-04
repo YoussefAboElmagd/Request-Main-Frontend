@@ -52,7 +52,7 @@ const Layout = () => {
       {showSidebar && <Header className="w-full" />}
       <div className="flex flex-1 ">
         {showSidebar && localStorage.getItem("token") && <Sidebar />}
-        <main className={`flex-1 my-4 ${isLandingPage ? "p-0" : "p-2 md:p-4"}  `}>
+        <main className={`flex-1 my-4 ${isLandingPage ? "p-0" : "p-2 md:p-4"}   `}>
           <AppRoutes />
         </main>
       </div>

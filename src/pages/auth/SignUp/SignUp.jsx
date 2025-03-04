@@ -71,6 +71,15 @@ const SignUp = () => {
     } else {
       setPasswordError("");
     }
+    
+  }
+  function validatePassword (e){
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+    if(!regex.test(e.target.value)){
+      setPasswordError("Password at least 8 characters, 1 lower case, 1 upper case, 1 special character")
+    }else{
+     
+    }
   }
   const handleConfirmPasswordChange = (e) => {
     const confirmPasswordValue = e.target.value;
@@ -368,6 +377,7 @@ const SignUp = () => {
                     onChange={(e) => {
                       setPassword(e.target.value);
                       checkMatch1(e);
+                      validatePassword(e)
                     }}
                     minLength={8}
                     inputIcons={[

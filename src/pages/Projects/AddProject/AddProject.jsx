@@ -9,6 +9,14 @@ import Select from "../../../Components/UI/Select/Select";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+function formatBudget(amount) {
+  // Remove non-numeric characters
+  let numericValue = amount.replaceAll(/\D/g, "");
+
+  // Add dots as thousand separators
+  return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 
 const AddProject = () => {
   const user = useSelector((state) => state.auth.user);
@@ -61,19 +69,24 @@ const AddProject = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-
+   
+    
+      const bdg = budget.split("").filter(ele=>isNaN(ele) !== true).join("")
+    
+    
+    
     const newFieldErrors = {
       Name: !Name.trim(),
       Description: !Description.trim(),
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
-      budget: !budget.toString().trim() || budget < 10,
+      budget: !+bdg.toString().trim() || +bdg < 10,
       priority: !priority,
     };
 
-    if (budget < 10) {
+    if (+bdg < 10) {
       setError({ message: "budget must be greater than or equal to 10" });
+      // console.log(budget)
       return null; // Return null if validation fails
     }
     setFieldErrors(newFieldErrors);
@@ -92,7 +105,7 @@ const AddProject = () => {
         description: Description,
         sDate: formattedSDate,
         dueDate: formattedEDate,
-        budget: budget,
+        budget: bdg,
         projectPriority: priority,
         createdBy: user._id,
       };
@@ -286,11 +299,11 @@ const AddProject = () => {
                     className={`bg-white text-black border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
                       fieldErrors.Name && "border-red"
                     }`}
-                    type={"number"}
+                    type={"text"}
                     required={true}
                     id={"budget"}
                     min="10"
-                    value={budget}
+                    value={formatBudget(budget)}
                     onChange={(e) => setBudget(e.target.value)}
                     autoFocus={true}
                   />

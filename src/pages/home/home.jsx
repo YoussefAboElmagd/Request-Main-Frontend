@@ -25,7 +25,7 @@ const Home = () => {
   const token = useSelector((state) => state.auth.token);
   const userId = user?._id;
 
-  console.log(user.profilePic)
+
 
   const [data, setData] = useState({ results: [] });
   const [analysis, setAnalysis] = useState({});

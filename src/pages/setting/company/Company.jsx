@@ -94,9 +94,11 @@ const Company = () => {
   }
 
   useEffect(() => {
-
+    
     getcomanyINfo()
-  }, []);
+  }, [company]);
+
+  
 
   return (
     <div className="Company">

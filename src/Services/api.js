@@ -938,7 +938,7 @@ export const sendInvite = async (token, invitationData) => {
     });
 
     "Response from send invite => ", response;
-    console.log(response.data)
+   
     return response.data;
   } catch (error) {
     console.error("Send invite error: ", error.response?.data || error.message);

@@ -41,29 +41,29 @@ const TaskRow = ({
   };
 
   return (
-    <tr>
-      <td className="w-1/3">
+    <div className="flex items-center  flex-wrap justify-around ">
+      <div className= "w-[70px]  lg:w-1/6 ">
         <Input
           type="text"
           value={task.description}
-          className={`bg-white border mx-2 ${
+          className={`bg-white  border text-sm  ${
             errors[index]?.description ? "border-red" : "border-gray"
           }`}
           disabled
         />
-      </td>
-      <td>
+      </div>
+      <div className= "w-[70px]  lg:w-1/6">
         <Input
           type="number"
           min={0}
           value={task.price}
-          className={`bg-white border mx-2 ${
+          className={`bg-white border   ${
             errors[index]?.price ? "border-red" : "border-gray"
           }`}
           disabled
         />
-      </td>
-      <td>
+      </div>
+      <div className= "w-[70px]  lg:w-1/6">
         <Input
           type="number"
           min={0}
@@ -73,40 +73,24 @@ const TaskRow = ({
             handleChange("requiredQuantity", value);
             calculateTotal(task.price, value);
           }}
-          className={`bg-white border mx-2 ${
+          className={`bg-white border  ${
             errors[index]?.quantity ? "border-red" : "border-gray"
           }`}
           disabled
         />
-      </td>
-      <td>
+      </div>
+      <div className= " w-[70px]   lg:w-1/6">
         <input
-          className="bg-white border rounded-2xl p-2 border-gray mx-2"
+          className="bg-white border w-full rounded-2xl p-2 border-gray "
           type="number"
           min={0}
           value={task.price * task.requiredQuantity}
           disabled
         />
-      </td>
-      {/* <td>
-        <Input
-          type="text"
-          value={task.unit}
-          onChange={(e) => {
-            const value = e.target.value;
-            handleChange("requiredQuantity", value);
-            calculateTotal(task.price, value);
-          }}
-          className={`bg-white border mx-2 ${
-            errors[index]?.quantity ? "border-red" : "border-gray"
-          }`}
-          disabled
-        />
-      </td> */}
-      <td className="flex  justify-center items-center gap-3  mt-4">
-        {/* <button >
-          <MdEdit className="text-blue" size={20} />
-        </button> */}
+      </div>
+      
+      <div className="flex  justify-center items-center gap-3  mt-4  w-[70px]  lg:w-1/6">
+        
         <EditTask
           task={task}
           onUpdateTask={(updatedTask) => onUpdateTask(updatedTask, index)}
@@ -114,8 +98,8 @@ const TaskRow = ({
         <button onClick={() => onRemove(index)}>
           <BiTrash className="text-red" size={20} />
         </button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };
 
@@ -219,26 +203,24 @@ const TableOfQuantities = () => {
     getTasksbyProject();
   }, []);
   return (
-    <div className="TableOfQuantities">
-      <div className="header bg-white p-4 rounded-l-3xl flex items-center justify-between">
-        <h5 className="font-bold text-base">{t("Table of Quantities")}</h5>
+    <div className="TableOfQuantities w-[320px] sm:w-[600px] lg:w-[750px] mx-auto overflow-x-scroll lg:overflow-hidden ">
+      <div className="header  bg-white w-[500px] sm:w-[600px] lg:w-[750px]   p-4 rounded-l-3xl flex items-center justify-between">
+        <h5 className="font-bold text-sm  sm:text-base">{t("Table of Quantities")}</h5>
         <AddNewTask newTask={handleNewTask} projectId={projectId} />
       </div>
 
       {tasks.length > 0 ? (
-        <div className="content bg-white p-4 rounded-3xl my-6">
-          <table>
-            <thead>
-              <tr>
-                <th>{t("desc")}</th>
-                <th>{t("Price")}</th>
-                <th>{t("Quantity")}</th>
-                <th>{t("Total")}</th>
-                {/* <th>Unit</th> */}
-                <th>{t("Actions")}</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div className="content bg-white p-4  w-[500px] sm:w-[600px] lg:w-[750px] rounded-3xl mx-auto   my-6">
+          <div className="flex justify-between px-3 font-semibold">
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("desc")}</p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("Price")}</p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("Quantity")}</p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("Total")}</p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base   ps-12">{t("Actions")}</p>
+          </div>
+         
+           
+           
               {tasks.map((task, index) => (
                 <TaskRow
                   key={index}
@@ -252,8 +234,8 @@ const TableOfQuantities = () => {
                   errors={errors}
                 />
               ))}
-            </tbody>
-          </table>
+           
+          
           <div className="btn flex items-center justify-end my-3">
             <Button onClick={handleSubmit}>{t("Save")}</Button>
           </div>

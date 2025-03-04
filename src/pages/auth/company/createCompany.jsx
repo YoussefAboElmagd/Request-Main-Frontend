@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadCompanyFiles } from "../../../Services/api";
 import { toast } from "react-toastify";
 import LandingHeader from "../../../Components/landingHeader/landingHeader";
+import axios from "axios";
 
 const CreateCompany = () => {
   const user = useSelector((state) => state.auth.user);
@@ -27,8 +28,16 @@ const CreateCompany = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [company,setCompany] = useState("")
   const navigate = useNavigate();
-
+  async function getcomanyINfo() {
+    await axios
+      .get(`https://api.request-sa.com/api/v1/users/companyDetails/${user._id}`)
+      .then((res) =>{ setCompany(res.data.results)
+        
+      })
+      .catch((err) => console.log(err));
+  }
   // Function to handle image change and set preview for logo
   const handleLogoChange = (e) => {
     const file = e.target.files[0];
@@ -39,10 +48,10 @@ const CreateCompany = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      return navigate("/");
-    }
-  }, []);
+    getcomanyINfo()
+    
+  }, [company]);
+ 
   // Function to handle image change and set preview for stamp
   const handleStampChange = (e) => {
     const file = e.target.files[0];
@@ -219,7 +228,7 @@ const CreateCompany = () => {
 
           {/* Signature Input */}
           <div className="signature">
-            <SignatureBtn onSignatureChange={handleSignatureChange} />
+            <SignatureBtn company={company} onSignatureChange={handleSignatureChange} />
           </div>
 
           {error && <p className="text-red text-center">{error}</p>}

@@ -119,6 +119,7 @@ export function SignatureBtn({ onSignatureChange, company }) {
 
   const handleSaveSignature = () => {
     if (signaturePadRef.current) {
+      console.log(signaturePadRef.current)
       const trimmedCanvas = signaturePadRef.current.getTrimmedCanvas();
       trimmedCanvas;
       const dataUrl = trimmedCanvas.toDataURL("image/png");
@@ -202,13 +203,18 @@ export function SignatureBtn({ onSignatureChange, company }) {
     onEnd: () => "Stroke ended",
   };
 
+
+  
+  
+  
   return (
     <>
       <div
         onClick={handleOpen}
         className="box flex justify-between items-center bg-white py-2 px-6 gap-2 rounded-2xl m-2 shadow-md cursor-pointer"
       >
-        <button className="flex justify-start items-center">
+      
+        <div className="flex justify-start items-center">
           <span
             className="icon_wrapper rounded-2xl p-5 my-2 mx-4"
             style={{ background: "#CCABDA33" }}
@@ -226,7 +232,7 @@ export function SignatureBtn({ onSignatureChange, company }) {
               {t("Signature")}
             </span>
           )}
-        </button>
+        </div>
         <div className="Signature_fun">
           {preview && (
             <div className="flex items-center justify-between gap-4">
