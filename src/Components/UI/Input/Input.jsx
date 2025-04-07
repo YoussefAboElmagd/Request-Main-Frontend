@@ -14,7 +14,7 @@ const Input = ({
   placeholder,
   inputIcons = [],
   label,
-  labelIcon, 
+  labelIcon,
   required,
   iconClass,
   label_class,
@@ -52,9 +52,8 @@ const Input = ({
           pattern={pattern}
           placeholder={placeholder}
           required={required}
-          
           value={value}
-          className={`Input   font-normal text-base text-black  my-2 py-2 px-4 ${className}`}
+          className={`Input   font-normal text-base text-black  my-2 py-[10px] px-4 ${className}`}
           {...rest}
         />
         {inputIcons.length > 0 && (

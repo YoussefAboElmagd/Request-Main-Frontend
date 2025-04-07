@@ -13,15 +13,14 @@ import {
   startAuth,
 } from "../slices/authSlice.js";
 
-
 // Sign Up Thunk
 export const handleSignUp = createAsyncThunk(
   "auth/signUp",
   async (userData, { dispatch }) => {
     try {
       dispatch(startAuth());
-      const response = await signUp(userData );
-      ("response ======>>>  ", response);
+      const response = await signUp(userData);
+      "response ======>>>  ", response;
 
       dispatch(authSuccess({ user: response.results, token: response.token }));
       return response;
@@ -36,8 +35,8 @@ export const signInThunk = createAsyncThunk(
   async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await signIn({ email, password });
-      ("Response :: => ", response);
-      localStorage.setItem("user", JSON.stringify(response.userData_login));
+      "Response :: => ", response;
+localStorage.setItem("user", JSON.stringify(response.userData_login));
 
       dispatch(
         authSuccess({
@@ -85,7 +84,7 @@ export const handleUpdateUser = createAsyncThunk(
       const userId = user._id;
 
       const updateResponse = await updateUser(userId, updatedData, token);
-      ("Update Response =>", updateResponse);
+      "Update Response =>", updateResponse;
 
       let userUpdated = { ...user, ...updatedData };
 
@@ -103,4 +102,3 @@ export const handleUpdateUser = createAsyncThunk(
     }
   }
 );
-

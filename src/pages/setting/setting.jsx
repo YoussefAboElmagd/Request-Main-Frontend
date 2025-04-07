@@ -214,12 +214,12 @@ const Setting = () => {
             {buttons[selectedTab].label}
           </p>
           <div className="saveChanges hidden lg:block">
-            <Button
+           {buttons[selectedTab].label != "Company Information" && <Button
               className={"!px-12 font-medium"}
               onClick={handleSaveChanges}
             >
               {t("Save Changes")}
-            </Button>
+            </Button>}
           </div>
           <div className="mobile_menu block lg:hidden">
             <button onClick={openDrawer}>

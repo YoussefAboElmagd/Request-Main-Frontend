@@ -24,7 +24,7 @@ const Company = () => {
   const [signature, setSignature] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [company,setCompany] = useState("")
+  const [company, setCompany] = useState("");
   const handleStampChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -34,8 +34,9 @@ const Company = () => {
   };
 
   const handleSignatureChange = (dataUrl) => {
-    
     setSignature(dataUrl);
+    window.location.reload();
+
   };
 
   const handleImageUpload = (e) => {
@@ -76,15 +77,16 @@ const Company = () => {
 
       toast.success(t("toast.userUpdatedSuccessfully"));
       setError(null);
+
     } catch (err) {
       console.error("Update user failed:", err);
       setError(err.message || "An error occurred");
     } finally {
       setLoading(false);
+      window.location.reload();
+
     }
   };
-
-  
 
   async function getcomanyINfo() {
     await axios
@@ -94,11 +96,8 @@ const Company = () => {
   }
 
   useEffect(() => {
-    
-    getcomanyINfo()
-  }, [company]);
-
-  
+    getcomanyINfo();
+  }, []);
 
   return (
     <div className="Company">
@@ -172,7 +171,10 @@ const Company = () => {
             />
           </div>
           <div className="signature">
-            <SignatureBtn company={company} onSignatureChange={handleSignatureChange} />
+            <SignatureBtn
+              company={company}
+              onSignatureChange={handleSignatureChange}
+            />
           </div>
         </div>
         {error && <div className="error text-red text-center">{error}</div>}

@@ -42,7 +42,7 @@ const TaskRow = ({
 
   return (
     <div className="flex items-center  flex-wrap justify-around ">
-      <div className= "w-[70px]  lg:w-1/6 ">
+      <div className="w-[70px]  lg:w-1/6 ">
         <Input
           type="text"
           value={task.description}
@@ -52,7 +52,7 @@ const TaskRow = ({
           disabled
         />
       </div>
-      <div className= "w-[70px]  lg:w-1/6">
+      <div className="w-[70px]  lg:w-1/6">
         <Input
           type="number"
           min={0}
@@ -63,7 +63,7 @@ const TaskRow = ({
           disabled
         />
       </div>
-      <div className= "w-[70px]  lg:w-1/6">
+      <div className="w-[70px]  lg:w-1/6">
         <Input
           type="number"
           min={0}
@@ -79,7 +79,7 @@ const TaskRow = ({
           disabled
         />
       </div>
-      <div className= " w-[70px]   lg:w-1/6">
+      <div className=" w-[70px]   lg:w-1/6">
         <input
           className="bg-white border w-full rounded-2xl p-2 border-gray "
           type="number"
@@ -88,9 +88,8 @@ const TaskRow = ({
           disabled
         />
       </div>
-      
+
       <div className="flex  justify-center items-center gap-3  mt-4  w-[70px]  lg:w-1/6">
-        
         <EditTask
           task={task}
           onUpdateTask={(updatedTask) => onUpdateTask(updatedTask, index)}
@@ -109,11 +108,12 @@ const TableOfQuantities = () => {
   const [units, setUnits] = useState([]);
   const [UnitsLoading, setUnitsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [reFetch, setReFetch] = useState(false);
   const location = useLocation();
   const { projectId, taskType, members, projectName } = location.state || {};
   location.state;
   "project id :", projectId;
- 
+
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const handleNewTask = (task) => {
@@ -148,7 +148,6 @@ const TableOfQuantities = () => {
       user._id,
       updatedTask
     );
-    
   };
 
   const handleUpdateProject = async () => {
@@ -187,6 +186,8 @@ const TableOfQuantities = () => {
     } catch (error) {
       console.error("Failed to add tasks:", error);
       toast.error(t(`Failed to add tasks, ${error.message}`));
+    } finally {
+      getTasksbyProject();
     }
   };
 
@@ -201,41 +202,54 @@ const TableOfQuantities = () => {
 
   useEffect(() => {
     getTasksbyProject();
-  }, []);
+  }, [reFetch]);
   return (
     <div className="TableOfQuantities w-[320px] sm:w-[600px] lg:w-[750px] mx-auto overflow-x-scroll lg:overflow-hidden ">
       <div className="header  bg-white w-[500px] sm:w-[600px] lg:w-[750px]   p-4 rounded-l-3xl flex items-center justify-between">
-        <h5 className="font-bold text-sm  sm:text-base">{t("Table of Quantities")}</h5>
-        <AddNewTask newTask={handleNewTask} projectId={projectId} />
+        <h5 className="font-bold text-sm  sm:text-base">
+          {t("Table of Quantities")}
+        </h5>
+        <AddNewTask
+          setReFetch={setReFetch}
+          newTask={handleNewTask}
+          projectId={projectId}
+        />
       </div>
 
       {tasks.length > 0 ? (
         <div className="content bg-white p-4  w-[500px] sm:w-[600px] lg:w-[750px] rounded-3xl mx-auto   my-6">
           <div className="flex justify-between px-3 font-semibold">
-            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("desc")}</p>
-            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("Price")}</p>
-            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("Quantity")}</p>
-            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">{t("Total")}</p>
-            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base   ps-12">{t("Actions")}</p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">
+              {t("desc")}
+            </p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">
+              {t("Price")}
+            </p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">
+              {t("Quantity")}
+            </p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base ">
+              {t("Total")}
+            </p>
+            <p className="w-[70px] lg:w-1/6 text-xs lg:text-base   ps-12">
+              {t("Actions")}
+            </p>
           </div>
-         
-           
-           
-              {tasks.map((task, index) => (
-                <TaskRow
-                  key={index}
-                  task={task}
-                  index={index}
-                  onChange={handleTaskChange}
-                  onRemove={handleTaskRemove}
-                  onUpdateTask={handleUpdateTask}
-                  units={units}
-                  UnitsLoading={UnitsLoading}
-                  errors={errors}
-                />
-              ))}
-           
-          
+
+          {tasks.map((task, index) => (
+            <TaskRow
+              key={index}
+              task={task}
+              index={index}
+              onChange={handleTaskChange}
+              onRemove={handleTaskRemove}
+              onUpdateTask={handleUpdateTask}
+              units={units}
+              UnitsLoading={UnitsLoading}
+              errors={errors}
+            />
+          ))}
+
           <div className="btn flex items-center justify-end my-3">
             <Button onClick={handleSubmit}>{t("Save")}</Button>
           </div>

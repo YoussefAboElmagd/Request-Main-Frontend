@@ -13,7 +13,7 @@ import ListView from "../../../Components/ListView/listView";
 import { useSelector } from "react-redux";
 
 const ProjectHistory = () => {
-    const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [Status, setStatus] = useState("all");
@@ -27,7 +27,7 @@ const ProjectHistory = () => {
         month: "2-digit",
       })
       .replace("/", "-")
-      .replace("/", "-");;
+      .replace("/", "-");
   };
 
   const buttonData = [
@@ -43,7 +43,7 @@ const ProjectHistory = () => {
       try {
         const data = await getProjectHistory(Status, user._id);
         setData(data.results);
-        ("res with filter Status =", Status, "res => ", data);
+        "res with filter Status =", Status, "res => ", data;
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -60,6 +60,7 @@ const ProjectHistory = () => {
   const handleViewChange = (mode) => {
     setViewMode(mode);
   };
+  console.log(avatar);
   return (
     <div className="ProjectHistory">
       <h1 className="title font-inter font-bold text-xl lg:text-3xl text-black m-2">

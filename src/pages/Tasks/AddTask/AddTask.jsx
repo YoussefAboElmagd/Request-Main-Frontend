@@ -80,13 +80,15 @@ const AddTask = () => {
     parentTask: false,
   });
 
-  
   async function getProjectbyId() {
-    await axios.get(`https://api.request-sa.com/api/v1/project/${projectId}`).then((res)=>setProject(res.data.results)).catch(err=>console.log(err));
+    await axios
+      .get(`https://api.request-sa.com/api/v1/project/${projectId}`)
+      .then((res) => setProject(res.data.results))
+      .catch((err) => console.log(err));
   }
-  useEffect(()=>{
-    getProjectbyId()
-  },[projectId])
+  useEffect(() => {
+    getProjectbyId();
+  }, [projectId]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -161,7 +163,6 @@ const AddTask = () => {
       sDate: !sDate.startDate,
       eDate: !eDate.endDate,
       priority: !selectedPriority,
-      tag: !selectedTag,
     };
 
     if (isSubtask && taskType === "toq") {
@@ -177,6 +178,10 @@ const AddTask = () => {
       return;
     }
 
+    if (!SelectedMember) {
+      setError({ message: "you should assign this task to anyone!" });
+      return;
+    }
     const formattedSDate = formatDate(sDate.startDate);
     const formattedEDate = formatDate(eDate.endDate);
 
@@ -190,7 +195,7 @@ const AddTask = () => {
         taskPriority: selectedPriority,
         assignees: SelectedMember,
         createdBy: user._id,
-        tags: selectedTag,
+        tags: selectedTag ? selectedTag : null,
         type: taskType,
       };
       if (isSubtask) {
@@ -260,7 +265,7 @@ const AddTask = () => {
     setRecurringDates(updatedDates);
   };
 
-  console.log(formatDate(project.sDate))
+  console.log(Member);
   return (
     <div className="AddTask mx-1 relative">
       {Loading ? (
@@ -322,18 +327,13 @@ const AddTask = () => {
                         asSingle={true}
                         inputId="sDate"
                         value={sDate}
-                        
-                        onChange={(date) => {
-                          setSDate(date);
-                          if (date.startDate > eDate.startDate) {
-                            setEDate(date); // Reset eDate to sDate if it becomes invalid
-                          }
-                        }}
+                        onChange={(date) => setSDate(date)}
                         primaryColor={"purple"}
                         popoverClassName="!bg-white !border-gray-300 !shadow-md"
-                        popoverDirection="up"
+                        popoverDirection="down"
                         toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
-                        inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
+                        minDate={new Date(project.sDate)} // Restrict selection to after project start date
+                        inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-black font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                           fieldErrors.sDate ? "border-red border" : ""
                         }`}
                       />
@@ -351,7 +351,7 @@ const AddTask = () => {
                           asSingle={true}
                           primaryColor={"purple"}
                           value={eDate}
-                          minDate={sDate.startDate} // Prevent selection of dates before sDate
+                          minDate={sDate.startDate} // Ensure due date is not before start date
                           onChange={(date) => setEDate(date)}
                           inputId="dDate"
                           popoverClassName="!bg-white !border-gray-300 !shadow-md"
@@ -394,7 +394,8 @@ const AddTask = () => {
                       popoverClassName="!bg-white !border-gray-300 !shadow-md"
                       popoverDirection="down"
                       toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
-                      inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
+                      minDate={new Date(project.sDate)} // Restrict selection to after project start date
+                      inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-black font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                         fieldErrors.sDate ? "border-red border" : ""
                       }`}
                     />
@@ -412,6 +413,7 @@ const AddTask = () => {
                         asSingle={true}
                         primaryColor={"purple"}
                         value={eDate}
+                        minDate={sDate.startDate} // Ensure due date is not before start date
                         onChange={(date) => setEDate(date)}
                         inputId="dDate"
                         popoverClassName="!bg-white !border-gray-300 !shadow-md"
@@ -426,7 +428,28 @@ const AddTask = () => {
                 </div>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <Select
+                <div className="mt-[1px]">
+                  <label className="text-base font-normal">
+                    {t("Priority")}
+                  </label>
+                  <select
+                    className={`w-full rounded-lg  px-3  h-[45px] py-3  focus:outline-none border-[1px] border-black  ${
+                      fieldErrors.priority && "border-red"
+                    }`}
+                    value={selectedPriority}
+                    onChange={(e) => setSelectedPriority(e.target.value)}
+                  >
+                    <option value={null} hidden selected>
+                      {t("Priority")}
+                    </option>
+                    {priorityOptions?.map((ele) => (
+                      <option className="" value={ele.value}>
+                        {ele?.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {/* <Select
                   id="priority"
                   label={t("Priority")}
                   InputClassName={`${
@@ -439,9 +462,36 @@ const AddTask = () => {
                   options={priorityOptions}
                   placeholder={t("Priority")}
                   error={false}
-                />
+                /> */}
                 <div className="Tags">
-                  <Select
+                  <div className="mt-[1px]">
+                    <label className="text-base font-normal">{t("tag")}</label>
+                    <select
+                      className={`w-full rounded-lg   px-3 py-[10px]  focus:outline-none border-[1px] border-black  `}
+                      value={selectedTag}
+                      onChange={(e) => setSelectedTag(e.target.value)}
+                    >
+                      <option value={null} hidden selected>
+                        {t("tag")}
+                      </option>
+                      {Tags?.length ? (
+                        Tags?.map((ele) => (
+                          <option
+                            style={{ color: ele.colorCode }}
+                            className={`hover:bg-black `}
+                            value={ele._id}
+                          >
+                            {ele?.name}
+                          </option>
+                        ))
+                      ) : (
+                        <option disabled>
+                          {t("No tags available from consultant")}
+                        </option>
+                      )}
+                    </select>
+                  </div>
+                  {/* <Select
                     label={t("tag")}
                     id="tag"
                     isMulti={false}
@@ -474,25 +524,32 @@ const AddTask = () => {
                     }
                     error={false}
                     placeholder={t("tag")}
-                  />
+                  /> */}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <Select
-                  id="person"
-                  label={t("Responsible Person")}
-                  InputClassName={` ${
-                    fieldErrors.member && "border-red  border rounded-2xl"
-                  }`}
-                  value={SelectedMember}
-                  onChange={(e) => setSelectedMember(e)}
-                  options={members.map((member) => ({
-                    value: member._id,
-                    label: member.name,
-                  }))}
-                  error={false}
-                  placeholder={t("Responsible Person")}
-                />
+                <div className="my-3">
+                  <label className="text-base font-normal ">
+                    {" "}
+                    {t("Responsible Person")}
+                  </label>
+                  <select
+                    className={`w-full rounded-lg  px-3 py-[10px]  focus:outline-none border-[1px] border-black  ${
+                      fieldErrors.member && "border-red"
+                    }`}
+                    value={SelectedMember}
+                    onChange={(e) => setSelectedMember(e.target.value)}
+                  >
+                    <option value={null} hidden selected>
+                      {t("Responsible Person")}
+                    </option>
+                    {Member?.map((ele) => (
+                      <option className="" value={ele._id}>
+                        {ele?.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 {isSubtask && !ParentId && (
                   <Select
                     id="ParentTasks"

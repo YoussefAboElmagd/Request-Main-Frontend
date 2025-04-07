@@ -23,6 +23,7 @@ import Select from "../../Components/UI/Select/Select";
 import ProfileAvatar from "../../Components/UI/profilePic/profilePic";
 import i18n from "../../config/i18n";
 import { Image } from "../../Components/UI/Image/image";
+import axios from "axios";
 
 const RequestForm = ({
   ReqTitle,
@@ -34,7 +35,9 @@ const RequestForm = ({
 }) => {
   const lang = i18next.language;
   const user = useSelector((state) => state.auth.user);
+
   const token = useSelector((state) => state.auth.token);
+  // console.log(token, "ssssssss");
   const [IsOwner, setIsOwner] = useState(user.role.jobTitle === "owner");
   const [IsConsultant, setIsConsultant] = useState(
     user.role.jobTitle === "consultant"
@@ -78,6 +81,7 @@ const RequestForm = ({
   const [IsWorkRequest, setIsWorkRequest] = useState(
     ReqTitle === "Work Request"
   );
+  const [newSig, setnewSig] = useState("");
   const [IsReqForMaterial, setIsReqForMaterial] = useState(
     ReqTitle === "Request For Material"
   );
@@ -96,6 +100,21 @@ const RequestForm = ({
   const currentMonth = currentDate.getMonth() + 1;
   const currentYear = currentDate.getFullYear();
 
+  async function getUserData() {
+    await axios
+      .get(`https://api.request-sa.com/api/v1/users/${user._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => setnewSig(res.data.results.signature))
+      .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    getUserData();
+  }, []);
   useEffect(() => {
     const savedSignature = localStorage.getItem("Signature");
     if (savedSignature) {
@@ -127,7 +146,7 @@ const RequestForm = ({
         setReasons(ReasonsResponse.reasons);
         setProjects(projectsResponse.results);
         setMembersInProject(MemberInProject.admins);
-        (MemberInProject);
+        MemberInProject;
 
         setUnits(
           UnitsData.results.map((unit) => ({
@@ -151,19 +170,19 @@ const RequestForm = ({
 
   const handleUpdate = async () => {
     try {
-      ("ApproveTitle :", ApproveTitle);
+      "ApproveTitle :", ApproveTitle;
       if (TaskId) {
         const res = await updateTask(token, TaskId, user._id, {
           [ApproveTitle]: true,
         });
 
-        ("res from update task => ", res);
+        "res from update task => ", res;
       } else {
         const res = await updateProject(projectId, {
           [ApproveTitle]: true,
         });
 
-        ("res from update project => ", res);
+        "res from update project => ", res;
       }
     } catch (error) {
       console.error("Failed to update tasks:", error);
@@ -172,8 +191,8 @@ const RequestForm = ({
   };
 
   useEffect(() => {
-    ("selectedDisciplines", selectedDisciplines);
-    ("selectedReasons", selectedReasons);
+    "selectedDisciplines", selectedDisciplines;
+    "selectedReasons", selectedReasons;
   }, [selectedDisciplines, selectedReasons]);
 
   const handleSubmit = async (e) => {
@@ -271,7 +290,7 @@ const RequestForm = ({
     addConditionalFields();
 
     // Debug the request data
-    ("Request Data:", requestData);
+    "Request Data:", requestData;
 
     try {
       // Send request
@@ -374,7 +393,6 @@ const RequestForm = ({
   //   }),
   // };
 
-  console.log(signature)
   return (
     <div className="RequestForm">
       {loading ? (
@@ -466,7 +484,7 @@ const RequestForm = ({
                       disabled
                       placeholder={t("REF NO")}
                       onChange={(e) => setRefNO(e.target.value)}
-                      className="bg-white border border-gray rounded-lg p-1 max-w-52"
+                      className="bg-white  border-gray rounded-lg p-1 max-w-52"
                     />
                   </div>
                   <div className="Date flex items-center gap-2 my-6 ">
@@ -482,7 +500,7 @@ const RequestForm = ({
                         id="currentDay"
                         name="Date"
                         value={`${currentDay}`}
-                        className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
+                        className="bg-white  border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
                         disabled
                       />
                       <input
@@ -490,7 +508,7 @@ const RequestForm = ({
                         id="currentMonth"
                         name="Date"
                         value={`${currentMonth}`}
-                        className="bg-white border border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
+                        className="bg-white  border-gray rounded-2xl max-w-12 font-medium text-center mx-1 "
                         disabled
                       />
                       <input
@@ -498,7 +516,7 @@ const RequestForm = ({
                         id="currentYear"
                         name="Date"
                         value={`${currentYear}`}
-                        className="bg-white border border-gray rounded-2xl max-w-16 font-medium text-center mx-1 "
+                        className="bg-white  border-gray rounded-2xl max-w-16 font-medium text-center mx-1 "
                         disabled
                       />
                     </div>
@@ -525,7 +543,7 @@ const RequestForm = ({
                   <input
                     placeholder={t("Action Code")}
                     disabled
-                    className="bg-white border  my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
+                    className="bg-white   my-1 w-full  text-gray border-solid border-gray rounded-2xl p-2"
                   />
                 </div>
               )}
@@ -537,7 +555,7 @@ const RequestForm = ({
                   type="text"
                   disabled
                   value={t("Comment")}
-                  className="bg-white w-full my-1 text-gray border  border-solid border-gray rounded-2xl p-2"
+                  className="bg-white w-full my-1 text-gray   border-solid border-gray rounded-2xl p-2"
                 />
 
                 {/* {showReasons && (
@@ -684,7 +702,7 @@ const RequestForm = ({
                         label={t("Discipline")}
                         value={selectedDisciplines}
                         onChange={(e) => {
-                          ("Discipline Selected:", e);
+                          "Discipline Selected:", e;
                           setSelectedDisciplines(e);
                         }}
                         className={`bg-white `}
@@ -984,8 +1002,12 @@ const RequestForm = ({
                   {t("submitted by")} :
                 </h5>
                 <span className="font-medium text-sm">{user?.name}</span>
-                {signature ? (
-                  <Image src={signature} alt={"Signature"} className={"w-20 h-20"} />
+                {newSig ? (
+                  <Image
+                    src={newSig}
+                    alt={"Signature"}
+                    className={"w-20 h-20"}
+                  />
                 ) : (
                   <p>{t("No signature found")}</p>
                 )}

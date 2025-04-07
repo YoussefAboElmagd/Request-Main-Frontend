@@ -40,7 +40,6 @@ const Main = () => {
     //   setMode("Mode3");
     // }
   }, [activeIndex, Mode]);
-  
 
   const handleSlideChange = (index) => {
     // Update activeIndex when slide changes
@@ -62,14 +61,14 @@ const Main = () => {
   };
   return (
     <>
-      <div className="Main relative h-[90vh] overflow-hidden hidden lg:block">
+      <div className="Main relative h-[100vh]  overflow-hidden hidden lg:block">
         <div className="absolute top-16 right-16 fade-in">
           <span className="halfCircleEffect transition-transform duration-500 ease-in-out"></span>
         </div>
         <div className="absolute bottom-0 left-16 fade-in">
           <span className="halfCircleLineEffect transition-transform duration-500 ease-in-out"></span>
         </div>
-        <div className="flex items-center ltr:justify-start rtl:justify-end h-[80vh]">
+        <div className="flex items-center ltr:justify-start rtl:justify-end mt-10">
           <div className="box bg-linear_1 text-white p-2 m-2 mx-6 rounded-xl max-w-[500px] transition-transform duration-500 ease-in-out hover:scale-105 fade-in">
             <h2 className="text-2xl font-extrabold">
               {Mode === "Mode1"

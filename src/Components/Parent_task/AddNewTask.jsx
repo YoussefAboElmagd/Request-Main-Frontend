@@ -17,7 +17,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import i18n from "../../config/i18n";
 import axios from "axios";
 
-export const AddNewTask = ({ newTask, task }) => {
+export const AddNewTask = ({ newTask, task, setReFetch }) => {
   const user = useSelector((state) => state.auth.user);
 
   const lang = i18n.language;
@@ -27,7 +27,7 @@ export const AddNewTask = ({ newTask, task }) => {
   location.state;
   "projectId :", projectId;
 
-  console.log(projectId);
+  console.log();
   const formatDate = (date) => {
     if (!date) return "";
     const d = new Date(date);
@@ -59,13 +59,13 @@ export const AddNewTask = ({ newTask, task }) => {
   const [TaskId, setTaskId] = useState(false);
   const [project, setProject] = useState("");
   const [sDate, setSDate] = useState({
-    startDate:"",
-    endDate:"",
-});
-  
+    startDate: "",
+    endDate: "",
+  });
+
   const [eDate, setEDate] = useState({
-    startDate:"",
-    endDate:"",
+    startDate: "",
+    endDate: "",
   });
   const [fieldErrors, setFieldErrors] = useState({
     Name: false,
@@ -80,7 +80,6 @@ export const AddNewTask = ({ newTask, task }) => {
     member: false,
   });
 
- 
   async function getProjectById() {
     await axios
       .get(`https://api.request-sa.com/api/v1/project/${projectId}`)
@@ -88,7 +87,6 @@ export const AddNewTask = ({ newTask, task }) => {
       .catch((err) => console.log(err));
   }
 
-  console.log(project)
   useEffect(() => {
     getProjectById();
   }, [projectId]);
@@ -96,6 +94,7 @@ export const AddNewTask = ({ newTask, task }) => {
     setIsSubtask(TaskType === "sub");
   }, [TaskType]);
 
+  console.log(Tags);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -122,7 +121,7 @@ export const AddNewTask = ({ newTask, task }) => {
           }))
         );
 
-        setMember((prev) => prev.filter((member) => member.value != user._id));
+        // setMember((prev) => prev.filter((member) => member.value != user._id));
         setMemberLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -139,18 +138,16 @@ export const AddNewTask = ({ newTask, task }) => {
     { value: "high", label: t("high") },
   ];
 
-  
-
   const clearFormFields = () => {
     setName("");
     setDescription("");
     setSDate({
-      startDate:"",
-      endDate:"",
+      startDate: "",
+      endDate: "",
     });
     setEDate({
-      startDate:"",
-      endDate:"",
+      startDate: "",
+      endDate: "",
     });
 
     setPrice(0);
@@ -161,6 +158,11 @@ export const AddNewTask = ({ newTask, task }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
+    // if (SelectedMember) {
+    //   setError("you should assign this task to any member");
+    //   return;
+    // }
 
     const newFieldErrors = {
       Name: !Name.trim(),
@@ -173,14 +175,9 @@ export const AddNewTask = ({ newTask, task }) => {
       quantity: !Quantity || isNaN(Quantity),
       unit: !selectedUnit,
       total: !Total || isNaN(Total),
+      member: !SelectedMember,
     };
 
-    // if (isSubtask ) {
-    //   newFieldErrors.price = !Price || isNaN(Price);
-    //   newFieldErrors.quantity = !Quantity || isNaN(Quantity);
-    //   newFieldErrors.total = !Total || isNaN(Total);
-    //   newFieldErrors.unit = !selectedUnit;
-    // }
     setFieldErrors(newFieldErrors);
 
     if (Object.values(newFieldErrors).some((hasError) => hasError)) {
@@ -201,7 +198,7 @@ export const AddNewTask = ({ newTask, task }) => {
         taskPriority: selectedPriority,
         assignees: SelectedMember,
         createdBy: user._id,
-        tags: selectedTag,
+        tags: selectedTag ? selectedTag : null,
         type: "toq",
         price: Price,
         requiredQuantity: Quantity,
@@ -210,7 +207,7 @@ export const AddNewTask = ({ newTask, task }) => {
       };
 
       "taskData", taskData;
-
+      console.log(taskData);
       await addTask(taskData);
 
       clearFormFields();
@@ -220,6 +217,8 @@ export const AddNewTask = ({ newTask, task }) => {
       setLoading(false);
     } finally {
       setLoading(false);
+      handleOpen();
+      setReFetch((prev) => !prev);
     }
   };
   const handleOpen = () => {
@@ -228,15 +227,13 @@ export const AddNewTask = ({ newTask, task }) => {
   };
   const handleTagChange = (selectedOptions) => {
     // ("Selected options:", selectedOptions);
-    setSelectedTag(selectedOptions || []);
+    setSelectedTag(selectedOptions || null);
   };
 
   const calculateTotal = (Price, Quantity) => {
     const Total = Number(Price || 0) * Number(Quantity || 0);
     setTotal(Total);
   };
-
-  console.log(formatDate(project.sDate));
 
   return (
     <div className="AddNewTask">
@@ -311,7 +308,7 @@ export const AddNewTask = ({ newTask, task }) => {
                   popoverClassName="!bg-white !border-gray-300 !shadow-md"
                   popoverDirection="down"
                   toggleClassName="text-black absolute top-4 ltr:right-4 rtl:left-4"
-                  inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-gray-300 font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
+                  inputClassName={`bg-white text-gray-800 w-full rounded-xl border border-black font-jost font-normal text-base my-2 py-2 px-4 border-solid focus:border-purple focus:border-solid ${
                     fieldErrors.sDate ? "border-red border" : ""
                   }`}
                 />
@@ -341,7 +338,26 @@ export const AddNewTask = ({ newTask, task }) => {
               </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-              <Select
+              <div className="mt-[1px]">
+                <label className="text-base font-normal">{t("Priority")}</label>
+                <select
+                  className={`w-full rounded-lg  px-3  h-[45px] py-3  focus:outline-none border-[1px] border-black  ${
+                    fieldErrors.priority && "border-red"
+                  }`}
+                  value={selectedPriority}
+                  onChange={(e) => setSelectedPriority(e.target.value)}
+                >
+                  <option value={null} hidden selected>
+                    {t("Priority")}
+                  </option>
+                  {priorityOptions?.map((ele) => (
+                    <option className="" value={ele.value}>
+                      {ele?.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* <Select
                 id="priority"
                 label={t("Priority")}
                 InputClassName={`${
@@ -352,9 +368,34 @@ export const AddNewTask = ({ newTask, task }) => {
                 options={priorityOptions}
                 placeholder={t("Priority")}
                 error={false}
-              />
+              /> */}
               <div className="Tags">
-                <Select
+                <div className="mt-[1px]">
+                  <label className="text-base font-normal">{t("tag")}</label>
+                  <select
+                    className={`w-full rounded-lg   px-3 py-[10px]  focus:outline-none border-[1px] border-black  `}
+                    value={selectedTag}
+                    onChange={(e) => setSelectedTag(e.target.value)}
+                  >
+                    <option value={null} hidden selected>
+                      {t("tag")}
+                    </option>
+                    {Tags?.length ? (
+                      Tags?.map((ele) => (
+                        <option
+                          style={{ color: ele.colorCode }}
+                          className={`hover:bg-black `}
+                          value={ele._id}
+                        >
+                          {ele?.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>{t("No tags available from consultant")}</option>
+                    )}
+                  </select>
+                </div>
+                {/* <Select
                   label={t("tag")}
                   id="tag"
                   isMulti={false}
@@ -387,11 +428,33 @@ export const AddNewTask = ({ newTask, task }) => {
                   }
                   error={false}
                   placeholder={t("tag")}
-                />
+                /> */}
               </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-              <Select
+              <div className="my-3">
+                <label className="text-base font-normal ">
+                  {" "}
+                  {t("Responsible Person")}
+                </label>
+                <select
+                  className={`w-full rounded-lg  px-3 py-[10px]  focus:outline-none border-[1px] border-black  ${
+                    fieldErrors.member && "border-red"
+                  }`}
+                  value={SelectedMember}
+                  onChange={(e) => setSelectedMember(e.target.value)}
+                >
+                  <option value={null} hidden selected>
+                    {t("Responsible Person")}
+                  </option>
+                  {Member?.map((ele) => (
+                    <option className="" value={ele.value}>
+                      {ele?.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* <Select
                 id=""
                 label={t("Responsible Person")}
                 InputClassName={` ${
@@ -403,7 +466,7 @@ export const AddNewTask = ({ newTask, task }) => {
                 placeholder={t("Responsible Person")}
                 error={false}
                 loading={MemberLoading}
-              />
+              /> */}
             </div>
 
             <div className="grid grid-cols-2  ps-2 lg:grid-cols-4 gap-x-4 mt-3">
@@ -445,24 +508,42 @@ export const AddNewTask = ({ newTask, task }) => {
                 value={Total}
                 disabled
               />
-              <Select
-                options={Units}
-                placeholder={t("Unit")}
-                disabled={UnitsLoading}
-                label={t("Unit")}
-                value={selectedUnit}
-                onChange={(e) => setSelectedUnit(e)}
-                className={`bg-white mx-4`}
-                InputClassName={` ${
-                  fieldErrors.unit && "border-red  border rounded-2xl"
-                }`}
-                loading={UnitsLoading}
-              />
+              <div className="">
+                <label className="text-base font-normal mb-1 inline-block">
+                  {t("Unit")}
+                </label>
+                <select
+                  className={`w-full rounded-lg  px-3 py-[10px] focus:outline-none border-[1px] border-black ${
+                    fieldErrors.unit && "border-red"
+                  }`}
+                  value={selectedUnit}
+                  onChange={(e) => setSelectedUnit(e.target.value)}
+                >
+                  <option value={null} hidden selected>
+                    {t("Unit")}
+                  </option>
+                  {Units?.map((ele) => (
+                    <option value={ele.value}>{ele?.label}</option>
+                  ))}
+                </select>
+                {/* <Select
+                  options={Units}
+                  placeholder={t("Unit")}
+                  disabled={UnitsLoading}
+                  label={t("Unit")}
+                  value={selectedUnit}
+                  onChange={(e) => setSelectedUnit(e)}
+                  className={`bg-white mx-4  `}
+                  InputClassName={`    rounded-xl ${fieldErrors.unit && " "}`}
+                  loading={UnitsLoading}
+                /> */}
+              </div>
             </div>
 
             {error && (
               <div className="text-red font-bold text-center p-2">
-                {t("all fields are required")}
+                {error.message}
+                {/* {t("all fields are required")} */}
               </div>
             )}
             <div className="btn flex items-center justify-center md:justify-end my-3">

@@ -5,6 +5,7 @@ import { FaFileLines } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
 import { t } from "i18next";
 import { memo, useMemo } from "react";
+import iva from "../../assets/images/Avatar.jpg"
 
 const AvatarList = memo(({ avatars }) => {
   const displayedAvatars = useMemo(() => avatars.slice(0, 5), [avatars]);
@@ -13,7 +14,11 @@ const AvatarList = memo(({ avatars }) => {
       {displayedAvatars.map((avatar, index) => (
         <img
           key={index}
-          src={avatar}
+          src={` ${
+            avatar.startsWith("/src") || avatar.startsWith("/assets")
+              ? iva
+              : `https://api.request-sa.com/${avatar}`
+          }`}
           alt="avatar"
           className="w-8 h-8 border-2 border-white rounded-full m-1"
         />

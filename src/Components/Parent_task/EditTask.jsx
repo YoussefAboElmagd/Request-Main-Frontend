@@ -36,7 +36,7 @@ export const EditTask = ({ task, onUpdateTask }) => {
     price: task.price,
     quantity: task.quantity,
     total: task.price * task.quantity,
-    unit: task.unit.name,
+    unit: task?.unit?.name,
   });
   ("form data :",  formData);
 

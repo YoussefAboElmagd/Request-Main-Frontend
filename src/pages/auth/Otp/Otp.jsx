@@ -71,9 +71,8 @@ const Otp = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    console.log("hi");
-    console.log(forget_email);
-    if (!forget_email) navigate("/forgotPassword");
+
+    // if (!forget_email) navigate("/forgotPassword");
 
     try {
       switch (true) {
@@ -118,7 +117,7 @@ const Otp = () => {
             userData_signUp.verificationCode;
             localStorage.setItem("user", JSON.stringify(userData_signUp));
             localStorage.setItem("token", token_signUp);
-            navigate("/SignUp/createCompany");
+            navigate("/Settings");
           } else {
             setError(t("OTP is incorrect"));
           }
@@ -141,7 +140,7 @@ const Otp = () => {
     setCanResend(false);
     setTimeLeft(60);
     setError("");
-    if (!forget_email) navigate("/forgotPassword");
+    // if (!forget_email) navigate("/forgotPassword");
 
     try {
       let result;
@@ -253,7 +252,7 @@ const Otp = () => {
               </div>
               <div dir="ltr">
                 <OTPInput
-                inputType="tel"
+                  inputType="tel"
                   value={otp}
                   onChange={setOtp}
                   numInputs={4}

@@ -22,7 +22,7 @@ const LoginByPhone = () => {
   const navigate = useNavigate();
   const { phone, error } = useSelector((state) => state.auth);
   const [phoneNumber, setPhoneNumber] = useState(phone);
- useEffect(() => {
+  useEffect(() => {
     if (localStorage.getItem("token")) {
       return navigate("/");
     }
@@ -58,13 +58,15 @@ const LoginByPhone = () => {
               </h3>
               <p className="font-jost  mx-auto sm:mx-0  font-medium md:text-2xl">
                 {t("if you don’t have an account you can")}
-                <Link to={"/SignUp/ChooseRole"} className="text-blue block ">{t("Register here!")}</Link>
+                <Link to={"/SignUp/ChooseRole"} className="text-blue block ">
+                  {t("Register here!")}
+                </Link>
               </p>
             </div>
             <div className=" LogIn_Image  flex justify-center ">
               <img src={image} alt="image" width={400} loading="lazy" />
             </div>
-            <div className="form flex flex-col mx-auto">
+            <div className="form flex flex-col ">
               <div className="phone relative w-full">
                 <label className="Input_label flex items-center  gap-2 font-jost text-base font-medium ">
                   <span className="label_icon w-4 h-4 ">
@@ -77,7 +79,9 @@ const LoginByPhone = () => {
                 </div>
               </div>
               {error && <p className="error text-red text-sm ">{error}</p>}
-              <Button onClick = {()=>console.log("ahmded")} className={"mt-5"}>{t("sendOtp")}</Button>
+              <Button onClick={() => console.log("ahmded")} className={"mt-5"}>
+                {t("sendOtp")}
+              </Button>
             </div>
           </div>
         </>

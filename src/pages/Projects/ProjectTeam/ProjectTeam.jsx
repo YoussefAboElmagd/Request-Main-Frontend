@@ -59,7 +59,7 @@ const customStyles = {
   option: (provided, state) => ({
     ...provided,
     backgroundColor: "white",
-    color: "var(--gray)",
+    // color: "var(--gray)",
     padding: "10px",
     borderRadius: "8px",
     cursor: "pointer",
@@ -153,7 +153,7 @@ const AnimatedMultiValue = (props) => (
 );
 
 const ProjectTeam = () => {
-    const lang = i18next.language;
+  const lang = i18next.language;
   const user = useSelector((state) => state.auth.user);
   const [membersData, setMembersData] = useState(null);
   const token = useSelector((state) => state.auth.token);
@@ -204,7 +204,7 @@ const ProjectTeam = () => {
     setOpenAcc((prevOpen) => (prevOpen === idx ? null : idx));
   };
   useEffect(() => {
-    ("Current access list:", accessList);
+    "Current access list:", accessList;
   }, [accessList]);
   useEffect(() => {
     const fetchData = async () => {
@@ -237,7 +237,7 @@ const ProjectTeam = () => {
         setTagsLoading(false);
 
         setMembersData(MembersRes);
-        (membersData);
+        membersData;
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -328,14 +328,14 @@ const ProjectTeam = () => {
         role: user.role._id,
         tags: SelectedTags.map((t) => t.value),
       };
-      (payload);
+      payload;
 
       await addMemberForProject(projectId, payload, token);
       clearFields();
       toast.success(t("toast.MemberAdded"));
       window.location.reload();
     } catch (error) {
-      (error);
+      error;
       setFieldErrors(error);
     }
   };
@@ -351,9 +351,9 @@ const ProjectTeam = () => {
         members: SelectedUserId,
       };
       const res = await deleteMemberFromProjectTeam(projectId, Member);
-      ("log from project team ", projectId, "/", Member);
+      "log from project team ", projectId, "/", Member;
 
-      ("res : ", res);
+      "res : ", res;
 
       toast.success(t("toast.userDeletedSuccessfully"));
       window.location.reload();
@@ -804,50 +804,50 @@ const ProjectTeam = () => {
               icon={<MdOutlinePerson />}
             />
           </div>
-          <div className="col-span-4 lg:col-span-2 relative flex mt-5  w-full">
+          <div className="col-span-4 lg:col-span-2 relative flex mt-5 w-full ">
             <Menu placement="bottom-start">
-              <MenuHandler>
+              <MenuHandler >
                 <Btn
                   ripple={false}
                   variant="text"
                   color="blue-gray"
-                  className="flex h-10 items-center gap-2  ltr:rounded-r-none rtl:rounded-l-none border ltr:border-r-0 rtl:border-l-0 border-gray border-solid pl-3"
+                  className="flex h-10 items-center gap-2 ltr:rounded-r-none rtl:rounded-l-none border !border-[#e6e6e7] border-solid ltr:border-r-0 rtl:border-l-0 pl-3"
                 >
                   <img
                     src={flags.svg}
                     alt={name}
-                    className="h-4 w-4 rounded-full object-cover"
+                    className="h-4 w-4 rounded-full object-cover border border-gray-400"
                   />
                   {countryCallingCode}
                 </Btn>
               </MenuHandler>
+
               <MenuList className="max-h-[20rem] max-w-[18rem]">
-                {countries.map(({ name, flags, countryCallingCode }, index) => {
-                  return (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      className="flex items-center gap-2"
-                      onClick={() => setCountryIndex(index)}
-                    >
-                      <img
-                        src={flags.svg}
-                        alt={name}
-                        className="h-5 w-5 rounded-full object-cover"
-                      />
-                      {name}{" "}
-                      <span className="ml-auto">{countryCallingCode}</span>
-                    </MenuItem>
-                  );
-                })}
+                {countries.map(({ name, flags, countryCallingCode }, index) => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    className="flex items-center gap-2 "
+                    onClick={() => setCountryIndex(index)}
+                  >
+                    <img
+                      src={flags.svg}
+                      alt={name}
+                      className="h-5 w-5 rounded-full object-cover border border-gray-400"
+                    />
+                    {name}
+                    <span className="ml-auto">{countryCallingCode}</span>
+                  </MenuItem>
+                ))}
               </MenuList>
             </Menu>
+
             <MaterialInput
               type="tel"
               value={Phone}
               onChange={handlePhoneChange}
               placeholder="Mobile Number"
-              className="ltr:rounded-l-none rtl:rounded-r-none border border-solid !border-gray focus:!border-gray"
+              className="  !border !border-[#e6e6e7]  placeholder:opacity-100 ltr:rounded-l-none rtl:rounded-r-none focus:!border-gray-400"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
@@ -856,6 +856,7 @@ const ProjectTeam = () => {
               }}
             />
           </div>
+
           <div className="col-span-4">
             <label
               className="Input_label flex items-center justify-start gap-2 font-jost text-base font-medium mx-2 cursor-pointer"
@@ -979,4 +980,3 @@ const ProjectTeam = () => {
 };
 
 export default ProjectTeam;
-

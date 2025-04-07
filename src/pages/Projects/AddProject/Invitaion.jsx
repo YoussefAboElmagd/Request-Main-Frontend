@@ -16,15 +16,16 @@ const Invitation = () => {
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const location = useLocation();
   const navigate = useNavigate();
-
   const queryParams = new URLSearchParams(location.search);
+
   const invitationId = queryParams.get("id");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const lang = i18next.language;
-  (lang);
+  lang;
 
+  console.log(data?.role?.jobTitle);
   useEffect(() => {
     if (!isAuth) {
       navigate("/SignUp/ChooseRole");
@@ -42,7 +43,7 @@ const Invitation = () => {
         const data = await getDataForInvite(token, invitationId, userId);
         setData(data.results);
 
-        ("data:", data);
+        "data:", data;
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error(error.message);
@@ -68,7 +69,7 @@ const Invitation = () => {
         isApproved: true,
       };
       const res = await approveInvite(invitationId, payload);
-      (res);
+      res;
       toast.success(
         t("toast.you have been added to {{projectName}} successfully", {
           projectName: data.projectName,
@@ -85,7 +86,7 @@ const Invitation = () => {
     setError(null);
     try {
       const res = await cancelInvite(token, invitationId, lang);
-      (res);
+      res;
       toast.success(
         t(
           "toast.You have canceled the invitation to {{projectName}} successfully",
@@ -108,7 +109,8 @@ const Invitation = () => {
       ) : (
         <div className="wrapper flex flex-col gap-4 ">
           <h3 className="font-inter font-bold text-2xl md:text-3xl lg:text-5xl leading-[50px]  text-purple-dark text-center">
-            {t("welcome")} <span>{user?.name}</span> {t("to")} Request !
+            {t("welcome")} <span className="  italic pe-2">"{user?.name}"</span>{" "}
+            {t("to")} Request !
           </h3>
           <p className="font-inter font-medium text-base md:text-lg lg:text-xl leading-8 ] text-center lg:mt-4 text-gray-600">
             {t("You have been invited to")}
