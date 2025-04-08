@@ -50,7 +50,11 @@ const ProjectDetails = () => {
 
         setProject(ProjectData?.results);
         setOwner(ProjectData?.results?.owner);
-        setContractor(ProjectData?.results?.contractor?ProjectData?.results?.contractor[0]:"");
+        setContractor(
+          ProjectData?.results?.contractor
+            ? ProjectData?.results?.contractor[0]
+            : ""
+        );
         setTags(tagsData?.results);
         setLoading(false);
       } catch (error) {
@@ -103,7 +107,7 @@ const ProjectDetails = () => {
           <div className="boxes grid grid-cols-1 lg:grid-cols-3 gap-2 m-2 p-2">
             <div
               className={`desc  ${
-                user.plan.name === "RequestPlus" ? "col-span-1" : "col-span-3"
+                user?.plan?.name === "RequestPlus" ? "col-span-1" : "col-span-3"
               } `}
             >
               <div className="desc_content bg-purple text-white py-9 px-6 rounded-3xl  h-[140px] text-center">
@@ -112,7 +116,7 @@ const ProjectDetails = () => {
                 </p>
               </div>
             </div>
-            {user.plan.name === "RequestPlus" && (
+            {user?.plan?.name === "RequestPlus" && (
               <>
                 <div className="fullBudget  col-span-1  h-[140px]  relative w-full  bg-white  p-6 rounded-3xl">
                   <p
@@ -194,12 +198,12 @@ const ProjectDetails = () => {
               <div className="analytics_box rounded-md shadow-md p-8 flex flex-col gap-3  mt-4 mb-4 mx-4 ">
                 <div
                   className={`progress_wrapper flex flex-col lg:flex-row items-center gap-2 rounded-2xl shadow-md p-8 relative ${
-                    user.plan.name === "RequestPlus"
+                    user?.plan?.name === "RequestPlus"
                       ? "lg:justify-between"
                       : "lg:justify-center"
                   }`}
                 >
-                  {user.plan.name === "RequestPlus" && (
+                  {user?.plan?.name === "RequestPlus" && (
                     <div className="Progress">
                       <span className="absolute top-1 font-inter font-extrabold text-xs leading-4 my-1 ">
                         {t("Progress")}

@@ -62,9 +62,9 @@ const Main = () => {
   };
   return (
     <>
-      <div className="Main relative h-[90vh] overflow-hidden hidden lg:block">
+      <div className="Main relative h-[95vh] overflow-hidden hidden xl:block">
         <div className="absolute top-16 right-16 fade-in">
-          <span className="halfCircleEffect transition-transform duration-500 ease-in-out"></span>
+          <span className="halfCircleEffect  transition-transform duration-500 ease-in-out"></span>
         </div>
         <div className="absolute bottom-0 left-16 fade-in">
           <span className="halfCircleLineEffect transition-transform duration-500 ease-in-out"></span>
@@ -177,7 +177,7 @@ const Main = () => {
         </div>
       </div>
       {/* mobile view */}
-      <div className="Main relative overflow-hidden lg:hidden block">
+      <div className="Main relative overflow-hidden xl:hidden block">
         <div className="slider  px-5 relative">
           <p
             onClick={() => {

@@ -18,14 +18,17 @@ const getStatusDisplay = (status) => {
 };
 
 const AvatarList = memo(({ avatars }) => {
-  console.log(avatars)
   const displayedAvatars = useMemo(() => avatars.slice(0, 5), [avatars]);
   return (
     <div className="members flex -space-x-2">
       {displayedAvatars.map((avatar, index) => (
         <img
           key={index}
-          src={`https://api.request-sa.com/${avatar}`}
+          src={` ${
+            avatar.startsWith("/src")
+              ? avatar
+              : `https://api.request-sa.com/${avatar}`
+          }`}
           alt="avatar"
           className="w-8 h-8 border-2 border-white rounded-full m-1"
         />
@@ -60,7 +63,7 @@ const BoardViewProject = ({
     <div className="box h-full bg-white rounded-md shadow-sm p-2 flex flex-col col-span-1">
       <div className="tagName flex justify-center">
         <span
-          className={`${Status} w-full text-center py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
+          className={`${Status} w-full text-center capitalize py-2 rounded-3xl font-inter font-semibold text-sm mt-2`}
         >
           {statusDisplay}
         </span>
@@ -68,7 +71,7 @@ const BoardViewProject = ({
       <div className="name flex justify-between items-center mx-2 my-3">
         <p className="font-inter font-medium text-xs leading-5">{NameOfTask}</p>
         <span>
-          <FaPen className="text-gray w-4 h-4 cursor-pointer" />  
+          <FaPen className="text-gray w-4 h-4 cursor-pointer" />
         </span>
       </div>
       <div className="progress w-full mx-2 my-3">

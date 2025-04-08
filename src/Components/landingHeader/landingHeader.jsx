@@ -50,12 +50,13 @@ const LandingHeader = () => {
       }`}
     >
       <header className="relative flex  justify-center items-center">
-      <img 
-          src={logo} 
-          alt="logo" 
-          className={`object-contain me-3    md:block md:h-20 md:w-20 w-12 h-12 ${isRTL ? "right-4" : "left-4"} top-2 z-10  backdrop-blur-md rounded-lg bg-transparent`}
+        <img
+          src={logo}
+          alt="logo"
+          className={`object-contain me-3    md:block md:h-20 md:w-20 w-12 h-12 ${
+            isRTL ? "right-4" : "left-4"
+          } top-2 z-10  backdrop-blur-md rounded-lg bg-transparent`}
         />
-      
 
         <div className="flex lg:mx-auto md:py-6 md:px-10 px-2 py-2 shadow-lg ring-1 me-auto z-20 rounded-full border my-4 transition-all duration-300 hover:shadow-xl">
           {/* mobile view items */}
@@ -65,17 +66,16 @@ const LandingHeader = () => {
           onClick={openDrawer}
           className={`object-contain  md:hidden h-20 w-20  z-10  backdrop-blur-md rounded-lg bg-transparent`}
         /> */}
-      
 
           <div className="block lg:hidden items-start">
-            <button 
+            <button
               onClick={openDrawer}
               className="transition-transform duration-200 hover:scale-110"
             >
               <FaBars className="text-purple pt-1 text-xl  " />
             </button>
-            
-            <Drawer open={open} onClose={closeDrawer} className="p-4  ">
+
+            <Drawer open={open} onClose={closeDrawer} className="p-4   ">
               <div className="mb-6 flex items-center justify-between">
                 <IconButton
                   variant="text"
@@ -156,9 +156,11 @@ const LandingHeader = () => {
               >
                 <span>{t("language")}</span>
                 <span className="transition-transform duration-300">
-                  <IoIosArrowDown 
+                  <IoIosArrowDown
                     style={{ color: "var(--gray-md)" }}
-                    className={`transform ${isLangOpen ? 'rotate-180' : 'rotate-0'}`}
+                    className={`transform ${
+                      isLangOpen ? "rotate-180" : "rotate-0"
+                    }`}
                   />
                 </span>
               </Link>
@@ -184,20 +186,33 @@ const LandingHeader = () => {
               </div>
             </div>
           </div>
-       
         </div>
         <div className="CTA flex items-center ">
           <Link to="/LogIn/Mail">
             <button className=" px-5 py-3 sm:px-6  md:px-8 bg-linear_1 rounded-3xl text-light ms-1 font-semibold text-xs  md:text-xl  transition-all duration-200 hover:scale-105 hover:shadow-lg flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clipRule="evenodd" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
               </svg>
               {t("signIn")}
             </button>
           </Link>
           <Link to="/SignUp/ChooseRole">
             <button className=" px-5 py-3 sm:px-6 md:px-8 bg-light border-2 border-purple border-solid rounded-3xl text-purple ms-1 font-semibold text-xs  md:text-xl  transition-all duration-200 hover:scale-105 hover:shadow-lg hover:bg-purple hover:text-white flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
                 <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
               </svg>
               {t("Sign Up")}

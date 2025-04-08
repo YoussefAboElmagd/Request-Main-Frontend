@@ -24,7 +24,7 @@ const Company = () => {
   const [signature, setSignature] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [company,setCompany] = useState("")
+  const [company, setCompany] = useState("");
   const handleStampChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -34,7 +34,6 @@ const Company = () => {
   };
 
   const handleSignatureChange = (dataUrl) => {
-    
     setSignature(dataUrl);
   };
 
@@ -84,8 +83,6 @@ const Company = () => {
     }
   };
 
-  
-
   async function getcomanyINfo() {
     await axios
       .get(`https://api.request-sa.com/api/v1/users/companyDetails/${user._id}`)
@@ -94,11 +91,8 @@ const Company = () => {
   }
 
   useEffect(() => {
-    
-    getcomanyINfo()
-  }, [company]);
-
-  
+    getcomanyINfo();
+  }, []);
 
   return (
     <div className="Company">
@@ -172,7 +166,10 @@ const Company = () => {
             />
           </div>
           <div className="signature">
-            <SignatureBtn company={company} onSignatureChange={handleSignatureChange} />
+            <SignatureBtn
+              company={company}
+              onSignatureChange={handleSignatureChange}
+            />
           </div>
         </div>
         {error && <div className="error text-red text-center">{error}</div>}

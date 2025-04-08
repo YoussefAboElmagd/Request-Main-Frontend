@@ -20,7 +20,7 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
   const [dob, setDob] = useState(user.dateOfBirth);
   const [Name, setName] = useState(user.name);
   const [Email, setEmail] = useState(user.email);
-  const [role, setRole] = useState(user.role.jobTitle);
+  const [role, setRole] = useState(user?.role?.jobTitle || "");
   const [tel, setTel] = useState(user.phone);
   const [profilePic, setProfilePic] = useState("");
   const [presentAddress, setPresentAddress] = useState(user.presentaddress);
@@ -185,7 +185,6 @@ const Profile = forwardRef(({ onProfileUpdate }, ref) => {
                 onChange={(e) => setTel(e.target.value)}
                 placeholder="+0753235789"
               />
-              
             </div>
             <div className="flex flex-col my-2 col-span-2">
               <label

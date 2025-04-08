@@ -27,7 +27,7 @@ const LoginByMail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
-  ("Error object:", error);
+  "Error object:", error;
   useEffect(() => {
     if (localStorage.getItem("token")) {
       return navigate("/");
@@ -36,7 +36,6 @@ const LoginByMail = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-   
     // Trim values from the input fields
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
@@ -80,14 +79,9 @@ const LoginByMail = () => {
       ) : (
         <>
           <LandingHeader />
-          <div
-            className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between"
-           
-          >
+          <div className="Wrapper flex flex-col md:flex-row md:items-center md:justify-between">
             <div className="w-full  md:w-1/2 lg:w-2/5 flex  flex-col items-center  mt-14  md:my-40">
-              <div
-                className="image_phone md:hidden"
-              >
+              <div className="image_phone md:hidden">
                 <img
                   src={image}
                   alt="LogIn By Phone"
@@ -119,7 +113,7 @@ const LoginByMail = () => {
               />
             </div>
             <motion.div
-              className="form flex flex-col mt-14 z-40"
+              className="form flex flex-col mt-14 "
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}

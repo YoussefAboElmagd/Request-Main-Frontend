@@ -7,6 +7,7 @@ import AuthHeader from "../../../Components/authHeader/AuthHeader";
 import Google from "../../../assets/images/Google.png";
 import Apple from "../../../assets/images/Apple.png";
 import Facebook from "../../../assets/images/Facebook.png";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 import "./style.scss";
 import i18next, { t } from "i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,9 +30,59 @@ import { handleSignUp } from "../../../redux/services/authServices";
 import { toast } from "react-toastify";
 import LandingHeader from "../../../Components/landingHeader/landingHeader";
 import { useTranslation } from "react-i18next";
+
+import {
+  Input as MaterialInput,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Button as Btn,
+  Dialog,
+  DialogHeader,
+  Typography,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+import { useCountries } from "use-react-countries";
+import { IoIosFlash } from "react-icons/io";
+const emojiToISO2 = {
+  "🇪🇬": 11, // Egypt
+  "🇦🇪": 9,
+
+  "🇶🇦": 8, // Qatar
+  "🇰🇼": 8, // Kuwait
+  "🇱🇸": 8, // Lebanon
+  "🇱🇸": 9, // Jordan
+  "🇩🇿": 9, // Algeria
+  "🇲🇦": 9, // Morocco
+  "🇧🇭": 8, // Bahrain
+  "🇴🇲": 9, // Oman
+  "🇬🇧": 10, // United Kingdom
+  "🇸🇾": 9, // Syria
+  "🇵🇸": 9, // Palestine
+  "🇮🇶": 10, // Iraq
+  "🇹🇳": 9, // Tunisia
+  "🇾🇪": 9, // Yemen
+
+  "🇺🇸": 10, // United States
+  "🇮🇳": 10, // India
+
+  "🇸🇦": 9, // Saudi Arabia
+  "🇩🇪": 11, // Germany
+  "🇮🇹": 10, // Italy
+  "🇫🇷": 10, // France
+  "🇯🇵": 11, // Japan
+  "🇨🇦": 10, // Canada
+  "🇧🇷": 11, // Brazil
+  "🇦🇺": 9, // Australia
+};
 const SignUp = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const countries = useCountries().countries;
+  const [countryIndex, setCountryIndex] = useState(230);
+  const { name, flags, countryCallingCode } = countries[countryIndex];
   const { roleId } = location.state || {};
   "role id from state =>", roleId;
 
@@ -39,10 +90,12 @@ const SignUp = () => {
   const { i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [Name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [passwordErro2, setPasswordError2] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [country, setCountry] = useState({
     value: "SA",
     label: "Saudi Arabia",
@@ -71,14 +124,15 @@ const SignUp = () => {
     } else {
       setPasswordError("");
     }
-    
   }
-  function validatePassword (e){
+  function validatePassword(e) {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
-    if(!regex.test(e.target.value)){
-      setPasswordError("Password at least 8 characters, 1 lower case, 1 upper case, 1 special character")
-    }else{
-     
+    if (!regex.test(e.target.value)) {
+      setPasswordError2(
+        "Password at least 8 characters, 1 lower case, 1 upper case, 1 special character"
+      );
+    } else {
+      setPasswordError2("");
     }
   }
   const handleConfirmPasswordChange = (e) => {
@@ -94,10 +148,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log(passwordError);
 
+    if (passwordErro2) return;
     const trimmedEmail = email.trim();
     const trimmedPassword = password;
-    const trimmedName = name.trim();
+    const trimmedName = Name.trim();
     const trimmedPhone = phone.trim();
     const trimmedConfirmPassword = confirmPassword;
 
@@ -126,6 +182,7 @@ const SignUp = () => {
     if (password != confirmPassword) {
       return;
     }
+    if (phoneError) return;
     const userData = {
       email: trimmedEmail,
       password: trimmedPassword,
@@ -156,12 +213,12 @@ const SignUp = () => {
     }
   };
 
-  const countryOptions = countries()
-    .getData()
-    .map((country) => ({
-      value: country.value,
-      label: `${country.label}`,
-    }));
+  // const countryOptions = countries()
+  //   .getData()
+  //   .map((country) => ({
+  //     value: country.value,
+  //     label: `${country.label}`,
+  //   }));
 
   const customStyles = {
     container: (provided) => ({
@@ -252,8 +309,8 @@ const SignUp = () => {
             </div>
             <div className="form flex flex-col mt-14">
               <form onSubmit={handleSubmit}>
-                <div className="name relative w-4/5 mx-auto md:w-full  ">
-                  {!name && (
+                <div className="Name relative w-4/5 mx-auto md:w-full  ">
+                  {!Name && (
                     <p
                       className={`text-rose-600 absolute text-lg  ${
                         i18n.language == "en" ? "left-[-1%]" : "right-[-2%]"
@@ -265,13 +322,13 @@ const SignUp = () => {
                   <Input
                     placeholder={t("yourName")}
                     type="text"
-                    id="name"
-                    value={name}
+                    id="Name"
+                    value={Name}
                     onChange={(e) => setName(e.target.value)}
                     autoFocus
                     label={t("yourName")}
                     labelIcon={<TbUserEdit />}
-                    autoComplete="name"
+                    autoComplete="Name"
                     required
                   />
                 </div>
@@ -286,7 +343,7 @@ const SignUp = () => {
                     </p>
                   )}
                   <Input
-                    placeholder="name@email.com"
+                    placeholder="Name@email.com"
                     type="email"
                     id="email"
                     autoComplete="email"
@@ -297,62 +354,109 @@ const SignUp = () => {
                     label={t("enter email")}
                   />
                 </div>
-                <div className="phone relative w-4/5 mx-auto md:w-full">
-                  {!phone && (
-                    <p
-                      className={`text-rose-600 absolute text-lg  ${
-                        i18n.language == "en" ? "left-[-3%]" : "right-[-3%] "
-                      }`}
-                    >
-                      *
-                    </p>
-                  )}
-                  <label className="Input_label flex items-center gap-2 font-jost text-base font-medium">
-                    <span className="label_icon w-4 h-4">
-                      <FiPhone />
-                    </span>
-                    {t("PhoneNumber")}
+
+                <div className="phone my-3 w-4/5 mx-auto md:w-full ">
+                  <label
+                    htmlFor="phone"
+                    className="flex items-center gap-2 font-jost text-base font-medium"
+                  >
+                    {t("Phone number")}
                   </label>
-                  <div className=" flex flex-row-reverse items-center my-2">
-                    {/* <PhoneInput
-                      international
-                      defaultCountry={country.value}
-                      country={country.value}
-                      onChange={(value) => setPhone(value)}
-                      value={phone}
-                      maxlength={11}
-                      placeholder={"+96244679900"}
-                      className="Input text-black font-jost font-normal text-base py-2 !relative px-4 w-full"
-                      
-                    /> */}
+                  <div className="flex relative bg-[#E8F0FE] ">
+                    <Menu placement="bottom-start">
+                      <MenuHandler>
+                        <Btn
+                          ripple={false}
+                          variant="text"
+                          color="blue-gray"
+                          className="flex h-10 items-center gap-2 pl-3"
+                        >
+                          <img
+                            src={flags.svg}
+                            alt={name}
+                            className="h-4 w-4 rounded-full object-cover"
+                          />
+                          {countryCallingCode}
+                        </Btn>
+                      </MenuHandler>
+                      <MenuList className="max-h-[20rem] max-w-[18rem]">
+                        {countries.map(
+                          (
+                            { name, flags, countryCallingCode, iso2 },
+                            index
+                          ) => (
+                            <MenuItem
+                              key={name}
+                              value={name}
+                              className="flex items-center gap-2"
+                              onClick={() => setCountryIndex(index)}
+                            >
+                              <img
+                                src={flags.svg}
+                                alt={name}
+                                className="h-5 w-5 rounded-full object-cover"
+                              />
+                              {name}
+                              <span className="ml-auto">
+                                {countryCallingCode}
+                              </span>
+                            </MenuItem>
+                          )
+                        )}
+                      </MenuList>
+                    </Menu>
+
+                    {!phone && (
+                      <p
+                        className={`text-rose-600 absolute text-lg ${
+                          i18n.language === "en"
+                            ? "left-[-2%] bottom-9"
+                            : "right-[-2%] bottom-9"
+                        }`}
+                      >
+                        *
+                      </p>
+                    )}
+
                     <input
-                      dir={i18n.language == "en" ? "ltr" : "rtl"}
+                      id="phone"
+                      dir={i18n.language === "en" ? "ltr" : "rtl"}
                       type="tel"
-                      maxLength={15}
-                      country={country.value}
                       placeholder={t("Phone number")}
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className={` py-[6px] bg-[#EAF0F7] w-full focus:outline-none  px-2 ${
-                        i18n.language == "en"
+                      onFocus={() => setPhoneError(false)}
+                      onChange={(e) => {
+                        const onlyDigits = e.target.value.replace(/\D/g, "");
+                        const iso2 = countries[countryIndex].emoji;
+
+                        const maxLength = emojiToISO2[iso2] || 15;
+                        if (onlyDigits.length < maxLength) {
+                          setPhoneError(
+                            `Phone Number Isn't valid, must be ${maxLength}-digit`
+                          );
+                        } else {
+                          setPhoneError("");
+                        }
+                        if (onlyDigits.length > maxLength) return;
+
+                        setPhone(onlyDigits);
+                      }}
+                      className={`w-full focus:outline-none bg-[#E8F0FE] px-2 ${
+                        i18n.language === "en"
                           ? "rounded-l-none rounded-lg"
                           : "rounded-r-none rounded-lg"
-                      }  `}
-                    />
-                    <Select
-                      options={countryOptions}
-                      value={country}
-                      onChange={(option) => setCountry(option)}
-                      className=""
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          backgroundColor: "#E8F0FE", // Set the background color to red
-                        }),
-                      }}
-                      classNamePrefix="select"
+                      } ${phoneError ? "" : ""}`}
                     />
                   </div>
+                  {phoneError && (
+                    <div className="text-xs bg-[#FFF3CD] text-[#8A6B3C] flex items-center justify-between px-1 py-1 mt-1">
+                      <p>{phoneError}</p>
+                      <p>
+                        {" "}
+                        <IoIosFlash />
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <div className="password w-4/5 mx-auto md:w-full relative">
                   {!password && (
@@ -377,7 +481,7 @@ const SignUp = () => {
                     onChange={(e) => {
                       setPassword(e.target.value);
                       checkMatch1(e);
-                      validatePassword(e)
+                      validatePassword(e);
                     }}
                     minLength={8}
                     inputIcons={[
@@ -408,7 +512,7 @@ const SignUp = () => {
                     placeholder={"••••••••"}
                     type="password"
                     id="confirmPassword"
-                    autoComplete="password"
+                    autoComplete="new-password"
                     className="confirmPassword_input border-purple-dark border focus:!border relative placeholder:font-normal placeholder:text-xl placeholder:font-inter"
                     required
                     labelIcon={<MdLockOutline />}
@@ -430,8 +534,19 @@ const SignUp = () => {
                     ]}
                   />
                   {passwordError && (
-                    <div className="error text-red text-xs mt-2 mx-auto text-center">
-                      {passwordError}
+                    <div className="error flex justify-between items-start px-4   bg-[#FFF3CD] text-[#8A6B3C] py-2 text-xs mt-2 mx-auto text-center">
+                      <p>{passwordError}</p>
+                      <p className="text-lg">
+                        <IoIosFlash />
+                      </p>
+                    </div>
+                  )}
+                  {passwordErro2 && (
+                    <div className="error flex justify-between items-start px-4     bg-[#FFF3CD] text-[#8A6B3C] py-2 text-xs mt-2 mx-auto text-center">
+                      <p>{passwordErro2}</p>
+                      <p className="text-lg">
+                        <IoIosFlash />
+                      </p>
                     </div>
                   )}
                 </div>

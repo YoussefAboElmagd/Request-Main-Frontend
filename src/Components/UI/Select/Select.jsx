@@ -8,11 +8,12 @@ const customStyles = {
     ...provided,
     backgroundColor: "white",
     border: "1px solid black",
-    borderRadius: "15px",
-    padding: "5px",
-    minHeight: "42px",
+    borderRadius: "10px",
+    padding: "2px 5px",
+    minHeight: "45px",
     boxShadow: "none",
-    "&:hover": { borderColor: "var(--purple)" },
+    
+    "&:hover": { borderColor: "black" },
   }),
   placeholder: (provided) => ({
     ...provided,

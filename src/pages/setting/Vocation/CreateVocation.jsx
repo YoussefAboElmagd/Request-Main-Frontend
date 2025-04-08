@@ -7,16 +7,15 @@ import Button from "../../../Components/UI/Button/Button";
 import Loader from "../../../Components/Loader/Loader";
 import { addVocation, getAllVocations } from "../../../Services/api";
 import { toast } from "react-toastify";
-
-const  CreateVocation = () => {
+import { IoMdClose } from "react-icons/io";
+import axios from "axios";
+const CreateVocation = () => {
   const lang = i18n.language;
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   const userId = user._id;
   const [vocations, setVocations] = useState([]);
-  //   const [newVocations, setNewVocations] = useState([]);
-  //   const [newVocationNameEN, setNewVocationNameEN] = useState("");
-  //   const [newVocationNameAR, setNewVocationNameAR] = useState("");
+  const [isUpdated, setisUpdated] = useState(false);
 
   const [voc, setVoc] = useState({
     nameEN: "",
@@ -29,7 +28,9 @@ const  CreateVocation = () => {
       setLoading(true);
       try {
         const res = await getAllVocations(userId, lang);
-        setVocations(res.results);
+        const data = Array.from(new Set(res.results));
+
+        setVocations(data);
       } catch (error) {
         console.error("Error fetching vocations:", error);
       } finally {
@@ -37,7 +38,7 @@ const  CreateVocation = () => {
       }
     };
     getVocations();
-  }, [userId]);
+  }, [userId,isUpdated]);
 
   const handleAddVocation = async () => {
     try {
@@ -46,17 +47,18 @@ const  CreateVocation = () => {
         nameAR: voc.nameAR,
         createdBy: user._id,
       };
-      ("Sending voc to API:", payload);
+      "Sending voc to API:", payload;
 
       const response = await addVocation(token, payload, lang);
-      (`Voc added successfully:`, response);
+      `Voc added successfully:`, response;
 
       toast.success(t("toast.VocCreatedSuccess"));
-      window.location.reload();
+      // window.location.reload();
       setVoc({
         nameEN: "",
         nameAR: "",
-      })
+      });
+      setisUpdated(prev=>!prev)
 
       return response;
     } catch (error) {
@@ -65,42 +67,18 @@ const  CreateVocation = () => {
     }
   };
 
-  //   const handleAddVocation = (e) => {
-  //     e.preventDefault();
-  //     const trimmedNameEN = newVocationNameEN.trim();
-  //     const trimmedNameAR = newVocationNameAR.trim();
-
-  //     if (!trimmedNameEN || !trimmedNameAR) {
-  //       toast.error(t("Both vocation names (EN and AR) cannot be empty"));
-  //       return;
-  //     }
-
-  //     const vocationData = {
-  //       nameEN: trimmedNameEN,
-  //       nameAR: trimmedNameAR,
-  //     };
-
-  //     const updatedVocations = [...vocations, vocationData];
-  //     setVocations(updatedVocations);
-  //     setNewVocations([...newVocations, vocationData]);
-  //     onVocChange(updatedVocations);
-
-  //     setNewVocationNameEN("");
-  //     setNewVocationNameAR("");
-  //   };
-
-  //   const handleDeleteVocation = (vocationToDelete) => {
-  //     const updatedVocations = vocations.filter(
-  //       (voc) => voc !== vocationToDelete
-  //     );
-  //     const updatedNewVocations = newVocations.filter(
-  //       (voc) => voc !== vocationToDelete
-  //     );
-
-  //     setVocations(updatedVocations);
-  //     setNewVocations(updatedNewVocations);
-  //   };
-
+  async function handleUpdateVocation(voc) {
+    console.log(vocations);
+    console.log(
+      setVocations((prev) => prev.filter((item) => item._id != voc._id))
+    );
+    await axios.delete(
+      `https://api.request-sa.com/api/v1/vocation/${voc._id}`,
+      {
+        name: voc.name,
+      }
+    );
+  }
   return (
     <div className="CreateVocation">
       {loading ? (
@@ -113,13 +91,21 @@ const  CreateVocation = () => {
 
           {vocations.length > 0 ? (
             <div className="PreviousTags grid grid-cols-2 md:grid-cols-4  gap-2 bg-white rounded-3xl p-4 shadow-lg">
-              {vocations.map((voc, index) => (
-                <div
-                  key={index}
-                  className="voc col-span-1 rounded-3xl p-1 text-center relative bg-gray-100 text-sm "
-                >
-                  {voc.name}
-                  {/* {newVocations.includes(voc) && (
+              {vocations.map(
+                (voc, index) =>
+                  voc.nameEN && (
+                    <div
+                      key={index}
+                      className="voc  col-span-1 rounded-3xl py-6 px-5 flex items-center justify-center relative text-center  bg-gray-100 text-sm "
+                    >
+                      <span
+                        onClick={() => handleUpdateVocation(voc)}
+                        className="text-lg text  rounded-full    !border-2 !border-black cursor-pointer absolute block top-1 left-1"
+                      >
+                        <IoMdClose />
+                      </span>
+                      {voc.name}
+                      {/* {newVocations.includes(voc) && (
                     <button
                       className="absolute rounded-full bg-white w-6 -top-3 right-2"
                       onClick={() => handleDeleteVocation(voc)}
@@ -129,18 +115,15 @@ const  CreateVocation = () => {
                       </span>
                     </button>
                   )} */}
-                </div>
-              ))}
+                    </div>
+                  )
+              )}
             </div>
           ) : (
             <div className="text-center text-sm leading-4 text-gray-600">
               {t("No Previous Vocation")}
             </div>
           )}
-
-          <h6 className="font-semibold text-sm leading-4 my-4">
-            {t("+ Add new vocation")}
-          </h6>
 
           <form onSubmit={handleAddVocation} className="py-5 px-3 lg:px-8">
             <div className="grid grid-cols-4 gap-2">
@@ -170,7 +153,7 @@ const  CreateVocation = () => {
                     setVoc((prev) => ({ ...prev, nameAR: e.target.value }))
                   }
                 />
-            </div>
+              </div>
             </div>
 
             <div className="btn flex items-center justify-center md:justify-end m-4">

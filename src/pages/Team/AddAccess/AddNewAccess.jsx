@@ -175,7 +175,7 @@ const AddNewAccess = () => {
   const token = useSelector((state) => state.auth.token);
   const countries = useCountries().countries;
   const [phoneError, setPhoneError] = useState(false);
-  const [accessError,SetAccessError] = useState(false)
+  const [accessError, SetAccessError] = useState(false);
   const [NameError, setNameError] = useState(false);
   const [countryIndex, setCountryIndex] = useState(230);
   const { name, flags, countryCallingCode } = countries[countryIndex];
@@ -304,9 +304,9 @@ const AddNewAccess = () => {
   useEffect(() => {
     setNameError(false);
   }, [Name]);
-  useEffect(() => {
-    SetAccessError(false);
-  }, [accessList12w]);
+  // useEffect(() => {
+  //   SetAccessError(false);
+  // }, [accessList12w]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -343,7 +343,7 @@ const AddNewAccess = () => {
     }
 
     if (Object.values(accessList).every((value) => value === false)) {
-      SetAccessError(true)
+      SetAccessError(true);
       return;
     }
     try {

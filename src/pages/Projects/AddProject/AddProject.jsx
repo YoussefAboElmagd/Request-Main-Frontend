@@ -14,9 +14,8 @@ function formatBudget(amount) {
   let numericValue = amount.replaceAll(/\D/g, "");
 
   // Add dots as thousand separators
-  return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
 
 const AddProject = () => {
   const user = useSelector((state) => state.auth.user);
@@ -69,12 +68,12 @@ const AddProject = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
-    
-      const bdg = budget.split("").filter(ele=>isNaN(ele) !== true).join("")
-    
-    
-    
+
+    const bdg = budget
+      .split("")
+      .filter((ele) => isNaN(ele) !== true)
+      .join("");
+
     const newFieldErrors = {
       Name: !Name.trim(),
       Description: !Description.trim(),
@@ -176,6 +175,13 @@ const AddProject = () => {
     };
   }, []);
 
+  async function getProjectById() {
+    await axios
+      .get(`https://api.request-sa.com/api/v1/project/${projectId}`)
+      .then((res) => setProject(res.data.results))
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className="AddProject mx-1">
       {Loading ? (
@@ -275,7 +281,7 @@ const AddProject = () => {
                 </div>
               </div>
               <div className="flex flex-wrap">
-                <div className="flex flex-col mt-1 w-full  sm:w-[49%]">
+                <div className="flex flex-col mt-1   w-full  sm:w-[49%]">
                   <Select
                     label={t("Priority")}
                     isClearable
@@ -284,7 +290,7 @@ const AddProject = () => {
                       { value: "medium", label: t("Medium") },
                       { value: "high", label: t("High") },
                     ]}
-                    className={`bg-white  ${
+                    className={`bg-white   ${
                       fieldErrors.priority && "border-b border-red  rounded-2xl"
                     }`}
                     value={priority}
@@ -296,7 +302,7 @@ const AddProject = () => {
                   <Input
                     label={t("budget")}
                     placeholder={t("budget")}
-                    className={`bg-white text-black border border-purple  border-solid focus:border   focus:border-purple  focus:border-solid ${
+                    className={`bg-white text-black border border-purple !rounded-xl border-solid focus:border   focus:border-purple  focus:border-solid ${
                       fieldErrors.Name && "border-red"
                     }`}
                     type={"text"}

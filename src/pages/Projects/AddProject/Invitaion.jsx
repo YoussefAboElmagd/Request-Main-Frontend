@@ -108,7 +108,7 @@ const Invitation = () => {
       ) : (
         <div className="wrapper flex flex-col gap-4 ">
           <h3 className="font-inter font-bold text-2xl md:text-3xl lg:text-5xl leading-[50px]  text-purple-dark text-center">
-            {t("welcome")} <span>{user?.name}</span> {t("to")} Request !
+            {t("welcome")} <span className=" italic">"{user?.name}"</span> {t("to")} Request !
           </h3>
           <p className="font-inter font-medium text-base md:text-lg lg:text-xl leading-8 ] text-center lg:mt-4 text-gray-600">
             {t("You have been invited to")}

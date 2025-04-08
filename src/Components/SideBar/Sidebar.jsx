@@ -135,7 +135,7 @@ const Sidebar = () => {
   return (
     <div className="Sidebar rtl:left-0">
       <div
-        className={`bg-white h-[100vh] py-5 pt-8 relative transition-custom duration-500 hidden lg:flex flex-col ${
+        className={`bg-white  py-5 pt-8 relative transition-custom duration-500 hidden md:flex flex-col ${
           !Open ? "w-72" : "w-24"
         }`}
       >
